@@ -24,7 +24,7 @@ bl20
 bl21
 bl22
 bl23
-var
+end var
 sw1
 75
 76
