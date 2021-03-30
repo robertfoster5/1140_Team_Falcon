@@ -19,7 +19,7 @@ bl147
 bl148
 bl149
 bl150
-st3
+st6
 end var
 sw2
 29

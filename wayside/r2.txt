@@ -35,6 +35,7 @@ bl73
 bl74
 bl75
 bl76
+st6
 end var
 sw3
 27

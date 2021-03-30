@@ -39,7 +39,7 @@ bl70
 bl71
 bl72
 bl73
-st3
+st6
 end var
 sw3
 57

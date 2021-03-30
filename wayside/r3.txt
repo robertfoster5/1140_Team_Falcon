@@ -21,6 +21,7 @@ bl63
 bl64
 bl65
 bl66
+st6
 end var
 sw7
 52

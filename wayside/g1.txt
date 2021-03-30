@@ -21,7 +21,7 @@ bl17
 bl18
 bl19
 bl20
-st3
+st6
 end var
 sw1
 12

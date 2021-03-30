@@ -29,7 +29,7 @@ bl98
 bl99
 bl100
 bl101
-st3
+st6
 end var
 sw5
 76
