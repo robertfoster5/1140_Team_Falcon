@@ -1,11 +1,4 @@
 var
-bl102
-bl103
-bl104
-bl105
-bl106
-bl107
-bl108
 bl109
 bl110
 bl111

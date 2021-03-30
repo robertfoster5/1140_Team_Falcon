@@ -10,10 +10,12 @@ class Wayside:
 		self.block_occ = []
 		self.sw_connect = []
 		self.cr_connect = []
+		self.num_switch = 0
 		self.load_plc()
 	
 	def update_wayside(self, authority, occupancy, order):
 		self.occupancy = occupancy
+		self.authority = authority
 		self.m_order(order)	
 		self.cross_change()
 			
@@ -69,7 +71,11 @@ class Wayside:
 				self.cr_connect[i] = "1"
 			else:
 				self.cr_connect[i] = "0"
-		
+	
+	def switch_state(self):
+		for i in self.num_switch:
+			if 
+			
 	def load_plc(self):
 		f = open(self.plcfile)
 		swcount = 0
@@ -88,6 +94,7 @@ class Wayside:
 			elif line[0:2] == "sw" and proc == 0:
 				self.switch_name.append("Switch " + line[2:-1])
 				self.switch_state.append("0")
+				self.num_switch = self.num_switch +1
 			#cross
 			elif line[0:2] == "cr" and proc == 0:
 				self.cross_name.append("Crossing " + line[2:-1])

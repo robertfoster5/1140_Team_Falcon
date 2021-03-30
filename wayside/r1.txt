@@ -27,9 +27,9 @@ bl23
 st6
 end var
 sw1
-75
-76
-75
+9
+10
+9
 yard
 sw2
 15
