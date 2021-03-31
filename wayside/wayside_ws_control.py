@@ -1,6 +1,7 @@
 class Wayside:
-	def __init__(self, plcfile):
+	def __init__(self, plcfile, line):
 		self.plcfile = plcfile
+		self.line = line
 		self.switch_name = []
 		self.switch_state = []
 		self.cross_name = []
@@ -11,10 +12,11 @@ class Wayside:
 		self.sw_connect = []
 		self.cr_connect = []
 		self.num_switch = 0
+		self.num_cross = 0
 		self.load_plc()
 	
 	def update_wayside(self, authority, occupancy, order):
-		self.occupancy = occupancy
+		self.block_occ = occupancy
 		self.authority = authority
 		self.m_order(order)	
 		self.cross_change()
@@ -73,8 +75,13 @@ class Wayside:
 				self.cr_connect[i] = "0"
 	
 	def switch_state(self):
+		temp_count = 0
 		for i in self.num_switch:
-			if 
+			if self.authority[self.sw_connect[temp_count][0]-1] == "1" and self.authority[self.sw_connect[temp_count][1] -1] =="1":
+				self.switch_state[i] = "0"
+			else:
+				self.switch_state[i] = "1"
+			temp_count = temp_count + 2
 			
 	def load_plc(self):
 		f = open(self.plcfile)
@@ -99,6 +106,8 @@ class Wayside:
 			elif line[0:2] == "cr" and proc == 0:
 				self.cross_name.append("Crossing " + line[2:-1])
 				self.cross_state.append("0")
+				self.num_cross = self.num_cross +1
+				print(self.num_cross)
 			elif line[0:2] == "bl" and proc == 0:
 				self.block_name.append("Block " + line[2:-1])
 				self.block_health.append("0")
@@ -117,16 +126,23 @@ class Wayside:
 				d2 = plc[linecount+3]
 				d3 = plc[linecount+4]
 				d4 = plc[linecount+5]
-				self.sw_connect.append([int(d1[0:-2]), int(d2[0:-2])])
-				self.sw_connect.append([int(d3[0:-2]), int(d4[0:-2])])
+				if d3[0:-1] == "yard":
+					self.sw_connect.append([int(d1[0:-1]), int(d2[0:-1])])
+					self.sw_connect.append([d3[0:-1], int(d4[0:-1])])
+				elif d4[0:-1] == "yard":
+					self.sw_connect.append([int(d1[0:-1]), int(d2[0:-1])])
+					self.sw_connect.append([int(d3[0:-1]), d4[0:-1]])
+				else:
+					self.sw_connect.append([int(d1[0:-1]), int(d2[0:-1])])
+					self.sw_connect.append([int(d3[0:-1]), int(d4[0:-1])])
 			if line[0:2] == "cr":
-				d1 = plc[linecount+1]
-				self.cr_connect.append(int(d1[0:-2]))
+				d1 = plc[linecount+2]
+				self.cr_connect.append(int(d1[0:-1]))
 			if line[0:2] == "end proc":
 				break
 			linecount = linecount+1
 		f.close()
-		
+		print(self.cross_name)
 if __name__ == '__main__':
 	Wayside.main()
 		

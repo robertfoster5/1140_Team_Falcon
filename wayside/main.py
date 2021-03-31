@@ -2,6 +2,7 @@ import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
 from wayside_qtui_test import Ui_MainWindow
+from wayside_ws_control import Wayside
 
 class TableModel(QtCore.QAbstractTableModel):
 
@@ -33,232 +34,142 @@ class TableModel(QtCore.QAbstractTableModel):
 
 
 class wayside_qtui_test(Ui_MainWindow):
-	global track_occupancy 
-	global line
+	
 	def __init__(self, dialog):
 		
 		ui = Ui_MainWindow()
 		
-		global track_occupancy
-		track_occupancy = "000000000000000000000"
-		 
-		line = 'Green'
+		g1 = Wayside("g1.txt", "Green")
+		g2 = Wayside("g2.txt", "Green")
+		g3 = Wayside("g3.txt", "Green")
+		g4 = Wayside("g4.txt", "Green")
+		g5 = Wayside("g5.txt", "Green")
+		r1 = Wayside("r1.txt", "Red")
+		r2 = Wayside("r2.txt", "Red")
+		r3 = Wayside("r3.txt", "Red")
 		
-		header_blocks = ['Block', 'Status', 'Line']
+		self.header_blocks = ['Block', 'Status', 'Line']
 		
-		data_blocks = [[0,0,0],
-						[0,0,0],
-						[0,0,0],
-						[0,0,0],
-						[0,0,0],
-						[0,0,0],
-						[0,0,0],
-						[0,0,0],
-						[0,0,0],
-						[0,0,0],
-						[0,0,0],
-						[0,0,0],
-						[0,0,0],
-						[0,0,0],
-						[0,0,0],
-						[0,0,0],
-						[0,0,0],
-						[0,0,0],
-						[0,0,0],
-						[0,0,0]]
-		for x in range(20):
-			data_blocks[x][0] = 'Block ' + str(x+1)
-			if track_occupancy[x] == "0":
-				data_blocks[x][1] = 'Empty'
-			else:
-				data_blocks[x][1] = 'Occupied'
-			data_blocks[x][2] = line
+		self.data_blocks = [[0,0,0]]
 		
-		header_cross = ['Crossing', 'Status']
+		self.header_cross = ['Crossing', 'Status']
 		
-		data_cross = [['Crossing_1','Open']]
+		self.data_cross = [[0,0]]
 		
-		header_switch = ['Switch', 'Status']
+		self.header_switch = ['Switch', 'Status']
 		
-		data_switch = [['Switch_1', track_occupancy[15]]]	
+		self.data_switch = [[0,0]]	
 		
-		ui.model = TableModel(data_blocks,header_blocks)
+		ui.model = TableModel(self.data_blocks,self.header_blocks)
 		
 		ui.setupUi(MainWindow)
 		print("Load Blocks Table")
 		ui.tableView.setModel(ui.model)
 		
-		ui.model = TableModel(data_cross,header_cross)
+		ui.model = TableModel(self.data_cross,self.header_cross)
 		print("Load Crossings Table")
 		ui.tableView_2.setModel(ui.model)
 		
-		ui.model = TableModel(data_switch,header_switch)
+		ui.model = TableModel(self.data_switch,self.header_switch)
 		print("Load Switch Table")
 		ui.tableView_3.setModel(ui.model)
 		
-		print("Load Line Edit")
-		ui.lineEdit.editingFinished.connect(lambda: self.input_changed(ui))
+		ui.pushButton.clicked.connect(lambda: self.update_tables(ui, r1))
+		ui.pushButton_2.clicked.connect(lambda: self.update_tables(ui,r2))
+		ui.pushButton_3.clicked.connect(lambda: self.update_tables(ui,r3))
 		
-		print("Load Maintenance Order Table")
-		header_m = ['Change Switch/Block']
-		data_m = [['N/A']]
-		ui.model = TableModel(data_m, header_m)
-		ui.tableView_5.setModel(ui.model)
+		ui.pushButton_4.clicked.connect(lambda: self.update_tables(ui,g1))
+		ui.pushButton_7.clicked.connect(lambda: self.update_tables(ui,g2))
+		ui.pushButton_6.clicked.connect(lambda: self.update_tables(ui,g3))
+		ui.pushButton_5.clicked.connect(lambda: self.update_tables(ui,g4))
+		ui.pushButton_8.clicked.connect(lambda: self.update_tables(ui,g5))
 		
-		print("Load CTC inputs")
-		header_ctc = ['Train ID', 'Commanded Speed', 'Authority']
-		data_ctc = [['N/A','N/A','N/A']]
-		ui.model = TableModel(data_ctc, header_ctc)
-		ui.tableView_4.setModel(ui.model)
+	def update_tables(self, ui, ws):
+		self.update_block(ui, ws)
+		self.update_switch(ui, ws)
+		self.update_cross(ui, ws)
 		
-	def input_changed(self, ui):
-		qtext = ui.lineEdit.text()
-		text_input = str(qtext)
-		print(text_input)
-		self.manage_input(ui, text_input)
-		
-	def manage_input(self, ui, text_input):
-		global track_occupancy
-		choice = text_input[0]
-		if choice == "S" or choice == "s":
-			ui.label.setText("New Switch State")
-			ui.label.adjustSize()
-			track_input = text_input[1:]
-			self.update_switch(ui, track_input)
-		if choice == "B" or choice == "b":
-			ui.label.setText("New Track Occupancy")
-			ui.label.adjustSize()
-			track_input = text_input[1:]
-			self.update_block(ui, track_input)
-		elif choice == "m":
-			ui.label.setText("Maintenance request")
-			ui.label.adjustSize()
-			bit_in = text_input[1:]
-			self.block_or_switch(ui, bit_in)
-			print("Maintenance request")
-		#else:
-		#	ui.label.setText("Not a valid command")
-		#	ui.label.adjustSize()
-		#	print("Not a valid request")
-		
-	#def input_new_occupancy(self, ui, new_track):
-	#	track_occupancy = new_track
-	#	self.blue_update_occupancy(ui)
-			
-	#PLC Blue_Line Controller
-	def blue_update_occupancy(self, ui):
-		global track_occupancy
-		#Switch_1=track_occupancy[15]
-		if track_occupancy[4] == "1":
-			Switch_1 = "0"
-		elif track_occupancy[5] == "1":
-			Switch_1 = "0"
-		elif track_occupancy[10] == "1":
-			Switch_1 = "1"
-		else:
-			Switch_1 = track_occupancy[15]
-		track_occupancy = track_occupancy[0:15] + Switch_1
-		self.update_tables(ui)
-	
-	def update_switch(self, ui, track_input):
-		global track_occupancy
-		track_occupancy = track_occupancy[0:-1] + track_input[-1]
-		self.blue_update_occupancy(ui)
-		
-	def update_block(self, ui, track_input):
-		global track_occupancy
-		#track_occupancy[ord(track_input[0])-1] = track_input[-1]
-		index = int(track_input[0:-2]) - 1
-		set_state = track_input[-1]
-		temp = ""
-		for x in range(15):
-			if x == index:
-				temp += set_state
-			else:
-				temp += track_occupancy[x]
-		temp += track_occupancy[15]
-		print(temp)
-		track_occupancy = temp
-		self.blue_update_occupancy(ui)
-		
-	#Update tables w/ new occupancy
-	def update_tables(self,ui):
-		self.block_parse(ui)
-		self.cross_parse(ui)
-		self.switch_parse(ui)
-		
-	def block_parse(self, ui):
-		global track_occupancy
-		line = 'Blue'
-		new_data = [[0,0,0],
-					[0,0,0],
-					[0,0,0],
-					[0,0,0],
-					[0,0,0],
-					[0,0,0],
-					[0,0,0],
-					[0,0,0],
-					[0,0,0],
-					[0,0,0],
-					[0,0,0],
-					[0,0,0],
-					[0,0,0],
-					[0,0,0],
-					[0,0,0]]
-		for x in range(15):
-			new_data[x][0] = 'Block_' + str(x+1)
-			if track_occupancy[x] == "0":
-				new_data[x][1] = 'Empty'
-			else:
-				new_data[x][1] = 'Occupied'
-			new_data[x][2] = line
-			
-		header = ['Block', 'Status', 'Line']
-		
-		ui.model = TableModel(new_data, header)
+	def update_block(self, ui, ws):	
+		self.data_blocks = []
+		for i in range(len(ws.block_occ)):
+			if ws.block_health[i] == "1":
+				self.data_blocks.append([ws.block_name[i], "Broken", ws.line])
+			elif ws.block_health[i] == "0" and ws.block_occ[i] == "1":
+				self.data_blocks.append([ws.block_name[i], "Occupied", ws.line])
+			elif ws.block_occ[i] == "0":
+				self.data_blocks.append([ws.block_name[i], "Empty", ws.line])
+		ui.model = TableModel(self.data_blocks,self.header_blocks)
+		print("Load Blocks Table")
 		ui.tableView.setModel(ui.model)
-    
-	def cross_parse(self, ui):
-		new_data = [['N/A', 'N/A'],['N/A', 'N/A']]
+				
+	def update_switch(self, ui, ws):
+		self.data_switch = []
+		if ws.num_switch > 0:
+			for i in range(ws.num_switch):
+				self.data_switch.append([ws.switch_name[i], ws.switch_state[i]])
+		else:
+			self.data_switch.append(["N/A", "N/A"])
+		ui.model = TableModel(self.data_switch,self.header_switch)
+		print("Load Switch Table")
+		ui.tableView_3.setModel(ui.model)
 		
-		header = ['Crossing', 'Line']
-		
-		ui.model = TableModel(new_data, header)
+	def update_cross(self, ui, ws):
+		self.data_cross = []
+		if ws.num_cross > 0:
+			for i in range(ws.num_cross):
+				self.data_cross.append([ws.cross_name[i], ws.cross_state[i]])
+		else:
+			self.data_cross.append(["N/A", "N/A"])
+		ui.model = TableModel(self.data_cross,self.header_cross)
+		print(self.data_cross)
 		ui.tableView_2.setModel(ui.model)
-        
-	def switch_parse(self, ui):
-		global track_occupancy
-		new_data = [[0,0],
-					[0,0]]
-		new_data[0][0] = 'Switch_1'
-		new_data[0][1] = track_occupancy[15]
-		new_data[1][0] = 'N/A'
-		new_data[1][1] = 'N/A'
-		header = ['Switch', 'Status']
-		
-		ui.model = TableModel(new_data, header)
-		ui.tableView_3.setModel(ui.model) 
-		
-	#Maintenance Orders
-	def block_or_switch(self, ui, bit_in):
-		global track_occupancy
-		temp = ""
-		print(bit_in)
-		for x in range(16):
-			if bit_in[x] == "0" and track_occupancy[x] == "0":
-				temp += "0"
-			elif bit_in[x] == "0" and track_occupancy[x] == "1":
-				temp += "1"
-			elif bit_in[x] == "1" and track_occupancy[x] == "0":
-				temp += "1"
-			else:
-				temp += "0"
-		print(temp)
-		track_occupancy = temp
-		self.update_tables(ui)
 
-		
-
+	def maintenance_order(self, order, r1, r2, r3, g1, g2, g3, g4, g5):
+		if order[0] == "r"
+			temp_order = order[1:-1]
+			or1 = temp_order[0] + temp_order[1:23]
+			or2 = temp_order[0] + temp_order[24:45] + temp_order[67:76]
+			or3 = temp_order[0] + temp_order[46:66]
+			r1.m_order(or1)
+			r2.m_order(or2)
+			r3.m_order(or3)
+		else:
+			temp_order = order[1:-1]
+			or1 = temp_order[0] + temp_order[1:20]
+			or2 = temp_order[0] + temp_order[22:35] + temp_order[147:150]
+			or3 = temp_order[0] + temp_order[36:73]
+			or4 = temp_order[0] + temp_order[74:109]
+			or5 = temp_order[0] + temp_order[110:146]
+			g1.m_order(or1)
+			g2.m_order(or2)
+			g3.m_order(or3)
+			g4.m_order(or4)
+			g5.m_order(or5)
+	
+	def new_authority(self, authority, r1, r2, r3, g1, g2, g3, g4, g5):
+		if authority[0] == "r":
+			r1.authority = authority[1:23]
+			r2.authority = authority[24:45] + authority[67:76]
+			r3.authority = authority[46:66]
+		else:
+			g1.authority = authority[1:20]
+			g2.authority = authority[21:35] + authority[147:150]
+			g3.authority = authority[36:73]
+			g4.authority = authority[74:109]
+			g5.authority = authority[110:146]
+				
+	def update_occupancy(self, occupancy, r1, r2, r3, g1, g2, g3, g4, g5):
+		if self.line == "r":
+			r1.block_occ = occupancy[1:23]
+			r2.block_occ = occupancy[24:45] + occupancy[67:76]
+			r3.block_occ = occupancy[46:66]
+		else:
+			g1.block_occ = occupancy[1:20]
+			g2.block_occ = occupancy[21:35] + occupancy[147:150]
+			g3.block_occ = occupancy[36:73]
+			g4.block_occ = occupancy[74:109]
+			g5.block_occ = occupancy[110:146]
+				
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)

@@ -1,5 +1,6 @@
 var
 sw7
+cr1
 bl46
 bl47
 bl48
@@ -23,11 +24,11 @@ bl65
 bl66
 st6
 end var
+cr1
+47
 sw7
 52
 53
 52
 66
-cr1
-47
 end proc

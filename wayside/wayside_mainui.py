@@ -23,9 +23,6 @@ class Ui_MainWindow(object):
         font.setPointSize(10)
         self.pushButton.setFont(font)
         self.pushButton.setObjectName("pushButton")
-        self.commandLinkButton = QtWidgets.QCommandLinkButton(self.centralwidget)
-        self.commandLinkButton.setGeometry(QtCore.QRect(0, 0, 200, 50))
-        self.commandLinkButton.setObjectName("commandLinkButton")
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(145, 65, 140, 25))
         font = QtGui.QFont()
@@ -92,10 +89,9 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Track Controller"))
-        self.pushButton.setText(_translate("MainWindow", "Red 1"))
-        self.commandLinkButton.setText(_translate("MainWindow", "Load PLC"))
         self.label.setText(_translate("MainWindow", "Green Line"))
         self.label_2.setText(_translate("MainWindow", "Red Line"))
+        self.pushButton.setText(_translate("MainWindow", "Red 1"))
         self.pushButton_2.setText(_translate("MainWindow", "Red 2"))
         self.pushButton_3.setText(_translate("MainWindow", "Red 3"))
         self.pushButton_4.setText(_translate("MainWindow", "Green 1"))

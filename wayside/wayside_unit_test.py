@@ -28,7 +28,7 @@ class TrackControllerTestCase(unittest.TestCase):
 	#		auth[i] = 0
 	#	green1.new_auth(auth)
 	def test_plc(self):
-		green1 = Wayside("g1.txt")
+		green1 = Wayside("r3.txt", "Green")
 		
 if __name__ == '__main__':
 	unittest.main()
