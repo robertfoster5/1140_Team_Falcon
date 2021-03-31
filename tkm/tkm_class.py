@@ -198,7 +198,6 @@ class Track:
 		self.line = blocks[0].line
 		self.train = []
 		
-		
 		self.check_swit()
 		self.check_stat()
 		self.check_und()
@@ -270,13 +269,19 @@ class Track:
 			a = a+1
 			
 	def get_occ(self):
-		c = int(self.end-1)
+		c = 0 
 		occ = ""
-		while c >= 0:
+		while c < int(self.end):
 			occ = occ + str(self.blocks[c].occ)
-			c = c-1
+			c = c+1
 			
 		return occ
+		
+	def set_occ(self,occ)
+	
+		
+	def get_blocks(self):
+		return self.blocksS
 					
 
 from tkm_functions import f_to_c
