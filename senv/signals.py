@@ -2,6 +2,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
 
 class Signal(QObject):
+    #global
+    time = pyqtSignal(int,int,int)
+    
     #ctc signals
     ctc_authority = pyqtSignal(list)
     ctc_suggested_speed = pyqtSignal(list)
