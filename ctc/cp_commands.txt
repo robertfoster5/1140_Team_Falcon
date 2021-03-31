@@ -1,0 +1,8 @@
+# Activate Virtual Environment (In C:\Users\Robert):
+call venv\Scripts\activate.bat
+
+# Make UI File Into Python File (In C:\Users\Robert\Desktop\TrainProject\1140_Team_Falcon\python_files):
+pyuic5 -x C:\Users\Robert\QT_Designer\ctc_qtui_test.ui -o ctc_qtui_test.py
+
+# Call Tests (In C:\Users\Robert\Desktop\TrainProject\1140_Team_Falcon\python_files)
+python -m unittest ctc_unit_tests.Testing 

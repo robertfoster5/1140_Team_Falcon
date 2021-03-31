@@ -1,0 +1,3 @@
+Train Name,Destination Station,Arrival Time
+Train 1,Station B,0004
+Train 2,Station C,0006
