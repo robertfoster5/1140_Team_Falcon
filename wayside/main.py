@@ -3,6 +3,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
 from wayside_qtui_test import Ui_MainWindow
 from wayside_ws_control import Wayside
+from PyQt5.QTCore import QObject, QThread, pyqtSignal
 
 class TableModel(QtCore.QAbstractTableModel):
 
@@ -32,11 +33,27 @@ class TableModel(QtCore.QAbstractTableModel):
             return self.header[col]
         return None
 
+class SignalClass(QObject):
+	way_occupancy = pyqtSignal(list)
+	way_cross_state = pyqtSignal(list)
+	way_switch_state = pyqtSignal(list)
+	way_authority = pyqtSignal(list)
+	way_speed = pyqtSignal(list)
+	ctc_authority = pyqtSignal(list)
+	ctc_suggested_speed = pyqtSignal(list)
+	ctc_maintenance = pyqtSignal(list)
+	tkm_get_occ = pyqtSignal(list)
+	
+signals = signalClass()
 
-class wayside_qtui_test(Ui_MainWindow):
+class wayside_qtui_test(QObject):
 	
 	def __init__(self, dialog):
-		
+		super().__init__()
+		self.wayside_qtui_test = QTWidgets.QMainWindow()
+		self.ui = UI_MainWindow()
+		self.ui.setupUI(self.wayside_qtui_test)
+		self.wayside_qtui_test.show()
 		ui = Ui_MainWindow()
 		
 		g1 = Wayside("g1.txt", "Green")
@@ -83,6 +100,11 @@ class wayside_qtui_test(Ui_MainWindow):
 		ui.pushButton_6.clicked.connect(lambda: self.update_tables(ui,g3))
 		ui.pushButton_5.clicked.connect(lambda: self.update_tables(ui,g4))
 		ui.pushButton_8.clicked.connect(lambda: self.update_tables(ui,g5))
+		
+		signals.ctc_authority.connect(self.new_authority(ctc_authority, r1, r2, r3, g1, g2, g3, g4, g5))
+		signals.ctc_suggested_speed.connect(self.update_speed(ctc_suggested_speed))
+		signals.ctc_maintenance.connect(self.maintenace_order(ctc_maintenance, r1, r2, r3, g1, g2, g3, g4, g5))
+		signals.tkm_get_occ.connect(self.update_occupancy(tkm_get_occ, r1, r2, r3, g1, g2, g3, g4, g5))
 		
 	def update_tables(self, ui, ws):
 		self.update_block(ui, ws)
@@ -169,7 +191,10 @@ class wayside_qtui_test(Ui_MainWindow):
 			g3.block_occ = occupancy[36:73]
 			g4.block_occ = occupancy[74:109]
 			g5.block_occ = occupancy[110:146]
-				
+	
+	def update_speed(self, speed):
+		self.speed = speed
+					
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
@@ -177,7 +202,4 @@ if __name__ == "__main__":
     
     prog = wayside_qtui_test(MainWindow)
     
-    
-    
-    MainWindow.show()
     sys.exit(app.exec_())
