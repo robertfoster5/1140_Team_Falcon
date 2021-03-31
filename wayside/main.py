@@ -125,7 +125,7 @@ class wayside_qtui_test(Ui_MainWindow):
 		ui.tableView_2.setModel(ui.model)
 
 	def maintenance_order(self, order, r1, r2, r3, g1, g2, g3, g4, g5):
-		if order[0] == "r"
+		if order[0] == "r":
 			temp_order = order[1:-1]
 			or1 = temp_order[0] + temp_order[1:23]
 			or2 = temp_order[0] + temp_order[24:45] + temp_order[67:76]
