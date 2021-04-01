@@ -113,7 +113,7 @@ class Train:
 					#self.block = 
 			
 		signals.tkm_get_block.emit(self.block)
-		signals.tkm_get_blength.emit(block[num].length)
+		signals.tkm_get_blength.emit(blocks[num].length)
 		signals.tkm_get_auth.emit(blocks[self.block-1].auth)
 		if sblocks[self.block-1].beacon1 == 0 and self.blocks[self.block-1].beacon2 == 0:
 			pass
@@ -432,9 +432,9 @@ class Track:
 				while self.blocks[q].occ == 0 and q < self.end-1:
 					q = q+1
 					 
-				self.train[r].set_block(self.blocks[q],q)
+				self.train[r-1].set_block(self.blocks,q)
 				self.blocks[q].occ = 1
-				self.train[r].set_speed(self.blocks[q])
+				self.train[r-1].set_speed(self.blocks[q])
 				r = r+1
 				q = q+1
 				
@@ -445,24 +445,27 @@ class Track:
 #_______________________________________________________________________
 	#set authority
 	def set_auth(self,auth):
+		print("auth")
 		r = 1
 		q = 0
 		check = 0
 		while r <= int(self.end):
-			self.blocks[q].auth = auth[r]
+			self.blocks[q].auth = int(auth[r])
 			r = r+1
 			q = q+1
 		
 		if len(self.train) == 0:
 			if self.blocks[self.yards[0]].auth == 1:
+				print("if")
 				if ((self.blocks[self.yards[0]-1].auth == 0 and self.blocks[self.yards[0]+1].auth == 1) or (self.blocks[self.yards[0]-1].auth == 1 and self.blocks[self.yards[0]+1].auth == 0)) and self.blocks[self.yards[0]].occ == 0:
 					self.add_train(len(train)+1,0,self.blocks[self.yards[0]-1])
 					self.train[len(train)-1].set_way(self.blocks,self.yards[0])
 				
 			elif self.blocks[self.yards[1]].auth == 1:
+				print("elif")
 				if ((self.blocks[self.yards[1]-1].auth == 0 and self.blocks[self.yards[1]+1].auth == 1) or (self.blocks[self.yards[1]-1].auth == 1 and self.blocks[self.yards[1]+1].auth == 0)) and self.blocks[self.yards[1]].occ == 0:
-					self.add_train(len(train)+1,0,self.blocks[self.yards[1]-1])
-					self.train[len(train)-1].set_way(self.blocks,self.yards[1])
+					self.add_train(len(self.train)+1,0,self.blocks[self.yards[1]-1])
+					self.train[len(self.train)-1].set_way(self.blocks,self.yards[1])
 
 		
 

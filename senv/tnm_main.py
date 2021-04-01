@@ -588,6 +588,7 @@ class tnm_display(QObject):
 	def blockTime(self,BlockLen):
 		#set variables
 		self.block_length = BlockLen
+		
 		#print(self.block_length)
 		#calculations
 		curr_speed_mps = (self.curr_speed/2.237)						#MPH to mps
