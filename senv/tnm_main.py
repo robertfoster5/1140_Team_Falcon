@@ -330,7 +330,7 @@ class tnm_display(Ui_MainWindow):
 		tnm_comm_speed = pyqtSignal(float)		#All signals for Track Controller
 		tnm_curr_speed = pyqtSignal(float)
 		tnm_authority = pyqtSignal(bool)
-		tnm_beacondID = pyqtSignal(list)
+		tnm_beacondID = pyqtSignal(int)
 		tnm_ebrake = pyqtSignal(bool)
 		tnm_cab_temp = pyqtSignal(int)
 
@@ -361,7 +361,7 @@ class tnm_display(Ui_MainWindow):
 		self.NextStation = "Dormont"
 		self.DoorStatus = False
 			#Beacon ID connected from tkm
-		self.BeaconID = 00000000					#bit1 (red vs green) bit2 (UG vs Station) bit3 (Left side vs Right side)
+		self.BeaconID = 00000000					#bit1 (red vs green) bit2 (UG vs Station) bit3 (Left side (62->63) vs Right side())
 		signals.tkm_get_beacon.connect(self.SetBeaconID)
 		self.BeaconIDStatus = True
 			#Internal control status's
@@ -400,7 +400,7 @@ class tnm_display(Ui_MainWindow):
 		#Update current speed given power value
 		self.lineEdit.setText(str(self.curr_speed) + " mph")
 		#Send the new calculated current speed to Train Controller
-		signals.tnm_curr_speed.emit(self.curr_speed)
+		#signals.tnm_curr_speed.emit(self.curr_speed)
 		#Update brake status
 		if (self.Brake == False):
 			self.lineEdit_2.setText("Off")
