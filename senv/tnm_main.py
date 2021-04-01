@@ -342,48 +342,48 @@ class tnm_display(QObject):
 
 		
 	#Define variables to be used in tnm_display
-			self.train1 = "Train 1 Information"
-		#power connected from tnc
-			self.curr_power = 0
-			signals.tnc_power.connect(self.SetPower)
-			self.curr_speed = 0
-			self.comm_speed = 0
-			signals.tkm_get_speed.connect(self.SetCommSpeed)
-		#authority connected from tkm
-			self.block_authority = False
-			signals.tkm_get_auth.connect(self.SetAuthority)
-		#Block length connected from tkm
-			self.block_length = 0
-			self.block_num = 0
-			self.block_finished = False
-			signals.tkm_get_blength.connect(self.blockTime)
-			signals.tkm_get_block.connect(self.blockTime)
-		#brake states
-			self.Brake = False
-			self.eBrake = False
-		#Occupancy 
-			self.pass_count = 0
-			signals.tkm_get_pass_count.connect(self.SetOccupancy)
-			self.crew_count = 3
-		#Route Information
-			self.Mass_Empty = (5*40.9)
-			self.curr_mass = 0
-			self.Occupancy = pass_crew_count(self.pass_count, self.crew_count)
-			self.RouteName = "Green Line"
-			self.NextStation = "Dormont"
-			self.DoorStatus = False
-		#Beacon ID connected from tkm
-			self.beacon_bin = 0b00000000
-			self.BeaconID = 00000000					#bit1 (red vs green) bit2 (UG vs Station) bit3 (Left side (62->63) vs Right side(63->64))
-			signals.tkm_get_beacon.connect(self.SetBeaconID)
-			self.BeaconIDStatus = True
-		#Internal control status's
-			self.lights_Cab = True
-			self.lights_High = False
-			self.lights_Tun = False
-			self.set_temp = 0		#degrees Fahrenheit
-			self.curr_temp = 68		#degrees Fahrenheit
-			self.announce = "Watch your step. Have a great day!"
+		self.train1 = "Train 1 Information"
+	#power connected from tnc
+		self.curr_power = 0
+		signals.tnc_power.connect(self.SetPower)
+		self.curr_speed = 0
+		self.comm_speed = 0
+		signals.tkm_get_speed.connect(self.SetCommSpeed)
+	#authority connected from tkm
+		self.block_authority = False
+		signals.tkm_get_auth.connect(self.SetAuthority)
+	#Block length connected from tkm
+		self.block_length = 1
+		self.block_num = 0
+		self.block_finished = False
+		signals.tkm_get_blength.connect(self.blockTime)
+		signals.tkm_get_block.connect(self.blockNum)
+	#brake states
+		self.Brake = False
+		self.eBrake = False
+	#Occupancy 
+		self.pass_count = 0
+		signals.tkm_get_pass_count.connect(self.SetOccupancy)
+		self.crew_count = 3
+	#Route Information
+		self.Mass_Empty = (5*40.9)
+		self.curr_mass = 0
+		self.Occupancy = pass_crew_count(self.pass_count, self.crew_count)
+		self.RouteName = "Green Line"
+		self.NextStation = "Dormont"
+		self.DoorStatus = False
+	#Beacon ID connected from tkm
+		self.beacon_bin = 0b00000000
+		self.BeaconID = 00000000					#bit1 (red vs green) bit2 (UG vs Station) bit3 (Left side (62->63) vs Right side(63->64))
+		signals.tkm_get_beacon.connect(self.SetBeaconID)
+		self.BeaconIDStatus = True
+	#Internal control status's
+		self.lights_Cab = True
+		self.lights_High = False
+		self.lights_Tun = False
+		self.set_temp = 0		#degrees Fahrenheit
+		self.curr_temp = 68		#degrees Fahrenheit
+		self.announce = "Watch your step. Have a great day!"
 
 
 		#Defining Actions for specific UI Interactions
@@ -395,7 +395,7 @@ class tnm_display(QObject):
 		
 		signals.time.connect(self.DispAnnounce)							#Display current Announcements
 		
-		signals.time.connect(self.blockTime)							#calculate time it takes for the train to pass block 
+		#signals.trm_block_len.connect(self.blockTime)							#calculate time it takes for the train to pass block 
 		
 		if(signals.time.connect(self.GetDatetime)):							#Display running time
 			self.ui.dateTimeEdit.setDateTime(QtCore.QDateTime.currentDateTime())
@@ -590,10 +590,14 @@ class tnm_display(QObject):
 	def blockTime(self,BlockLen):
 		#set variables
 		self.block_length = BlockLen
+		#print(self.block_length)
 		#calculations
 		curr_speed_mps = (self.curr_speed/2.237)						#MPH to mps
-		time_block = (curr_speed_mps/self.block_length)
-		for self.sec in time_block:
+		if (self.block_length == 0):
+			time_block = 100000
+		else:
+			time_block = (curr_speed_mps/self.block_length)
+		for i in range(int(time_block)+1):
 			self.block_finished = False
 			signals.tnm_block_finished.emit(self.block_finished)
 		self.block_finished = True
