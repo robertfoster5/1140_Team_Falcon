@@ -28,6 +28,7 @@ def set_curr_speed(Power, Occupancy):
 	curr_speed = round(curr_speed, 1)
 	return curr_speed
 
+
 #Setting internal temperature of the train 
 def temp_control(set_temp, curr_temp):
 	#initialize current temperature to 68 deg.
