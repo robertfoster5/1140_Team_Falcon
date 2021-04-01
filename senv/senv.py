@@ -7,7 +7,7 @@ from tkm_main import tkm_test
 from tnm_main import tnm_display
 from tnc_main import TrainControllerMain
 
-from t_time import t_time
+from t_time import timing
 
 
 class SystemEnvironment(QObject):
@@ -35,7 +35,7 @@ class SystemEnvironment(QObject):
         self.tnc.moveToThread(self.tnc_thread)
 
         self.time_thread = QThread()
-        self.time = t_time()
+        self.time = timing()
         self.time.moveToThread(self.time_thread)
 
         self.ctc_thread.start()
