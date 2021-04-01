@@ -103,7 +103,7 @@ class TableModel(QtCore.QAbstractTableModel):
 
 
 class ctc_qtui_test(QObject):
-    def __init__(self, dialog):
+    def __init__(self):
         
         super().__init__()
         self.ctc_main_window = QtWidgets.QMainWindow()
@@ -946,7 +946,7 @@ if __name__ == "__main__":
     
     
     track = loadTrack("tkm_load.xls")
-    prog = ctc_qtui_test(MainWindow)
+    prog = ctc_qtui_test()
     
     
     
