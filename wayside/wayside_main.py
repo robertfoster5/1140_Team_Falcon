@@ -191,7 +191,8 @@ class wayside_qtui_test(QObject):
 			self.compile_block_occ_green()
 			self.compile_switch_green()
 			self.compile_cross_green()
-		
+			self.compile_auth_green()
+			
 	def new_authority(self, authority):
 		if authority[0] == "r":
 			self.r1.authority = authority[1:23]
@@ -222,6 +223,7 @@ class wayside_qtui_test(QObject):
 		self.compile_block_occ_green()
 		self.compile_switch_green()
 		self.compile_cross_green()
+		self.compile_auth_green()
 				
 	def update_occupancy(self, occupancy):
 		if self.line == "r":
@@ -253,6 +255,7 @@ class wayside_qtui_test(QObject):
 		self.compile_block_occ_green()
 		self.compile_switch_green()
 		self.compile_cross_green()
+		self.compile_auth_green()
 		
 	def update_speed(self, speed):
 		self.speed = speed
