@@ -84,7 +84,20 @@ class Wayside:
 				sw4 = self.sw_connect[temp_count+1][1]
 				index1 = self.block_name.index(sw1)
 				index2 = self.block_name.index(sw2)
+				if sw4 == "yard":
+					index3 = self.block_name.index(sw3)
+				elif sw3 == "yard":
+					index4 = self.block_name.index(sw4)
+				else:
+					index3 = self.block_name.index(sw3)
+					index4 = self.block_name.index(sw4)
 				if self.authority[int(index1)] == "1" and self.authority[int(index2)] == "1":
+					self.switch_state.append("0")
+				elif self.authority[int(index3)] == "1" and sw4 == "yard" and self.authority[int(index2)] = "0":
+					self.switch_state.append("1")
+				elif self.authority[int(index4)] == "1" and sw3 == "yard" and self.authority[int(index1)] = "0":
+					self.switch_state.append("1")
+				elif self.authority[int(index3)] == "1" and self.authority[int(index4)] == "1" and sw3 != "yard" and sw4 != "yard":
 					self.switch_state.append("1")
 				else:
 					self.switch_state.append("0")
