@@ -395,8 +395,6 @@ class tnm_display(QObject):
 		
 		signals.time.connect(self.DispAnnounce)							#Display current Announcements
 		
-		#signals.trm_block_len.connect(self.blockTime)							#calculate time it takes for the train to pass block 
-		
 		if(signals.time.connect(self.GetDatetime)):							#Display running time
 			self.ui.dateTimeEdit.setDateTime(QtCore.QDateTime.currentDateTime())
 			self.ui.dateTimeEdit.setDisplayFormat("MM/dd/yyyy hh:mm:ss")
@@ -431,7 +429,7 @@ class tnm_display(QObject):
 		
 		#Address Authority Here
 		signals.tnm_authority.emit(self.block_authority)
-		
+		self.blockTime(self.block_length)
 		#Address Commanded Speed
 		signals.tnm_comm_speed.emit(self.comm_speed)
 		
@@ -594,7 +592,7 @@ class tnm_display(QObject):
 		#calculations
 		curr_speed_mps = (self.curr_speed/2.237)						#MPH to mps
 		if (self.block_length == 0):
-			time_block = 100000
+			time_block = 100
 		else:
 			time_block = (curr_speed_mps/self.block_length)
 		for i in range(int(time_block)+1):
