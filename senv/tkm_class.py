@@ -404,7 +404,7 @@ class Track:
 			self.blocks[d-1].occ = int(occ[d])
 			d = d+1
 			
-		self.set_train_block()
+		#self.set_train_block(True)
 		
 		bull = self.get_occ()
 		signals.tkm_get_occ.emit(bull)
