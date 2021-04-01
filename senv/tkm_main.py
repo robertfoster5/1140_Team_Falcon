@@ -51,8 +51,7 @@ class TableModel(QtCore.QAbstractTableModel):
         return None
 
 class tkm_test(QObject):
-	def __init__(self):	
-		print("track model running")	
+	def __init__(self):		
 		super().__init__()
 		
 		self.MainWindow = QtWidgets.QMainWindow()
@@ -112,6 +111,7 @@ class tkm_test(QObject):
 		signals.way_switch_state.connect(self.info[0].set_swit)
 		signals.way_authority.connect(self.info[0].set_auth)
         
+        signals.tnm_block_finished.connect(self.info[0].set_train_block)
         		
 	#for changing block info
 	def display_b(self):

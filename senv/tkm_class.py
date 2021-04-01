@@ -296,7 +296,6 @@ class Track:
 		self.train.append(Train(n,way,block.num))
 		signals.tkm_get_block.emit(block.num)
 		signals.tkm_get_blength.emit(block.length)
-		print("emit")
 		bull = self.get_occ()
 		signals.tkm_get_occ.emit(bull)
 	
@@ -400,7 +399,6 @@ class Track:
 #_______________________________________________________________________
 	#set track occupancy
 	def set_occ(self,occ):
-		print("set_occ")
 		d = 1
 		while d <= int(self.end)-1:
 			self.blocks[d-1].occ = int(occ[d])
@@ -426,17 +424,22 @@ class Track:
 	
 #_______________________________________________________________________
 	#set train blocks
-	def set_train_block(self):
-		r = 1
-		q = 0
-		while r <= len(self.train):
-			while self.blocks[q].occ == 0 and q < self.end-1:
+	def set_train_block(self,cool):
+		if(cool):
+			r = 1
+			q = 0
+			while r <= len(self.train):
+				while self.blocks[q].occ == 0 and q < self.end-1:
+					q = q+1
+					 
+				self.train[r].set_block(self.blocks[q],q)
+				self.blocks[q].occ = 1
+				self.train[r].set_speed(self.blocks[q])
+				r = r+1
 				q = q+1
 				
-			self.train[r].set_block(self.blocks[q],q)
-			self.train[r].set_speed(self.blocks[q])
-			r = r+1
-			q = q+1
+			bull = self.get_occ()
+			self.set_occ(bull)
 			
 			
 #_______________________________________________________________________
@@ -450,15 +453,16 @@ class Track:
 			r = r+1
 			q = q+1
 		
-		if self.blocks[self.yards[0]].auth == 1:
-			if ((self.blocks[self.yards[0]-1] == 0 and self.blocks[self.yards[0]+1] == 1) or (self.blocks[self.yards[0]-1] == 1 and self.blocks[self.yards[0]+1] == 0)) and self.blocks[self.yards[0]].occ == 0:
-				self.add_train(len(train)+1,0,self.blocks[self.yards[0]-1])
-				self.train[len(train)-1].set_way(self.blocks,self.yards[0])
-			
-		elif self.blocks[self.yards[1]].auth == 1:
-			if ((self.blocks[self.yards[1]-1] == 0 and self.blocks[self.yards[1]+1] == 1) or (self.blocks[self.yards[1]-1] == 1 and self.blocks[self.yards[1]+1] == 0)) and self.blocks[self.yards[1]].occ == 0:
-				self.add_train(len(train)+1,0,self.blocks[self.yards[1]-1])
-				self.train[len(train)-1].set_way(self.blocks,self.yards[1])
+		if len(self.train) == 0:
+			if self.blocks[self.yards[0]].auth == 1:
+				if ((self.blocks[self.yards[0]-1].auth == 0 and self.blocks[self.yards[0]+1].auth == 1) or (self.blocks[self.yards[0]-1].auth == 1 and self.blocks[self.yards[0]+1].auth == 0)) and self.blocks[self.yards[0]].occ == 0:
+					self.add_train(len(train)+1,0,self.blocks[self.yards[0]-1])
+					self.train[len(train)-1].set_way(self.blocks,self.yards[0])
+				
+			elif self.blocks[self.yards[1]].auth == 1:
+				if ((self.blocks[self.yards[1]-1].auth == 0 and self.blocks[self.yards[1]+1].auth == 1) or (self.blocks[self.yards[1]-1].auth == 1 and self.blocks[self.yards[1]+1].auth == 0)) and self.blocks[self.yards[1]].occ == 0:
+					self.add_train(len(train)+1,0,self.blocks[self.yards[1]-1])
+					self.train[len(train)-1].set_way(self.blocks,self.yards[1])
 
 		
 
