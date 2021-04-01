@@ -51,9 +51,9 @@ class wayside_qtui_test(QObject):
 		self.g3 = Wayside("g3.txt", "Green")
 		self.g4 = Wayside("g4.txt", "Green")
 		self.g5 = Wayside("g5.txt", "Green")
-		#self.r1 = Wayside("r1.txt", "Red")
-		#self.r2 = Wayside("r2.txt", "Red")
-		#self.r3 = Wayside("r3.txt", "Red")
+		self.r1 = Wayside("r1.txt", "Red")
+		self.r2 = Wayside("r2.txt", "Red")
+		self.r3 = Wayside("r3.txt", "Red")
 		
 		"""self.g1_thread = QThread()
         self.g1 = Wayside("g1.txt", "Green")
@@ -86,9 +86,9 @@ class wayside_qtui_test(QObject):
 		
 		self.ui.tableView_3.setModel(self.ui.model)
 		
-		#self.ui.pushButton.clicked.connect(lambda: self.update_tables(self.r1))
-		#self.ui.pushButton_2.clicked.connect(lambda: self.update_tables(self.r2))
-		#self.ui.pushButton_3.clicked.connect(lambda: self.update_tables(self.r3))
+		self.ui.pushButton.clicked.connect(lambda: self.update_tables(self.r1))
+		self.ui.pushButton_2.clicked.connect(lambda: self.update_tables(self.r2))
+		self.ui.pushButton_3.clicked.connect(lambda: self.update_tables(self.r3))
 		
 		self.ui.pushButton_4.clicked.connect(lambda: self.update_tables(self.g1))
 		self.ui.pushButton_7.clicked.connect(lambda: self.update_tables(self.g2))
@@ -147,6 +147,8 @@ class wayside_qtui_test(QObject):
 		else:
 			self.data_cross.append(["N/A", "N/A"])
 
+	#BIG ERRORS IF RUN
+	#fix that indexing 
 	def maintenance_order(self, order):
 		if order[0] != "0":
 			if order[0] == "r":
