@@ -309,7 +309,7 @@ class ctc_qtui_test(QObject):
          TrainStation([6,8,14],[[122,123,124,125,126,127,128,129,130],[56,57,58,59,60,61],[56,57]]), # Overbrook
          TrainStation([9],[[62,63]]), # From Yard
          TrainStation([7,10],[[113,114,115,116,117,118,119,120,121],[64,65,66,67,68,69,70,71]]), # Glenbury
-         TrainStation([9.11],[[104,105,106,107,108,109,110,111,112],[72,73,74,75]]), # Dormont
+         TrainStation([9,11],[[104,105,106,107,108,109,110,111,112],[72,73,74,75]]), # Dormont
          TrainStation([10,12],[[76,100,101,102,103],[76,77,78,79,80,81,82,83,84,85,86]]), # Mt Lebanon
          TrainStation([13],[[87,88,89,90,91,92,93,94]]), # Poplar
          TrainStation([11],[[95,96,97,98,99,84,83,82,81,80,79,78,77]]), # Castle Shannon
@@ -699,6 +699,7 @@ class ctc_qtui_test(QObject):
             return curr_auth
         if len(curr_auth) > 200:
             # Chose 200 for no good reason, choose a better number later
+            print("EXCEED SIZE")
             return [-1]
 
         if curr_station_path == len(test_station_pathway) -1:
@@ -717,9 +718,12 @@ class ctc_qtui_test(QObject):
                 res_auth[res_index] = self.find_authority((curr_auth + test_station_info[curr_station].connections[i]),next_station_path,destination_station,test_station_info,test_station_pathway)
 
         final_auth = [-1]
-         
+        
+        print("res_auth:")
+        print(res_auth)
+        
         for i in res_auth:
-            if i != [-1]:
+            if i != [-1] and i != []:
                 if final_auth == [-1]:
                     final_auth = i
                 if len(i) < len(final_auth):
@@ -952,17 +956,21 @@ class ctc_qtui_test(QObject):
         sendable_sugg_speed = [0] * 150
         sendable_auth = ["g"]
         if len(global_dispatch_orders) > 1:
-            for i in range(150):
-                if i in global_dispatch_orders[0][4]:
-                    sendable_auth.append("1")
-                    sendable_sugg_speed[i] = global_dispatch_orders[0][5][global_dispatch_orders[0][4].index(i)]
-                else:
-                    sendable_auth.append("0")
-            print("Authority")
-            print(len(sendable_auth))
-            print(sendable_auth)
-            signals.ctc_authority.emit(sendable_auth)
-            signals.ctc_suggested_speed.emit(sendable_sugg_speed)
+            print("Wait for t = " + str(global_dispatch_orders[1][3]))
+            if self.current_time >= global_dispatch_orders[1][3]:
+                for i in range(150):
+                    if i in global_dispatch_orders[1][4]:
+                        sendable_auth.append("1")
+                        sendable_sugg_speed[i] = global_dispatch_orders[1][5][global_dispatch_orders[1][4].index(i)]
+                        #print("Index w/ Authority: " + str(i))
+                    else:
+                        sendable_auth.append("0")
+                print("Authority")
+                print(len(sendable_auth))
+                print(sendable_auth)
+                print(sendable_sugg_speed)
+                signals.ctc_authority.emit(sendable_auth)
+                signals.ctc_suggested_speed.emit(sendable_sugg_speed)
             
     def update_time(self,seconds,minutes,hours,total_time):
         self.current_time = total_time 
@@ -981,7 +989,6 @@ if __name__ == "__main__":
     MainWindow = QtWidgets.QMainWindow()
     
     
-    track = loadTrack("tkm_load.xls")
     prog = ctc_qtui_test()
     
     
