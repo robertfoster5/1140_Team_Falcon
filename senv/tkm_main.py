@@ -51,8 +51,7 @@ class TableModel(QtCore.QAbstractTableModel):
         return None
 
 class tkm_test(QObject):
-	def __init__(self):	
-		print("running track model")	
+	def __init__(self):		
 		super().__init__()
 		
 		self.MainWindow = QtWidgets.QMainWindow()
@@ -71,8 +70,7 @@ class tkm_test(QObject):
 		
 		#create trains
 		self.trains = []
-		self.info[0].add_train(1,1,1)
-		self.info[0].add_train(2,1,2)
+		#self.info[0].add_train(1,1,1)
 		
 		#set headers for grids
 		self.header_b = ['Block', 'Info']
@@ -91,8 +89,9 @@ class tkm_test(QObject):
 			 
 		#set station info
 		self.data_s = make_data_s(self.info[0].blocks[i].station)
-		self.data_t = make_data_t(self.info[0].train[0],self.info[0].blocks)
-        
+		#self.data_t = make_data_t(self.info[0].train[0],self.info[0].blocks)
+		self.data_t = [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]]
+		
         #final set up of data tables
 		self.ui.model_b = TableModel(self.data_b, self.header_b)
 		self.ui.model_s = TableModel(self.data_s, self.header_s)
