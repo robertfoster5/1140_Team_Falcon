@@ -100,10 +100,10 @@ class Train:
 #_______________________________________________________________________
 	
 	def set_speed(self,block):
-		if self.block.s_limit > self.block.speed:
-			self.speed = self.block.speed
+		if block.s_limit > block.speed:
+			self.speed = block.speed
 		else:
-			self.speed = self.block.s_limit
+			self.speed = block.s_limit
 	
 #_______________________________________________________________________
 	
@@ -274,8 +274,8 @@ class Track:
 	def set_swit(self,swits):
 		q = 1
 		r = 0
-		while r < self.end:
-			while self.blocks[r].switch.top == 0:
+		while r < self.end-1 and q < len(swits) -1:
+			while self.blocks[r].switch.top == 0 and r< self.end -1:
 				r = r+1
 			
 			self.blocks[r].switch.state = int(swits[q])
@@ -337,7 +337,8 @@ class Track:
 	#set track occupancy
 	def set_occ(self,occ):
 		d = 1
-		while d <= int(self.end):
+		print(int(self.end))
+		while d < int(self.end):
 			self.blocks[d].occ = int(occ[d])
 			d = d+1
 			
@@ -361,8 +362,8 @@ class Track:
 	def set_train_block(self):
 		r = 1
 		q = 0
-		while r <= len(self.train):
-			while self.blocks[q].occ == 0:
+		while r < len(self.train):
+			while self.blocks[q].occ == 0 and q < self.end-1:
 				q = q+1
 				
 			self.train[r].set_block(q)

@@ -1,3 +1,7 @@
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QObject, QThread, pyqtSignal
+from signals import signals
+
 class mil_tim(object):
 	def __init__(self,env):
 		self.env = env
@@ -20,5 +24,5 @@ class mil_tim(object):
 					 self.mint = 0
 					 if self.hr == 24:
 						 self.hr = 0
-			print('The time is ' + str(self.hr)+ ':' + str(self.mint) + ':' +str(self.sec))
+			signals.time.emit(self.sec,self.mint,self.hr,self.env.now)
 			yield self.env.timeout(1)

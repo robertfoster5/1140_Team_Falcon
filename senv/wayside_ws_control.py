@@ -72,7 +72,7 @@ class Wayside:
 	def switch_state_change(self):
 		print("switch_change")
 		temp_count = 0
-		if len(self.authority) > 0:
+		if self.num_switch > 0:
 			for i in range(self.num_switch):
 				if self.authority[self.sw_connect[temp_count][0]-1] == "1" and self.authority[self.sw_connect[temp_count][1] -1] =="1":
 					self.switch_state[i] = "0"

@@ -104,7 +104,7 @@ class TableModel(QtCore.QAbstractTableModel):
 
 class ctc_qtui_test(QObject):
     def __init__(self):
-        
+        print("running ctc")
         super().__init__()
         self.ctc_main_window = QtWidgets.QMainWindow()
         self.ui = Ui_MainWindow()
@@ -459,7 +459,7 @@ class ctc_qtui_test(QObject):
         # -----------------------------
             
         signals.time.connect(lambda: self.send_dispatch_order())
-        signals.time.connect(lambda: self.update_time())
+        signals.time.connect( self.update_time)
         
             
     def change_data(self, ui):
@@ -951,7 +951,7 @@ class ctc_qtui_test(QObject):
         global global_dispatch_orders
         sendable_sugg_speed = [0] * 150
         sendable_auth = ["g"]
-        if len(global_dispatch_orders) > 0:
+        if len(global_dispatch_orders) > 1:
             for i in range(150):
                 if i in global_dispatch_orders[0][4]:
                     sendable_auth.append("1")
@@ -962,7 +962,7 @@ class ctc_qtui_test(QObject):
             signals.ctc_suggested_speed.emit(sendable_sugg_speed)
             
     def update_time(self,seconds,minutes,hours,total_time):
-        self,current_time = total_time 
+        self.current_time = total_time 
             
 
 class TrainStation:

@@ -323,6 +323,7 @@ class tnm_failureTest(QObject):
 class tnm_display(QObject):
 	def __init__(self):
 		#Ui_MainWindow.__init__(self)
+		print("running train model")
 		super().__init__()
 		self.MainWindow = QtWidgets.QMainWindow()
 		self.ui = Ui_MainWindow()
@@ -405,7 +406,7 @@ class tnm_display(QObject):
 		#Update current speed given power value
 		self.ui.lineEdit.setText(str(self.curr_speed) + " mph")
 		#Send the new calculated current speed to Train Controller
-		#signals.tnm_curr_speed.emit(self.curr_speed)
+		signals.tnm_curr_speed.emit(self.curr_speed)
 		#Update brake status
 		if (self.Brake == False):
 			self.ui.lineEdit_2.setText("Off")
@@ -529,7 +530,7 @@ class tnm_display(QObject):
 	#function for updating the current date and time widget
 	def GetDatetime(self):
 		dateTime = self.ui.dateTimeEdit.dateTime()
-		dateTime_string = dateTime.toString(self.dateTimeEdit.displayFormat())
+		dateTime_string = dateTime.toString(self.ui.dateTimeEdit.displayFormat())
 		self.ui.dateTimeEdit.dateTimeFromText(dateTime_string)
 		
 		#Don't allow time module to be edited
@@ -544,23 +545,23 @@ class tnm_display(QObject):
 		
 #_______________________________________________________________________
 	#Function to set power from tnc signal
-	def SetPower(tnc_power):
+	def SetPower(self,tnc_power):
 		self.curr_power = tnc_power
 	
 	#Function to set Beacon ID from track model signal
-	def SetBeaconID(tkm_beacon):
+	def SetBeaconID(self,tkm_beacon):
 		self.BeaconId = tkm_beacon
 	
 	#Function to set Authority from track model signal
-	def SetAuthority(tkm_authority):
+	def SetAuthority(self,tkm_authority):
 		self.block_authority = tkm_authority
 		
 	#Function to set Commanded Speed from track model signal
-	def SetCommSpeed(tkm_comm_speed):
+	def SetCommSpeed(self,tkm_comm_speed):
 		self.comm_speed = tkm_comm_speed
 	
 	#Function to set Passenger count from track model signal
-	def SetOccupancy(tkm_pass_count):
+	def SetOccupancy(self,tkm_pass_count):
 		self.pass_count = tkm_pass_count
 		
 #_______________________________________________________________________

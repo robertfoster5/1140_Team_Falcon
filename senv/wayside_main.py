@@ -36,6 +36,7 @@ class TableModel(QtCore.QAbstractTableModel):
 class wayside_qtui_test(QObject):
 	
 	def __init__(self):
+		print("running track controller")
 		super().__init__()
 		self.wayside_qtui_test = QtWidgets.QMainWindow()
 		#ui = Ui_MainWindow()
@@ -74,15 +75,15 @@ class wayside_qtui_test(QObject):
 		self.ui.model = TableModel(self.data_blocks,self.header_blocks)
 		
 		
-		print("Load Blocks Table")
+	
 		self.ui.tableView.setModel(self.ui.model)
 		
 		self.ui.model = TableModel(self.data_cross,self.header_cross)
-		print("Load Crossings Table")
+		
 		self.ui.tableView_2.setModel(self.ui.model)
 		
 		self.ui.model = TableModel(self.data_switch,self.header_switch)
-		print("Load Switch Table")
+		
 		self.ui.tableView_3.setModel(self.ui.model)
 		
 		self.ui.pushButton.clicked.connect(lambda: self.update_tables(self.r1))
@@ -102,7 +103,7 @@ class wayside_qtui_test(QObject):
 		
 			
 	def update_tables(self, ws):
-		print("update_table")
+		
 		self.update_block(ws)
 		self.update_switch(ws)
 		self.update_cross(ws)
@@ -110,15 +111,15 @@ class wayside_qtui_test(QObject):
 	
 	def show_tables(self):
 		self.ui.model = TableModel(self.data_blocks,self.header_blocks)
-		print("Load Blocks Table")
+		
 		self.ui.tableView.setModel(self.ui.model)
 		
 		self.ui.model = TableModel(self.data_switch,self.header_switch)
-		print("Load Switch Table")
+		
 		self.ui.tableView_3.setModel(self.ui.model)
 		
 		self.ui.model = TableModel(self.data_cross,self.header_cross)
-		print("Load Cross Table")
+		
 		self.ui.tableView_2.setModel(self.ui.model)
 			
 	def update_block(self, ws):	
@@ -207,11 +208,11 @@ class wayside_qtui_test(QObject):
 			self.g3.authority = authority[36:73]
 			self.g4.authority = authority[74:109]
 			self.g5.authority = authority[110:146]
-			self.g1.switch_state_change()
-			self.g2.switch_state_change()
-			self.g3.switch_state_change()
-			self.g4.switch_state_change()
-			self.g5.switch_state_change()
+			#self.g1.switch_state_change()
+			#self.g2.switch_state_change()
+			#self.g3.switch_state_change()
+			#self.g4.switch_state_change()
+			#self.g5.switch_state_change()
 		self.update_tables(self.r1)
 		self.update_tables(self.r2)
 		self.update_tables(self.r3)
@@ -267,12 +268,18 @@ class wayside_qtui_test(QObject):
 	def compile_block_occ_green(self):
 		temp_occ = []
 		temp_occ.append("1")
-		temp_occ.append(self.g1.block_occ)
-		temp_occ.append(self.g2.block_occ[0:13])
-		temp_occ.append(self.g3.block_occ)
-		temp_occ.append(self.g4.block_occ)
-		temp_occ.append(self.g5.block_occ)
-		temp_occ.append(self.g2.block_occ[14:17])
+		for i in range(20):
+			temp_occ.append(self.g1.block_occ[i])
+		for i in range(15):
+			temp_occ.append(self.g2.block_occ[i])
+		for i in range(38):
+			temp_occ.append(self.g3.block_occ[i])
+		for i in range(36):
+			temp_occ.append(self.g4.block_occ[i])
+		for i in range(37):
+			temp_occ.append(self.g5.block_occ[i])
+		for i in range(4):
+			temp_occ.append(self.g2.block_occ[i])
 		signals.way_occupancy.emit(temp_occ)
 	
 	"""def compile_switch_red(self):
@@ -281,10 +288,13 @@ class wayside_qtui_test(QObject):
 	def compile_switch_green(self):
 		temp_sw = []
 		temp_sw.append("1")
-		temp_sw.append(g1.switch_state)
-		temp_sw.append(g2.switch_state)
-		temp_sw.append(g3.switch_state)
-		temp_sw.append(g4.switch_state)
+		temp_sw.append(self.g1.switch_state[0])
+		temp_sw.append(self.g2.switch_state[0])
+		temp_sw.append(self.g3.switch_state[0])
+		temp_sw.append(self.g3.switch_state[1])
+		temp_sw.append(self.g4.switch_state[0])
+		temp_sw.append(self.g4.switch_state[1])
+		print(len(temp_sw))
 		signals.way_switch_state.emit(temp_sw)
 		
 	"""def compile_cross_red(self):
@@ -293,7 +303,7 @@ class wayside_qtui_test(QObject):
 	def compile_cross_green(self):
 		temp_cr = []
 		temp_cr.append("1")
-		temp_cr.append(g1.cross_state)
+		temp_cr.append(self.g1.cross_state[0])
 		signals.way_cross_state.emit(temp_cr)
 		
 	"""def compile_auth_red(self):
@@ -302,12 +312,19 @@ class wayside_qtui_test(QObject):
 	def compile_auth_green(self):
 		temp_auth = []
 		temp_auth.append("1")
-		temp_auth.append(self.g1.authority)
-		temp_auth.append(self.g2.authority[0:13])
-		temp_auth.append(self.g3.authority)
-		temp_auth.append(self.g4.authority)
-		temp_auth.append(self.g5.authority)
-		temp_auth.append(self.g2.authority[14:17])
+		for i in range(20):
+			temp_auth.append(self.g1.authority[i])
+		for i in range(15):
+			temp_auth.append(self.g2.authority[i])
+		for i in range(38):
+			temp_auth.append(self.g3.authority[i])
+		for i in range(36):
+			temp_auth.append(self.g4.authority[i])
+		for i in range(37):
+			temp_auth.append(self.g5.authority[i])
+		for i in range(4):
+			temp_auth.append(self.g2.authority[i])
+		print(len(temp_auth))
 		signals.way_authority.emit(temp_auth)
 		
 if __name__ == "__main__":
