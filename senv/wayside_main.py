@@ -256,7 +256,6 @@ class wayside_qtui_test(QObject):
 		temp.append(occupancy[149])
 		temp.append(occupancy[150])
 		self.g2.block_occ = temp
-		print(len(self.g2.block_occ))
 		self.g3.block_occ = occupancy[36:74]
 		self.g4.block_occ = occupancy[74:110]
 		self.g5.block_occ = occupancy[110:147]
