@@ -599,8 +599,6 @@ class tnm_display(QObject):
 		self.block_finished = True
 		signals.tnm_block_finished.emit(self.block_finished)
 			
-		
-		
 	
 	#Function to set Authority from track model signal
 	def SetAuthority(self,tkm_authority):
