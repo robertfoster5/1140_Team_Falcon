@@ -387,9 +387,9 @@ class Track:
 	#get track occupancy	
 	def get_occ(self):
 		c = 0 
-		occ = ""
-		while c < int(self.end):
-			occ = occ + str(self.blocks[c].occ)
+		occ = []
+		while c < int(self.end)-1:
+			occ.append(str(self.blocks[c].occ))
 			c = c+1
 		return occ
 		
@@ -397,12 +397,14 @@ class Track:
 	#set track occupancy
 	def set_occ(self,occ):
 		d = 1
-		while d <= int(self.end):
+		while d <= int(self.end)-1:
 			self.blocks[d].occ = int(occ[d])
 			d = d+1
 			
 		self.set_train_block()
-		signals.tkm_get_occ.emit(self.get_occ)
+		
+		bull = self.get_occ()
+		signals.tkm_get_occ.emit(bull)
 	
 #_______________________________________________________________________
 	#get blocks
