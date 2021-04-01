@@ -11,7 +11,7 @@ from t_time import timing
 
 
 class SystemEnvironment(QObject):
-    def __init__():
+    def __init__(self):
         super().__init__()
 
         self.ctc_thread = QThread()

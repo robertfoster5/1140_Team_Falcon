@@ -277,7 +277,7 @@ class Track:
 			
 		return occ
 		
-	def set_occ(self,occ)
+	#def set_occ(self,occ)
 	
 		
 	def get_blocks(self):

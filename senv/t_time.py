@@ -11,7 +11,7 @@ from c_time import mil_tim
 
 
 class timing():
-    def __init__():
+    def __init__(self):
         env = simpy.rt.RealtimeEnvironment(factor=1)
         tim = mil_tim(env)
         env.run(until=999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999)
