@@ -21,47 +21,28 @@ from tnm_failureTest import Ui_Test
 from signals import signals
 
 
-#_______________________________________________________________________
-#Signals Class
-class tnm_signal(QObject):
-	def __init__(self): 
-	
-		#Signals defined here
-		#tnm_comm_speed = pyqtSignal(float)		#All other signals for Track Controller
-		#tnm_authority = pyqtSignal(int)
-		#tnm_beacondID = pyqtSignal(list)
-		#tnm_ebrake = pyqtSignal(bool)
-		tnm_sendyard = pyqtSignal(bool)			#Track Model and Track Controller
-		#tnm_cab_temp = pyqtSignal(int)
-		
-		
-		self.tmodel_thread = QThread()
-		self.tmodel_test = tnm_failureTest()
-		#self.tmodel_main = tnm_display()
-		self.tmodel_test.moveToThread(self.tmodel_thread)
-		self.tmodel_thread.start()
-
+"""
+self.tmodel_thread = QThread()
+self.tmodel_test = tnm_failureTest()
+#self.tmodel_main = tnm_display()
+self.tmodel_test.moveToThread(self.tmodel_thread)
+self.tmodel_thread.start()
+"""
 
 #_______________________________________________________________________
 #Failure Test State
 class tnm_failureTest(Ui_Test):
 	def __init__(self, TestUi):
+		super().__init__()
 		Ui_Test.__init__(self)
 		self.setupUi(TestUi)
 
 		#display test program
 		TestUi.show()
+
 		
-		"""
 		#Signals defined
 		tnm_sendyard = pyqtSignal(bool)			#Track Model and Track Controller
-		
-		#Signals for the failure class
-		self.tmodel_thread = QThread()
-		self.tmodel_test = tnm_failureTest(TestUi)
-		self.tmodel_test.moveToThread(self.tmodel_thread)
-		self.tmodel_thread.start()
-		"""
 		
 		#define variables to be used in the Failure Interface
 		self.car1_status = True
@@ -75,7 +56,8 @@ class tnm_failureTest(Ui_Test):
 		
 		
 		#Defining Actions for specific UI Interactions
-		self.pushButton.clicked.connect(self.update_Info)
+		signals.time.connect(self.update_Info)
+		#self.pushButton.clicked.connect(self.update_Info)
 		
 		self.lineEdit.editingFinished.connect(self.brake_fail_act)
 		self.lineEdit_2.editingFinished.connect(self.brake_fail_act)
@@ -133,7 +115,6 @@ class tnm_failureTest(Ui_Test):
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 			
-			
 		#Car 2 Status Change
 		#True means brake 2 is functional
 		if(self.lineEdit_2.text() == "Off" or self.lineEdit_2.text() == "OFF" or self.lineEdit_2.text() == "off"):
@@ -152,7 +133,6 @@ class tnm_failureTest(Ui_Test):
 			self.lineEdit_11.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
-			
 		
 		#Car 3 Status Change
 		#True means brake 3 is functional
@@ -173,7 +153,6 @@ class tnm_failureTest(Ui_Test):
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 			
-		
 		#Car 4 Status Change
 		#True means brake 4 is functional
 		if(self.lineEdit_4.text() == "Off" or self.lineEdit_4.text() == "OFF" or self.lineEdit_4.text() == "off"):									
@@ -192,7 +171,6 @@ class tnm_failureTest(Ui_Test):
 			self.lineEdit_9.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
-			
 		
 		#Car 5 Status Change
 		#True means brake 5 is functional
@@ -235,7 +213,6 @@ class tnm_failureTest(Ui_Test):
 			self.lineEdit_16.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
-		
 			
 		#Car 2 Status Change
 		#True means engine 2 is functional
@@ -255,7 +232,6 @@ class tnm_failureTest(Ui_Test):
 			self.lineEdit_17.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
-			
 		
 		#Car 3 Status Change
 		#True means engine 3 is functional
@@ -275,7 +251,6 @@ class tnm_failureTest(Ui_Test):
 			self.lineEdit_18.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
-			
 		
 		#Car 4 Status Change
 		#True means engine 4 is functional
@@ -295,7 +270,6 @@ class tnm_failureTest(Ui_Test):
 			self.lineEdit_19.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
-			
 		
 		#Car 5 Status Change
 		#True means engine 5 is functional
@@ -340,7 +314,6 @@ class tnm_failureTest(Ui_Test):
 			signals.tnm_sendyard.emit(False)
 		
 		
-		
 #_____________________________________________________________________________________________________________		
 #_____________________________________________________________________________________________________________
 #Main Window for Train Model Interface
@@ -351,52 +324,75 @@ class tnm_display(Ui_MainWindow):
 	def __init__(self, MainWindow):
 		Ui_MainWindow.__init__(self)
 		self.setupUi(MainWindow)
+		super().__init__()
 		
 		#display main program
 		MainWindow.show()
+		
+		#Signals defined here
+		tnm_comm_speed = pyqtSignal(float)		#All signals for Track Controller
+		tnm_curr_speed = pyqtSignal(float)
+		tnm_authority = pyqtSignal(bool)
+		tnm_beacondID = pyqtSignal(list)
+		tnm_ebrake = pyqtSignal(bool)
+		tnm_cab_temp = pyqtSignal(int)
 
 		
-		#Define variables to be used in tnm_display
+	#Define variables to be used in tnm_display
 		self.train1 = "Train 1 Information"
-		self.curr_power = 4200000
+			#power connected from tnc
+		self.curr_power = 0
+		signals.tnc_power.connect(self.SetPower)
 		self.curr_speed = 0
+		self.comm_speed = 0
+		signals.tkm_get_speed.connect(self.SetCommSpeed)
+			#authority connected from tkm
+		self.block_authority = False
+		signals.tkm_get_auth.connect(self.SetAuthority)
+			#brake states
 		self.Brake = False
 		self.eBrake = False
-		self.pass_count = 40
-		self.crew_count = 4
+			#Occupancy 
+		self.pass_count = 0
+		signals.tkm_get_pass_count.connect(self.SetOccupancy)
+		self.crew_count = 3
+			#Route Information
 		self.Mass_Empty = (5*40.9)
 		self.curr_mass = 0
 		self.Occupancy = pass_crew_count(self.pass_count, self.crew_count)
-		self.RouteName = "Blue Line"
-		self.NextStation = "ShadySide"
+		self.RouteName = "Green Line"
+		self.NextStation = "Dormont"
 		self.DoorStatus = False
-		#self.BeaconID = 10101001		#Address
+			#Beacon ID connected from tkm
+		self.BeaconID = 00000000					#bit1 (red vs green) bit2 (UG vs Station) bit3 (Left side vs Right side)
+		signals.tkm_get_beacon.connect(self.SetBeaconID)
 		self.BeaconIDStatus = True
+			#Internal control status's
 		self.lights_Cab = True
 		self.lights_High = False
 		self.lights_Tun = False
 		self.set_temp = 0		#degrees Fahrenheit
 		self.curr_temp = 68		#degrees Fahrenheit
 		self.announce = "Watch your step. Have a great day!"
-		self.TestUi = None
+
 
 		#Defining Actions for specific UI Interactions
-		self.pushButton_2.clicked.connect(self.update_MoveStat)			#Update Movement Statistics
+		signals.time.connect(self.update_MoveStat)						#Update Movement Statistics
+			
+		signals.time.connect(self.update_TrainStat)						#Update Train Statistics
 		
-		self.pushButton_2.clicked.connect(self.update_TrainStat)		#Update Train Statistics
+		signals.time.connect(self.update_RouteInfo)						#Update Route Information
 		
-		self.pushButton_2.clicked.connect(self.update_RouteInfo)		#Update Route Information
+		signals.time.connect(self.DispAnnounce)							#Display current Announcements
 		
-		self.pushButton_2.clicked.connect(self.DispAnnounce)			#Display current Announcements
-		
-		self.pushButton_2.clicked.connect(self.GetDatetime)				#Display running time
+		signals.time.connect(self.GetDatetime)							#Display running time
 		self.dateTimeEdit.setDateTime(QtCore.QDateTime.currentDateTime())
 		self.dateTimeEdit.setDisplayFormat("MM/dd/yyyy hh:mm:ss")
 		
 		self.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
 		
 		self.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
-
+		#self.pushButton_2.clicked.connect(self.update_TrainStat)
 	
 #_______________________________________________________________________
 	#function to update Movement Statistics
@@ -404,6 +400,8 @@ class tnm_display(Ui_MainWindow):
 		self.curr_speed = set_curr_speed(self.curr_power, self.Occupancy)
 		#Update current speed given power value
 		self.lineEdit.setText(str(self.curr_speed) + " mph")
+		#Send the new calculated current speed to Train Controller
+		signals.tnm_curr_speed.emit(self.curr_speed)
 		#Update brake status
 		if (self.Brake == False):
 			self.lineEdit_2.setText("Off")
@@ -416,6 +414,12 @@ class tnm_display(Ui_MainWindow):
 		self.lineEdit_3.setReadOnly(True)
 		self.lineEdit_4.setReadOnly(True)
 		self.lineEdit_5.setReadOnly(True)
+		
+		#Address Authority Here
+		signals.tnm_authority.emit(self.block_authority)
+		
+		#Address Commanded Speed
+		signals.tnm_comm_speed.emit(self.comm_speed)
 		
 		#Display stopping distance based on current speed
 		stopping_dist(set_curr_speed(self.curr_power, self.Occupancy))
@@ -459,6 +463,9 @@ class tnm_display(Ui_MainWindow):
 			self.lineEdit_12.setText("Error")
 		else:
 			self.lineEdit_12.setText("Recieved")
+			signals.tnm_beaconID.emit(self.BeaconID)
+
+		
 		#update Cabin Lights status
 		if (self.lights_Cab == False):
 			self.lineEdit_13.setText("Off")
@@ -489,6 +496,7 @@ class tnm_display(Ui_MainWindow):
 	def EmergencyBraking(self):
 		if(self.eBrake != True):
 			self.eBrake = True
+			signals.tnm_ebrake.emit(self.eBrake)
 			print(self.eBrake)
 
 #_______________________________________________________________________
@@ -508,6 +516,7 @@ class tnm_display(Ui_MainWindow):
 		
 		#Use temp_control function to set the current temperature
 		self.lineEdit_16.setText(str(temp_control(self.set_temp, self.curr_temp)) + " F")
+		signals.tnm_cab_temp.emit(self.curr_temp)
 		
 		#Don't allow time module to be edited
 		self.lineEdit_16.setReadOnly(True)
@@ -530,13 +539,34 @@ class tnm_display(Ui_MainWindow):
 		self.lineEdit_18.setReadOnly(True)
 		
 #_______________________________________________________________________
+	#Function to set power from tnc signal
+	def SetPower(tnc_power):
+		self.curr_power = tnc_power
+	
+	#Function to set Beacon ID from track model signal
+	def SetBeaconID(tkm_beacon):
+		self.BeaconId = tkm_beacon
+	
+	#Function to set Authority from track model signal
+	def SetAuthority(tkm_authority):
+		self.block_authority = tkm_authority
+		
+	#Function to set Commanded Speed from track model signal
+	def SetCommSpeed(tkm_comm_speed):
+		self.comm_speed = tkm_comm_speed
+	
+	#Function to set Passenger count from track model signal
+	def SetOccupancy(tkm_pass_count):
+		self.pass_count = tkm_pass_count
+		
+#_______________________________________________________________________
 if __name__ == "__main__":
 	import sys
 	
 	app = QtWidgets.QApplication(sys.argv)
 	MainWindow = QtWidgets.QMainWindow()
 	TestUi = QtWidgets.QMainWindow()
-	
+
 	#Initialize main program and test program
 	prog = tnm_display(MainWindow)
 	test = tnm_failureTest(TestUi)
