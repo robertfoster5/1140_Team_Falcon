@@ -28,6 +28,7 @@ class Signal(QObject):
 
     #train model signals
     tnm_comm_speed = pyqtSignal(float)
+    tnc_curr_speed = pyqtSignal(float)
     tnm_authority = pyqtSignal(int)
     tnm_beaconID = pyqtSignal(list)
     tnm_ebrake = pyqtSignal(bool)
