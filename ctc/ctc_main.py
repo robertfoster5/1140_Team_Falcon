@@ -306,8 +306,8 @@ class ctc_qtui_test(QObject):
          TrainStation([5],[[30,31,32,33,34,35,36,37]]), # South Bank
          TrainStation([3,6],[[140,141,142,143,144,145,146,147,148,149,28,27,26,25,24,23,22],[38,39,40,41,42,43,44,45,46]]), # Central
          TrainStation([5,7],[[131,132,133,134,135,136,137,138,139],[47,48,49,50,51,52,53,54,55]]), # Inglewood
-         TrainStation([6,8,14],[[122,123,124,125,126,127,128,129,130],[56,57,58,59,60],[56,57]]), # Overbrook
-         TrainStation([9],[[61,62,63]]), # From Yard
+         TrainStation([6,8,14],[[122,123,124,125,126,127,128,129,130],[56,57,58,59,60,61],[56,57]]), # Overbrook
+         TrainStation([9],[[62,63]]), # From Yard
          TrainStation([7,10],[[113,114,115,116,117,118,119,120,121],[64,65,66,67,68,69,70,71]]), # Glenbury
          TrainStation([9.11],[[104,105,106,107,108,109,110,111,112],[72,73,74,75]]), # Dormont
          TrainStation([10,12],[[76,100,101,102,103],[76,77,78,79,80,81,82,83,84,85,86]]), # Mt Lebanon
@@ -566,8 +566,16 @@ class ctc_qtui_test(QObject):
         # Calculate initial authority and suggested speed
         train_metrics = self.calculate_train_metrics(test_block_info,test_station_info,test_station_pathway,train,destination_station,arrival_time,current_time)
         
+        print(train_metrics[0])
+        print(train_metrics[1])
+        
         # valid_train_metrics = [authority, suggested_speed, start_time]
         valid_train_metrics = self.validate_dispatch(ui,train_metrics,train,current_time,arrival_time,test_block_info,test_station_info)
+        
+        #print("Initial Values")
+        #print(valid_train_metrics[0])
+        #print(valid_train_metrics[1])
+        #print(valid_train_metrics[2])
         
         # validate_dispatch() will make suggested_speed = -1 if dispatch is invalid
         # Otherwise, it will adjust the train_metrics to make sure it is valid
@@ -683,6 +691,9 @@ class ctc_qtui_test(QObject):
         curr_station = test_station_pathway[curr_station_path]
         # print("Current Station: " + str(curr_station))
         # print(curr_auth)
+        
+        print("Current Path")
+        print(curr_auth)
         
         if curr_station == destination_station:
             return curr_auth
