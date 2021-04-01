@@ -280,7 +280,7 @@ class Track:
 		r = 0
 		while r<self.end and q != 2:
 			if self.blocks[r].switch.top == -1 or self.blocks[r].switch.bottom == -1:
-				yards.append(self.blocks[r].num)
+				yards.append(int(self.blocks[r].num))
 			r = r+1
 			
 		self.yards = yards
@@ -415,7 +415,7 @@ class Track:
 	#set speed of blocks
 	def set_speed(self,speeds):
 		l = 1
-		while l <= int(self.end):
+		while l <= int(self.end) - 1:
 			self.blocks[l-1].speed = speeds[l]
 			l = l+1
 	
