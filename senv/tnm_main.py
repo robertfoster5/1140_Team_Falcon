@@ -366,6 +366,7 @@ class tnm_display(QObject):
 		self.NextStation = "Dormont"
 		self.DoorStatus = False
 			#Beacon ID connected from tkm
+		self.beacon_bin = 0b00000000
 		self.BeaconID = 00000000					#bit1 (red vs green) bit2 (UG vs Station) bit3 (Left side (62->63) vs Right side(63->64))
 		signals.tkm_get_beacon.connect(self.SetBeaconID)
 		self.BeaconIDStatus = True
@@ -387,9 +388,9 @@ class tnm_display(QObject):
 		
 		signals.time.connect(self.DispAnnounce)							#Display current Announcements
 		
-		signals.time.connect(self.GetDatetime)							#Display running time
-		self.ui.dateTimeEdit.setDateTime(QtCore.QDateTime.currentDateTime())
-		self.ui.dateTimeEdit.setDisplayFormat("MM/dd/yyyy hh:mm:ss")
+		if(signals.time.connect(self.GetDatetime)):							#Display running time
+			self.ui.dateTimeEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+			self.ui.dateTimeEdit.setDisplayFormat("MM/dd/yyyy hh:mm:ss")
 		
 		self.ui.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
 		
@@ -462,12 +463,13 @@ class tnm_display(QObject):
 			self.ui.lineEdit_11.setText("Closed")
 		else:
 			self.ui.lineEdit_11.setText("Open")
+			
 		#Update Beacon ID Status
 		if (self.BeaconIDStatus == False):
 			self.ui.lineEdit_12.setText("Error")
 		else:
 			self.ui.lineEdit_12.setText("Recieved")
-			signals.tnm_beaconID.emit(self.BeaconID)
+			signals.tnm_beaconID.emit(self.BeaconID)					#emit int BeaconID
 
 		
 		#update Cabin Lights status
@@ -549,7 +551,28 @@ class tnm_display(QObject):
 	
 	#Function to set Beacon ID from track model signal
 	def SetBeaconID(self,tkm_beacon):
+		#beacon ID int set, then sent to Train Controller
 		self.BeaconId = tkm_beacon
+		
+		self.beacon_bin = bin(tkm_beacon)
+		#remove first two char: 0b
+		beacon_bin = beacon_bin[2:]
+		#check if first value is: 1 = green line/0 = red line
+		if(self.beacon_bin[2] == 0):
+			self.RouteName = "Red Line"
+		elif(self.beacon_bin[2] == 1):
+			self.RouteName = "Green Line"
+		#check if second value is: 0 = station/1 = underground
+		if(self.beacon_bin[3] == 0):
+			self.lights_Tun == False
+		elif(self.beacon_bin[3] == 1):
+			self.lights_Tun == True
+		#4th bit 	0 Left/1 Right directionality
+		
+		#Add beacon specification here (for last 5 bits)	Dormont 01010 - station 10
+		if(self.beacon_bin[5:] == 01010):
+			self.NextStation = "Dormont"
+		
 	
 	#Function to set Authority from track model signal
 	def SetAuthority(self,tkm_authority):
