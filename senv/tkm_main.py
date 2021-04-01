@@ -52,7 +52,7 @@ class TableModel(QtCore.QAbstractTableModel):
 
 class tkm_test(QObject):
 	def __init__(self):	
-		print("train model running")	
+		print("track model running")	
 		super().__init__()
 		
 		self.MainWindow = QtWidgets.QMainWindow()
@@ -125,7 +125,7 @@ class tkm_test(QObject):
 	#for changing train info
 	def display_t(self):
 		if self.ui.lineEdit_t.text() != "":
-			t_num = int(ui.lineEdit_t.text())-1
+			t_num = int(self.ui.lineEdit_t.text())-1
 			if t_num <= len(self.info[0].train):
 				self.data_t = make_data_t(self.info[0].train[t_num],self.info[0].blocks)
 				self.ui.model_t = TableModel(self.data_t, self.header_t)
