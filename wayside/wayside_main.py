@@ -1,9 +1,8 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QObject, QThread, pyqtSignal
 from wayside_qtui_test import Ui_MainWindow
 from wayside_ws_control import Wayside
-from PyQt5.QTCore import QObject, QThread, pyqtSignal
 
 class TableModel(QtCore.QAbstractTableModel):
 
