@@ -1,3 +1,6 @@
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QObject, QThread, pyqtSignal
+
 import time
 from signals import signals
 
@@ -9,8 +12,9 @@ from signals import signals
 #print('Duration of one simulation time unit: %.2fs' % (end - start))
 
 
-class timing():
+class timing(QObject):
     def __init__(self):
+        super().__init__()
         self.sec = 0
         self.mint = 0
         self.hr = 0
