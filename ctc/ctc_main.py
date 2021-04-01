@@ -20,7 +20,7 @@ import tkinter as tk
 from tkinter import filedialog
 from tkm_class import Block
 import math
-
+from signals import signals
 
 
 global_schedule_display = [[0,0,0]]
@@ -304,7 +304,7 @@ class ctc_qtui_test(QObject):
          TrainStation([0,3],[[15,14,13,12,11,10,9],[15,16,17,18,19,20]]), # Station X
          TrainStation([2,4],[[21,20,19,18,17,16,15],[21,22,23,24,25,26,27,28,29]]), # Whited
          TrainStation([5],[[30,31,32,33,34,35,36,37]]), # South Bank
-         TrainStation([3,6],[[140,141,142,143,144,145,146,147,148,149,27,26,25,24,23,22],[38,39,40,41,42,43,44,45,46]]), # Central
+         TrainStation([3,6],[[140,141,142,143,144,145,146,147,148,149,28,27,26,25,24,23,22],[38,39,40,41,42,43,44,45,46]]), # Central
          TrainStation([5,7],[[131,132,133,134,135,136,137,138,139],[47,48,49,50,51,52,53,54,55]]), # Inglewood
          TrainStation([6,8,14],[[122,123,124,125,126,127,128,129,130],[56,57,58,59,60],[56,57]]), # Overbrook
          TrainStation([9],[[61,62,63]]), # From Yard
@@ -331,69 +331,69 @@ class ctc_qtui_test(QObject):
         
         
         #draw track code start
-        scene = QtWidgets.QGraphicsScene()
-        self.ui.graphicsView.setScene(scene)
-        pen = QtGui.QPen(QtCore.Qt.black)
+        #scene = QtWidgets.QGraphicsScene()
+        #self.ui.graphicsView.setScene(scene)
+        #pen = QtGui.QPen(QtCore.Qt.black)
 
-        i = 0
-        s = 0
-        x = -800
+        #i = 0
+        #s = 0
+        #x = -800
         
-        r=QtCore.QRectF(x,0,60,30)
-        scene.addRect(r,pen)
+        #r=QtCore.QRectF(x,0,60,30)
+        #scene.addRect(r,pen)
         
         
-        while i <= len(track)-1:
-            if track[i].station != 0:
-                pen = QtGui.QPen(QtCore.Qt.red)
-                r=QtCore.QRectF(x,-32,60,30)
-                scene.addRect(r,pen)
-                
-            elif track[i].switch !=0:
-                s = track[i].switch-1
-                check = s
-                flag = 0
-                
-                i = i+1
-                
-                while 1:#track[i].switch == 0 and track[s].switch == 0:
-                    if i > check or s >= len(track):
-                        i = s
-                        break;
-                    #top
-                    x = upX(x)
-                        
-                    r=QtCore.QRectF(x,-40,60,30)
-                    scene.addRect(r,pen)
-                    
-                    #check if top station
-                    if track[i].station != 0:
-                        pen = QtGui.QPen(QtCore.Qt.red)
-                        r=QtCore.QRectF(x,-72,60,30)
-                        scene.addRect(r,pen)
-                        pen = QtGui.QPen(QtCore.Qt.black)
-                    
-                    #bottom block
-                    r=QtCore.QRectF(x,40,60,30)
-                    scene.addRect(r,pen)
-                    
-                    #check for bottom station
-                    if track[s].station != 0:
-                        pen = QtGui.QPen(QtCore.Qt.red)
-                        r=QtCore.QRectF(x,72,60,30)
-                        scene.addRect(r,pen)
-                        pen = QtGui.QPen(QtCore.Qt.black) 
-                                        
-                    i = i + 1
-                    s = s + 1
+        #while i <= len(track)-1:
+        #    if track[i].station != 0:
+        #        pen = QtGui.QPen(QtCore.Qt.red)
+        #        r=QtCore.QRectF(x,-32,60,30)
+        #        scene.addRect(r,pen)
+        #        
+        #    elif track[i].switch !=0:
+        #        s = track[i].switch-1
+        #        check = s
+        #        flag = 0
+        #        
+        #        i = i+1
+        #        
+        #        while 1:#track[i].switch == 0 and track[s].switch == 0:
+        #            if i > check or s >= len(track):
+        #                i = s
+        #                break;
+        #            #top
+        #            x = upX(x)
+        #                
+        #            r=QtCore.QRectF(x,-40,60,30)
+        #            scene.addRect(r,pen)
+        #            
+        #            #check if top station
+        #            if track[i].station != 0:
+        #                pen = QtGui.QPen(QtCore.Qt.red)
+        #                r=QtCore.QRectF(x,-72,60,30)
+        #                scene.addRect(r,pen)
+        #                pen = QtGui.QPen(QtCore.Qt.black)
+        #            
+        #            #bottom block
+        #            r=QtCore.QRectF(x,40,60,30)
+        #            scene.addRect(r,pen)
+        #            
+        #            #check for bottom station
+        #            if track[s].station != 0:
+        #                pen = QtGui.QPen(QtCore.Qt.red)
+        #                r=QtCore.QRectF(x,72,60,30)
+        #                scene.addRect(r,pen)
+        #                pen = QtGui.QPen(QtCore.Qt.black) 
+        #                                
+        #            i = i + 1
+        #            s = s + 1
             #add block
-            if i+1 < len(track):
-                x = upX(x)
-                pen = QtGui.QPen(QtCore.Qt.black)
-                r=QtCore.QRectF(x,0,60,30)
-                scene.addRect(r,pen)
-                
-            i = i + 1
+        #    if i+1 < len(track):
+        #        x = upX(x)
+        #        pen = QtGui.QPen(QtCore.Qt.black)
+        #        r=QtCore.QRectF(x,0,60,30)
+        #        scene.addRect(r,pen)
+        #        
+        #    i = i + 1
         
         #r=QtCore.QRectF(0,0,60,30)
         #scene.addRect(r,pen)
@@ -438,8 +438,8 @@ class ctc_qtui_test(QObject):
         # -----------------------------
         
         # Display information on the default block/switch chosen
-        self.display_state_switch(self.ui,current_track_occupancy)
-        self.display_state_block(self.ui,current_track_occupancy)
+        #self.display_state_switch(self.ui,current_track_occupancy)
+        #self.display_state_block(self.ui,current_track_occupancy)
         
         # Send a switch maintenance request
         self.ui.btnToggleSwitch.clicked.connect(lambda: self.send_maintenance_request_switch(self.ui,current_track_occupancy))
@@ -448,17 +448,19 @@ class ctc_qtui_test(QObject):
         self.ui.btnToggleBlock.clicked.connect(lambda: self.send_maintenance_request_block(self.ui,current_track_occupancy))
 
         # Update display of current switch state
-        self.ui.comboBlock.currentIndexChanged.connect(lambda: self.display_state_switch(self.ui,current_track_occupancy))
+        #self.ui.comboBlock.currentIndexChanged.connect(lambda: self.display_state_switch(self.ui,current_track_occupancy))
         
         # Update display of current block state
-        self.ui.comboBlock.currentIndexChanged.connect(lambda: self.display_state_block(self.ui,current_track_occupancy))
+        #self.ui.comboBlock.currentIndexChanged.connect(lambda: self.display_state_block(self.ui,current_track_occupancy))
        
        
         # -----------------------------
         # SIGNAL ACTIONS
         # -----------------------------
             
-        signals.time.connect(self.send_dispatch_order())
+        signals.time.connect(lambda: self.send_dispatch_order())
+        signals.time.connect(lambda: self.update_time())
+        
             
     def change_data(self, ui):
         print("In Data Def")
@@ -489,54 +491,56 @@ class ctc_qtui_test(QObject):
         throughput += 50
         
     def send_maintenance_request_switch(self, ui, track_occ):
-        request_str = ""
-        toggle_position = ui.comboBlock.count() + ui.comboSwitch.currentIndex()
-        for i in range(len(track_occ)):
+        request_str = ["g","s"]
+        toggle_position = ui.comboSwitch.currentIndex()
+        for i in range(ui.comboSwitch.count()):
             if i == toggle_position:
-                request_str += "1"
+                request_str.append("1")
             else:
-                request_str += "0"
+                request_str.append("0")
+        signals.ctc_maintenance.emit(request_str)
         print("Sending To Wayside Controller:")
         print(request_str)
         print("")
 
     def send_maintenance_request_block(self, ui, track_occ):
-        request_str = ""
+        request_str = ["g","b"]
         toggle_position = ui.comboBlock.currentIndex()
-        for i in range(len(track_occ)):
+        for i in range(ui.comboBlock.count()):
             if i == toggle_position:
-                request_str += "1"
+                request_str.append("1")
             else:
-                request_str += "0"
+                request_str.append("0")
+        signals.ctc_maintenance.emit(request_str)
         print("Sending To Wayside Controller:")
         print(request_str)
         print("")
 
-    def display_state_switch(self,ui,track_occ):
-        display_curr_str = ""
-        display_next_str = ""
-        switch_position = ui.comboBlock.count() + ui.comboSwitch.currentIndex()
-        if track_occ[switch_position] == "0":
-            display_curr_str += "To Block 6"
-            display_next_str += "To Block 11"
-        else:
-            display_curr_str += "To Block 11"
-            display_next_str += "To Block 6" 
-        ui.labelCurrSwitchPos.setText(display_curr_str)
-        ui.labelNewSwitchPos.setText(display_next_str)
+    #def display_state_switch(self,ui,track_occ):
+    #    display_curr_str = ""
+    #    display_next_str = ""
+    #    switch_position = ui.comboBlock.count() + ui.comboSwitch.currentIndex()
+        #if track_occ[switch_position] == "0":
+        #    display_curr_str += "To Block 6"
+        #    display_next_str += "To Block 11"
+        #else:
+        #    display_curr_str += "To Block 11"
+        #    display_next_str += "To Block 6" 
+        #ui.labelCurrSwitchPos.setText(display_curr_str)
+        #ui.labelNewSwitchPos.setText(display_next_str)
 
-    def display_state_block(self,ui,track_occ):
-        display_curr_str = ""
-        display_next_str = ""
-        block_position = ui.comboBlock.currentIndex()
-        if track_occ[block_position] == "0":
-            display_curr_str += "Unoccupied"
-            display_next_str += "Occupied"
-        else:
-            display_curr_str += "Occupied"
-            display_next_str += "Unoccupied"
-        ui.labelCurrBlockPos.setText(display_curr_str)
-        ui.labelNewBlockPos.setText(display_next_str)
+    #def display_state_block(self,ui,track_occ):
+    #    display_curr_str = ""
+    #    display_next_str = ""
+    #    block_position = ui.comboBlock.currentIndex()
+    #    if track_occ[block_position] == "0":
+    #        display_curr_str += "Unoccupied"
+    #        display_next_str += "Occupied"
+    #    else:
+    #        display_curr_str += "Occupied"
+    #        display_next_str += "Unoccupied"
+        #ui.labelCurrBlockPos.setText(display_curr_str)
+        #ui.labelNewBlockPos.setText(display_next_str)
         
     def dispatch_manual(self,ui,test_block_info,test_station_info,test_station_pathway,current_time):
         global global_dispatch_orders
@@ -795,7 +799,7 @@ class ctc_qtui_test(QObject):
                 # print("Train is in Block " + str(self.find_train_position(global_order_path_hold,start_time,suggested_speed,i,test_block_info)))
                 
                 
-        return [authority,-1,start_time]
+        return [authority,[-1],temp_start_time]
         
     def find_train_position(self,block_path,start_time,sugg_speed,curr_time,test_block_info):
         if start_time >= curr_time:
@@ -831,10 +835,34 @@ class ctc_qtui_test(QObject):
                 else:
                     train = int(row[0][len(row[0]) - 1])
                         
-                    if row[1] == "Station B":
+                    if row[1] == "Edgebrook":
                         destination_station = 0
-                    elif row[1] == "Station C":
+                    elif row[1] == "Pioneer":
                         destination_station = 1
+                    elif row[1] == "Station X":
+                        destination_station = 2
+                    elif row[1] == "Whited":
+                        destination_station = 3
+                    elif row[1] == "South Bank":
+                        destination_station = 4
+                    elif row[1] == "Central":
+                        destination_station = 5
+                    elif row[1] == "Inglewood":
+                        destination_station = 6
+                    elif row[1] == "Overbrook":
+                        destination_station = 7
+                    elif row[1] == "Yard":
+                        destination_station = 8
+                    elif row[1] == "Glenbury":
+                        destination_station = 9
+                    elif row[1] == "Dormont":
+                        destination_station = 10
+                    elif row[1] == "Mt Lebanon":
+                        destination_station = 11
+                    elif row[1] == "Poplar":
+                        destination_station = 12
+                    elif row[1] == "Castle Shannon":
+                        destination_station = 13
                         
                     arrival_time = row[2]
                     
@@ -862,7 +890,7 @@ class ctc_qtui_test(QObject):
                         ui.model = TableModel(global_schedule_display, header)
                         ui.tableView_schedule.setModel(ui.model)
                         global_dispatch_orders.append([row[0],row[1],self.military_to_seconds(str(arrival_time)),valid_train_metrics[2],valid_train_metrics[0],valid_train_metrics[1]])
-                        # [Train Name, Destination Station, Arrival Time(seconds),Start Time(seconds) Authority(meters), Suggested Speed(meters/second), Order Path]
+                        # [Train Name, Destination Station, Arrival Time(seconds),Start Time(seconds), Authority(meters), Suggested Speed(meters/second)]
                         print("Train Name: " + global_dispatch_orders[len(global_dispatch_orders)-1][0])
                         # print("Destination Station: " + global_dispatch_orders[len(global_dispatch_orders)-1][1])
                         # print("Arrival Time: " + str(global_dispatch_orders[len(global_dispatch_orders)-1][2]))
@@ -908,19 +936,22 @@ class ctc_qtui_test(QObject):
         global_dispatch_file = str(file_path)
         
         
-    def send_dispatch_order():
+    def send_dispatch_order(self):
         global global_dispatch_orders
         sendable_sugg_speed = [0] * 150
         sendable_auth = ["g"]
         if len(global_dispatch_orders) > 0:
             for i in range(150):
                 if i in global_dispatch_orders[0][4]:
-                    send_auth.append("1")
+                    sendable_auth.append("1")
                     sendable_sugg_speed[i] = global_dispatch_orders[0][5][global_dispatch_orders[0][4].index(i)]
                 else:
-                    send_auth.append("0")
+                    sendable_auth.append("0")
             signals.ctc_authority.emit(sendable_auth)
-            signals.ctc_suggested_speed.emit(global_dispatch_orders[0][5])
+            signals.ctc_suggested_speed.emit(sendable_sugg_speed)
+            
+    def update_time(self,seconds,minutes,hours,total_time):
+        self,current_time = total_time 
             
 
 class TrainStation:
@@ -928,15 +959,6 @@ class TrainStation:
         self.conn_index = conn_index
         self.connections = connections
 
-
-class SignalClass(QObject):
-    change_in_power = pyqtSignal(float)
-    emergency_brake = pyqtSignal(bool)
-    #etc...
-
-
-#global instantiation of signal class
-signals = SignalClass()
 
 
 if __name__ == "__main__":

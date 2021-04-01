@@ -3,7 +3,7 @@ from PyQt5.QtCore import QObject, QThread, pyqtSignal
 
 class Signal(QObject):
     #global
-    time = pyqtSignal(int,int,int)
+    time = pyqtSignal(int,int,int,int)
     
     #ctc signals
     ctc_authority = pyqtSignal(list)
