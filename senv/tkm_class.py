@@ -1,4 +1,5 @@
 import random
+from signals import signals
 
 class Station:
 	def __init__(self,name,block,side):
@@ -11,12 +12,16 @@ class Station:
 		self.occ = 0
 		self.train = 0
 		self.side = side
+
+#_______________________________________________________________________
 		
 	#number of ticket sales
 	def get_sales(self):
 		self.sales = random.randrange(10,1000)
 		self.occ = self.occ + self.sales
 		return self.sales
+
+#_______________________________________________________________________
 	
 	#number of passengers boarding given train
 	def get_boarding(self,train):
@@ -30,6 +35,8 @@ class Crossing:
 		#block location and state
 		self.block = block
 		self.state = 0
+	
+#_______________________________________________________________________
 	
 	#toggles crossing state	
 	def toggle(self):
@@ -69,12 +76,7 @@ class Switch:
 				self.top = sta1
 				self.bottom = sta2
 				self.state = 0	
-		
-	def toggle(self):
-		if state == 0:
-			self.state = 1
-		else:
-			self.state = 0
+				self.state = 0	
 
 class Train:
 	def __init__(self,num,way,block):
@@ -86,21 +88,43 @@ class Train:
 		self.occ = 0
 		#block location
 		self.block = block
+		#commanded speed
+		self.speed = 0
+	
+#_______________________________________________________________________
 	
 	#change block location
 	def set_block(self,block):
 		self.block = block
 	
+#_______________________________________________________________________
+	
+	def set_speed(self,block):
+		if self.block.s_limit > self.block.speed:
+			self.speed = self.block.speed
+		else:
+			self.speed = self.block.s_limit
+	
+#_______________________________________________________________________
+	
 	#increase number of passengers
 	def inc_occ(self,mor):
 		self.occ = self.occ + mor
+	
+#_______________________________________________________________________
 	
 	#disembarking
 	def disembark(self):
 		les = random.randrange(0,self.occ)
 		self.occ = self.occ - les
 		return les
-		
+
+#_______________________________________________________________________
+
+	#set way
+	def set_way(self,block):
+		r = 0
+
 
 class Block:
 	def __init__(self,line,sect,num,length,grade,s_limit,station,swit_t,swit_b,cross,stat_side,elev,c_elev,und):
@@ -160,16 +184,24 @@ class Block:
 		self.beacon2 = 0
 		
 		self.auth = 0
+		
+		self.speed = 0
+	
+#_______________________________________________________________________
 	
 	#set occ of track
 	def set_occ(self, occ):
 		self.occ = occ
+	
+#_______________________________________________________________________
 	
 	#set station beacons	
 	def set_beac(self, beac):
 		b = beac|0b00100000
 		self.beacon1 = beac
 		self.beacon2 = b
+	
+#_______________________________________________________________________
 	
 	#set tunnel beacons
 	def set_beac_u(self, beac, num):
@@ -182,8 +214,6 @@ class Block:
 			self.beacon1 = 0
 			self.beacon2 = b
 			
-	def set_auth(self,num):
-		self.auth = num
 
 class Track:
 	def __init__(self, blocks):
@@ -202,8 +232,12 @@ class Track:
 		self.check_stat()
 		self.check_und()
 	
+#_______________________________________________________________________
+	
 	def add_train(self,num,way,block):
 		self.train.append(Train(num,way,block))
+	
+#_______________________________________________________________________
 	
 	#get train matching number back
 	def get_train(self,num):
@@ -215,6 +249,8 @@ class Track:
 			q = q+1
 		
 		return self.train[q]
+	
+#_______________________________________________________________________
 	
 	#fix switches
 	def check_swit(self):
@@ -232,6 +268,23 @@ class Track:
 					
 			p = p+1
 	
+#_______________________________________________________________________
+
+	#set switches
+	def set_swit(self,swits):
+		q = 1
+		r = 0
+		while r < self.end:
+			while self.blocks[r].switch.top == 0:
+				r = r+1
+			
+			self.blocks[r].switch.state = int(swits[q])
+			r = r+1
+			q = q+1		
+	
+	
+#_______________________________________________________________________
+	
 	#set up beacons		
 	def check_stat(self):
 		if self.line == "Red":
@@ -247,7 +300,9 @@ class Track:
 				b = b+1
 			
 			a = a+1
-			
+	
+#_______________________________________________________________________
+	#set up tunnel beacons		
 	def check_und(self):
 		if self.line == "Red":
 			b = 0b01000001
@@ -267,22 +322,69 @@ class Track:
 				b = b+1
 				
 			a = a+1
-			
+
+#_______________________________________________________________________
+	#get track occupancy	
 	def get_occ(self):
 		c = 0 
 		occ = ""
 		while c < int(self.end):
 			occ = occ + str(self.blocks[c].occ)
 			c = c+1
-			
 		return occ
 		
-	#def set_occ(self,occ)
+#_______________________________________________________________________
+	#set track occupancy
+	def set_occ(self,occ):
+		d = 1
+		while d <= int(self.end):
+			self.blocks[d].occ = int(occ[d])
+			d = d+1
+			
+		self.set_train_block()
 	
-		
+#_______________________________________________________________________
+	#get blocks
 	def get_blocks(self):
-		return self.blocksS
-					
+		return self.blocks
+		
+#_______________________________________________________________________
+	#set speed of blocks
+	def set_speed(self,speeds):
+		l = 1
+		while l <= int(self.end):
+			self.blocks[l].speed = speeds[l]
+			l = l+1
+	
+#_______________________________________________________________________
+	#set train blocks
+	def set_train_block(self):
+		r = 1
+		q = 0
+		while r <= len(self.train):
+			while self.blocks[q].occ == 0:
+				q = q+1
+				
+			self.train[r].set_block(q)
+			self.train[r].set_speed(self.blocks[q])
+			r = r+1
+			q = q+1
+			
+			
+#_______________________________________________________________________
+	#set authority
+	def set_auth(self,auth):
+		r = 1
+		q = 0
+		while r <= int(self.end):
+			self.blocks[q].auth = auth[r]
+			r = r+1
+			q = q+1
+		
+		r = 0
+		while r < len(self.train):
+			train[r].set_way(self.blocks)
+		
 
 from tkm_functions import f_to_c
 

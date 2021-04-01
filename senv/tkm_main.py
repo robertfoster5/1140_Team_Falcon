@@ -2,6 +2,7 @@ import sys
 #pyuic5 -x tkm_test.ui -o tkm_test.py
 from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication
+from PyQt5.QtCore import QObject, QThread, pyqtSignal
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QPainter, QBrush, QPen
@@ -19,6 +20,8 @@ from tkm_functions import make_data_s
 from tkm_functions import make_data_t
 from tkm_functions import load_track
 from tkm_functions import up_x
+
+from signals import signals
 
 class TableModel(QtCore.QAbstractTableModel):
     def __init__(self, data,header):
@@ -47,23 +50,28 @@ class TableModel(QtCore.QAbstractTableModel):
             return self.header[col]
         return None
 
-class tkm_test(QtWidgets.QMainWindow, Ui_MainWindow):
-	def __init__(self, dialog, track):		
+class tkm_test(QObject):
+	def __init__(self):		
 		super().__init__()
-			
-		ui = Ui_MainWindow()  
-		ui.setupUi(MainWindow)     
+		
+		self.MainWindow = QtWidgets.QMainWindow()
+		
+		self.ui = Ui_MainWindow()  
+		self.ui.setupUi(self.MainWindow)     
+		self.MainWindow.show()
+		
+		track = load_track("tkm_load_g.xls")
+		t = Track(track)
 		
 		#create tracks
 		tracks = []
-		tracks.append(track)
+		tracks.append(t)
 		self.info = tracks
 		
 		#create trains
 		self.trains = []
 		self.info[0].add_train(1,1,1)
 		self.info[0].add_train(2,1,2)
-		
 		
 		#set headers for grids
 		self.header_b = ['Block', 'Info']
@@ -85,44 +93,47 @@ class tkm_test(QtWidgets.QMainWindow, Ui_MainWindow):
 		self.data_t = make_data_t(self.info[0].train[0],self.info[0].blocks)
         
         #final set up of data tables
-		ui.model_b = TableModel(self.data_b, self.header_b)
-		ui.model_s = TableModel(self.data_s, self.header_s)
-		ui.model_t = TableModel(self.data_t, self.header_t)
+		self.ui.model_b = TableModel(self.data_b, self.header_b)
+		self.ui.model_s = TableModel(self.data_s, self.header_s)
+		self.ui.model_t = TableModel(self.data_t, self.header_t)
 		
-		ui.setupUi(MainWindow)
-		
-		ui.tableView.setModel(ui.model_b)
-		ui.tableView_S.setModel(ui.model_s)
-		ui.tableView_T.setModel(ui.model_t)
+		self.ui.tableView.setModel(self.ui.model_b)
+		self.ui.tableView_S.setModel(self.ui.model_s)
+		self.ui.tableView_T.setModel(self.ui.model_t)
 		
 		#check if block change is entered
-		ui.enterB.clicked.connect(lambda: self.display_b(ui))
-		ui.enterS.clicked.connect(lambda: self.display_s(ui))
-		ui.enterT.clicked.connect(lambda: self.display_t(ui))
+		self.ui.enterB.clicked.connect(lambda: self.display_b())
+		self.ui.enterS.clicked.connect(lambda: self.display_s())
+		self.ui.enterT.clicked.connect(lambda: self.display_t())
+		
+		signals.way_speed.connect(self.info[0].set_speed)
+		signals.way_occupancy.connect(self.info[0].set_occ)
+		signals.way_switch_state.connect(self.info[0].set_swit)
+		signals.way_authority.connect(self.info[0].set_auth)
         
         		
 	#for changing block info
-	def display_b(self,ui):
-		if ui.lineEdit.text() != "":
-			b_num = int(ui.lineEdit.text())-1
+	def display_b(self):
+		if self.ui.lineEdit.text() != "":
+			b_num = int(self.ui.lineEdit.text())-1
 			if b_num <= self.info[0].end+1 and b_num > 0: 
 				self.data_b = make_data(self.info[0].blocks,b_num)
-				ui.model_b = TableModel(self.data_b, self.header_b)
-				ui.tableView.setModel(ui.model_b)
+				self.ui.model_b = TableModel(self.data_b, self.header_b)
+				self.ui.tableView.setModel(self.ui.model_b)
 				
 	#for changing train info
-	def display_t(self,ui):
-		if ui.lineEdit_t.text() != "":
+	def display_t(self):
+		if self.ui.lineEdit_t.text() != "":
 			t_num = int(ui.lineEdit_t.text())-1
 			if t_num <= len(self.info[0].train):
 				self.data_t = make_data_t(self.info[0].train[t_num],self.info[0].blocks)
-				ui.model_t = TableModel(self.data_t, self.header_t)
-				ui.tableView_T.setModel(ui.model_t)
+				self.ui.model_t = TableModel(self.data_t, self.header_t)
+				self.ui.tableView_T.setModel(self.ui.model_t)
 	
 	#for changing station info			
-	def display_s(self,ui):
-		if ui.lineEdit_s.text() != "":
-			s_name = ui.lineEdit_s.text()
+	def display_s(self):
+		if self.ui.lineEdit_s.text() != "":
+			s_name = self.ui.lineEdit_s.text()
 			if(s_name.islower()):
 				s_name = s_name.upper()
 				
@@ -137,8 +148,8 @@ class tkm_test(QtWidgets.QMainWindow, Ui_MainWindow):
 				return 0
 			else:
 				self.data_s = make_data_s(self.info[0].blocks[i].station)
-				ui.model_s = TableModel(self.data_s, self.header_s)
-				ui.tableView_S.setModel(ui.model_s)
+				self.ui.model_s = TableModel(self.data_s, self.header_s)
+				self.ui.tableView_S.setModel(self.ui.model_s)
 				
 #end of main
 
@@ -146,14 +157,10 @@ if __name__ == '__main__':
 	import sys
 	
 	app = QtWidgets.QApplication(sys.argv)
-	MainWindow = QtWidgets.QMainWindow()
 	
-	track = load_track("tkm_load_g.xls")
-	red = Track(track)
+	#MainWindow = QtWidgets.QMainWindow()
 	
-	prog = tkm_test(MainWindow,red)
-	MainWindow.show()
+	prog = tkm_test()
 		
 	
 	sys.exit(app.exec_())   
-	sys.exit(main(sys.argv))
