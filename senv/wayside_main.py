@@ -186,10 +186,21 @@ class wayside_qtui_test(QObject):
 			self.compile_auth_green()
 			
 	def new_authority(self, authority):
+		temp = []
 		if authority[0] == "r":
 			self.r1.authority = authority[1:24]
-			self.r2.authority = authority[24:46] + authority[67:77]
-			#gotta fix that authority
+			temp = authority[24:46]
+			temp.append(authority[67])
+			temp.append(authority[68])
+			temp.append(authority[69])
+			temp.append(authority[70])
+			temp.append(authority[71])
+			temp.append(authority[72])
+			temp.append(authority[73])
+			temp.append(authority[74])
+			temp.append(authority[75])
+			temp.append(authority[76])
+			self.r2.authority = temp
 			self.r3.authority = authority[46:67]
 			self.r1.switch_state_change()
 			self.r2.switch_state_change()
@@ -216,10 +227,22 @@ class wayside_qtui_test(QObject):
 		self.compile_auth_green()
 				
 	def update_occupancy(self, occupancy):
+		temp = []
 		if occupancy[0] == "0":
-			self.r1.block_occ = occupancy[1:23]
-			self.r2.block_occ = occupancy[24:45] + occupancy[67:76]
-			self.r3.block_occ = occupancy[46:66]
+			self.r1.block_occ = occupancy[1:24]
+			temp = occupancy[24:46]
+			temp.append(occupancy[67])
+			temp.append(occupancy[68])
+			temp.append(occupancy[69])
+			temp.append(occupancy[70])
+			temp.append(occupancy[71])
+			temp.append(occupancy[72])
+			temp.append(occupancy[73])
+			temp.append(occupancy[74])
+			temp.append(occupancy[75])
+			temp.append(occupancy[76])
+			self.r2.block_occ = temp
+			self.r3.block_occ = occupancy[46:67]
 			self.r1.cross_change()
 			self.r2.cross_change()
 			self.r3.cross_change()
@@ -230,7 +253,7 @@ class wayside_qtui_test(QObject):
 			temp.append(occupancy[148])
 			temp.append(occupancy[149])
 			temp.append(occupancy[150])
-			self.g2.block_occ = occupancy[21:35] + occupancy[147:150]
+			self.g2.block_occ = temp
 			self.g3.block_occ = occupancy[36:74]
 			self.g4.block_occ = occupancy[74:110]
 			self.g5.block_occ = occupancy[110:147]

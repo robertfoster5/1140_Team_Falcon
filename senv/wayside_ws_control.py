@@ -66,11 +66,10 @@ class Wayside:
 	def cross_change(self):
 		print("cross_change")
 		if self.num_cross != 0:
-			for i in range(self.num_cross):
-				if self.block_occ[self.cr_connect[i]-2] == "1" or self.block_occ[self.cr_connect[i]-1] == "1" or self.block_occ[self.cr_connect[i]] == "1":
-					self.cr_connect[i] = "1"
-				else:
-					self.cr_connect[i] = "0"
+			if self.block_occ[self.cr_connect[i]-2] == "1" or self.block_occ[self.cr_connect[i]-1] == "1" or self.block_occ[self.cr_connect[i]] == "1":
+				self.cr_connect[i] = "1"
+			else:
+				self.cr_connect[i] = "0"
 	
 	def switch_state_change(self):
 		print("switch_change")
@@ -152,6 +151,7 @@ class Wayside:
 			if line[0:2] == "cr":
 				d1 = plc[linecount+2]
 				self.cr_connect.append(int(d1[0:-1]))
+				print(self.cr_connect)
 			if line[0:2] == "end proc":
 				break
 			linecount = linecount+1
