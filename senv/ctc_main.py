@@ -957,7 +957,8 @@ class ctc_qtui_test(QObject):
         sendable_auth = ["g"]
         if len(global_dispatch_orders) > 1:
             print("Wait for t = " + str(global_dispatch_orders[1][3]))
-            if self.current_time >= global_dispatch_orders[1][3]:
+            #if self.current_time >= global_dispatch_orders[1][3]:
+            if self.current_time >= 0:
                 for i in range(150):
                     if i in global_dispatch_orders[1][4]:
                         sendable_auth.append("1")

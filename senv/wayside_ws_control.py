@@ -66,7 +66,10 @@ class Wayside:
 	def cross_change(self):
 		print("cross_change")
 		if self.num_cross != 0:
-			if self.block_occ[self.cr_connect[i]-2] == "1" or self.block_occ[self.cr_connect[i]-1] == "1" or self.block_occ[self.cr_connect[i]] == "1":
+			cr1 = self.cr_connect[0]
+			index1 = self.cross_name.index(cr1)
+			print(index1)
+			if self.block_occ[index1-2] == "1" or self.block_occ[index1-1] == "1" or self.block_occ[index1] == "1":
 				self.cr_connect[i] = "1"
 			else:
 				self.cr_connect[i] = "0"
