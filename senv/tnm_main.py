@@ -356,8 +356,10 @@ class tnm_display(QObject):
 		self.block_length = 1
 		self.block_num = 0
 		self.block_finished = False
+		self.timeBlock = 0
 		signals.tkm_get_blength.connect(self.blockTime)
 		signals.tkm_get_block.connect(self.blockNum)
+		self.blockTime(self.block_length)
 	#brake states
 		self.Brake = False
 		self.eBrake = False
@@ -395,6 +397,8 @@ class tnm_display(QObject):
 		
 		signals.time.connect(self.DispAnnounce)							#Display current Announcements
 		
+		signals.time.connect(self.getTime)
+		
 		if(signals.time.connect(self.GetDatetime)):							#Display running time
 			self.ui.dateTimeEdit.setDateTime(QtCore.QDateTime.currentDateTime())
 			self.ui.dateTimeEdit.setDisplayFormat("MM/dd/yyyy hh:mm:ss")
@@ -405,6 +409,7 @@ class tnm_display(QObject):
 		self.ui.pushButton_2.clicked.connect(self.update_TrainStat)
 		self.ui.pushButton_2.clicked.connect(self.update_RouteInfo)
 		self.ui.pushButton_2.clicked.connect(self.update_MoveStat)
+		
 	
 #_______________________________________________________________________
 	#function to update Movement Statistics
@@ -429,7 +434,7 @@ class tnm_display(QObject):
 		
 		#Address Authority Here
 		signals.tnm_authority.emit(self.block_authority)
-		self.blockTime(self.block_length)
+		#self.blockTime(self.block_length)
 		#Address Commanded Speed
 		signals.tnm_comm_speed.emit(self.comm_speed)
 		
@@ -593,14 +598,13 @@ class tnm_display(QObject):
 		#calculations
 		curr_speed_mps = (self.curr_speed/2.237)						#MPH to mps
 		if (self.block_length == 0):
-			time_block = 100
+			time_block = 10
 		else:
 			time_block = (curr_speed_mps/self.block_length)
-		for i in range(int(time_block)+1):
-			self.block_finished = False
-			signals.tnm_block_finished.emit(self.block_finished)
-		self.block_finished = True
-		signals.tnm_block_finished.emit(self.block_finished)
+			self.timeBlock = time_block
+		
+		#self.block_finished = True
+		#signals.tnm_block_finished.emit(self.block_finished)
 			
 	
 	#Function to set Authority from track model signal
@@ -614,6 +618,15 @@ class tnm_display(QObject):
 	#Function to set Passenger count from track model signal
 	def SetOccupancy(self,tkm_pass_count):
 		self.pass_count = tkm_pass_count
+		
+		
+	#Function for TIME
+	def getTime(self, time_sec, time_min, time_hr, time_tot):
+		finished = self.timeBlock - 1
+		if(finished == 0):
+			self.block_finished = True
+			signals.tnm_block_finished.emit(self.block_finished)
+	
 		
 #_______________________________________________________________________
 if __name__ == "__main__":

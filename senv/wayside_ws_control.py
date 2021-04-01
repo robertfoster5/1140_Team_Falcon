@@ -152,7 +152,7 @@ class Wayside:
 			if line[0:2] == "cr":
 				d1 = plc[linecount+2]
 				self.cr_connect.append(int(d1[0:-1]))
-				#print(self.cr_connect)
+				print(self.cr_connect)
 			if line[0:2] == "end proc":
 				break
 			linecount = linecount+1

@@ -1,4 +1,5 @@
 import sys
+import sys
 #pyuic5 -x tkm_test.ui -o tkm_test.py
 from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication

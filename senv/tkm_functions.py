@@ -26,9 +26,9 @@ def up_x(x):
 #return train data
 def make_data_t(train,blocks):
 	
-	if(blocks[train.block-1].station.name != 0):
-		sl = blocks[train.block-1].station.name
-		sb = blocks[train.block-1].station.get_boarding(train)
+	if(blocks[int(train.block-1)].station.name != 0):
+		sl = blocks[int(train.block-1)].station.name
+		sb = blocks[int(train.block-1)].station.get_boarding(train)
 		sd = train.disembark()
 	else:
 		sl = sb = sd = 'n/a'	

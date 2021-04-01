@@ -188,7 +188,6 @@ class wayside_qtui_test(QObject):
 			self.compile_auth_green()"""
 			
 	def new_authority(self, authority):
-		print("Wayside: receive authority")
 		temp = []
 		"""if authority[0] == "r":
 			self.r1.authority = authority[1:24]
@@ -230,7 +229,6 @@ class wayside_qtui_test(QObject):
 		self.compile_auth_green()
 				
 	def update_occupancy(self, occupancy):
-		print("Wayside: receive occupancy")
 		temp = []
 		"""if occupancy[0] == "0":
 			self.r1.block_occ = occupancy[1:24]
@@ -273,7 +271,6 @@ class wayside_qtui_test(QObject):
 		
 	def update_speed(self, speed):
 		self.speed = speed
-		print("Wayside: send suggested speed")
 		signals.way_speed.emit(self.speed)
 					
 	"""def compile_block_occ_red(self):
@@ -294,8 +291,6 @@ class wayside_qtui_test(QObject):
 			temp_occ.append(self.g5.block_occ[i])
 		for i in range(4):
 			temp_occ.append(self.g2.block_occ[i])
-		print("Wayside: send occupancy")
-		print(temp_occ)
 		signals.way_occupancy.emit(temp_occ)
 	
 	"""def compile_switch_red(self):
@@ -310,8 +305,6 @@ class wayside_qtui_test(QObject):
 		temp_sw.append(self.g3.switch_state[1])
 		temp_sw.append(self.g4.switch_state[0])
 		temp_sw.append(self.g4.switch_state[1])
-		print("Wayside: send Switch state")
-		print(temp_sw)
 		signals.way_switch_state.emit(temp_sw)
 		
 	"""def compile_cross_red(self):
@@ -321,8 +314,6 @@ class wayside_qtui_test(QObject):
 		temp_cr = []
 		temp_cr.append("1")
 		temp_cr.append(self.g1.cross_state[0])
-		print("Wayside: send Crossing state")
-		print(temp_cr)
 		signals.way_cross_state.emit(temp_cr)
 		
 	"""def compile_auth_red(self):
@@ -343,8 +334,6 @@ class wayside_qtui_test(QObject):
 			temp_auth.append(self.g5.authority[i])
 		for i in range(4):
 			temp_auth.append(self.g2.authority[i])
-		print("Wayside: send authority")
-		print(temp_auth)
 		signals.way_authority.emit(temp_auth)
 		
 if __name__ == "__main__":
