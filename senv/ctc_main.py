@@ -969,8 +969,13 @@ class ctc_qtui_test(QObject):
                 #print(len(sendable_auth))
                 #print(sendable_auth)
                 #print(sendable_sugg_speed)
+                print("CTC: send authority")
+                print(sendable_auth)
                 signals.ctc_authority.emit(sendable_auth)
+                print("CTC: send suggested speed")
+                print(sendable_sugg_speed)
                 signals.ctc_suggested_speed.emit(sendable_sugg_speed)
+                
             
     def update_time(self,seconds,minutes,hours,total_time):
         self.current_time = total_time 

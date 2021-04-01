@@ -111,9 +111,11 @@ class Train:
 			#else:
 				#if past.switch.bottom == block.num and past.switch.state == 0:
 					#self.block = 
-			
+		print("Track Model:	send block")
 		signals.tkm_get_block.emit(self.block)
+		print("Track Model: send block_length")	
 		signals.tkm_get_blength.emit(blocks[num].length)
+		print("Track Model:	send block authority")
 		signals.tkm_get_auth.emit(blocks[self.block-1].auth)
 		if sblocks[self.block-1].beacon1 == 0 and self.blocks[self.block-1].beacon2 == 0:
 			pass
@@ -135,11 +137,12 @@ class Train:
 #_______________________________________________________________________
 	
 	def set_speed(self,block):
+		print("Track Model: receive speed")
 		if self.block.s_limit > self.block.speed:
 			self.speed = self.block.speed
 		else:
 			self.speed = self.block.s_limit
-			
+		print("Track Model: send speed to block")	
 		signals.tkkm_get_speed.emit(self.speed)
 	
 #_______________________________________________________________________
@@ -164,7 +167,7 @@ class Train:
 			self.way = -1
 		elif block[yard].occ == 0 and block[yard].auth == 1:
 			self.way = 1
-			
+		print("Track Model: send authority to block")	
 		signals.tkm_get_auth.emit(block[yard-1].auth)
 
 
@@ -294,9 +297,12 @@ class Track:
 	
 	def add_train(self,n,way,block):
 		self.train.append(Train(n,way,block.num))
+		print("Track Model:	send block number")
 		signals.tkm_get_block.emit(block.num)
+		print("Track Model:	block length")
 		signals.tkm_get_blength.emit(block.length)
 		bull = self.get_occ()
+		print("Track Model:	send occupancy")
 		signals.tkm_get_occ.emit(bull)
 	
 #_______________________________________________________________________
@@ -334,6 +340,7 @@ class Track:
 
 	#set switches
 	def set_swit(self,swits):
+		print("Track Model: receive Switch States")
 		q = 1
 		r = 0
 		while r < self.end-1 and q < len(swits)-1:
@@ -399,6 +406,7 @@ class Track:
 #_______________________________________________________________________
 	#set track occupancy
 	def set_occ(self,occ):
+		print("Track Model: receive occupancy")
 		d = 1
 		while d <= int(self.end)-1:
 			self.blocks[d-1].occ = int(occ[d])
@@ -407,6 +415,7 @@ class Track:
 		#self.set_train_block(True)
 		
 		bull = self.get_occ()
+		print("Track Model: send occupancy")
 		signals.tkm_get_occ.emit(bull)
 	
 #_______________________________________________________________________
@@ -425,6 +434,7 @@ class Track:
 #_______________________________________________________________________
 	#set train blocks
 	def set_train_block(self,cool):
+		print("Track Model: receive block finished")
 		if(cool):
 			r = 1
 			q = 0
@@ -445,7 +455,7 @@ class Track:
 #_______________________________________________________________________
 	#set authority
 	def set_auth(self,auth):
-		print("auth")
+		print("Track Model: receive authority")
 		r = 1
 		q = 0
 		check = 0
