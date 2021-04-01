@@ -13,18 +13,55 @@ from tnm_functions import KilotoMile
 from PyQt5 import uic
 from PyQt5.uic import loadUi
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QObject, QThread, pyqtSignal
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import Qt
 from tnm_display import Ui_MainWindow
 from tnm_failureTest import Ui_Test
+from signals import signals
 
 
 #_______________________________________________________________________
-#Failure Test State, Engine Class
+#Signals Class
+class tnm_signal(QObject):
+	def __init__(self): 
+	
+		#Signals defined here
+		#tnm_comm_speed = pyqtSignal(float)		#All other signals for Track Controller
+		#tnm_authority = pyqtSignal(int)
+		#tnm_beacondID = pyqtSignal(list)
+		#tnm_ebrake = pyqtSignal(bool)
+		tnm_sendyard = pyqtSignal(bool)			#Track Model and Track Controller
+		#tnm_cab_temp = pyqtSignal(int)
+		
+		
+		self.tmodel_thread = QThread()
+		self.tmodel_test = tnm_failureTest()
+		#self.tmodel_main = tnm_display()
+		self.tmodel_test.moveToThread(self.tmodel_thread)
+		self.tmodel_thread.start()
+
+
+#_______________________________________________________________________
+#Failure Test State
 class tnm_failureTest(Ui_Test):
 	def __init__(self, TestUi):
 		Ui_Test.__init__(self)
 		self.setupUi(TestUi)
+
+		#display test program
+		TestUi.show()
+		
+		"""
+		#Signals defined
+		tnm_sendyard = pyqtSignal(bool)			#Track Model and Track Controller
+		
+		#Signals for the failure class
+		self.tmodel_thread = QThread()
+		self.tmodel_test = tnm_failureTest(TestUi)
+		self.tmodel_test.moveToThread(self.tmodel_thread)
+		self.tmodel_thread.start()
+		"""
 		
 		#define variables to be used in the Failure Interface
 		self.car1_status = True
@@ -83,15 +120,18 @@ class tnm_failureTest(Ui_Test):
 			self.car1_status = True
 			self.lineEdit_6.setText("Operational")
 			self.sendYard = False
+			signals.tnm_sendyard.emit(False)	
 		elif(self.lineEdit.text() == "On" or self.lineEdit.text() == "ON" or self.lineEdit.text() == "on"):
 			self.car1_status = False	
 			self.lineEdit_6.setText("Broken")
 			self.sendYard = True
+			signals.tnm_sendyard.emit(True)
 		else:
 			self.car1_status = True
 			self.lineEdit.setText("Off")
 			self.lineEdit_6.setText("Operational")
 			self.sendYard = False
+			signals.tnm_sendyard.emit(False)
 			
 			
 		#Car 2 Status Change
@@ -100,15 +140,18 @@ class tnm_failureTest(Ui_Test):
 			self.car2_status = True	
 			self.lineEdit_11.setText("Operational")
 			self.sendYard = False
+			signals.tnm_sendyard.emit(False)
 		elif(self.lineEdit_2.text() == "On" or self.lineEdit_2.text() == "ON" or self.lineEdit_2.text() == "on"):
 			self.car2_status = False	
 			self.lineEdit_11.setText("Broken")
-			self.sendYard = True					
+			self.sendYard = True
+			signals.tnm_sendyard.emit(True)				
 		else:
 			self.car2_status = True
 			self.lineEdit_2.setText("Off")
 			self.lineEdit_11.setText("Operational")
 			self.sendYard = False
+			signals.tnm_sendyard.emit(False)
 			
 		
 		#Car 3 Status Change
@@ -117,15 +160,18 @@ class tnm_failureTest(Ui_Test):
 			self.car3_status = True
 			self.lineEdit_8.setText("Operational")
 			self.sendYard = False
+			signals.tnm_sendyard.emit(False)
 		elif(self.lineEdit_3.text() == "On" or self.lineEdit_3.text() == "ON" or self.lineEdit_3.text() == "on"):
 			self.car3_status = False
 			self.lineEdit_8.setText("Broken")
-			self.sendYard = True					
+			self.sendYard = True		
+			signals.tnm_sendyard.emit(True)			
 		else:
 			self.car3_status = True
 			self.lineEdit_3.setText("Off")
 			self.lineEdit_8.setText("Operational")
 			self.sendYard = False
+			signals.tnm_sendyard.emit(False)
 			
 		
 		#Car 4 Status Change
@@ -134,15 +180,18 @@ class tnm_failureTest(Ui_Test):
 			self.car4_status = True
 			self.lineEdit_9.setText("Operational")
 			self.sendYard = False
+			signals.tnm_sendyard.emit(False)
 		elif(self.lineEdit_4.text() == "On" or self.lineEdit_4.text() == "ON" or self.lineEdit_4.text() == "on"):
 			self.car4_status = False
 			self.lineEdit_9.setText("Broken")
-			self.sendYard = True						
+			self.sendYard = True
+			signals.tnm_sendyard.emit(True)							
 		else:
 			self.car4_status = True
 			self.lineEdit_4.setText("Off")
 			self.lineEdit_9.setText("Operational")
 			self.sendYard = False
+			signals.tnm_sendyard.emit(False)
 			
 		
 		#Car 5 Status Change
@@ -151,15 +200,18 @@ class tnm_failureTest(Ui_Test):
 			self.car5_status = True
 			self.lineEdit_10.setText("Operational")
 			self.sendYard = False
+			signals.tnm_sendyard.emit(False)
 		elif(self.lineEdit_5.text() == "On" or self.lineEdit_5.text() == "ON" or self.lineEdit_5.text() == "on"):
 			self.car5_status = False
 			self.lineEdit_10.setText("Broken")
-			self.sendYard = True					
+			self.sendYard = True
+			signals.tnm_sendyard.emit(True)					
 		else:
 			self.car5_status = True
 			self.lineEdit_5.setText("Off")
 			self.lineEdit_10.setText("Operational")
 			self.sendYard = False
+			signals.tnm_sendyard.emit(False)
 		
 		
 #_______________________________________________________________________
@@ -171,15 +223,18 @@ class tnm_failureTest(Ui_Test):
 			self.car1_status = True
 			self.lineEdit_16.setText("Operational")
 			self.sendYard = False
+			signals.tnm_sendyard.emit(False)
 		elif(self.lineEdit_7.text() == "On" or self.lineEdit_7.text() == "ON" or self.lineEdit_7.text() == "on"):
 			self.car1_status = False	
 			self.lineEdit_16.setText("Broken")
-			self.sendYard = True					
+			self.sendYard = True
+			signals.tnm_sendyard.emit(True)				
 		else:
 			self.car1_status = True
 			self.lineEdit_7.setText("Off")
 			self.lineEdit_16.setText("Operational")
 			self.sendYard = False
+			signals.tnm_sendyard.emit(False)
 		
 			
 		#Car 2 Status Change
@@ -188,15 +243,18 @@ class tnm_failureTest(Ui_Test):
 			self.car2_status = True	
 			self.lineEdit_17.setText("Operational")
 			self.sendYard = False
+			signals.tnm_sendyard.emit(False)
 		elif(self.lineEdit_12.text() == "On" or self.lineEdit_12.text() == "ON" or self.lineEdit_12.text() == "on"):
 			self.car2_status = False	
 			self.lineEdit_17.setText("Broken")
-			self.sendYard = True					
+			self.sendYard = True	
+			signals.tnm_sendyard.emit(True)				
 		else:
 			self.car2_status = True
 			self.lineEdit_12.setText("Off")
 			self.lineEdit_17.setText("Operational")
 			self.sendYard = False
+			signals.tnm_sendyard.emit(False)
 			
 		
 		#Car 3 Status Change
@@ -205,15 +263,18 @@ class tnm_failureTest(Ui_Test):
 			self.car3_status = True
 			self.lineEdit_18.setText("Operational")
 			self.sendYard = False
+			signals.tnm_sendyard.emit(False)
 		elif(self.lineEdit_13.text() == "On" or self.lineEdit_13.text() == "ON" or self.lineEdit_13.text() == "on"):
 			self.car3_status = False
 			self.lineEdit_18.setText("Broken")
-			self.sendYard = True						
+			self.sendYard = True
+			signals.tnm_sendyard.emit(True)					
 		else:
 			self.car3_status = True
 			self.lineEdit_13.setText("Off")
 			self.lineEdit_18.setText("Operational")
 			self.sendYard = False
+			signals.tnm_sendyard.emit(False)
 			
 		
 		#Car 4 Status Change
@@ -221,16 +282,19 @@ class tnm_failureTest(Ui_Test):
 		if(self.lineEdit_14.text() == "Off" or self.lineEdit_14.text() == "OFF" or self.lineEdit_14.text() == "off"):									
 			self.car4_status = True
 			self.lineEdit_19.setText("Operational")
-			self.sendYard = False	
+			self.sendYard = False
+			signals.tnm_sendyard.emit(False)
 		elif(self.lineEdit_14.text() == "On" or self.lineEdit_14.text() == "ON" or self.lineEdit_14.text() == "on"):
 			self.car4_status = False
 			self.lineEdit_19.setText("Broken")
-			self.sendYard = True						
+			self.sendYard = True
+			signals.tnm_sendyard.emit(True)					
 		else:
 			self.car4_status = True
 			self.lineEdit_14.setText("Off")
 			self.lineEdit_19.setText("Operational")
 			self.sendYard = False
+			signals.tnm_sendyard.emit(False)
 			
 		
 		#Car 5 Status Change
@@ -239,15 +303,18 @@ class tnm_failureTest(Ui_Test):
 			self.car5_status = True
 			self.lineEdit_20.setText("Operational")
 			self.sendYard = False
+			signals.tnm_sendyard.emit(False)
 		elif(self.lineEdit_15.text() == "On" or self.lineEdit_15.text() == "ON" or self.lineEdit_15.text() == "on"):
 			self.car5_status = False
 			self.lineEdit_20.setText("Broken")
-			self.sendYard = True						
+			self.sendYard = True
+			signals.tnm_sendyard.emit(True)					
 		else:
 			self.car5_status = True
 			self.lineEdit_15.setText("Off")
 			self.lineEdit_20.setText("Operational")
 			self.sendYard = False
+			signals.tnm_sendyard.emit(False)
 			
 	
 #_______________________________________________________________________
@@ -259,15 +326,18 @@ class tnm_failureTest(Ui_Test):
 			self.train1_status = True
 			self.lineEdit_26.setText("Operational")
 			self.sendYard = False
+			signals.tnm_sendyard.emit(False)
 		elif(self.lineEdit_21.text() == "On" or self.lineEdit_21.text() == "ON" or self.lineEdit_21.text() == "on"):
 			self.train1_status = False	
 			self.lineEdit_26.setText("Broken")	
-			self.sendYard = True				
+			self.sendYard = True
+			signals.tnm_sendyard.emit(True)			
 		else:
 			self.train1_status = True
 			self.lineEdit_21.setText("Off")
 			self.lineEdit_26.setText("Operational")
 			self.sendYard = False
+			signals.tnm_sendyard.emit(False)
 		
 		
 		
@@ -282,6 +352,9 @@ class tnm_display(Ui_MainWindow):
 		Ui_MainWindow.__init__(self)
 		self.setupUi(MainWindow)
 		
+		#display main program
+		MainWindow.show()
+
 		
 		#Define variables to be used in tnm_display
 		self.train1 = "Train 1 Information"
@@ -323,9 +396,7 @@ class tnm_display(Ui_MainWindow):
 		self.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
 		
 		self.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
-		
-		#self.pushButton_3.clicked.connect(self.MaintoTest)				#Switch to Testing UI
-	
+
 	
 #_______________________________________________________________________
 	#function to update Movement Statistics
@@ -465,13 +536,15 @@ if __name__ == "__main__":
 	app = QtWidgets.QApplication(sys.argv)
 	MainWindow = QtWidgets.QMainWindow()
 	TestUi = QtWidgets.QMainWindow()
+	
 	#Initialize main program and test program
 	prog = tnm_display(MainWindow)
 	test = tnm_failureTest(TestUi)
-
+	"""
 	#display main program and test program, then exit program
 	MainWindow.show()
 	TestUi.show()
+	"""
 	sys.exit(app.exec_())
 	
 
