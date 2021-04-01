@@ -318,9 +318,6 @@ class tnm_failureTest(Ui_Test):
 #_____________________________________________________________________________________________________________
 #Main Window for Train Model Interface
 class tnm_display(Ui_MainWindow):
-	
-	ui = ""
-	
 	def __init__(self, MainWindow):
 		Ui_MainWindow.__init__(self)
 		self.setupUi(MainWindow)
@@ -392,7 +389,7 @@ class tnm_display(Ui_MainWindow):
 		self.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
 		
 		self.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
-		#self.pushButton_2.clicked.connect(self.update_TrainStat)
+		self.pushButton_2.clicked.connect(self.update_TrainStat)
 	
 #_______________________________________________________________________
 	#function to update Movement Statistics
