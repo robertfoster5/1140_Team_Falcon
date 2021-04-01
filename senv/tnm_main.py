@@ -29,16 +29,19 @@ self.tmodel_test.moveToThread(self.tmodel_thread)
 self.tmodel_thread.start()
 """
 
+"""
 #_______________________________________________________________________
 #Failure Test State
-class tnm_failureTest(Ui_Test):
-	def __init__(self, TestUi):
+class tnm_failureTest(QObject):
+	def __init__(self):
 		super().__init__()
-		Ui_Test.__init__(self)
-		self.setupUi(TestUi)
-
-		#display test program
-		TestUi.show()
+		self.TestUi = QtWidgets.QMainWindow()
+		self.ui = Ui_Test()
+		
+		#display main program
+		self.ui.setupUi(self.TestUi)
+		self.TestUi.show()
+		
 
 		
 		#Signals defined
@@ -59,19 +62,19 @@ class tnm_failureTest(Ui_Test):
 		signals.time.connect(self.update_Info)
 		#self.pushButton.clicked.connect(self.update_Info)
 		
-		self.lineEdit.editingFinished.connect(self.brake_fail_act)
-		self.lineEdit_2.editingFinished.connect(self.brake_fail_act)
-		self.lineEdit_3.editingFinished.connect(self.brake_fail_act)
-		self.lineEdit_4.editingFinished.connect(self.brake_fail_act)
-		self.lineEdit_5.editingFinished.connect(self.brake_fail_act)
+		self.ui.lineEdit.editingFinished.connect(self.brake_fail_act)
+		self.ui.lineEdit_2.editingFinished.connect(self.brake_fail_act)
+		self.ui.lineEdit_3.editingFinished.connect(self.brake_fail_act)
+		self.ui.lineEdit_4.editingFinished.connect(self.brake_fail_act)
+		self.ui.lineEdit_5.editingFinished.connect(self.brake_fail_act)
 		
-		self.lineEdit_7.editingFinished.connect(self.engine_fail_act)
-		self.lineEdit_12.editingFinished.connect(self.engine_fail_act)
-		self.lineEdit_13.editingFinished.connect(self.engine_fail_act)
-		self.lineEdit_14.editingFinished.connect(self.engine_fail_act)
-		self.lineEdit_15.editingFinished.connect(self.engine_fail_act)
+		self.ui.lineEdit_7.editingFinished.connect(self.engine_fail_act)
+		self.ui.lineEdit_12.editingFinished.connect(self.engine_fail_act)
+		self.ui.lineEdit_13.editingFinished.connect(self.engine_fail_act)
+		self.ui.lineEdit_14.editingFinished.connect(self.engine_fail_act)
+		self.ui.lineEdit_15.editingFinished.connect(self.engine_fail_act)
 		
-		self.lineEdit_21.editingFinished.connect(self.signalP_fail_act)
+		self.ui.lineEdit_21.editingFinished.connect(self.signalP_fail_act)
 
 #_______________________________________________________________________
 	#function to update Train Failure interface Info
@@ -312,19 +315,21 @@ class tnm_failureTest(Ui_Test):
 			self.lineEdit_26.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
-		
+"""
 		
 #_____________________________________________________________________________________________________________		
 #_____________________________________________________________________________________________________________
 #Main Window for Train Model Interface
-class tnm_display(Ui_MainWindow):
-	def __init__(self, MainWindow):
-		Ui_MainWindow.__init__(self)
-		self.setupUi(MainWindow)
+class tnm_display(QObject):
+	def __init__(self):
+		#Ui_MainWindow.__init__(self)
 		super().__init__()
+		self.MainWindow = QtWidgets.QMainWindow()
+		self.ui = Ui_MainWindow()
 		
 		#display main program
-		MainWindow.show()
+		self.ui.setupUi(self.MainWindow)
+		self.MainWindow.show()
 		
 		#Signals defined here
 		tnm_comm_speed = pyqtSignal(float)		#All signals for Track Controller
@@ -361,7 +366,7 @@ class tnm_display(Ui_MainWindow):
 		self.NextStation = "Dormont"
 		self.DoorStatus = False
 			#Beacon ID connected from tkm
-		self.BeaconID = 00000000					#bit1 (red vs green) bit2 (UG vs Station) bit3 (Left side (62->63) vs Right side())
+		self.BeaconID = 00000000					#bit1 (red vs green) bit2 (UG vs Station) bit3 (Left side (62->63) vs Right side(63->64))
 		signals.tkm_get_beacon.connect(self.SetBeaconID)
 		self.BeaconIDStatus = True
 			#Internal control status's
@@ -383,36 +388,36 @@ class tnm_display(Ui_MainWindow):
 		signals.time.connect(self.DispAnnounce)							#Display current Announcements
 		
 		signals.time.connect(self.GetDatetime)							#Display running time
-		self.dateTimeEdit.setDateTime(QtCore.QDateTime.currentDateTime())
-		self.dateTimeEdit.setDisplayFormat("MM/dd/yyyy hh:mm:ss")
+		self.ui.dateTimeEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+		self.ui.dateTimeEdit.setDisplayFormat("MM/dd/yyyy hh:mm:ss")
 		
-		self.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
+		self.ui.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
 		
-		self.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
-		self.pushButton_2.clicked.connect(self.update_TrainStat)
-		self.pushButton_2.clicked.connect(self.update_RouteInfo)
-		self.pushButton_2.clicked.connect(self.update_MoveStat)
+		self.ui.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
+		self.ui.pushButton_2.clicked.connect(self.update_TrainStat)
+		self.ui.pushButton_2.clicked.connect(self.update_RouteInfo)
+		self.ui.pushButton_2.clicked.connect(self.update_MoveStat)
 	
 #_______________________________________________________________________
 	#function to update Movement Statistics
 	def update_MoveStat(self):
 		self.curr_speed = set_curr_speed(self.curr_power, self.Occupancy)
 		#Update current speed given power value
-		self.lineEdit.setText(str(self.curr_speed) + " mph")
+		self.ui.lineEdit.setText(str(self.curr_speed) + " mph")
 		#Send the new calculated current speed to Train Controller
 		#signals.tnm_curr_speed.emit(self.curr_speed)
 		#Update brake status
 		if (self.Brake == False):
-			self.lineEdit_2.setText("Off")
+			self.ui.lineEdit_2.setText("Off")
 		else:
-			self.lineEdit_2.setText("On")
+			self.ui.lineEdit_2.setText("On")
 		
 		#Don't allow changes to lineEdits
-		self.lineEdit.setReadOnly(True)
-		self.lineEdit_2.setReadOnly(True)
-		self.lineEdit_3.setReadOnly(True)
-		self.lineEdit_4.setReadOnly(True)
-		self.lineEdit_5.setReadOnly(True)
+		self.ui.lineEdit.setReadOnly(True)
+		self.ui.lineEdit_2.setReadOnly(True)
+		self.ui.lineEdit_3.setReadOnly(True)
+		self.ui.lineEdit_4.setReadOnly(True)
+		self.ui.lineEdit_5.setReadOnly(True)
 		
 		#Address Authority Here
 		signals.tnm_authority.emit(self.block_authority)
@@ -428,67 +433,67 @@ class tnm_display(Ui_MainWindow):
 	def update_TrainStat(self):
 		
 		#Update pass_count
-		self.lineEdit_6.setText(str(self.pass_count))
+		self.ui.lineEdit_6.setText(str(self.pass_count))
 		#Update crew_count
-		self.lineEdit_7.setText(str(self.crew_count))
+		self.ui.lineEdit_7.setText(str(self.crew_count))
 		#Update current Mass of Train
 		self.Occupancy = pass_crew_count(self.pass_count, self.crew_count)
 		self.total_mass = ((self.Occupancy*56.699)/2000) + self.Mass_Empty
-		self.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
+		self.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
 		
 		#Don't allow changes to lineEdits
-		self.lineEdit_6.setReadOnly(True)
-		self.lineEdit_7.setReadOnly(True)
-		self.lineEdit_8.setReadOnly(True)
+		self.ui.lineEdit_6.setReadOnly(True)
+		self.ui.lineEdit_7.setReadOnly(True)
+		self.ui.lineEdit_8.setReadOnly(True)
 		
 #_______________________________________________________________________
 	#function to update Route Information and Train Internal Controls
 	def update_RouteInfo(self):
 		
 		#Update Train Numbering Header
-		self.label_23.setText(self.train1)
+		self.ui.label_23.setText(self.train1)
 		
 		#Update Route Line
-		self.lineEdit_9.setText(self.RouteName)
+		self.ui.lineEdit_9.setText(self.RouteName)
 		#Update Next Station
-		self.lineEdit_10.setText(self.NextStation)
+		self.ui.lineEdit_10.setText(self.NextStation)
 		#Update Doors Status
 		if (self.DoorStatus == False):
-			self.lineEdit_11.setText("Closed")
+			self.ui.lineEdit_11.setText("Closed")
 		else:
-			self.lineEdit_11.setText("Open")
+			self.ui.lineEdit_11.setText("Open")
 		#Update Beacon ID Status
 		if (self.BeaconIDStatus == False):
-			self.lineEdit_12.setText("Error")
+			self.ui.lineEdit_12.setText("Error")
 		else:
-			self.lineEdit_12.setText("Recieved")
+			self.ui.lineEdit_12.setText("Recieved")
 			signals.tnm_beaconID.emit(self.BeaconID)
 
 		
 		#update Cabin Lights status
 		if (self.lights_Cab == False):
-			self.lineEdit_13.setText("Off")
+			self.ui.lineEdit_13.setText("Off")
 		else:
-			self.lineEdit_13.setText("On")
+			self.ui.lineEdit_13.setText("On")
 		#update High Beam Lights status
 		if (self.lights_High == False):
-			self.lineEdit_14.setText("Off")
+			self.ui.lineEdit_14.setText("Off")
 		else:
-			self.lineEdit_14.setText("On")
+			self.ui.lineEdit_14.setText("On")
 		#update Tunnel Lights status
 		if (self.lights_Tun == False):
-			self.lineEdit_15.setText("Off")
+			self.ui.lineEdit_15.setText("Off")
 		else:
-			self.lineEdit_15.setText("On")
+			self.ui.lineEdit_15.setText("On")
 			
 		#Don't allow changes to lineEdits
-		self.lineEdit_9.setReadOnly(True)
-		self.lineEdit_10.setReadOnly(True)
-		self.lineEdit_11.setReadOnly(True)
-		self.lineEdit_12.setReadOnly(True)
-		self.lineEdit_13.setReadOnly(True)
-		self.lineEdit_14.setReadOnly(True)
-		self.lineEdit_15.setReadOnly(True)
+		self.ui.lineEdit_9.setReadOnly(True)
+		self.ui.lineEdit_10.setReadOnly(True)
+		self.ui.lineEdit_11.setReadOnly(True)
+		self.ui.lineEdit_12.setReadOnly(True)
+		self.ui.lineEdit_13.setReadOnly(True)
+		self.ui.lineEdit_14.setReadOnly(True)
+		self.ui.lineEdit_15.setReadOnly(True)
 			
 #_______________________________________________________________________			
 	#function to delegate variables when Emergency Brake triggered
@@ -503,39 +508,39 @@ class tnm_display(Ui_MainWindow):
 	def Temperature(self):
 		AlphaFlag = False
 		#Error checking to make sure input is only an INT
-		for i in self.lineEdit_17.text():
+		for i in self.ui.lineEdit_17.text():
 				if(i.isalpha() == True):
 					AlphaFlag = True
 		if(AlphaFlag == True):
-			self.lineEdit_17.setText(str(self.curr_temp))
+			self.ui.lineEdit_17.setText(str(self.curr_temp))
 			self.set_temp = self.curr_temp
-		elif(self.lineEdit_17.text().isdigit() == True):
+		elif(self.ui.lineEdit_17.text().isdigit() == True):
 			AlphaFlag = False
-			self.set_temp = int(self.lineEdit_17.text())
+			self.set_temp = int(self.ui.lineEdit_17.text())
 		
 		#Use temp_control function to set the current temperature
-		self.lineEdit_16.setText(str(temp_control(self.set_temp, self.curr_temp)) + " F")
+		self.ui.lineEdit_16.setText(str(temp_control(self.set_temp, self.curr_temp)) + " F")
 		signals.tnm_cab_temp.emit(self.curr_temp)
 		
 		#Don't allow time module to be edited
-		self.lineEdit_16.setReadOnly(True)
+		self.ui.lineEdit_16.setReadOnly(True)
 	
 	
 	#function for updating the current date and time widget
 	def GetDatetime(self):
-		dateTime = self.dateTimeEdit.dateTime()
+		dateTime = self.ui.dateTimeEdit.dateTime()
 		dateTime_string = dateTime.toString(self.dateTimeEdit.displayFormat())
-		self.dateTimeEdit.dateTimeFromText(dateTime_string)
+		self.ui.dateTimeEdit.dateTimeFromText(dateTime_string)
 		
 		#Don't allow time module to be edited
-		self.dateTimeEdit.setReadOnly(True)
+		self.ui.dateTimeEdit.setReadOnly(True)
 
 	#function for updating the internal train announcements
 	def DispAnnounce(self):
-		self.lineEdit_18.setText(self.announce)
+		self.ui.lineEdit_18.setText(self.announce)
 		
 		#Don't allow announcements text to be edited
-		self.lineEdit_18.setReadOnly(True)
+		self.ui.lineEdit_18.setReadOnly(True)
 		
 #_______________________________________________________________________
 	#Function to set power from tnc signal
@@ -563,12 +568,12 @@ if __name__ == "__main__":
 	import sys
 	
 	app = QtWidgets.QApplication(sys.argv)
-	MainWindow = QtWidgets.QMainWindow()
-	TestUi = QtWidgets.QMainWindow()
+	#MainWindow = QtWidgets.QMainWindow()
+	#TestUi = QtWidgets.QMainWindow()
 
 	#Initialize main program and test program
-	prog = tnm_display(MainWindow)
-	test = tnm_failureTest(TestUi)
+	prog = tnm_display()
+	#test = tnm_failureTest()
 	"""
 	#display main program and test program, then exit program
 	MainWindow.show()
