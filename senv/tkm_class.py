@@ -296,6 +296,8 @@ class Track:
 		self.train.append(Train(n,way,block.num))
 		signals.tkm_get_block.emit(block.num)
 		signals.tkm_get_blength.emit(block.length)
+		bull = self.get_occ()
+		signals.tkm_get_occ.emit(bull)
 	
 #_______________________________________________________________________
 	
@@ -388,7 +390,8 @@ class Track:
 	def get_occ(self):
 		c = 0 
 		occ = []
-		while c < int(self.end)-1:
+		occ.append("1")
+		while c < int(self.end):
 			occ.append(str(self.blocks[c].occ))
 			c = c+1
 		return occ

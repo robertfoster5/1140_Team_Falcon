@@ -51,9 +51,9 @@ class wayside_qtui_test(QObject):
 		self.g3 = Wayside("g3.txt", "Green")
 		self.g4 = Wayside("g4.txt", "Green")
 		self.g5 = Wayside("g5.txt", "Green")
-		self.r1 = Wayside("r1.txt", "Red")
-		self.r2 = Wayside("r2.txt", "Red")
-		self.r3 = Wayside("r3.txt", "Red")
+		#self.r1 = Wayside("r1.txt", "Red")
+		#self.r2 = Wayside("r2.txt", "Red")
+		#self.r3 = Wayside("r3.txt", "Red")
 		
 		"""self.g1_thread = QThread()
         self.g1 = Wayside("g1.txt", "Green")
@@ -86,9 +86,9 @@ class wayside_qtui_test(QObject):
 		
 		self.ui.tableView_3.setModel(self.ui.model)
 		
-		self.ui.pushButton.clicked.connect(lambda: self.update_tables(self.r1))
-		self.ui.pushButton_2.clicked.connect(lambda: self.update_tables(self.r2))
-		self.ui.pushButton_3.clicked.connect(lambda: self.update_tables(self.r3))
+		#self.ui.pushButton.clicked.connect(lambda: self.update_tables(self.r1))
+		#self.ui.pushButton_2.clicked.connect(lambda: self.update_tables(self.r2))
+		#self.ui.pushButton_3.clicked.connect(lambda: self.update_tables(self.r3))
 		
 		self.ui.pushButton_4.clicked.connect(lambda: self.update_tables(self.g1))
 		self.ui.pushButton_7.clicked.connect(lambda: self.update_tables(self.g2))
@@ -98,7 +98,7 @@ class wayside_qtui_test(QObject):
 		
 		signals.ctc_authority.connect(self.new_authority)
 		signals.ctc_suggested_speed.connect(self.update_speed)
-		signals.ctc_maintenance.connect(self.maintenance_order)
+		#signals.ctc_maintenance.connect(self.maintenance_order)
 		signals.tkm_get_occ.connect(self.update_occupancy)
 		
 			
@@ -149,7 +149,7 @@ class wayside_qtui_test(QObject):
 
 	#BIG ERRORS IF RUN
 	#fix that indexing 
-	def maintenance_order(self, order):
+	"""def maintenance_order(self, order):
 		if order[0] != "0":
 			if order[0] == "r":
 				temp_order = order[1:-1]
@@ -185,11 +185,11 @@ class wayside_qtui_test(QObject):
 			self.compile_block_occ_green()
 			self.compile_switch_green()
 			self.compile_cross_green()
-			self.compile_auth_green()
+			self.compile_auth_green()"""
 			
 	def new_authority(self, authority):
 		temp = []
-		if authority[0] == "r":
+		"""if authority[0] == "r":
 			self.r1.authority = authority[1:24]
 			temp = authority[24:46]
 			temp.append(authority[67])
@@ -206,23 +206,23 @@ class wayside_qtui_test(QObject):
 			self.r3.authority = authority[46:67]
 			self.r1.switch_state_change()
 			self.r2.switch_state_change()
-			self.r3.switch_state_change()
-		else:
-			self.g1.authority = authority[1:21]
-			temp = authority[21:36]
-			temp.append(authority[147])
-			temp.append(authority[148])
-			temp.append(authority[149])
-			temp.append(authority[150])
-			self.g2.authority = temp
-			self.g3.authority = authority[36:74]
-			self.g4.authority = authority[74:110]
-			self.g5.authority = authority[110:147]
-			self.g1.switch_state_change()
-			self.g2.switch_state_change()
-			self.g3.switch_state_change()
-			self.g4.switch_state_change()
-			self.g5.switch_state_change()
+			self.r3.switch_state_change()"""
+		
+		self.g1.authority = authority[1:21]
+		temp = authority[21:36]
+		temp.append(authority[147])
+		temp.append(authority[148])
+		temp.append(authority[149])
+		temp.append(authority[150])
+		self.g2.authority = temp
+		self.g3.authority = authority[36:74]
+		self.g4.authority = authority[74:110]
+		self.g5.authority = authority[110:147]
+		self.g1.switch_state_change()
+		self.g2.switch_state_change()
+		self.g3.switch_state_change()
+		self.g4.switch_state_change()
+		self.g5.switch_state_change()
 		self.compile_block_occ_green()
 		self.compile_switch_green()
 		self.compile_cross_green()
@@ -230,7 +230,7 @@ class wayside_qtui_test(QObject):
 				
 	def update_occupancy(self, occupancy):
 		temp = []
-		if occupancy[0] == "0":
+		"""if occupancy[0] == "0":
 			self.r1.block_occ = occupancy[1:24]
 			temp = occupancy[24:46]
 			temp.append(occupancy[67])
@@ -247,24 +247,23 @@ class wayside_qtui_test(QObject):
 			self.r3.block_occ = occupancy[46:67]
 			self.r1.cross_change()
 			self.r2.cross_change()
-			self.r3.cross_change()
-		else:
-			self.g1.block_occ = occupancy[1:21]
-			temp = occupancy[21:36]
-			temp.append(occupancy[147])
-			temp.append(occupancy[148])
-			temp.append(occupancy[149])
-			temp.append(occupancy[150])
-			self.g2.block_occ = temp
-			print(len(self.g2.block_occ))
-			self.g3.block_occ = occupancy[36:74]
-			self.g4.block_occ = occupancy[74:110]
-			self.g5.block_occ = occupancy[110:147]
-			self.g1.cross_change()
-			self.g2.cross_change()
-			self.g3.cross_change()
-			self.g4.cross_change()
-			self.g5.cross_change()
+			self.r3.cross_change()"""
+		
+		self.g1.block_occ = occupancy[1:21]
+		temp = occupancy[21:36]
+		temp.append(occupancy[147])
+		temp.append(occupancy[148])
+		temp.append(occupancy[149])
+		temp.append(occupancy[150])
+		self.g2.block_occ = temp
+		self.g3.block_occ = occupancy[36:74]
+		self.g4.block_occ = occupancy[74:110]
+		self.g5.block_occ = occupancy[110:147]
+		self.g1.cross_change()
+		self.g2.cross_change()
+		self.g3.cross_change()
+		self.g4.cross_change()
+		self.g5.cross_change()
 		self.compile_block_occ_green()
 		self.compile_switch_green()
 		self.compile_cross_green()
