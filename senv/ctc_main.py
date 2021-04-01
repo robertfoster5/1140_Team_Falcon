@@ -958,6 +958,7 @@ class ctc_qtui_test(QObject):
                     sendable_sugg_speed[i] = global_dispatch_orders[0][5][global_dispatch_orders[0][4].index(i)]
                 else:
                     sendable_auth.append("0")
+            print(sendable_auth)
             signals.ctc_authority.emit(sendable_auth)
             signals.ctc_suggested_speed.emit(sendable_sugg_speed)
             

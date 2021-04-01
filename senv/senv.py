@@ -13,12 +13,12 @@ from t_time import timing
 class SystemEnvironment(QObject):
 	def __init__(self):
 		super().__init__()
-
+		
 		self.ctc_thread = QThread()
 		self.ctc = ctc_qtui_test()
 		self.ctc.moveToThread(self.ctc_thread)
-		self.ctc_thread.start()
-		
+		self.ctc_thread.start()		
+		"""
 		self.wayside_thread = QThread()
 		self.wayside = wayside_qtui_test()
 		self.wayside.moveToThread(self.wayside_thread)
@@ -38,11 +38,12 @@ class SystemEnvironment(QObject):
 		self.tnc = TrainControllerMain()
 		self.tnc.moveToThread(self.tnc_thread)
 		self.tnc_thread.start()
-		
+		"""
 		self.time_thread = QThread()
 		self.time = timing()
 		self.time.moveToThread(self.time_thread)
 		self.time_thread.start()
+		
 
 if __name__ == '__main__':
 	import sys
