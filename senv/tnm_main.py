@@ -426,7 +426,7 @@ class tnm_display(QObject):
 		signals.tnm_comm_speed.emit(self.comm_speed)
 		
 		#Display stopping distance based on current speed
-		stopping_dist(set_curr_speed(self.curr_power, self.Occupancy))
+		#stopping_dist(set_curr_speed(self.curr_power, self.Occupancy))
 
 #_______________________________________________________________________	
 	#function to update Train Statistics (Mass, Pass & Crew count)
