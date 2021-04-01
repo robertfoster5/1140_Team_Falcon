@@ -19,6 +19,7 @@ from PyQt5.QtCore import Qt
 from tnm_display import Ui_MainWindow
 from tnm_failureTest import Ui_Test
 from signals import signals
+from t_time import timing
 
 
 """
@@ -351,6 +352,12 @@ class tnm_display(QObject):
 			#authority connected from tkm
 		self.block_authority = False
 		signals.tkm_get_auth.connect(self.SetAuthority)
+			#Block length connected from tkm
+		self.block_length = 0
+		self.block_num = 0
+		self.block_finished = False
+		signals.tkm_get_blength.connect(self.blockTime)
+		signals.tkm_get_block.connect(self.blockTime)
 			#brake states
 		self.Brake = False
 		self.eBrake = False
@@ -387,6 +394,8 @@ class tnm_display(QObject):
 		signals.time.connect(self.update_RouteInfo)						#Update Route Information
 		
 		signals.time.connect(self.DispAnnounce)							#Display current Announcements
+		
+		#signals.time.connect(self.blockTime)							#calculate time it takes for the train to pass block 
 		
 		if(signals.time.connect(self.GetDatetime)):							#Display running time
 			self.ui.dateTimeEdit.setDateTime(QtCore.QDateTime.currentDateTime())
@@ -570,8 +579,27 @@ class tnm_display(QObject):
 		#4th bit 	0 Left/1 Right directionality
 		
 		#Add beacon specification here (for last 5 bits)	Dormont 01010 - station 10
-		if(self.beacon_bin[5:] == 01010):
+		if(self.beacon_bin[5:] == 0b01010):
 			self.NextStation = "Dormont"
+	
+	#Function to specify block number for each line
+	def blockNum(self,BlockNum):
+		self.block_num = BlockNum
+	
+	#Function to take in block length and calculate when train reaches next block
+	def blockTime(self,BlockLen):
+		#set variables
+		self.block_length = BlockLen
+		#calculations
+		curr_speed_mps = (self.curr_speed/2.237)						#MPH to mps
+		time_block = (curr_speed_mps/self.block_length)
+		for self.sec in time_block:
+			self.block_finished = False
+			signals.tnm_block_finished.emit(self.block_finished)
+		self.block_finished = True
+		signals.tnm_block_finished.emit(self.block_finished)
+			
+		
 		
 	
 	#Function to set Authority from track model signal
