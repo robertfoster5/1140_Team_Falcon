@@ -360,7 +360,7 @@ class tnm_display(Ui_MainWindow):
 		self.Mass_Empty = (5*40.9)
 		self.curr_mass = 0
 		self.Occupancy = pass_crew_count(self.pass_count, self.crew_count)
-		self.RouteName = "Blue Line"
+		self.RouteName = "Green Line"
 		self.NextStation = "Dormont"
 		self.DoorStatus = False
 			#Beacon ID connected from tkm
