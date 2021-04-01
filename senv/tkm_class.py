@@ -439,7 +439,7 @@ class Track:
 	def set_auth(self,auth):
 		r = 1
 		q = 0
-		check == 0
+		check = 0
 		while r <= int(self.end):
 			self.blocks[q].auth = auth[r]
 			r = r+1
