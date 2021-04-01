@@ -216,7 +216,7 @@ class wayside_qtui_test(QObject):
 		self.compile_auth_green()
 				
 	def update_occupancy(self, occupancy):
-		if self.line == "r":
+		if occupancy[0] == "0":
 			self.r1.block_occ = occupancy[1:23]
 			self.r2.block_occ = occupancy[24:45] + occupancy[67:76]
 			self.r3.block_occ = occupancy[46:66]
