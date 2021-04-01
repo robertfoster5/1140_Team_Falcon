@@ -29,7 +29,7 @@ self.tmodel_test.moveToThread(self.tmodel_thread)
 self.tmodel_thread.start()
 """
 
-"""
+
 #_______________________________________________________________________
 #Failure Test State
 class tnm_failureTest(QObject):
@@ -43,7 +43,6 @@ class tnm_failureTest(QObject):
 		self.TestUi.show()
 		
 
-		
 		#Signals defined
 		tnm_sendyard = pyqtSignal(bool)			#Track Model and Track Controller
 		
@@ -80,20 +79,20 @@ class tnm_failureTest(QObject):
 	#function to update Train Failure interface Info
 	def update_Info(self):
 		#Update Train Number
-		self.label.setText(self.train1_test)
+		self.ui.label.setText(self.train1_test)
 		
 		#Don't let Status LineEdits to be edited
-		self.lineEdit_6.setReadOnly(True)		#Brake Status's
-		self.lineEdit_11.setReadOnly(True)		
-		self.lineEdit_8.setReadOnly(True)		
-		self.lineEdit_9.setReadOnly(True)			
-		self.lineEdit_10.setReadOnly(True)	
-		self.lineEdit_16.setReadOnly(True)		#Engine Status's	
-		self.lineEdit_17.setReadOnly(True)	
-		self.lineEdit_18.setReadOnly(True)	
-		self.lineEdit_19.setReadOnly(True)		
-		self.lineEdit_20.setReadOnly(True)		
-		self.lineEdit_26.setReadOnly(True)		#Signal Pickup Status
+		self.ui.lineEdit_6.setReadOnly(True)		#Brake Status's
+		self.ui.lineEdit_11.setReadOnly(True)		
+		self.ui.lineEdit_8.setReadOnly(True)		
+		self.ui.lineEdit_9.setReadOnly(True)			
+		self.ui.lineEdit_10.setReadOnly(True)	
+		self.ui.lineEdit_16.setReadOnly(True)		#Engine Status's	
+		self.ui.lineEdit_17.setReadOnly(True)	
+		self.ui.lineEdit_18.setReadOnly(True)	
+		self.ui.lineEdit_19.setReadOnly(True)		
+		self.ui.lineEdit_20.setReadOnly(True)		
+		self.ui.lineEdit_26.setReadOnly(True)		#Signal Pickup Status
 		
 		
 #_______________________________________________________________________
@@ -101,96 +100,96 @@ class tnm_failureTest(QObject):
 	def brake_fail_act(self):
 		#Car 1 Status Change
 		#True means brake 1 is functional
-		if(self.lineEdit.text() == "Off" or self.lineEdit.text() == "OFF" or self.lineEdit.text() == "off"):	
+		if(self.ui.lineEdit.text() == "Off" or self.ui.lineEdit.text() == "OFF" or self.ui.lineEdit.text() == "off"):	
 			self.car1_status = True
-			self.lineEdit_6.setText("Operational")
+			self.ui.lineEdit_6.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)	
-		elif(self.lineEdit.text() == "On" or self.lineEdit.text() == "ON" or self.lineEdit.text() == "on"):
+		elif(self.ui.lineEdit.text() == "On" or self.ui.lineEdit.text() == "ON" or self.ui.lineEdit.text() == "on"):
 			self.car1_status = False	
-			self.lineEdit_6.setText("Broken")
+			self.ui.lineEdit_6.setText("Broken")
 			self.sendYard = True
 			signals.tnm_sendyard.emit(True)
 		else:
 			self.car1_status = True
-			self.lineEdit.setText("Off")
-			self.lineEdit_6.setText("Operational")
+			self.ui.lineEdit.setText("Off")
+			self.ui.lineEdit_6.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 			
 		#Car 2 Status Change
 		#True means brake 2 is functional
-		if(self.lineEdit_2.text() == "Off" or self.lineEdit_2.text() == "OFF" or self.lineEdit_2.text() == "off"):
+		if(self.ui.lineEdit_2.text() == "Off" or self.ui.lineEdit_2.text() == "OFF" or self.ui.lineEdit_2.text() == "off"):
 			self.car2_status = True	
-			self.lineEdit_11.setText("Operational")
+			self.ui.lineEdit_11.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
-		elif(self.lineEdit_2.text() == "On" or self.lineEdit_2.text() == "ON" or self.lineEdit_2.text() == "on"):
+		elif(self.ui.lineEdit_2.text() == "On" or self.ui.lineEdit_2.text() == "ON" or self.ui.lineEdit_2.text() == "on"):
 			self.car2_status = False	
-			self.lineEdit_11.setText("Broken")
+			self.ui.lineEdit_11.setText("Broken")
 			self.sendYard = True
 			signals.tnm_sendyard.emit(True)				
 		else:
 			self.car2_status = True
-			self.lineEdit_2.setText("Off")
-			self.lineEdit_11.setText("Operational")
+			self.ui.lineEdit_2.setText("Off")
+			self.ui.lineEdit_11.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 		
 		#Car 3 Status Change
 		#True means brake 3 is functional
-		if(self.lineEdit_3.text() == "Off" or self.lineEdit_3.text() == "OFF" or self.lineEdit_3.text() == "off"):		
+		if(self.ui.lineEdit_3.text() == "Off" or self.ui.lineEdit_3.text() == "OFF" or self.ui.lineEdit_3.text() == "off"):		
 			self.car3_status = True
-			self.lineEdit_8.setText("Operational")
+			self.ui.lineEdit_8.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
-		elif(self.lineEdit_3.text() == "On" or self.lineEdit_3.text() == "ON" or self.lineEdit_3.text() == "on"):
+		elif(self.ui.lineEdit_3.text() == "On" or self.ui.lineEdit_3.text() == "ON" or self.ui.lineEdit_3.text() == "on"):
 			self.car3_status = False
-			self.lineEdit_8.setText("Broken")
+			self.ui.lineEdit_8.setText("Broken")
 			self.sendYard = True		
 			signals.tnm_sendyard.emit(True)			
 		else:
 			self.car3_status = True
-			self.lineEdit_3.setText("Off")
-			self.lineEdit_8.setText("Operational")
+			self.ui.lineEdit_3.setText("Off")
+			self.ui.lineEdit_8.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 			
 		#Car 4 Status Change
 		#True means brake 4 is functional
-		if(self.lineEdit_4.text() == "Off" or self.lineEdit_4.text() == "OFF" or self.lineEdit_4.text() == "off"):									
+		if(self.ui.lineEdit_4.text() == "Off" or self.ui.lineEdit_4.text() == "OFF" or self.ui.lineEdit_4.text() == "off"):									
 			self.car4_status = True
-			self.lineEdit_9.setText("Operational")
+			self.ui.lineEdit_9.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
-		elif(self.lineEdit_4.text() == "On" or self.lineEdit_4.text() == "ON" or self.lineEdit_4.text() == "on"):
+		elif(self.ui.lineEdit_4.text() == "On" or self.ui.lineEdit_4.text() == "ON" or self.ui.lineEdit_4.text() == "on"):
 			self.car4_status = False
-			self.lineEdit_9.setText("Broken")
+			self.ui.lineEdit_9.setText("Broken")
 			self.sendYard = True
 			signals.tnm_sendyard.emit(True)							
 		else:
 			self.car4_status = True
-			self.lineEdit_4.setText("Off")
-			self.lineEdit_9.setText("Operational")
+			self.ui.lineEdit_4.setText("Off")
+			self.ui.lineEdit_9.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 		
 		#Car 5 Status Change
 		#True means brake 5 is functional
-		if(self.lineEdit_5.text() == "Off" or self.lineEdit_5.text() == "OFF" or self.lineEdit_5.text() == "off"):										
+		if(self.ui.lineEdit_5.text() == "Off" or self.ui.lineEdit_5.text() == "OFF" or self.ui.lineEdit_5.text() == "off"):										
 			self.car5_status = True
-			self.lineEdit_10.setText("Operational")
+			self.ui.lineEdit_10.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
-		elif(self.lineEdit_5.text() == "On" or self.lineEdit_5.text() == "ON" or self.lineEdit_5.text() == "on"):
+		elif(self.ui.lineEdit_5.text() == "On" or self.ui.lineEdit_5.text() == "ON" or self.ui.lineEdit_5.text() == "on"):
 			self.car5_status = False
-			self.lineEdit_10.setText("Broken")
+			self.ui.lineEdit_10.setText("Broken")
 			self.sendYard = True
 			signals.tnm_sendyard.emit(True)					
 		else:
 			self.car5_status = True
-			self.lineEdit_5.setText("Off")
-			self.lineEdit_10.setText("Operational")
+			self.ui.lineEdit_5.setText("Off")
+			self.ui.lineEdit_10.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 		
@@ -200,96 +199,96 @@ class tnm_failureTest(QObject):
 	def engine_fail_act(self):
 		#Car 1 Status Change
 		#True means engine 1 is functional
-		if(self.lineEdit_7.text() == "Off" or self.lineEdit_7.text() == "OFF" or self.lineEdit_7.text() == "off"):	
+		if(self.ui.lineEdit_7.text() == "Off" or self.ui.lineEdit_7.text() == "OFF" or self.ui.lineEdit_7.text() == "off"):	
 			self.car1_status = True
-			self.lineEdit_16.setText("Operational")
+			self.ui.lineEdit_16.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
-		elif(self.lineEdit_7.text() == "On" or self.lineEdit_7.text() == "ON" or self.lineEdit_7.text() == "on"):
+		elif(self.ui.lineEdit_7.text() == "On" or self.ui.lineEdit_7.text() == "ON" or self.ui.lineEdit_7.text() == "on"):
 			self.car1_status = False	
-			self.lineEdit_16.setText("Broken")
+			self.ui.lineEdit_16.setText("Broken")
 			self.sendYard = True
 			signals.tnm_sendyard.emit(True)				
 		else:
 			self.car1_status = True
-			self.lineEdit_7.setText("Off")
-			self.lineEdit_16.setText("Operational")
+			self.ui.lineEdit_7.setText("Off")
+			self.ui.lineEdit_16.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 			
 		#Car 2 Status Change
 		#True means engine 2 is functional
-		if(self.lineEdit_12.text() == "Off" or self.lineEdit_12.text() == "OFF" or self.lineEdit_12.text() == "off"):
+		if(self.ui.lineEdit_12.text() == "Off" or self.ui.lineEdit_12.text() == "OFF" or self.ui.lineEdit_12.text() == "off"):
 			self.car2_status = True	
-			self.lineEdit_17.setText("Operational")
+			self.ui.lineEdit_17.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
-		elif(self.lineEdit_12.text() == "On" or self.lineEdit_12.text() == "ON" or self.lineEdit_12.text() == "on"):
+		elif(self.ui.lineEdit_12.text() == "On" or self.ui.lineEdit_12.text() == "ON" or self.ui.lineEdit_12.text() == "on"):
 			self.car2_status = False	
-			self.lineEdit_17.setText("Broken")
+			self.ui.lineEdit_17.setText("Broken")
 			self.sendYard = True	
 			signals.tnm_sendyard.emit(True)				
 		else:
 			self.car2_status = True
-			self.lineEdit_12.setText("Off")
-			self.lineEdit_17.setText("Operational")
+			self.ui.lineEdit_12.setText("Off")
+			self.ui.lineEdit_17.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 		
 		#Car 3 Status Change
 		#True means engine 3 is functional
-		if(self.lineEdit_13.text() == "Off" or self.lineEdit_13.text() == "OFF" or self.lineEdit_13.text() == "off"):		
+		if(self.ui.lineEdit_13.text() == "Off" or self.ui.lineEdit_13.text() == "OFF" or self.ui.lineEdit_13.text() == "off"):		
 			self.car3_status = True
-			self.lineEdit_18.setText("Operational")
+			self.ui.lineEdit_18.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
-		elif(self.lineEdit_13.text() == "On" or self.lineEdit_13.text() == "ON" or self.lineEdit_13.text() == "on"):
+		elif(self.ui.lineEdit_13.text() == "On" or self.ui.lineEdit_13.text() == "ON" or self.ui.lineEdit_13.text() == "on"):
 			self.car3_status = False
-			self.lineEdit_18.setText("Broken")
+			self.ui.lineEdit_18.setText("Broken")
 			self.sendYard = True
 			signals.tnm_sendyard.emit(True)					
 		else:
 			self.car3_status = True
-			self.lineEdit_13.setText("Off")
-			self.lineEdit_18.setText("Operational")
+			self.ui.lineEdit_13.setText("Off")
+			self.ui.lineEdit_18.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 		
 		#Car 4 Status Change
 		#True means engine 4 is functional
-		if(self.lineEdit_14.text() == "Off" or self.lineEdit_14.text() == "OFF" or self.lineEdit_14.text() == "off"):									
+		if(self.ui.lineEdit_14.text() == "Off" or self.ui.lineEdit_14.text() == "OFF" or self.ui.lineEdit_14.text() == "off"):									
 			self.car4_status = True
-			self.lineEdit_19.setText("Operational")
+			self.ui.lineEdit_19.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
-		elif(self.lineEdit_14.text() == "On" or self.lineEdit_14.text() == "ON" or self.lineEdit_14.text() == "on"):
+		elif(self.ui.lineEdit_14.text() == "On" or self.ui.lineEdit_14.text() == "ON" or self.ui.lineEdit_14.text() == "on"):
 			self.car4_status = False
-			self.lineEdit_19.setText("Broken")
+			self.ui.lineEdit_19.setText("Broken")
 			self.sendYard = True
 			signals.tnm_sendyard.emit(True)					
 		else:
 			self.car4_status = True
-			self.lineEdit_14.setText("Off")
-			self.lineEdit_19.setText("Operational")
+			self.ui.lineEdit_14.setText("Off")
+			self.ui.lineEdit_19.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 		
 		#Car 5 Status Change
 		#True means engine 5 is functional
-		if(self.lineEdit_15.text() == "Off" or self.lineEdit_15.text() == "OFF" or self.lineEdit_15.text() == "off"):										
+		if(self.ui.lineEdit_15.text() == "Off" or self.ui.lineEdit_15.text() == "OFF" or self.ui.lineEdit_15.text() == "off"):										
 			self.car5_status = True
-			self.lineEdit_20.setText("Operational")
+			self.ui.lineEdit_20.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
-		elif(self.lineEdit_15.text() == "On" or self.lineEdit_15.text() == "ON" or self.lineEdit_15.text() == "on"):
+		elif(self.ui.lineEdit_15.text() == "On" or self.ui.lineEdit_15.text() == "ON" or self.ui.lineEdit_15.text() == "on"):
 			self.car5_status = False
-			self.lineEdit_20.setText("Broken")
+			self.ui.lineEdit_20.setText("Broken")
 			self.sendYard = True
 			signals.tnm_sendyard.emit(True)					
 		else:
 			self.car5_status = True
-			self.lineEdit_15.setText("Off")
-			self.lineEdit_20.setText("Operational")
+			self.ui.lineEdit_15.setText("Off")
+			self.ui.lineEdit_20.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 			
@@ -299,23 +298,23 @@ class tnm_failureTest(QObject):
 	def signalP_fail_act(self):
 		#train 1 Status Change
 		#True means train 1 is functional
-		if(self.lineEdit_21.text() == "Off" or self.lineEdit_21.text() == "OFF" or self.lineEdit_21.text() == "off"):	
+		if(self.ui.lineEdit_21.text() == "Off" or self.ui.lineEdit_21.text() == "OFF" or self.ui.lineEdit_21.text() == "off"):	
 			self.train1_status = True
-			self.lineEdit_26.setText("Operational")
+			self.ui.lineEdit_26.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
-		elif(self.lineEdit_21.text() == "On" or self.lineEdit_21.text() == "ON" or self.lineEdit_21.text() == "on"):
+		elif(self.ui.lineEdit_21.text() == "On" or self.ui.lineEdit_21.text() == "ON" or self.ui.lineEdit_21.text() == "on"):
 			self.train1_status = False	
-			self.lineEdit_26.setText("Broken")	
+			self.ui.lineEdit_26.setText("Broken")	
 			self.sendYard = True
 			signals.tnm_sendyard.emit(True)			
 		else:
 			self.train1_status = True
-			self.lineEdit_21.setText("Off")
-			self.lineEdit_26.setText("Operational")
+			self.ui.lineEdit_21.setText("Off")
+			self.ui.lineEdit_26.setText("Operational")
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
-"""
+			
 		
 #_____________________________________________________________________________________________________________		
 #_____________________________________________________________________________________________________________
@@ -574,7 +573,7 @@ if __name__ == "__main__":
 
 	#Initialize main program and test program
 	prog = tnm_display()
-	#test = tnm_failureTest()
+	test = tnm_failureTest()
 	"""
 	#display main program and test program, then exit program
 	MainWindow.show()

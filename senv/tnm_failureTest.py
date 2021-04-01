@@ -650,7 +650,7 @@ class Ui_Test(object):
         self.lineEdit_12.setText(_translate("MainWindow", "Off"))
         self.lineEdit_13.setText(_translate("MainWindow", "Off"))
         self.lineEdit_14.setText(_translate("MainWindow", "Off"))
-        self.lineEdit_15.setText(_translate("MainWindow", "OFf"))
+        self.lineEdit_15.setText(_translate("MainWindow", "Off"))
         self.label_20.setText(_translate("MainWindow", "Current Status"))
         self.lineEdit_16.setText(_translate("MainWindow", "Operational"))
         self.lineEdit_17.setText(_translate("MainWindow", "Operational"))
