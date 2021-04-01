@@ -1,0 +1,29 @@
+var
+sw2
+bl21
+bl22
+bl23
+bl24
+bl25
+bl26
+bl27
+bl28
+bl29
+bl30
+bl31
+bl32
+bl33
+bl34
+bl35
+bl147
+bl148
+bl149
+bl150
+st6
+end var
+sw2
+29
+30
+29
+150
+end proc
