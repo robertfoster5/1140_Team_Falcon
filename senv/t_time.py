@@ -1,6 +1,6 @@
 import time
-import simpy
-import simpy.rt
+from signals import signals
+
 
 #def clock(env,mil):
 #start = time.perf_counter()
@@ -31,7 +31,7 @@ class timing():
                     if self.hr == 24:
                         self.hr = 0
             print('The time is ' + str(self.hr)+ ':' + str(self.mint) + ':' +str(self.sec))
-            signals.time.emit(self.sec,self.mint,self.hr,self.env.now)
+            signals.time.emit(self.sec,self.mint,self.hr,timer)
             timer += 1
             time.sleep(1)
 
