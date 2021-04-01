@@ -36,6 +36,7 @@ class Signal(QObject):
     tnm_ebrake = pyqtSignal(bool)
     tnm_sendyard = pyqtSignal(bool)
     tnm_cab_temp = pyqtSignal(int)
+    tnm_block_finished = pyqtSignal(bool)
 
     #train controller signals
     tnc_emergency_brake = pyqtSignal(bool)
