@@ -102,10 +102,14 @@ class TableModel(QtCore.QAbstractTableModel):
         return None
 
 
-class ctc_qtui_test(Ui_MainWindow):
+class ctc_qtui_test(QObject):
     def __init__(self, dialog):
         
-        ui = Ui_MainWindow()
+        super().__init__()
+        self.ctc_main_window = QtWidgets.QMainWindow()
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self.ctc_main_window)
+        self.ctc_main_window.show()
         
         header = ['Train', 'Destination Station', 'Arrival Time (2400)']
         
@@ -315,21 +319,20 @@ class ctc_qtui_test(Ui_MainWindow):
         green_station_pathway = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,11,10,9,7,6,5,3,2] 
         
         
-        ui.model = TableModel(global_schedule_display,header)
+        self.ui.model = TableModel(global_schedule_display,header)
         
         
-        ui.setupUi(MainWindow)
         
         
-        ui.tableView_schedule.setModel(ui.model)
+        self.ui.tableView_schedule.setModel(self.ui.model)
         
-        ui.tableView_schedule.hideRow(0)
+        self.ui.tableView_schedule.hideRow(0)
 
         
         
         #draw track code start
         scene = QtWidgets.QGraphicsScene()
-        ui.graphicsView.setScene(scene)
+        self.ui.graphicsView.setScene(scene)
         pen = QtGui.QPen(QtCore.Qt.black)
 
         i = 0
@@ -421,13 +424,13 @@ class ctc_qtui_test(Ui_MainWindow):
         # -----------------------------
         
         # Manually dispatch train into the system
-        ui.btnDispatchMan.clicked.connect(lambda: self.dispatch_manual(ui,green_block_info,green_station_info,green_station_pathway,current_time))        
+        self.ui.btnDispatchMan.clicked.connect(lambda: self.dispatch_manual(self.ui,green_block_info,green_station_info,green_station_pathway,current_time))        
         
         # Choose file for automatic dispatch
-        ui.btnImportSchedFile.clicked.connect(lambda: self.import_schedule_file(ui))
+        self.ui.btnImportSchedFile.clicked.connect(lambda: self.import_schedule_file(self.ui))
         
         # Automatically dispatch train into the system
-        ui.btnDispatchAuto.clicked.connect(lambda: self.dispatch_automatic(ui,green_block_info,green_station_info,green_station_pathway,current_time))        
+        self.ui.btnDispatchAuto.clicked.connect(lambda: self.dispatch_automatic(self.ui,green_block_info,green_station_info,green_station_pathway,current_time))        
         
         
         # -----------------------------
@@ -435,22 +438,27 @@ class ctc_qtui_test(Ui_MainWindow):
         # -----------------------------
         
         # Display information on the default block/switch chosen
-        self.display_state_switch(ui,current_track_occupancy)
-        self.display_state_block(ui,current_track_occupancy)
+        self.display_state_switch(self.ui,current_track_occupancy)
+        self.display_state_block(self.ui,current_track_occupancy)
         
         # Send a switch maintenance request
-        ui.btnToggleSwitch.clicked.connect(lambda: self.send_maintenance_request_switch(ui,current_track_occupancy))
+        self.ui.btnToggleSwitch.clicked.connect(lambda: self.send_maintenance_request_switch(self.ui,current_track_occupancy))
         
         # Send a block maintenance request
-        ui.btnToggleBlock.clicked.connect(lambda: self.send_maintenance_request_block(ui,current_track_occupancy))
+        self.ui.btnToggleBlock.clicked.connect(lambda: self.send_maintenance_request_block(self.ui,current_track_occupancy))
 
         # Update display of current switch state
-        ui.comboBlock.currentIndexChanged.connect(lambda: self.display_state_switch(ui,current_track_occupancy))
+        self.ui.comboBlock.currentIndexChanged.connect(lambda: self.display_state_switch(self.ui,current_track_occupancy))
         
         # Update display of current block state
-        ui.comboBlock.currentIndexChanged.connect(lambda: self.display_state_block(ui,current_track_occupancy))
+        self.ui.comboBlock.currentIndexChanged.connect(lambda: self.display_state_block(self.ui,current_track_occupancy))
        
        
+        # -----------------------------
+        # SIGNAL ACTIONS
+        # -----------------------------
+            
+        signals.time.connect(self.send_dispatch_order())
             
     def change_data(self, ui):
         print("In Data Def")
@@ -576,7 +584,7 @@ class ctc_qtui_test(Ui_MainWindow):
             ui.tableView_schedule.setModel(ui.model)
             # for i in global_order_path_hold:
             #     print(i)
-            global_dispatch_orders.append([valid_train_name,ui.comboStation.currentText(),self.military_to_seconds(str(arrival_time)),valid_train_metrics[2],valid_train_metrics[0],valid_train_metrics[1],global_order_path_hold])
+            global_dispatch_orders.append([valid_train_name,ui.comboStation.currentText(),self.military_to_seconds(str(arrival_time)),valid_train_metrics[2],valid_train_metrics[0],valid_train_metrics[1]])
             
             print(valid_train_metrics[0])
             print(valid_train_metrics[1])
@@ -853,7 +861,7 @@ class ctc_qtui_test(Ui_MainWindow):
                         header = ['Train', 'Destination Station', 'Arrival Time (2400)']
                         ui.model = TableModel(global_schedule_display, header)
                         ui.tableView_schedule.setModel(ui.model)
-                        global_dispatch_orders.append([row[0],row[1],self.military_to_seconds(str(arrival_time)),valid_train_metrics[2],valid_train_metrics[0],valid_train_metrics[1],global_order_path_hold])
+                        global_dispatch_orders.append([row[0],row[1],self.military_to_seconds(str(arrival_time)),valid_train_metrics[2],valid_train_metrics[0],valid_train_metrics[1]])
                         # [Train Name, Destination Station, Arrival Time(seconds),Start Time(seconds) Authority(meters), Suggested Speed(meters/second), Order Path]
                         print("Train Name: " + global_dispatch_orders[len(global_dispatch_orders)-1][0])
                         # print("Destination Station: " + global_dispatch_orders[len(global_dispatch_orders)-1][1])
@@ -898,6 +906,22 @@ class ctc_qtui_test(Ui_MainWindow):
         file_path = filedialog.askopenfilename()
         ui.labelSchedFile.setText(str(file_path).split('/')[len(str(file_path).split('/')) - 1])
         global_dispatch_file = str(file_path)
+        
+        
+    def send_dispatch_order():
+        global global_dispatch_orders
+        sendable_sugg_speed = [0] * 150
+        sendable_auth = ["g"]
+        if len(global_dispatch_orders) > 0:
+            for i in range(150):
+                if i in global_dispatch_orders[0][4]:
+                    send_auth.append("1")
+                    sendable_sugg_speed[i] = global_dispatch_orders[0][5][global_dispatch_orders[0][4].index(i)]
+                else:
+                    send_auth.append("0")
+            signals.ctc_authority.emit(sendable_auth)
+            signals.ctc_suggested_speed.emit(global_dispatch_orders[0][5])
+            
 
 class TrainStation:
     def __init__(self,conn_index,connections):
@@ -915,37 +939,6 @@ class SignalClass(QObject):
 signals = SignalClass()
 
 
-
-class ExampleCTC(QObject):
-    def __init__(self,QObject):
-        #Ui creation (you should be able to have multiple of these in a row for multiple uis, did not test however)
-        #self.train_model_main_window = QtWidgets.QMainWindow()
-        #self.ui = Ui_window_class()
-        #self.ui.setupUi(self.self.train_model_main_window)
-        #self.train_model_main_window.show()
-        
-        
-
-        #creating and threading for train backend logic class
-        self.ctc_thread = QThread()
-        #self.train_model = TrainModelBackendClass()
-        self.ctc_back_end = ctc_qtui_test(QObject)
-        self.ctc_back_end.moveToThread(self.ctc_thread)
-
-        #signals and slots for ui buttons
-        #self.ui.passenger_brake_button.clicked.connect(self.train_model.passenger_brake)
-        #etc...
-
-        self.ctc_thread.start()
-
-        #creating and threading train controller
-        #self.train_controller_thread = QThread()
-        #self.train_controller = TrainController()
-        #self.train_controller.moveToThread(self.train_controller_thread)
-        #self.train_controller_thread.start()
-
-
-
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
@@ -953,9 +946,8 @@ if __name__ == "__main__":
     
     
     track = loadTrack("tkm_load.xls")
-    prog = ExampleCTC(MainWindow)
+    prog = ctc_qtui_test(MainWindow)
     
     
     
-    MainWindow.show()
     sys.exit(app.exec_())
