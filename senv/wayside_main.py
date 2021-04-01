@@ -223,9 +223,9 @@ class wayside_qtui_test(QObject):
 		self.g3.switch_state_change()
 		self.g4.switch_state_change()
 		self.g5.switch_state_change()
-		self.compile_block_occ_green()
+		#self.compile_block_occ_green()
 		self.compile_switch_green()
-		self.compile_cross_green()
+		#self.compile_cross_green()
 		self.compile_auth_green()
 				
 	def update_occupancy(self, occupancy):
@@ -264,10 +264,10 @@ class wayside_qtui_test(QObject):
 		self.g3.cross_change()
 		self.g4.cross_change()
 		self.g5.cross_change()
-		self.compile_block_occ_green()
-		self.compile_switch_green()
+		#self.compile_block_occ_green()
+		#self.compile_switch_green()
 		self.compile_cross_green()
-		self.compile_auth_green()
+		#self.compile_auth_green()
 		
 	def update_speed(self, speed):
 		self.speed = speed

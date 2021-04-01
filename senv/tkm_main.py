@@ -51,7 +51,8 @@ class TableModel(QtCore.QAbstractTableModel):
         return None
 
 class tkm_test(QObject):
-	def __init__(self):		
+	def __init__(self):	
+		print("train model running")	
 		super().__init__()
 		
 		self.MainWindow = QtWidgets.QMainWindow()
