@@ -17,10 +17,12 @@ class Wayside:
 		self.load_plc()
 	
 	def update_wayside(self):
+		print("ws: update_wayside")
 		self.cross_change()
 		self.switch_state_change()
 			
 	def m_order_block(self, order):
+		print("ws: m order block")
 		temp_block = []
 		if order != "0":
 			for i in range(len(order)):
@@ -47,6 +49,7 @@ class Wayside:
 				self.bloc_occ.append("0")
 					
 	def m_order_switch(self, order):
+		print("ws: m order switch")
 		temp_switch = []
 		temp = self.switch_state
 		self.switch_state = []
@@ -72,12 +75,19 @@ class Wayside:
 	def switch_state_change(self):
 		print("switch_change")
 		temp_count = 0
+		self.switch_state = []
 		if self.num_switch > 0:
 			for i in range(self.num_switch):
-				if self.authority[self.sw_connect[temp_count][0]-1] == "1" and self.authority[self.sw_connect[temp_count][1] -1] =="1":
-					self.switch_state[i] = "0"
+				sw1 = self.sw_connect[temp_count][0]
+				sw2 = self.sw_connect[temp_count][1]
+				sw3 = self.sw_connect[temp_count+1][0]
+				sw4 = self.sw_connect[temp_count+1][1]
+				index1 = self.block_name.index(sw1)
+				index2 = self.block_name.index(sw2)
+				if self.authority[int(index1)] == "1" and self.authority[int(index2)] == "1":
+					self.switch_state.append("1")
 				else:
-					self.switch_state[i] = "1"
+					self.switch_state.append("0")
 				temp_count = temp_count + 2
 			
 	def load_plc(self):
@@ -96,16 +106,16 @@ class Wayside:
 				proc = 0
 			#switch
 			elif line[0:2] == "sw" and proc == 0:
-				self.switch_name.append("Switch " + line[2:-1])
+				self.switch_name.append(line[2:-1])
 				self.switch_state.append("0")
 				self.num_switch = self.num_switch +1
 			#cross
 			elif line[0:2] == "cr" and proc == 0:
-				self.cross_name.append("Crossing " + line[2:-1])
+				self.cross_name.append(line[2:-1])
 				self.cross_state.append("0")
 				self.num_cross = self.num_cross +1
 			elif line[0:2] == "bl" and proc == 0:
-				self.block_name.append("Block " + line[2:-1])
+				self.block_name.append(line[2:-1])
 				self.block_health.append("0")
 				self.block_occ.append("0")
 			#stopping distance
@@ -122,15 +132,8 @@ class Wayside:
 				d2 = plc[linecount+3]
 				d3 = plc[linecount+4]
 				d4 = plc[linecount+5]
-				if d3[0:-1] == "yard":
-					self.sw_connect.append([int(d1[0:-1]), int(d2[0:-1])])
-					self.sw_connect.append([d3[0:-1], int(d4[0:-1])])
-				elif d4[0:-1] == "yard":
-					self.sw_connect.append([int(d1[0:-1]), int(d2[0:-1])])
-					self.sw_connect.append([int(d3[0:-1]), d4[0:-1]])
-				else:
-					self.sw_connect.append([int(d1[0:-1]), int(d2[0:-1])])
-					self.sw_connect.append([int(d3[0:-1]), int(d4[0:-1])])
+				self.sw_connect.append([d1[0:-1], d2[0:-1]])
+				self.sw_connect.append([d3[0:-1], d4[0:-1]])
 			if line[0:2] == "cr":
 				d1 = plc[linecount+2]
 				self.cr_connect.append(int(d1[0:-1]))
