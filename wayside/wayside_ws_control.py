@@ -2,6 +2,7 @@ class Wayside:
 	def __init__(self, plcfile, line):
 		self.plcfile = plcfile
 		self.line = line
+		self.authority = []
 		self.switch_name = []
 		self.switch_state = []
 		self.cross_name = []
@@ -15,73 +16,69 @@ class Wayside:
 		self.num_cross = 0
 		self.load_plc()
 	
-	def update_wayside(self, authority, occupancy, order):
-		self.block_occ = occupancy
-		self.authority = authority
-		self.m_order(order)	
+	def update_wayside(self):
 		self.cross_change()
+		self.switch_state_change()
 			
-	def m_order(self, order):
+	def m_order_block(self, order):
 		temp_block = []
-		temp_switch = []
-		block = 0
-		switch = 0
 		if order != "0":
 			for i in range(len(order)):
-				if order[i] == "b":
-					block = 1
-				if order[i] == "s":
-					switch = 1
-				if order[i] == "1" and self.block_health[i-1] == "1" and block == 1:
+				if order[i] == "1" and self.block_health[i-1] == "1":
 					temp_block.append("0")
-				if order[i] == "1" and self.block_health[i-1] == "0" and block == 1:
+				if order[i] == "1" and self.block_health[i-1] == "0":
 					temp_block.append("1")
-				if order[i] == "1" and self.switch_state[i-1] == "1" and switch == 1:
+				if order[i] == "1" and self.switch_state[i-1] == "1":
 					temp_switch.append("0")
-				if order[i] == "1" and self.switch_state[i-1] == "0" and switch == 1:
+				if order[i] == "1" and self.switch_state[i-1] == "0":
 					temp_switch.append("1")
-		if block == 1:
 			self.block_health = []
 			temp = self.block_occ
 			self.block_occ = []
-			for i in range(len(order)):
-				self.block_health.append(temp_block[i])
-				if temp[i] == "0" and temp_block[i] == "0":
-					self.bloc_occ.append("0")
-				if temp[i] == "0" and temp_block[i] == "1":
-					self.bloc_occ.append("1")
-				if temp[i] == "1" and temp_block[i] == "0":
-					self.bloc_occ.append("1")
-				if temp[i] == "1" and temp_block[i] == "1":
-					self.bloc_occ.append("0")
-		if switch == 1:
-			temp = self.switch_state
-			self.switch_state = []
-			for i in range(len(order)):
-				if temp[i] == "0" and temp_switch[i] == "0":
-					self.switch_state.append("0")
-				if temp[i] == "0" and temp_switch[i] == "1":
-					self.switch_state.append("1")
-				if temp[i] == "1" and temp_switch[i] == "0":
-					self.switch_state.append("1")
-				if temp[i] == "1" and temp_switch[i] == "1":
-					self.switch_state.append("0")
+		for i in range(len(order)):
+			self.block_health.append(temp_block[i])
+			if temp[i] == "0" and temp_block[i] == "0":
+				self.bloc_occ.append("0")
+			if temp[i] == "0" and temp_block[i] == "1":
+				self.bloc_occ.append("1")
+			if temp[i] == "1" and temp_block[i] == "0":
+				self.bloc_occ.append("1")
+			if temp[i] == "1" and temp_block[i] == "1":
+				self.bloc_occ.append("0")
+					
+	def m_order_switch(self, order):
+		temp_switch = []
+		temp = self.switch_state
+		self.switch_state = []
+		for i in range(len(order)):
+			if temp[i] == "0" and temp_switch[i] == "0":
+				self.switch_state.append("0")
+			if temp[i] == "0" and temp_switch[i] == "1":
+				self.switch_state.append("1")
+			if temp[i] == "1" and temp_switch[i] == "0":
+				self.switch_state.append("1")
+			if temp[i] == "1" and temp_switch[i] == "1":
+				self.switch_state.append("0")
 					
 	def cross_change(self):
-		for i in len(self.cr_connect):
-			if block_occ[cr_connect[i]-2] == "1" or block_occ[cr_connect[i]-1] == "1" or block_occ[cr_connect[i]] == "1":
-				self.cr_connect[i] = "1"
-			else:
-				self.cr_connect[i] = "0"
+		print("cross_change")
+		if self.num_cross != 0:
+			for i in range(self.num_cross):
+				if self.block_occ[self.cr_connect[i]-2] == "1" or self.block_occ[self.cr_connect[i]-1] == "1" or self.block_occ[self.cr_connect[i]] == "1":
+					self.cr_connect[i] = "1"
+				else:
+					self.cr_connect[i] = "0"
 	
-	def switch_state(self):
+	def switch_state_change(self):
+		print("switch_change")
 		temp_count = 0
-		for i in self.num_switch:
-			if self.authority[self.sw_connect[temp_count][0]-1] == "1" and self.authority[self.sw_connect[temp_count][1] -1] =="1":
-				self.switch_state[i] = "0"
-			else:
-				self.switch_state[i] = "1"
-			temp_count = temp_count + 2
+		if len(self.authority) > 0:
+			for i in range(self.num_switch):
+				if self.authority[self.sw_connect[temp_count][0]-1] == "1" and self.authority[self.sw_connect[temp_count][1] -1] =="1":
+					self.switch_state[i] = "0"
+				else:
+					self.switch_state[i] = "1"
+				temp_count = temp_count + 2
 			
 	def load_plc(self):
 		f = open(self.plcfile)
