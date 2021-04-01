@@ -9,7 +9,6 @@ from signals import signals
 class TrainControllerMain(QObject):
 
     def __init__(self):
-        print("running train controller")
         super().__init__()
 
         self.MainWindow = QtWidgets.QMainWindow()
@@ -22,7 +21,12 @@ class TrainControllerMain(QObject):
         self.controller.moveToThread(self.controller_thread)
         self.controller_thread.start()
 
+        self.controller.updated.connect(self.update_gui)
 
+    def update_gui(self):
+        self.ui.curr_speed_text.setText(str(int(self.controller.powsys.current_speed * 2.237)) + " mph")
+        self.ui.max_speed_text.setText(str(int(self.controller.powsys.command_speed * 2.237)) + " mph")
+        self.ui.power_text.setText(str(int(self.controller.powsys.power/1000.0)) + " kW")
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)

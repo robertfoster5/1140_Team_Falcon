@@ -5,6 +5,7 @@ from signals import signals
 
 
 class TrainController(QObject):
+    updated = pyqtSignal()
 
     def __init__(self):
         super().__init__()
@@ -94,6 +95,8 @@ class TrainController(QObject):
                 self.tunnel_light = False
 
         self.powsys.update_power()
+        self.updated.emit()
+
 
 
 
