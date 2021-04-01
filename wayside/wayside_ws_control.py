@@ -107,7 +107,6 @@ class Wayside:
 				self.cross_name.append("Crossing " + line[2:-1])
 				self.cross_state.append("0")
 				self.num_cross = self.num_cross +1
-				print(self.num_cross)
 			elif line[0:2] == "bl" and proc == 0:
 				self.block_name.append("Block " + line[2:-1])
 				self.block_health.append("0")
@@ -142,7 +141,7 @@ class Wayside:
 				break
 			linecount = linecount+1
 		f.close()
-		print(self.cross_name)
+		
 if __name__ == '__main__':
 	Wayside.main()
 		

@@ -1,8 +1,9 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import QObject, QThread, pyqtSignal
+from PyQt5.QtCore import Qt, QObject, QThread, pyqtSignal
 from wayside_qtui_test import Ui_MainWindow
 from wayside_ws_control import Wayside
+from signals import signals
 
 class TableModel(QtCore.QAbstractTableModel):
 
@@ -32,38 +33,32 @@ class TableModel(QtCore.QAbstractTableModel):
             return self.header[col]
         return None
 
-class SignalClass(QObject):
-	way_occupancy = pyqtSignal(list)
-	way_cross_state = pyqtSignal(list)
-	way_switch_state = pyqtSignal(list)
-	way_authority = pyqtSignal(list)
-	way_speed = pyqtSignal(list)
-	ctc_authority = pyqtSignal(list)
-	ctc_suggested_speed = pyqtSignal(list)
-	ctc_maintenance = pyqtSignal(list)
-	tkm_get_occ = pyqtSignal(list)
-	
-signals = signalClass()
-
 class wayside_qtui_test(QObject):
 	
-	def __init__(self, dialog):
+	def __init__(self):
 		super().__init__()
-		self.wayside_qtui_test = QTWidgets.QMainWindow()
-		self.ui = UI_MainWindow()
-		self.ui.setupUI(self.wayside_qtui_test)
+		self.wayside_qtui_test = QtWidgets.QMainWindow()
+		#ui = Ui_MainWindow()
+		self.ui = Ui_MainWindow()
+		self.ui.setupUi(self.wayside_qtui_test)
 		self.wayside_qtui_test.show()
-		ui = Ui_MainWindow()
+	
+		#self.MainWindow.show()
 		
-		g1 = Wayside("g1.txt", "Green")
-		g2 = Wayside("g2.txt", "Green")
-		g3 = Wayside("g3.txt", "Green")
-		g4 = Wayside("g4.txt", "Green")
-		g5 = Wayside("g5.txt", "Green")
-		r1 = Wayside("r1.txt", "Red")
-		r2 = Wayside("r2.txt", "Red")
-		r3 = Wayside("r3.txt", "Red")
+		self.g1 = Wayside("g1.txt", "Green")
+		self.g2 = Wayside("g2.txt", "Green")
+		self.g3 = Wayside("g3.txt", "Green")
+		self.g4 = Wayside("g4.txt", "Green")
+		self.g5 = Wayside("g5.txt", "Green")
+		self.r1 = Wayside("r1.txt", "Red")
+		self.r2 = Wayside("r2.txt", "Red")
+		self.r3 = Wayside("r3.txt", "Red")
 		
+		"""self.g1_thread = QThread()
+        self.g1 = Wayside("g1.txt", "Green")
+        self.g1.moveToThread(self.g1_thread)
+        self.g1_thread.start()"""
+        
 		self.header_blocks = ['Block', 'Status', 'Line']
 		
 		self.data_blocks = [[0,0,0]]
@@ -76,41 +71,42 @@ class wayside_qtui_test(QObject):
 		
 		self.data_switch = [[0,0]]	
 		
-		ui.model = TableModel(self.data_blocks,self.header_blocks)
+		self.ui.model = TableModel(self.data_blocks,self.header_blocks)
 		
-		ui.setupUi(MainWindow)
+		
 		print("Load Blocks Table")
-		ui.tableView.setModel(ui.model)
+		self.ui.tableView.setModel(self.ui.model)
 		
-		ui.model = TableModel(self.data_cross,self.header_cross)
+		self.ui.model = TableModel(self.data_cross,self.header_cross)
 		print("Load Crossings Table")
-		ui.tableView_2.setModel(ui.model)
+		self.ui.tableView_2.setModel(self.ui.model)
 		
-		ui.model = TableModel(self.data_switch,self.header_switch)
+		self.ui.model = TableModel(self.data_switch,self.header_switch)
 		print("Load Switch Table")
-		ui.tableView_3.setModel(ui.model)
+		self.ui.tableView_3.setModel(self.ui.model)
 		
-		ui.pushButton.clicked.connect(lambda: self.update_tables(ui, r1))
-		ui.pushButton_2.clicked.connect(lambda: self.update_tables(ui,r2))
-		ui.pushButton_3.clicked.connect(lambda: self.update_tables(ui,r3))
+		self.ui.pushButton.clicked.connect(lambda: self.update_tables(self.r1))
+		self.ui.pushButton_2.clicked.connect(lambda: self.update_tables(self.r2))
+		self.ui.pushButton_3.clicked.connect(lambda: self.update_tables(self.r3))
 		
-		ui.pushButton_4.clicked.connect(lambda: self.update_tables(ui,g1))
-		ui.pushButton_7.clicked.connect(lambda: self.update_tables(ui,g2))
-		ui.pushButton_6.clicked.connect(lambda: self.update_tables(ui,g3))
-		ui.pushButton_5.clicked.connect(lambda: self.update_tables(ui,g4))
-		ui.pushButton_8.clicked.connect(lambda: self.update_tables(ui,g5))
+		self.ui.pushButton_4.clicked.connect(lambda: self.update_tables(self.g1))
+		self.ui.pushButton_7.clicked.connect(lambda: self.update_tables(self.g2))
+		self.ui.pushButton_6.clicked.connect(lambda: self.update_tables(self.g3))
+		self.ui.pushButton_5.clicked.connect(lambda: self.update_tables(self.g4))
+		self.ui.pushButton_8.clicked.connect(lambda: self.update_tables(self.g5))
 		
-		signals.ctc_authority.connect(self.new_authority(ctc_authority, r1, r2, r3, g1, g2, g3, g4, g5))
-		signals.ctc_suggested_speed.connect(self.update_speed(ctc_suggested_speed))
-		signals.ctc_maintenance.connect(self.maintenace_order(ctc_maintenance, r1, r2, r3, g1, g2, g3, g4, g5))
-		signals.tkm_get_occ.connect(self.update_occupancy(tkm_get_occ, r1, r2, r3, g1, g2, g3, g4, g5))
+		signals.ctc_authority.connect(self.new_authority)
+		signals.ctc_suggested_speed.connect(self.update_speed)
+		signals.ctc_maintenance.connect(self.maintenance_order)
+		signals.tkm_get_occ.connect(self.update_occupancy)
 		
-	def update_tables(self, ui, ws):
-		self.update_block(ui, ws)
-		self.update_switch(ui, ws)
-		self.update_cross(ui, ws)
+			
+	def update_tables(self, ws):
+		self.update_block(ws)
+		self.update_switch(ws)
+		self.update_cross(ws)
 		
-	def update_block(self, ui, ws):	
+	def update_block(self, ws):	
 		self.data_blocks = []
 		for i in range(len(ws.block_occ)):
 			if ws.block_health[i] == "1":
@@ -119,41 +115,41 @@ class wayside_qtui_test(QObject):
 				self.data_blocks.append([ws.block_name[i], "Occupied", ws.line])
 			elif ws.block_occ[i] == "0":
 				self.data_blocks.append([ws.block_name[i], "Empty", ws.line])
-		ui.model = TableModel(self.data_blocks,self.header_blocks)
+		self.ui.model = TableModel(self.data_blocks,self.header_blocks)
 		print("Load Blocks Table")
-		ui.tableView.setModel(ui.model)
+		self.ui.tableView.setModel(self.ui.model)
 				
-	def update_switch(self, ui, ws):
+	def update_switch(self, ws):
 		self.data_switch = []
 		if ws.num_switch > 0:
 			for i in range(ws.num_switch):
 				self.data_switch.append([ws.switch_name[i], ws.switch_state[i]])
 		else:
 			self.data_switch.append(["N/A", "N/A"])
-		ui.model = TableModel(self.data_switch,self.header_switch)
+		self.ui.model = TableModel(self.data_switch,self.header_switch)
 		print("Load Switch Table")
-		ui.tableView_3.setModel(ui.model)
+		self.ui.tableView_3.setModel(self.ui.model)
 		
-	def update_cross(self, ui, ws):
+	def update_cross(self, ws):
 		self.data_cross = []
 		if ws.num_cross > 0:
 			for i in range(ws.num_cross):
 				self.data_cross.append([ws.cross_name[i], ws.cross_state[i]])
 		else:
 			self.data_cross.append(["N/A", "N/A"])
-		ui.model = TableModel(self.data_cross,self.header_cross)
-		print(self.data_cross)
-		ui.tableView_2.setModel(ui.model)
+		self.ui.model = TableModel(self.data_cross,self.header_cross)
+		print("Load Cross Table")
+		self.ui.tableView_2.setModel(self.ui.model)
 
-	def maintenance_order(self, order, r1, r2, r3, g1, g2, g3, g4, g5):
+	def maintenance_order(self, order):
 		if order[0] == "r":
 			temp_order = order[1:-1]
 			or1 = temp_order[0] + temp_order[1:23]
 			or2 = temp_order[0] + temp_order[24:45] + temp_order[67:76]
 			or3 = temp_order[0] + temp_order[46:66]
-			r1.m_order(or1)
-			r2.m_order(or2)
-			r3.m_order(or3)
+			self.r1.m_order(or1)
+			self.r2.m_order(or2)
+			self.r3.m_order(or3)
 		else:
 			temp_order = order[1:-1]
 			or1 = temp_order[0] + temp_order[1:20]
@@ -161,35 +157,35 @@ class wayside_qtui_test(QObject):
 			or3 = temp_order[0] + temp_order[36:73]
 			or4 = temp_order[0] + temp_order[74:109]
 			or5 = temp_order[0] + temp_order[110:146]
-			g1.m_order(or1)
-			g2.m_order(or2)
-			g3.m_order(or3)
-			g4.m_order(or4)
-			g5.m_order(or5)
+			self.g1.m_order(or1)
+			self.g2.m_order(or2)
+			self.g3.m_order(or3)
+			self.g4.m_order(or4)
+			self.g5.m_order(or5)
 	
-	def new_authority(self, authority, r1, r2, r3, g1, g2, g3, g4, g5):
+	def new_authority(self, authority):
 		if authority[0] == "r":
-			r1.authority = authority[1:23]
-			r2.authority = authority[24:45] + authority[67:76]
-			r3.authority = authority[46:66]
+			self.r1.authority = authority[1:23]
+			self.r2.authority = authority[24:45] + authority[67:76]
+			self.r3.authority = authority[46:66]
 		else:
-			g1.authority = authority[1:20]
-			g2.authority = authority[21:35] + authority[147:150]
-			g3.authority = authority[36:73]
-			g4.authority = authority[74:109]
-			g5.authority = authority[110:146]
+			self.g1.authority = authority[1:20]
+			self.g2.authority = authority[21:35] + authority[147:150]
+			self.g3.authority = authority[36:73]
+			self.g4.authority = authority[74:109]
+			self.g5.authority = authority[110:146]
 				
-	def update_occupancy(self, occupancy, r1, r2, r3, g1, g2, g3, g4, g5):
+	def update_occupancy(self, occupancy):
 		if self.line == "r":
-			r1.block_occ = occupancy[1:23]
-			r2.block_occ = occupancy[24:45] + occupancy[67:76]
-			r3.block_occ = occupancy[46:66]
+			self.r1.block_occ = occupancy[1:23]
+			self.r2.block_occ = occupancy[24:45] + occupancy[67:76]
+			self.r3.block_occ = occupancy[46:66]
 		else:
-			g1.block_occ = occupancy[1:20]
-			g2.block_occ = occupancy[21:35] + occupancy[147:150]
-			g3.block_occ = occupancy[36:73]
-			g4.block_occ = occupancy[74:109]
-			g5.block_occ = occupancy[110:146]
+			self.g1.block_occ = occupancy[1:20]
+			self.g2.block_occ = occupancy[21:35] + occupancy[147:150]
+			self.g3.block_occ = occupancy[36:73]
+			self.g4.block_occ = occupancy[74:109]
+			self.g5.block_occ = occupancy[110:146]
 	
 	def update_speed(self, speed):
 		self.speed = speed
@@ -197,8 +193,8 @@ class wayside_qtui_test(QObject):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
+    #MainWindow = QtWidgets.QMainWindow()
     
-    prog = wayside_qtui_test(MainWindow)
+    prog = wayside_qtui_test()
     
     sys.exit(app.exec_())
