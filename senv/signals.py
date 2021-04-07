@@ -4,7 +4,7 @@ from PyQt5.QtCore import QObject, QThread, pyqtSignal
 class Signal(QObject):
     #global
     time = pyqtSignal(int,int,int,int)
-    
+
     #ctc signals
     ctc_authority = pyqtSignal(list)
     ctc_suggested_speed = pyqtSignal(list)
@@ -43,6 +43,12 @@ class Signal(QObject):
     tnc_service_brake = pyqtSignal(bool)
     tnc_announcement = pyqtSignal(str)
     tnc_power = pyqtSignal(float)
+    tnc_cab_light = pyqtSignal(bool)
+    tnc_tunnel_light = pyqtSignal(bool)
+    tnc_high_beam_light = pyqtSignal(bool)
+    tnc_left_door = pyqtSignal(bool) #1 for open 0 for closed
+    tnc_right_door = pyqtSignal(bool) #1 for open 0 for closed
+
 
 
 signals = Signal()
