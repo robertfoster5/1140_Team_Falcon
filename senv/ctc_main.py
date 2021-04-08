@@ -952,7 +952,8 @@ class ctc_qtui_test(QObject):
         
     def send_dispatch_order(self):
         global global_dispatch_orders
-        sendable_sugg_speed = [0] * 150
+        sendable_sugg_speed = [0] * 151
+        sendable_sugg_speed[0] = "g"
         sendable_auth = ["g"]
         if len(global_dispatch_orders) > 1:
             #print("Wait for t = " + str(global_dispatch_orders[1][3]))
@@ -961,7 +962,8 @@ class ctc_qtui_test(QObject):
                 for i in range(150):
                     if i in global_dispatch_orders[1][4]:
                         sendable_auth.append("1")
-                        sendable_sugg_speed[i] = global_dispatch_orders[1][5][global_dispatch_orders[1][4].index(i)]
+                        sendable_sugg_speed[i+1] = global_dispatch_orders[1][5][global_dispatch_orders[1][4].index(i)]
+                        #print(str(sendable_sugg_speed[i+1]) + " Curr Speed")
                         #print("Index w/ Authority: " + str(i))
                     else:
                         sendable_auth.append("0")
@@ -969,8 +971,9 @@ class ctc_qtui_test(QObject):
                 #print(len(sendable_auth))
                 #print(sendable_auth)
                 #print(sendable_sugg_speed)
-                signals.ctc_authority.emit(sendable_auth)
                 signals.ctc_suggested_speed.emit(sendable_sugg_speed)
+                signals.ctc_authority.emit(sendable_auth)
+           
             
     def update_time(self,seconds,minutes,hours,total_time):
         self.current_time = total_time 

@@ -351,7 +351,7 @@ class tnm_display(QObject):
 		signals.tkm_get_speed.connect(self.SetCommSpeed)
 	#authority connected from tkm
 		self.block_authority = False
-		signals.tkm_get_auth.connect(self.SetAuthority)
+		signals.tkm_get_train_auth.connect(self.SetAuthority)
 	#Block length connected from tkm
 		self.block_length = 1
 		self.block_num = 0
@@ -612,8 +612,9 @@ class tnm_display(QObject):
 		self.block_authority = tkm_authority
 		
 	#Function to set Commanded Speed from track model signal
-	def SetCommSpeed(self,tkm_comm_speed):
-		self.comm_speed = tkm_comm_speed
+	def SetCommSpeed(self,commSpeed):
+		self.comm_speed = commSpeed
+		print(str(commSpeed) + " comm speed")
 	
 	#Function to set Passenger count from track model signal
 	def SetOccupancy(self,tkm_pass_count):

@@ -96,8 +96,8 @@ class wayside_qtui_test(QObject):
 		self.ui.pushButton_5.clicked.connect(lambda: self.update_tables(self.g4))
 		self.ui.pushButton_8.clicked.connect(lambda: self.update_tables(self.g5))
 		
-		signals.ctc_authority.connect(self.new_authority)
 		signals.ctc_suggested_speed.connect(self.update_speed)
+		signals.ctc_authority.connect(self.new_authority)
 		#signals.ctc_maintenance.connect(self.maintenance_order)
 		signals.tkm_get_occ.connect(self.update_occupancy)
 		
