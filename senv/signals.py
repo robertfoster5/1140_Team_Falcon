@@ -49,10 +49,6 @@ class Signal(QObject):
     tnc_high_beam_light = pyqtSignal(bool)
     tnc_left_door = pyqtSignal(bool) #1 for open 0 for closed
     tnc_right_door = pyqtSignal(bool) #1 for open 0 for closed
-<<<<<<< HEAD
-=======
-
->>>>>>> 5a79cc8af513d75e79f30ffa4efe31d2e2cf9f3e
 
 
 signals = Signal()

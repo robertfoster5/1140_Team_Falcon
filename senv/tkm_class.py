@@ -115,10 +115,7 @@ class Train:
 		signals.tkm_get_block.emit(self.block)
 		signals.tkm_get_blength.emit(blocks[num].length)
 		signals.tkm_get_auth.emit(blocks[self.block-1].auth)
-<<<<<<< HEAD
 		print(str(block[self.block-1].auth) + " tkm auth")
-=======
->>>>>>> 5a79cc8af513d75e79f30ffa4efe31d2e2cf9f3e
 		
 		if sblocks[self.block-1].beacon1 == 0 and self.blocks[self.block-1].beacon2 == 0:
 			pass
@@ -140,7 +137,6 @@ class Train:
 #_______________________________________________________________________
 	
 	def set_speed(self,block):
-<<<<<<< HEAD
 		#print(block.speed)
 		print(block.s_limit)
 		
@@ -152,7 +148,6 @@ class Train:
 		#print(self.speed)
 		#signals.tkm_get_speed.emit(self.speed)
 		print(str(block.num) + " block num")
-=======
 		if block.s_limit > block.speed:
 			self.speed = block.speed
 			
@@ -161,7 +156,6 @@ class Train:
 			print(block.speed)
 		print(self.speed)
 		#signals.tkm_get_speed.emit(self.speed)
->>>>>>> 5a79cc8af513d75e79f30ffa4efe31d2e2cf9f3e
 		return self.speed
 	
 #_______________________________________________________________________
@@ -332,7 +326,6 @@ class Track:
 		signals.tkm_get_blength.emit(block.length)
 		bull = self.get_occ()
 		signals.tkm_get_occ.emit(bull)
-<<<<<<< HEAD
 		#print(str(block.set_speed()) +" bk speed")
 		#print(str(self.blocks[62].speed) +" bk 63")
 		
@@ -340,13 +333,11 @@ class Track:
 		print(str(s) + " tkm")
 		signals.tkm_get_speed.emit(s)
 		signals.tkm_get_train_auth.emit(bool(block.auth))
-=======
 		print(block.s_limit)
 		s = self.train[n-1].set_speed(block)
 		print(str(s) + "tkm")
 		signals.tkm_get_speed.emit(s)
 		#signals.tkm_get_auth.emit(block.auth)
->>>>>>> 5a79cc8af513d75e79f30ffa4efe31d2e2cf9f3e
 		
 #_______________________________________________________________________
 	
@@ -486,10 +477,7 @@ class Track:
 					 
 				a.append(self.train[r-1].set_block(self.blocks,q))
 				self.blocks[q].occ = 1
-<<<<<<< HEAD
 				
-=======
->>>>>>> 5a79cc8af513d75e79f30ffa4efe31d2e2cf9f3e
 				s = self.train[r-1].set_speed(self.blocks[q])
 				r = r+1
 				q = q+1
@@ -515,27 +503,22 @@ class Track:
 		
 		if len(self.train) == 0:
 			if self.blocks[self.yards[0]].auth == 1:
-<<<<<<< HEAD
-=======
 				#print("if")
->>>>>>> 5a79cc8af513d75e79f30ffa4efe31d2e2cf9f3e
 				if ((self.blocks[self.yards[0]-1].auth == 0 and self.blocks[self.yards[0]+1].auth == 1) or (self.blocks[self.yards[0]-1].auth == 1 and self.blocks[self.yards[0]+1].auth == 0)) and self.blocks[self.yards[0]].occ == 0:
 					self.add_train(len(train)+1,0,self.blocks[self.yards[0]-1])
 					self.train[len(train)-1].set_way(self.blocks,self.yards[0])
 				
-<<<<<<< HEAD
+
 			elif self.blocks[self.yards[1]-1].auth == 1:
 				if ((self.blocks[self.yards[1]-2].auth == 0 and self.blocks[self.yards[1]].auth == 1) or (self.blocks[self.yards[1]-2].auth == 1 and self.blocks[self.yards[1]].auth == 0)) and self.blocks[self.yards[1]-1].occ == 0:
 					self.add_train(len(self.train)+1,0,self.blocks[self.yards[1]-1])
 					#print(str(self.yards[1]-1) + " yards 1")
 					self.train[len(self.train)-1].set_way(self.blocks,self.yards[1]-1)
-=======
 			elif self.blocks[self.yards[1]].auth == 1:
 				#print("elif")
 				if ((self.blocks[self.yards[1]-1].auth == 0 and self.blocks[self.yards[1]+1].auth == 1) or (self.blocks[self.yards[1]-1].auth == 1 and self.blocks[self.yards[1]+1].auth == 0)) and self.blocks[self.yards[1]].occ == 0:
 					self.add_train(len(self.train)+1,0,self.blocks[self.yards[1]])
 					self.train[len(self.train)-1].set_way(self.blocks,self.yards[1])
->>>>>>> 5a79cc8af513d75e79f30ffa4efe31d2e2cf9f3e
 
 		
 
