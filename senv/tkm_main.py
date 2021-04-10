@@ -1,6 +1,13 @@
 import sys
 import sys
 #pyuic5 -x tkm_test.ui -o tkm_test.py
+#git status
+#git pull
+ 
+#git commit -a
+#-i (notes) esc
+#:WQ enter
+#git push
 from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
