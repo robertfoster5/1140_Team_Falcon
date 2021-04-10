@@ -85,7 +85,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Wayside Controller"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "TrackController"))
         self.label.setText(_translate("MainWindow", "Green Line"))
         self.label_2.setText(_translate("MainWindow", "Red Line"))
         self.pushButton.setText(_translate("MainWindow", "Red 1"))

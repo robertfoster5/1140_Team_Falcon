@@ -122,7 +122,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "TrackModelWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "TrackModel"))
         self.checkBox.setText(_translate("MainWindow", "Broken Rail"))
         self.checkBox_2.setText(_translate("MainWindow", "Power Failure"))
         self.checkBox_3.setText(_translate("MainWindow", "Track Circuit Failure"))
