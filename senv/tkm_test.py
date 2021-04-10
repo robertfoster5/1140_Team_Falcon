@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
-        MainWindow.setObjectName("Track_Model_Window")
+        MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1037, 929)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -122,7 +122,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "TrackModelWindow"))
         self.checkBox.setText(_translate("MainWindow", "Broken Rail"))
         self.checkBox_2.setText(_translate("MainWindow", "Power Failure"))
         self.checkBox_3.setText(_translate("MainWindow", "Track Circuit Failure"))
