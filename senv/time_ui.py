@@ -63,7 +63,7 @@ class Ui_Time(object):
 
     def retranslateUi(self, Time):
         _translate = QtCore.QCoreApplication.translate
-        Time.setWindowTitle(_translate("Time", "MainWindow"))
+        Time.setWindowTitle(_translate("Time", "Time"))
         self.label.setText(_translate("Time", "Enter Time Multiplier"))
         self.label_2.setText(_translate("Time", "Current Time"))
         self.label_4.setText(_translate("Time", "Current Timer Multiplier"))
