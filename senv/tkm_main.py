@@ -113,6 +113,7 @@ class tkm_test(QObject):
 		self.ui.enterB.clicked.connect(lambda: self.display_b())
 		self.ui.enterS.clicked.connect(lambda: self.display_s())
 		self.ui.enterT.clicked.connect(lambda: self.display_t())
+		self.ui.enterF.clicked.connect(lambda: self.load_f())
 		
 		signals.way_speed.connect(self.info[0].set_speed)
 		signals.way_occupancy.connect(self.info[0].set_occ)
@@ -159,6 +160,11 @@ class tkm_test(QObject):
 				self.data_s = make_data_s(self.info[0].blocks[i].station)
 				self.ui.model_s = TableModel(self.data_s, self.header_s)
 				self.ui.tableView_S.setModel(self.ui.model_s)
+				
+	def load_f(self):
+		if self.ui.lineEdit_f.text() != "":
+			new = loadTrack(str(self.ui.lineEdit_f)+".xls")
+			self.ui.info.append(new)
 				
 #end of main
 
