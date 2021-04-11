@@ -190,7 +190,8 @@ class wayside_qtui_test(QObject):
 			self.compile_auth_green()"""
 			
 	def new_authority(self, authority):
-		temp = []"""
+		temp = []
+		"""
 		if authority[0] == "r":
 			self.r1.authority = authority[1:24]
 			temp = authority[24:46]
@@ -230,7 +231,8 @@ class wayside_qtui_test(QObject):
 		self.compile_auth_green()
 				
 	def update_occupancy(self, occupancy):
-		temp = [] """
+		temp = [] 
+		"""
 		if occupancy[0] == "0":
 			self.r1.block_occ = occupancy[1:24]
 			temp = occupancy[24:46]
