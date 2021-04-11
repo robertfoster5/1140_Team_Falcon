@@ -98,7 +98,7 @@ class wayside_qtui_test(QObject):
 		
 		signals.ctc_suggested_speed.connect(self.update_speed)
 		signals.ctc_authority.connect(self.new_authority)
-		signals.ctc_maintenance.connect(self.maintenance_order)
+		#signals.ctc_maintenance.connect(self.maintenance_order)
 		signals.tkm_get_occ.connect(self.update_occupancy)
 		
 			
@@ -226,7 +226,7 @@ class wayside_qtui_test(QObject):
 		self.g3.switch_state_change()
 		self.g4.switch_state_change()
 		self.g5.switch_state_change()
-		self.update_tables(self.current_ws)
+		#self.update_tables(self.current_ws)
 		self.compile_switch_green()
 		self.compile_auth_green()
 				
@@ -268,7 +268,7 @@ class wayside_qtui_test(QObject):
 		self.g4.cross_change()
 		self.g5.cross_change()
 		
-		self.update_tables(self.current_ws)
+		#self.update_tables(self.current_ws)
 		self.compile_cross_green()
 		
 		
