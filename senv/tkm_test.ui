@@ -17,8 +17,8 @@
    <widget class="QGraphicsView" name="graphicsView">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>820</y>
+      <x>230</x>
+      <y>10</y>
       <width>71</width>
       <height>41</height>
      </rect>
@@ -100,6 +100,19 @@
     </property>
     <property name="text">
      <string>Select Errors</string>
+    </property>
+   </widget>
+   <widget class="QCommandLinkButton" name="commandLinkButton">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>167</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Load Track</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_2">
@@ -269,98 +282,6 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_f">
-    <property name="geometry">
-     <rect>
-      <x>280</x>
-      <y>0</y>
-      <width>181</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="enterF">
-    <property name="geometry">
-     <rect>
-      <x>460</x>
-      <y>0</y>
-      <width>181</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Enter</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_v">
-    <property name="geometry">
-     <rect>
-      <x>280</x>
-      <y>50</y>
-      <width>181</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="enterV">
-    <property name="geometry">
-     <rect>
-      <x>460</x>
-      <y>50</y>
-      <width>181</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Enter</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>40</y>
-      <width>211</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Select Line to View</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_4">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>-10</y>
-      <width>201</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Select File to Load</string>
-    </property>
-   </widget>
    <zorder>textBrowser</zorder>
    <zorder>checkBox</zorder>
    <zorder>checkBox_2</zorder>
@@ -368,6 +289,7 @@
    <zorder>pushButton</zorder>
    <zorder>label_17</zorder>
    <zorder>label_18</zorder>
+   <zorder>commandLinkButton</zorder>
    <zorder>pushButton_2</zorder>
    <zorder>tableView</zorder>
    <zorder>tableView_S</zorder>
@@ -382,12 +304,6 @@
    <zorder>enterS</zorder>
    <zorder>enterT</zorder>
    <zorder>lineEdit_t</zorder>
-   <zorder>lineEdit_f</zorder>
-   <zorder>enterF</zorder>
-   <zorder>lineEdit_v</zorder>
-   <zorder>enterV</zorder>
-   <zorder>label_3</zorder>
-   <zorder>label_4</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

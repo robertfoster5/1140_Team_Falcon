@@ -75,7 +75,6 @@ class tkm_test(QObject):
 		tracks = []
 		tracks.append(t)
 		self.info = tracks
-		self.version = 0
 		
 		#create trains
 		self.trains = []
@@ -87,17 +86,17 @@ class tkm_test(QObject):
 		self.header_t = ['Train', 'Info']
 		
 		#set default block data
-		self.data_b = make_data(self.info[self.version].blocks,0)
+		self.data_b = make_data(self.info[0].blocks,0)
 		
 		#find first station to show as default
 		i = 0
-		while(i<len(self.info[self.version].blocks)):
-			if(self.info[self.version].blocks[i].station.name != 0):
+		while(i<len(self.info[0].blocks)):
+			if(self.info[0].blocks[i].station.name != 0):
 				break;
 			i = i+1
 			 
 		#set station info
-		self.data_s = make_data_s(self.info[self.version].blocks[i].station)
+		self.data_s = make_data_s(self.info[0].blocks[i].station)
 		#self.data_t = make_data_t(self.info[0].train[0],self.info[0].blocks)
 		self.data_t = [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]]
 		
@@ -114,8 +113,6 @@ class tkm_test(QObject):
 		self.ui.enterB.clicked.connect(lambda: self.display_b())
 		self.ui.enterS.clicked.connect(lambda: self.display_s())
 		self.ui.enterT.clicked.connect(lambda: self.display_t())
-		self.ui.enterF.clicked.connect(lambda: self.load_f())
-		self.version = self.ui.enterV.clicked.connect(lambda: self.display_v())
 		
 		signals.way_speed.connect(self.info[0].set_speed)
 		signals.way_occupancy.connect(self.info[0].set_occ)
@@ -128,8 +125,8 @@ class tkm_test(QObject):
 	def display_b(self):
 		if self.ui.lineEdit.text() != "":
 			b_num = int(self.ui.lineEdit.text())-1
-			if b_num <= self.info[self.version].end+1 and b_num > 0: 
-				self.data_b = make_data(self.info[self.version].blocks,b_num)
+			if b_num <= self.info[0].end+1 and b_num > 0: 
+				self.data_b = make_data(self.info[0].blocks,b_num)
 				self.ui.model_b = TableModel(self.data_b, self.header_b)
 				self.ui.tableView.setModel(self.ui.model_b)
 				
@@ -137,8 +134,8 @@ class tkm_test(QObject):
 	def display_t(self):
 		if self.ui.lineEdit_t.text() != "":
 			t_num = int(self.ui.lineEdit_t.text())-1
-			if t_num <= len(self.info[self.version].train):
-				self.data_t = make_data_t(self.info[self.version].train[t_num],self.info[self.version].blocks)
+			if t_num <= len(self.info[0].train):
+				self.data_t = make_data_t(self.info[0].train[t_num],self.info[0].blocks)
 				self.ui.model_t = TableModel(self.data_t, self.header_t)
 				self.ui.tableView_T.setModel(self.ui.model_t)
 	
@@ -150,39 +147,18 @@ class tkm_test(QObject):
 				s_name = s_name.upper()
 				
 			i = 0
-			while i < len(self.info[self.version].blocks):
-				if s_name == self.info[self.version].blocks[i].station.name:
+			while i < len(self.info[0].blocks):
+				if s_name == self.info[0].blocks[i].station.name:
 					break
 				
 				i = i+1
 				
-			if i == len(self.info[self.version].blocks):
+			if i == len(self.info[0].blocks):
 				return 0
 			else:
-				self.data_s = make_data_s(self.info[self.version].blocks[i].station)
+				self.data_s = make_data_s(self.info[0].blocks[i].station)
 				self.ui.model_s = TableModel(self.data_s, self.header_s)
 				self.ui.tableView_S.setModel(self.ui.model_s)
-				
-	def load_f(self):
-		if self.ui.lineEdit_f.text() != "":
-			new = load_track(str(self.ui.lineEdit_f.text())+".xls")
-			self.info.append(new)
-			
-	def display_v(self):
-		i = 0
-		while i < len(self.info):
-			if self.ui.lineEdit_v.text() == self.info[i].line:
-				break
-			i = i+1
-			
-			self.display_b(i)
-			self.display_s(i)
-			if len(self.info[i].train) == 0:
-				return i
-			else:
-				self.display_t(i)
-				return i
-			
 				
 #end of main
 

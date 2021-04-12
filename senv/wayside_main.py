@@ -98,12 +98,11 @@ class wayside_qtui_test(QObject):
 		
 		signals.ctc_suggested_speed.connect(self.update_speed)
 		signals.ctc_authority.connect(self.new_authority)
-		#signals.ctc_maintenance.connect(self.maintenance_order)
+		signals.ctc_maintenance.connect(self.maintenance_order)
 		signals.tkm_get_occ.connect(self.update_occupancy)
 		
 			
 	def update_tables(self, ws):
-		self.current_ws = ws
 		self.update_block(ws)
 		self.update_switch(ws)
 		self.update_cross(ws)
@@ -149,8 +148,7 @@ class wayside_qtui_test(QObject):
 			self.data_cross.append(["N/A", "N/A"])
 
 	#BIG ERRORS IF RUN
-	#fix that indexing
-	""" 
+	#fix that indexing 
 	def maintenance_order(self, order):
 		if order[0] != "0":
 			if order[0] == "r":
@@ -187,11 +185,10 @@ class wayside_qtui_test(QObject):
 			self.compile_block_occ_green()
 			self.compile_switch_green()
 			self.compile_cross_green()
-			self.compile_auth_green()"""
+			self.compile_auth_green()
 			
 	def new_authority(self, authority):
 		temp = []
-		"""
 		if authority[0] == "r":
 			self.r1.authority = authority[1:24]
 			temp = authority[24:46]
@@ -210,7 +207,7 @@ class wayside_qtui_test(QObject):
 			self.r1.switch_state_change()
 			self.r2.switch_state_change()
 			self.r3.switch_state_change()
-		"""
+		
 		self.g1.authority = authority[1:21]
 		temp = authority[21:36]
 		temp.append(authority[147])
@@ -226,13 +223,13 @@ class wayside_qtui_test(QObject):
 		self.g3.switch_state_change()
 		self.g4.switch_state_change()
 		self.g5.switch_state_change()
-		#self.update_tables(self.current_ws)
+		#self.compile_block_occ_green()
 		self.compile_switch_green()
+		#self.compile_cross_green()
 		self.compile_auth_green()
 				
 	def update_occupancy(self, occupancy):
-		temp = [] 
-		"""
+		temp = []
 		if occupancy[0] == "0":
 			self.r1.block_occ = occupancy[1:24]
 			temp = occupancy[24:46]
@@ -251,7 +248,7 @@ class wayside_qtui_test(QObject):
 			self.r1.cross_change()
 			self.r2.cross_change()
 			self.r3.cross_change()
-		"""
+		
 		self.g1.block_occ = occupancy[1:21]
 		temp = occupancy[21:36]
 		temp.append(occupancy[147])
@@ -267,10 +264,10 @@ class wayside_qtui_test(QObject):
 		self.g3.cross_change()
 		self.g4.cross_change()
 		self.g5.cross_change()
-		
-		#self.update_tables(self.current_ws)
+		#self.compile_block_occ_green()
+		#self.compile_switch_green()
 		self.compile_cross_green()
-		
+		#self.compile_auth_green()
 		
 	def update_speed(self, speed):
 		self.speed = speed

@@ -346,9 +346,12 @@ class tnm_display(QObject):
 	#power connected from tnc
 		self.curr_power = 0
 		signals.tnc_power.connect(self.SetPower)
-		self.curr_speed = 0
-		self.comm_speed = 0
+		self.curr_speed = 0.0
+		self.comm_speed = 0.0
 		signals.tkm_get_speed.connect(self.SetCommSpeed)
+		#train starts at rest v
+		self.velocity = 0.0					#Used as value for inital speed for curr_speed calculation. Then is set to curr_speed for next calculation
+		self.curr_accleration = 0.0
 	#authority connected from tkm
 		self.block_authority = False
 		signals.tkm_get_train_auth.connect(self.SetAuthority)
@@ -414,7 +417,8 @@ class tnm_display(QObject):
 #_______________________________________________________________________
 	#function to update Movement Statistics
 	def update_MoveStat(self):
-		self.curr_speed = set_curr_speed(self.curr_power, self.Occupancy)
+		self.curr_speed = set_curr_speed(self.curr_power, self.Occupancy, self.velocity)
+		self.velocity = self.curr_speed
 		#Update current speed given power value
 		self.ui.lineEdit.setText(str(self.curr_speed) + " mph")
 		#Send the new calculated current speed to Train Controller
@@ -588,6 +592,9 @@ class tnm_display(QObject):
 	#Function to specify block number for each line
 	def blockNum(self,BlockNum):
 		self.block_num = BlockNum
+		
+		#ie)If block_num = 14 , station name = Glenwood, next station block 17
+		
 	
 	#Function to take in block length and calculate when train reaches next block
 	def blockTime(self,BlockLen):
@@ -604,7 +611,7 @@ class tnm_display(QObject):
 			self.timeBlock = time_block
 		
 		#self.block_finished = True
-		#signals.tnm_block_finished.emit(self.block_finished)
+		signals.tnm_block_finished.emit(self.block_finished)
 			
 	
 	#Function to set Authority from track model signal

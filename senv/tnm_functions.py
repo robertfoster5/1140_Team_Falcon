@@ -1,4 +1,6 @@
 #Train model functions file, to simplify calculations needed in Interface
+from t_time import timing
+
 
 #Function to delegate variables when Emergency Brake triggered
 def EmergencyBraking(eBrake):
@@ -9,16 +11,24 @@ def EmergencyBraking(eBrake):
 
 
 #Set Speed (MPH) Based on Power command from Train Controller
-def set_curr_speed(Power, Occupancy):
-	max_speed = 43.5	#miles/hour
-	train_accl = 1.12 		#miles/hour
-	Empty_Mass = 5*40.9		#Tons
+def set_curr_speed(Power, Occupancy, Velocity):
+	max_speed = 43.5			#miles/hour
+	train_accl_max = 1.12 		#miles/hour^2
+	Empty_Mass = 5*40.9			#Tons
 	Occupancy_Mass = ((Occupancy*56.699)/2000) #Number -> Kg -> tons
-	
+	timeSec = self.sec
+	#current mass based on ticket sales and inital train mass
+	curr_mass = (Empty_Mass + Occupancy_Mass)*907.185		#tons*kg const = kg <--
+	#current acceleration = change in v/change in t			#acc continues to change changing
+	curr_accl = (Velocity - 0.0)/self.sec
 	
 	#Force = M*A & Velocity = Power/M*A
-	curr_mass = (Empty_Mass + Occupancy_Mass)*907.185		#tons*kg const = kg <--
-	force = (curr_mass*train_accl)
+	if(Velocity == 0.0):
+		force = (curr_mass*train_accl_max)
+		curr_accl = 1.12 #mph2		set to max accl to start
+	elif(Velocity > 0.0):
+		force = (curr_mass*curr_accl)
+		
 	curr_speed = (Power / force)
 	
 	if(curr_speed > max_speed):
