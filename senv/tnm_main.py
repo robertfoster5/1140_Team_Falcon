@@ -332,7 +332,7 @@ class tnm_display(QObject):
 		#display main program
 		self.ui.setupUi(self.MainWindow)
 		self.MainWindow.show()
-		
+		#Line Here
 		#Signals defined here
 		tnm_comm_speed = pyqtSignal(float)		#All signals for Track Controller
 		tnm_curr_speed = pyqtSignal(float)
