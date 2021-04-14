@@ -9,6 +9,7 @@ from tnm_functions import temp_control
 from tnm_functions import pass_crew_count
 from tnm_functions import stopping_dist
 from tnm_functions import KilotoMile
+from tnm_functions import meterToMile
 
 from PyQt5 import uic
 from PyQt5.uic import loadUi
@@ -344,8 +345,8 @@ class tnm_display(QObject):
 	#Define variables to be used in tnm_display
 		self.train1 = "Train 1 Information"
 	#power connected from tnc
-		self.curr_power = 0
-		signals.tnc_power.connect(self.SetPower)
+		self.curr_power = 200000
+		#signals.tnc_power.connect(self.SetPower)
 		self.curr_speed = 0.0
 		self.comm_speed = 0.0
 		signals.tkm_get_speed.connect(self.SetCommSpeed)
@@ -366,8 +367,10 @@ class tnm_display(QObject):
 	#brake states
 		self.Brake = False
 		self.eBrake = False
+		signals.tnc_emergency_brake.connect(self.SetEBrake)
+		signals.tnc_service_brake.connect(self.SetServiceBrake)
 	#Occupancy 
-		self.pass_count = 0
+		self.pass_count = 10
 		signals.tkm_get_pass_count.connect(self.SetOccupancy)
 		self.crew_count = 3
 	#Route Information
@@ -389,7 +392,8 @@ class tnm_display(QObject):
 		self.set_temp = 0		#degrees Fahrenheit
 		self.curr_temp = 68		#degrees Fahrenheit
 		self.announce = "Watch your step. Have a great day!"
-
+		signals.tnc_announcement.connect(self.SetAnnounce)
+		self.timeSeconds = 0
 
 		#Defining Actions for specific UI Interactions
 		signals.time.connect(self.update_MoveStat)						#Update Movement Statistics
@@ -417,8 +421,11 @@ class tnm_display(QObject):
 #_______________________________________________________________________
 	#function to update Movement Statistics
 	def update_MoveStat(self):
-		self.curr_speed = set_curr_speed(self.curr_power, self.Occupancy, self.velocity)
+		#Calculate current speed
+		self.curr_speed = set_curr_speed(self.timeSeconds, self.eBrake, self.Brake, self.block_authority, self.curr_power, self.Occupancy, self.velocity)
+		#self.curr_speed = self.meterToMile(self.curr_speed)				#mps
 		self.velocity = self.curr_speed
+		
 		#Update current speed given power value
 		self.ui.lineEdit.setText(str(self.curr_speed) + " mph")
 		#Send the new calculated current speed to Train Controller
@@ -516,7 +523,7 @@ class tnm_display(QObject):
 #_______________________________________________________________________			
 	#function to delegate variables when Emergency Brake triggered
 	def EmergencyBraking(self):
-		if(self.eBrake != True):
+		if(self.eBrake == False):
 			self.eBrake = True
 			signals.tnm_ebrake.emit(self.eBrake)
 			print(self.eBrake)
@@ -620,16 +627,28 @@ class tnm_display(QObject):
 		
 	#Function to set Commanded Speed from track model signal
 	def SetCommSpeed(self,commSpeed):
-		self.comm_speed = commSpeed
-		print(str(commSpeed) + " comm speed")
+		self.comm_speed = meterToMile(commSpeed)			#convert mps value to MPH
+		#print(str(commSpeed) + " comm speed")
 	
 	#Function to set Passenger count from track model signal
 	def SetOccupancy(self,tkm_pass_count):
 		self.pass_count = tkm_pass_count
+	
+	#Function to read the emergency brake state from tnc
+	def SetEBrake(self, EmerBrake):
+		self.eBrake = EmerBrake
 		
+	#Function to read the service brake state from tnc
+	def SetServiceBrake(self, ServiceBrake):
+		self.Brake = ServiceBrake
 		
+	#Function to read in announcement from tnc
+	def SetAnnounce(self, CurrentAnnouncement):
+		self.announce = CurrentAnnouncement
+	
 	#Function for TIME
 	def getTime(self, time_sec, time_min, time_hr, time_tot):
+		self.timeSeconds = time_sec
 		finished = self.timeBlock - 1
 		if(finished == 0):
 			self.block_finished = True

@@ -112,8 +112,8 @@ class TrainController(QObject):
             #else:
             #    self.tunnel_light = False
 
-        print(self.powsys.command_speed)
-        print(self.powsys.set_speed)
+        print(str(round(self.powsys.command_speed,1)) + " comm speed")
+        #print(round(self.powsys.set_speed,1))
 
         self.powsys.update_power()
         self.updated.emit()
