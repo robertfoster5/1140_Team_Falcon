@@ -32,7 +32,7 @@ class SystemEnvironment(QObject):
 		self.wayside = wayside_qtui_test()
 		self.wayside.moveToThread(self.wayside_thread)
 		self.wayside_thread.start()
-		
+
 		self.tkm_thread = QThread()
 		self.tkm = tkm_test()
 		self.tkm.moveToThread(self.tkm_thread)
@@ -47,7 +47,7 @@ class SystemEnvironment(QObject):
 		self.tnc = TrainControllerMain()
 		self.tnc.moveToThread(self.tnc_thread)
 		self.tnc_thread.start()
-		
+
 		self.time_thread = QThread()
 		self.timer = QTimer()
 		self.timer.setInterval(1000);
