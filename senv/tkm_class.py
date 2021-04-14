@@ -310,7 +310,7 @@ class Track:
 			if self.blocks[r].switch.top == -1 or self.blocks[r].switch.bottom == -1:
 				yards.append(int(self.blocks[r+1].num))
 			r = r+1
-		print(str(yards[1]) + " yard 2")
+		#print(str(yards[1]) + " yard 2")
 		self.yards = yards
 		
 		
@@ -417,7 +417,7 @@ class Track:
 			if self.blocks[a].und == 1:
 				self.blocks[a].set_beac_u(b,0)
 				
-				while self.blocks[a].und == 1:
+				while self.blocks[a].und == 1 and a < len(self.blocks)-1:
 					a = a+1
 				
 				self.blocks[a-1].set_beac_u(b,1)
