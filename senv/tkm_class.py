@@ -97,14 +97,19 @@ class Train:
 	#change block location
 	def set_block(self,blocks,num):
 		self.block = self.past
+		print(str(self.num)+" num")
 		if self.way == 1:
 			if blocks[num].switch.top == 0:
 				self.block = blocks[num].num+1
+				print("hi")
 			else:
-				if block.switch.state == 0:
+				if blocks[self.block-1].switch.state == 0:
 					self.block = blocks[num].num+1
+					print("bye")
 				else:
 					self.block = blocks[num].switch.bottom
+					print("fine")
+					
 		#else:
 			#if past.switch.top == 0:
 				#self.block = past.num
@@ -114,27 +119,28 @@ class Train:
 			
 		signals.tkm_get_block.emit(self.block)
 		print(str(self.block) + " block tkm")
+		print("/////////////////////////////////////////////////////////////////////////////////////")
 		signals.tkm_get_blength.emit(blocks[num].length)
-		signals.tkm_get_auth.emit(blocks[int(self.block-1)].auth)
-		print(str(block[self.block-1].auth) + " tkm auth")
+		signals.tkm_get_train_auth.emit(blocks[int(self.block-1)].auth)
+		print(str(blocks[int(self.block-1)].auth) + " tkm auth")
 		
-		if sblocks[self.block-1].beacon1 == 0 and self.blocks[self.block-1].beacon2 == 0:
+		if blocks[int(self.block-1)].beacon1 == 0 and blocks[int(self.block-1)].beacon2 == 0:
 			pass
-		elif blocks[self.block-1].beacon1 == 0 and blocks[self.block-1].beacon2 != 0:
-			signals.tkm_get_beacon(blocks[self.block-1].beacon2)
-		elif blocks[self.block-1].beacon1 != 0 and blocks[self.block-1].beacon2 == 0:
-			signals.tkm_get_beacon(blocks[self.block-1].beacon1)
-		elif blocks[self.past-1].beacon2 != 0 and way == 1:
-			signals.tkm_get_beacon(blocks[self.past-1].beacon2)
-		elif blocks[self.past-1].beacon1 != 0 and way == -1:
-			signals.tkm_get_beacon(blocks[self.block-1].beacon1)
+		elif blocks[int(self.block-1)].beacon1 == 0 and blocks[int(self.block-1)].beacon2 != 0:
+			signals.tkm_get_beacon(blocks[int(self.block-1)].beacon2)
+		elif blocks[int(self.block-1)].beacon1 != 0 and blocks[int(self.block-1)].beacon2 == 0:
+			signals.tkm_get_beacon(blocks[int(self.block-1)].beacon1)
+		elif blocks[int(self.past-1)].beacon2 != 0 and way == 1:
+			signals.tkm_get_beacon(blocks[int(self.past-1)].beacon2)
+		elif blocks[int(self.past-1)].beacon1 != 0 and way == -1:
+			signals.tkm_get_beacon(blocks[int(self.block-1)].beacon1)
 		else:
 			if self.way == 1:
-				signals.tkm_get_beacon(blocks[self.block-1].beacon1)
+				signals.tkm_get_beacon.emit(blocks[int(self.block-1)].beacon1)
 			else:
-				signals.tkm_get_beacon(blocks[self.block-1].beacon2)
+				signals.tkm_get_beacon.emit(blocks[int(self.block-1)].beacon2)
 			
-		return blocks[self.block - 1].auth
+		return blocks[int(self.block - 1)].auth
 #_______________________________________________________________________
 	
 	def set_speed(self,block):
@@ -325,11 +331,11 @@ class Track:
 		self.train.append(Train(n,way,block.num))
 		signals.tkm_get_block.emit(block.num)
 		signals.tkm_get_blength.emit(block.length)
+		block.occ = 1
 		bull = self.get_occ()
 		signals.tkm_get_occ.emit(bull)
 		#print(str(block.set_speed()) +" bk speed")
 		#print(str(self.blocks[62].speed) +" bk 63")
-		
 		s = self.train[n-1].set_speed(block)
 		print(str(s) + " tkm")
 		signals.tkm_get_speed.emit(s)
@@ -475,9 +481,11 @@ class Track:
 			while r <= len(self.train):
 				while self.blocks[q].occ == 0 and q < self.end-1:
 					q = q+1
-					 
+				
+				print(str(q)+" this is q") 
 				a.append(self.train[r-1].set_block(self.blocks,q))
-				self.blocks[q].occ = 1
+				self.blocks[q+1].occ = 1
+				self.blocks[q].occ = 0
 				
 				s = self.train[r-1].set_speed(self.blocks[q])
 				r = r+1
@@ -506,19 +514,19 @@ class Track:
 			if self.blocks[self.yards[0]].auth == 1:
 				#print("if")
 				if ((self.blocks[self.yards[0]-1].auth == 0 and self.blocks[self.yards[0]+1].auth == 1) or (self.blocks[self.yards[0]-1].auth == 1 and self.blocks[self.yards[0]+1].auth == 0)) and self.blocks[self.yards[0]].occ == 0:
-					self.add_train(len(train)+1,0,self.blocks[self.yards[0]-1])
+					self.add_train(len(train)+1,1,self.blocks[self.yards[0]-1])
 					self.train[len(train)-1].set_way(self.blocks,self.yards[0])
 				
 
 			elif self.blocks[self.yards[1]-1].auth == 1:
 				if ((self.blocks[self.yards[1]-2].auth == 0 and self.blocks[self.yards[1]].auth == 1) or (self.blocks[self.yards[1]-2].auth == 1 and self.blocks[self.yards[1]].auth == 0)) and self.blocks[self.yards[1]-1].occ == 0:
-					self.add_train(len(self.train)+1,0,self.blocks[self.yards[1]-1])
+					self.add_train(len(self.train)+1,1,self.blocks[self.yards[1]-1])
 					#print(str(self.yards[1]-1) + " yards 1")
 					self.train[len(self.train)-1].set_way(self.blocks,self.yards[1]-1)
 			elif self.blocks[self.yards[1]].auth == 1:
 				#print("elif")
 				if ((self.blocks[self.yards[1]-1].auth == 0 and self.blocks[self.yards[1]+1].auth == 1) or (self.blocks[self.yards[1]-1].auth == 1 and self.blocks[self.yards[1]+1].auth == 0)) and self.blocks[self.yards[1]].occ == 0:
-					self.add_train(len(self.train)+1,0,self.blocks[self.yards[1]])
+					self.add_train(len(self.train)+1,1,self.blocks[self.yards[1]])
 					self.train[len(self.train)-1].set_way(self.blocks,self.yards[1])
 
 		
