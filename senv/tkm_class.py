@@ -98,7 +98,7 @@ class Train:
 	def set_block(self,blocks,num):
 		self.block = self.past
 		if self.way == 1:
-			if block[num].switch.top == 0:
+			if blocks[num].switch.top == 0:
 				self.block = blocks[num].num+1
 			else:
 				if block.switch.state == 0:
@@ -113,8 +113,9 @@ class Train:
 					#self.block = 
 			
 		signals.tkm_get_block.emit(self.block)
+		print(str(self.block) + " block tkm")
 		signals.tkm_get_blength.emit(blocks[num].length)
-		signals.tkm_get_auth.emit(blocks[self.block-1].auth)
+		signals.tkm_get_auth.emit(blocks[int(self.block-1)].auth)
 		print(str(block[self.block-1].auth) + " tkm auth")
 		
 		if sblocks[self.block-1].beacon1 == 0 and self.blocks[self.block-1].beacon2 == 0:

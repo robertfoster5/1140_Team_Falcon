@@ -364,6 +364,7 @@ class tnm_display(QObject):
 		self.block_num = 0
 		self.block_finished = False
 		self.timeBlock = 0
+		self.dist_traveled = 0
 		signals.tkm_get_blength.connect(self.blockTime)
 		signals.tkm_get_block.connect(self.blockNum)
 		#self.blockTime(self.block_length)
@@ -531,7 +532,7 @@ class tnm_display(QObject):
 		if(self.eBrake == False):
 			self.eBrake = True
 			signals.tnm_ebrake.emit(self.eBrake)
-			print(self.eBrake)
+			print("eBrake is " + str(self.eBrake))
 
 #_______________________________________________________________________
 	#function to Update Current Temperature of the cabin
@@ -604,7 +605,7 @@ class tnm_display(QObject):
 	#Function to specify block number for each line
 	def blockNum(self,BlockNum):
 		self.block_num = BlockNum
-		print(str(self.block_num) + " block num")
+		#print(str(self.block_num) + " block num")
 		
 		#ie)If block_num = 14 , station name = Glenwood, next station block 17
 		
@@ -614,21 +615,18 @@ class tnm_display(QObject):
 		#set variables
 		self.block_length = BlockLen
 		self.time_initial = 0
-		#print(self.block_length)
+		
 		#calculations
 		curr_speed_mps = (self.curr_speed/2.237)					#MPH to mps
-		if(self.timeSeconds == 0):
-			dist_traveled = 0
-			print(str(dist_traveled) + " 0 dist")
-		else:
-			dist_traveled = curr_speed_mps*(self.timeSeconds - self.time_initial)		#distance in meters
-			print(str(dist_traveled) + " dist " + str(self.timeSeconds))
-		
-		if((self.block_length - dist_traveled) <= 0):
-			self.block_finished = True
-			signals.tnm_block_finished.emit(self.block_finished)
-			print(str(self.block_finished) + " change blocks")
 
+		self.dist_traveled += curr_speed_mps*(1)		#distance in meters
+		#print(str(self.dist_traveled) + " dist " + str(self.timeSeconds))
+			
+		if((self.block_length - self.dist_traveled) <= 0.0):
+			self.block_finished = True
+			print(str(self.block_finished) + " change blocks")
+			self.dist_traveled = 0
+			signals.tnm_block_finished.emit(self.block_finished)
 			
 	
 	#Function to set Authority from track model signal
