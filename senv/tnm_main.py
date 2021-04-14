@@ -344,15 +344,18 @@ class tnm_display(QObject):
 		
 	#Define variables to be used in tnm_display
 		self.train1 = "Train 1 Information"
+		self.time_initial = 0
+		self.timeSeconds = 0
 	#power connected from tnc
-		self.curr_power = 200000
-		#signals.tnc_power.connect(self.SetPower)
+		self.curr_power = 0
+		signals.tnc_power.connect(self.SetPower)
 		self.curr_speed = 0.0
+		self.curr_accl = 0.0
 		self.comm_speed = 0.0
 		signals.tkm_get_speed.connect(self.SetCommSpeed)
 		#train starts at rest v
-		self.velocity = 0.0					#Used as value for inital speed for curr_speed calculation. Then is set to curr_speed for next calculation
-		self.curr_accleration = 0.0
+		self.SpeedN1 = 0.0					#Used as value for inital speed for curr_speed calculation. Then is set to curr_speed for next calculation
+		self.AcclN1 = 0.0
 	#authority connected from tkm
 		self.block_authority = False
 		signals.tkm_get_train_auth.connect(self.SetAuthority)
@@ -363,7 +366,7 @@ class tnm_display(QObject):
 		self.timeBlock = 0
 		signals.tkm_get_blength.connect(self.blockTime)
 		signals.tkm_get_block.connect(self.blockNum)
-		self.blockTime(self.block_length)
+		#self.blockTime(self.block_length)
 	#brake states
 		self.Brake = False
 		self.eBrake = False
@@ -393,7 +396,6 @@ class tnm_display(QObject):
 		self.curr_temp = 68		#degrees Fahrenheit
 		self.announce = "Watch your step. Have a great day!"
 		signals.tnc_announcement.connect(self.SetAnnounce)
-		self.timeSeconds = 0
 
 		#Defining Actions for specific UI Interactions
 		signals.time.connect(self.update_MoveStat)						#Update Movement Statistics
@@ -405,6 +407,8 @@ class tnm_display(QObject):
 		signals.time.connect(self.DispAnnounce)							#Display current Announcements
 		
 		signals.time.connect(self.getTime)
+		
+		signals.time.connect(self.blockTime)
 		
 		if(signals.time.connect(self.GetDatetime)):							#Display running time
 			self.ui.dateTimeEdit.setDateTime(QtCore.QDateTime.currentDateTime())
@@ -422,9 +426,10 @@ class tnm_display(QObject):
 	#function to update Movement Statistics
 	def update_MoveStat(self):
 		#Calculate current speed
-		self.curr_speed = set_curr_speed(self.timeSeconds, self.eBrake, self.Brake, self.block_authority, self.curr_power, self.Occupancy, self.velocity)
-		#self.curr_speed = self.meterToMile(self.curr_speed)				#mps
-		self.velocity = self.curr_speed
+		self.curr_speed, self.current_accl = set_curr_speed(self.timeSeconds, self.eBrake, self.Brake, self.block_authority, self.curr_power, self.Occupancy, self.SpeedN1, self.AcclN1)
+		#Set At - 1 variables for use in next sec. speed calculation
+		self.SpeedN1 = self.curr_speed
+		self.AcclN1 = self.current_accl
 		
 		#Update current speed given power value
 		self.ui.lineEdit.setText(str(self.curr_speed) + " mph")
@@ -599,26 +604,31 @@ class tnm_display(QObject):
 	#Function to specify block number for each line
 	def blockNum(self,BlockNum):
 		self.block_num = BlockNum
+		print(str(self.block_num) + " block num")
 		
 		#ie)If block_num = 14 , station name = Glenwood, next station block 17
 		
 	
 	#Function to take in block length and calculate when train reaches next block
-	def blockTime(self,BlockLen):
+	def blockTime(self, BlockLen):
 		#set variables
 		self.block_length = BlockLen
-		
+		self.time_initial = 0
 		#print(self.block_length)
 		#calculations
-		curr_speed_mps = (self.curr_speed/2.237)						#MPH to mps
-		if (self.block_length == 0):
-			time_block = 10
+		curr_speed_mps = (self.curr_speed/2.237)					#MPH to mps
+		if(self.timeSeconds == 0):
+			dist_traveled = 0
+			print(str(dist_traveled) + " 0 dist")
 		else:
-			time_block = (curr_speed_mps/self.block_length)
-			self.timeBlock = time_block
+			dist_traveled = curr_speed_mps*(self.timeSeconds - self.time_initial)		#distance in meters
+			print(str(dist_traveled) + " dist " + str(self.timeSeconds))
 		
-		#self.block_finished = True
-		signals.tnm_block_finished.emit(self.block_finished)
+		if((self.block_length - dist_traveled) <= 0):
+			self.block_finished = True
+			signals.tnm_block_finished.emit(self.block_finished)
+			print(str(self.block_finished) + " change blocks")
+
 			
 	
 	#Function to set Authority from track model signal
@@ -649,6 +659,7 @@ class tnm_display(QObject):
 	#Function for TIME
 	def getTime(self, time_sec, time_min, time_hr, time_tot):
 		self.timeSeconds = time_sec
+		
 		finished = self.timeBlock - 1
 		if(finished == 0):
 			self.block_finished = True
