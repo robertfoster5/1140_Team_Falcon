@@ -420,9 +420,6 @@ class tnm_display(QObject):
 		self.ui.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
 		
 		self.ui.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
-		self.ui.pushButton_2.clicked.connect(self.update_TrainStat)
-		self.ui.pushButton_2.clicked.connect(self.update_RouteInfo)
-		self.ui.pushButton_2.clicked.connect(self.update_MoveStat)
 		
 	
 #_______________________________________________________________________
@@ -444,6 +441,9 @@ class tnm_display(QObject):
 		else:
 			self.ui.lineEdit_2.setText("Off")
 		
+		#Update the curr_accl rate
+		self.ui.lineEdit_3.setText(str(self.curr_accl) + " mph2")
+		
 		#Don't allow changes to lineEdits
 		self.ui.lineEdit.setReadOnly(True)
 		self.ui.lineEdit_2.setReadOnly(True)
@@ -458,7 +458,7 @@ class tnm_display(QObject):
 		signals.tnm_comm_speed.emit(self.comm_speed)
 		
 		#Display stopping distance based on current speed
-		#stopping_dist(set_curr_speed(self.curr_power, self.Occupancy))
+		#stopping_dist(self.curr_speed)
 
 #_______________________________________________________________________	
 	#function to update Train Statistics (Mass, Pass & Crew count)
@@ -487,8 +487,11 @@ class tnm_display(QObject):
 		
 		#Update Route Line
 		self.ui.lineEdit_9.setText(self.RouteName)
-		#Update Next Station
+		
+		#Update Current and Next Station based on Line and direction
+		self.ui.lineEdit_19.setText(self.CurrStation)
 		self.ui.lineEdit_10.setText(self.NextStation)
+		
 		#Update Doors Status
 		if (self.DoorStatus == False):
 			self.ui.lineEdit_11.setText("Closed")
