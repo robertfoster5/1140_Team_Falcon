@@ -382,7 +382,9 @@ class tnm_display(QObject):
 		self.curr_mass = 0
 		self.Occupancy = pass_crew_count(self.pass_count, self.crew_count)
 		self.RouteName = "Green Line"
-		self.NextStation = "Dormont"
+		self.TrainDirection = "stopped"
+		self.CurrStation = " --- "
+		self.NextStation = " --- "
 		self.DoorStatus = False
 	#Beacon ID connected from tkm
 		self.beacon_bin = 0b00000000
@@ -437,10 +439,10 @@ class tnm_display(QObject):
 		#Send the new calculated current speed to Train Controller
 		signals.tnm_curr_speed.emit(self.curr_speed)
 		#Update brake status
-		if (self.Brake == False):
-			self.ui.lineEdit_2.setText("Off")
-		else:
+		if (self.Brake == True or self.eBrake == True):
 			self.ui.lineEdit_2.setText("On")
+		else:
+			self.ui.lineEdit_2.setText("Off")
 		
 		#Don't allow changes to lineEdits
 		self.ui.lineEdit.setReadOnly(True)
@@ -596,11 +598,154 @@ class tnm_display(QObject):
 			self.lights_Tun == False
 		elif(self.beacon_bin[3] == 1):
 			self.lights_Tun == True
-		#4th bit 	0 Left/1 Right directionality
+		#3rd bit - 0 Left(decrement)/1 Right(increment) directionality
+		if(self.beacon_bin[4] == 0):
+			self.TrainDirection = "counting down"
+		elif(self.beacon_bin[4] == 1):
+			self.TrainDirection = "counting up"
 		
-		#Add beacon specification here (for last 5 bits)	Dormont 01010 - station 10
-		if(self.beacon_bin[5:] == 0b01010):
-			self.NextStation = "Dormont"
+		#Add beacon specification here (for last 5 bits)
+		#Green Line stations defined here, Numbers start count from 1? Green line first?
+		if(self.RouteName == "Green Line" and self.TrainDirection == "counting up"):
+			if(self.beacon_bin[5:] == 0b00001):
+				self.CurrStation = "Pioneer"
+				self.NextStation = "EdgeBrook"
+			elif(self.beacon_bin[5:] == 0b00010):
+				self.CurrStation = "EdgeBrook"
+				self.NextStation = "Oakmont"
+			elif(self.beacon_bin[5:] == 0b00011):
+				self.CurrStation = "Oakmont"
+				self.NextStation = "Whited"
+			elif(self.beacon_bin[5:] == 0b00100):
+				self.CurrStation = "Whited"
+				self.NextStation = "South Bank"
+			elif(self.beacon_bin[5:] == 0b00101):
+				self.CurrStation = "South Bank"
+				self.NextStation = "Central"
+			elif(self.beacon_bin[5:] == 0b00110):
+				self.CurrStation = "Central"
+				self.NextStation = "Inglewood"
+			elif(self.beacon_bin[5:] == 0b00111):
+				self.CurrStation = "Inglewood"
+				self.NextStation = "Overbrook"
+			elif(self.beacon_bin[5:] == 0b01000):
+				self.CurrStation = "Overbrook"
+				self.NextStation = "Glenbury"
+			elif(self.beacon_bin[5:] == 0b01001):
+				self.CurrStation = "Glenbury"
+				self.NextStation = "Dormont"
+			elif(self.beacon_bin[5:] == 0b01010):
+				self.CurrStation = "Dormont"
+				self.NextStation = "Mt Lebanon"
+			elif(self.beacon_bin[5:] == 0b01011):
+				self.CurrStation = "Mt Lebanon"
+				self.NextStation = "Poplar"
+			elif(self.beacon_bin[5:] == 0b01100):
+				self.CurrStation = "Poplar"
+				self.NextStation = "Castle Shannon"
+			elif(self.beacon_bin[5:] == 0b01101):
+				self.CurrStation = "Castle Shannon"
+				#self.TrainDirection = "counting down"
+				self.NextStation = "Poplar"
+			else:
+				self.NextStation = " ---- "
+		#Train Going reverse direction on the green line
+		if(self.RouteName == "Green Line" and self.TrainDirection == "counting down"):
+			if(self.beacon_bin[5:] == 0b00001):
+				self.CurrStation = "Pioneer"
+				#self.TrainDirection = "counting up"
+				self.NextStation = "EdgeBrook"
+			elif(self.beacon_bin[5:] == 0b00010):
+				self.CurrStation = "EdgeBrook"
+				self.NextStation = "Pioneer"
+			elif(self.beacon_bin[5:] == 0b00011):
+				self.CurrStation = "Oakmont"
+				self.NextStation = "EdgeBrook"
+			elif(self.beacon_bin[5:] == 0b00100):
+				self.CurrStation = "Whited"
+				self.NextStation = "Oakmont"
+			elif(self.beacon_bin[5:] == 0b00101):
+				self.CurrStation = "South Bank"
+				self.NextStation = "Whited"
+			elif(self.beacon_bin[5:] == 0b00110):
+				self.CurrStation = "Central"
+				self.NextStation = "South Bank"
+			elif(self.beacon_bin[5:] == 0b00111):
+				self.CurrStation = "Inglewood"
+				self.NextStation = "Central"
+			elif(self.beacon_bin[5:] == 0b01000):
+				self.CurrStation = "Overbrook"
+				self.NextStation = "Inglewood"
+			elif(self.beacon_bin[5:] == 0b01001):
+				self.CurrStation = "Glenbury"
+				self.NextStation = "Overbrook"
+			elif(self.beacon_bin[5:] == 0b01010):
+				self.CurrStation = "Dormont"
+				self.NextStation = "Glenbury"
+			elif(self.beacon_bin[5:] == 0b01011):
+				self.CurrStation = "Mt Lebanon"
+				self.NextStation = "Dormont"
+			elif(self.beacon_bin[5:] == 0b01100):
+				self.CurrStation = "Poplar"
+				self.NextStation = "Mt Lebanon"
+			elif(self.beacon_bin[5:] == 0b01101):
+				self.CurrStation = "Castle Shannon"
+				self.NextStation = "Poplar"
+			else:
+				self.NextStation = " ---- "
+		#Route names for the Red Line going to stations incrementally
+		elif(self.RouteName == "Red Line" and self.TrainDirection == "counting up"):
+			if(self.beacon_bin[5:] == 0b00001):
+				self.CurrStation = "ShadySide"
+				self.NextStation = "Herron Ave"
+			elif(self.beacon_bin[5:] == 0b00010):
+				self.CurrStation = "Herron Ave"
+				self.NextStation = "Penn Station"
+			elif(self.beacon_bin[5:] == 0b00011):
+				self.CurrStation = "Penn Station"
+				self.NextStation = "Steel Plaza"
+			elif(self.beacon_bin[5:] == 0b00100):
+				self.CurrStation = "Steel Plaza"
+				self.NextStation = "First Ave"
+			elif(self.beacon_bin[5:] == 0b00101):
+				self.CurrStation = "First Ave"
+				self.NextStation = "Station Square"
+			elif(self.beacon_bin[5:] == 0b00110):
+				self.CurrStation = "Station Square"
+				self.NextStation = "South Hills"
+			elif(self.beacon_bin[5:] == 0b00111):
+				self.CurrStation = "South Hills"
+				#self.TrainDirection = "counting down"
+				self.NextStation = "Station Square"
+			else:
+				self.NextStation = " ---- "
+		#Route names for the Red Line going to stations incrementally
+		elif(self.RouteName == "Red Line" and self.TrainDirection == "counting down"):
+			if(self.beacon_bin[5:] == 0b00001):
+				self.CurrStation = "ShadySide"
+				#self.TrainDirection = "counting up"
+				self.NextStation = "Herron Ave"
+			elif(self.beacon_bin[5:] == 0b00010):
+				self.CurrStation = "Herron Ave"
+				self.NextStation = "ShadySide"
+			elif(self.beacon_bin[5:] == 0b00011):
+				self.CurrStation = "Penn Station"
+				self.NextStation = "Herron Ave"
+			elif(self.beacon_bin[5:] == 0b00100):
+				self.CurrStation = "Steel Plaza"
+				self.NextStation = "Penn Station"
+			elif(self.beacon_bin[5:] == 0b00101):
+				self.CurrStation = "First Ave"
+				self.NextStation = "Steel Plaza"
+			elif(self.beacon_bin[5:] == 0b00110):
+				self.CurrStation = "Station Square"
+				self.NextStation = "First Ave"
+			elif(self.beacon_bin[5:] == 0b00111):
+				self.CurrStation = "South Hills"
+				self.NextStation = "Station Square"
+			else:
+				self.NextStation = " ---- "
+		
 	
 	#Function to specify block number for each line
 	def blockNum(self,BlockNum):
