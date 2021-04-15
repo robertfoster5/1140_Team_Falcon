@@ -585,7 +585,7 @@ class tnm_display(QObject):
 		
 		self.beacon_bin = bin(tkm_beacon)
 		#remove first two char: 0b
-		beacon_bin = beacon_bin[2:]
+		self.beacon_bin = self.beacon_bin[2:]
 		#check if first value is: 1 = green line/0 = red line
 		if(self.beacon_bin[2] == 0):
 			self.RouteName = "Red Line"
@@ -657,6 +657,13 @@ class tnm_display(QObject):
 	#Function for TIME
 	def getTime(self, time_sec, time_min, time_hr, time_tot):
 		self.timeSeconds = time_sec
+		if(time_min > 0):
+			time_sec = time_sec + (time_min*60)
+			self.timeSeconds = time_sec
+		elif(time_min > 0 and time_hr > 0):
+			time_sec = time_sec + (time_min*60)
+			time_sec = time_sec + ((time_hr*60)*60)
+			self.timeSeconds = time_sec
 		
 		finished = self.timeBlock - 1
 		if(finished == 0):

@@ -56,11 +56,13 @@ def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, Sp
 				force = (Power/curr_speed)
 				curr_accl = train_dec_service
 				curr_speed = meterToMile(SpeedN1 - ((time_initial + 1)/2)*(curr_accl))		#timeSec - time_initial 
+				if(curr_speed < 0.0):
+					curr_speed = 0.0
 			elif(SpeedN1 == 0.0):
 				force = 0.0
 				curr_accl = 0.0
 				curr_speed = 0.0
-				print("Train has stopped, eBrake")
+				print("Train has stopped, service")
 		#if authority is true, calculate speed based on Power and Vn-1 speed, using Max accleration
 		elif(Authority == True and SerBrake == True):
 			#time_initial = 0
@@ -76,6 +78,8 @@ def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, Sp
 				force = (Power/curr_speed)
 				curr_accl = train_dec_service
 				curr_speed = meterToMile(SpeedN1 + ((time_initial + 1)/2)*(curr_accl))			#Calculate Vn = Vn-1 + T/2(an +an-1) and convert to mph
+				if(curr_speed < 0.0):
+					curr_speed = 0.0
 		#else if authority is true, calculate speed based on Power and Vn-1 speed, using Max accleration
 		elif(Authority == True and SerBrake == False):
 			#time_initial = 0
