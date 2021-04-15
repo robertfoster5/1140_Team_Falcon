@@ -14,7 +14,7 @@ class PowerSystem():
         self.set_speed = 0
         self.command_speed = 0
         self.current_speed = 0
-        self.kp = 6171
+        self.kp = 2000
         self.ki = 0
 
     def update_power(self):
@@ -44,3 +44,9 @@ class PowerSystem():
     def set_coeffs(self,p,i):
         self.kp = p
         self.ki = i
+
+if __name__ == '__main__':
+    a = PowerSystem()
+    a.command_speed = 10
+    a.set_speed = 10
+    a.update_power()

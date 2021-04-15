@@ -683,7 +683,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "TrainModel"))
         self.label_23.setText(_translate("MainWindow", "Train 1 Information"))
         self.label.setText(_translate("MainWindow", "Movement Statistics"))
         self.label_2.setText(_translate("MainWindow", "Current Speed:"))

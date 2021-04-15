@@ -342,7 +342,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "CTC"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_transit), _translate("MainWindow", "Transit System"))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_schedule), _translate("MainWindow", "Schedule"))
         self.label_3.setText(_translate("MainWindow", "Dispatch Train (Manual):"))

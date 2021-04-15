@@ -4,7 +4,7 @@ from PyQt5.QtCore import QObject, QThread, pyqtSignal
 class Signal(QObject):
     #global
     time = pyqtSignal(int,int,int,int)
-    
+
     #ctc signals
     ctc_authority = pyqtSignal(list)
     ctc_suggested_speed = pyqtSignal(list)
@@ -21,6 +21,7 @@ class Signal(QObject):
     tkm_get_occ = pyqtSignal(list)
     tkm_get_speed = pyqtSignal(int)
     tkm_get_auth = pyqtSignal(list)
+    tkm_get_train_auth = pyqtSignal(int)
     tkm_get_beacon = pyqtSignal(int)
     tkm_get_envi_temp = pyqtSignal(int)
     tkm_get_sales = pyqtSignal(int)
@@ -31,7 +32,7 @@ class Signal(QObject):
     #train model signals
     tnm_comm_speed = pyqtSignal(float)
     tnm_curr_speed = pyqtSignal(float)
-    tnm_authority = pyqtSignal(int)
+    tnm_authority = pyqtSignal(bool)
     tnm_beaconID = pyqtSignal(int)
     tnm_ebrake = pyqtSignal(bool)
     tnm_sendyard = pyqtSignal(bool)
@@ -43,6 +44,11 @@ class Signal(QObject):
     tnc_service_brake = pyqtSignal(bool)
     tnc_announcement = pyqtSignal(str)
     tnc_power = pyqtSignal(float)
+    tnc_cab_light = pyqtSignal(bool)
+    tnc_tunnel_light = pyqtSignal(bool)
+    tnc_high_beam_light = pyqtSignal(bool)
+    tnc_left_door = pyqtSignal(bool) #1 for open 0 for closed
+    tnc_right_door = pyqtSignal(bool) #1 for open 0 for closed
 
 
 signals = Signal()

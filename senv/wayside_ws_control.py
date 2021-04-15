@@ -17,12 +17,10 @@ class Wayside:
 		self.load_plc()
 	
 	def update_wayside(self):
-		print("ws: update_wayside")
 		self.cross_change()
 		self.switch_state_change()
 			
 	def m_order_block(self, order):
-		print("ws: m order block")
 		temp_block = []
 		if order != "0":
 			for i in range(len(order)):
@@ -49,7 +47,7 @@ class Wayside:
 				self.bloc_occ.append("0")
 					
 	def m_order_switch(self, order):
-		print("ws: m order switch")
+		
 		temp_switch = []
 		temp = self.switch_state
 		self.switch_state = []
@@ -64,7 +62,7 @@ class Wayside:
 				self.switch_state.append("0")
 					
 	def cross_change(self):
-		print("cross_change")
+		
 		if self.num_cross != 0:
 			cr1 = self.cr_connect[0]
 			#index1 = self.cross_name.index(cr1)
@@ -75,7 +73,7 @@ class Wayside:
 				self.cross_state[0] = "0"
 	
 	def switch_state_change(self):
-		print("switch_change")
+		
 		temp_count = 0
 		self.switch_state = []
 		if self.num_switch > 0:

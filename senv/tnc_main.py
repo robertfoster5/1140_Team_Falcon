@@ -9,6 +9,7 @@ from signals import signals
 class TrainControllerMain(QObject):
 
     def __init__(self):
+        print("train controller running")
         super().__init__()
 
         self.MainWindow = QtWidgets.QMainWindow()

@@ -35,10 +35,28 @@ class TrainController(QObject):
         signals.tnm_curr_speed.connect(self.set_curr_speed)
         signals.tnm_authority.connect(self.set_authority)
 
+        self.init_periph()
+
+    def init_periph(self):
+        self.tunnel_light = False;
+        self.cabin_light = True;
+        self.high_beam_light = False;
+
+        signals.tnc_cab_light.emit(True)
+        signals.tnc_tunnel_light.emit(False)
+        signals.tnc_high_beam_light.emit(False)
+
+        self.right_door = False;
+        self.left_door = False;
+
+        signals.tnc_left_door.emit(False)
+        signals.tnc_right_door.emit(False)
 
     def set_command_speed(self,num):
         self.powsys.command_speed = num
         if(self.powsys.set_speed > num):
+            self.powsys.set_speed = num
+        if(self.auto_mode):
             self.powsys.set_speed = num
 
     def set_curr_speed(self,num):
@@ -65,7 +83,7 @@ class TrainController(QObject):
 
     def run(self):
         if(self.auto_mode):
-            if (self.at_station and not self.authority and self.powsys.current_speed == 0):
+            if (self.at_station and (not self.authority) and self.powsys.current_speed == 0):
                 self.left_door = True
 
             if(self.emergency_brake):
@@ -89,15 +107,22 @@ class TrainController(QObject):
 
             signals.tnc_service_brake.emit(self.service_brake)
 
-            if(self.in_tunnel):
-                self.tunnel_light = True
-            else:
-                self.tunnel_light = False
+            #if(self.in_tunnel):
+            #    self.tunnel_light = True
+            #else:
+            #    self.tunnel_light = False
+
+        print(str(round(self.powsys.command_speed,1)) + " comm speed")
+        #print(round(self.powsys.set_speed,1))
 
         self.powsys.update_power()
         self.updated.emit()
 
-
+if __name__ == '__main__':
+    a = TrainController()
+    a.set_command_speed(10)
+    a.set_authority(True)
+    a.run()
 
 
 
