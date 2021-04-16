@@ -11,11 +11,16 @@ class Signal(QObject):
     ctc_maintenance = pyqtSignal(list)
 
     #wayside signals
-    way_occupancy = pyqtSignal(list)
-    way_cross_state = pyqtSignal(list)
-    way_switch_state = pyqtSignal(list)
-    way_authority = pyqtSignal(list)
-    way_speed = pyqtSignal(list)
+    way_green_occupancy = pyqtSignal(list)
+    way_green_cross_state = pyqtSignal(list)
+    way_green_switch_state = pyqtSignal(list)
+    way_green_authority = pyqtSignal(list)
+    way_green_speed = pyqtSignal(list)
+    way_red_occupancy = pyqtSignal(list)
+    way_red_cross_state = pyqtSignal(list)
+    way_red_switch_state = pyqtSignal(list)
+    way_red_authority = pyqtSignal(list)
+    way_red_speed = pyqtSignal(list)
 
     #track model signals
     tkm_get_occ = pyqtSignal(list)
