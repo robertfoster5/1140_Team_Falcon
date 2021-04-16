@@ -18,7 +18,6 @@ class TimeMain(QObject):
         self.time_thread = QThread()
         self.time = timing()
         self.time.moveToThread(self.time_thread)
-        self.time_thread.started.connect(self.time.start)
         self.time_thread.start()
 
         self.ui.label_5.setText(" " + str(1))

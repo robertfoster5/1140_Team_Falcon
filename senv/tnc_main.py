@@ -24,10 +24,25 @@ class TrainControllerMain(QObject):
 
         self.controller.updated.connect(self.update_gui)
 
+        self.ui.brake_button.clicked.connect(self.emergency_brake)
+
     def update_gui(self):
         self.ui.curr_speed_text.setText(str(int(self.controller.powsys.current_speed * 2.237)) + " mph")
         self.ui.max_speed_text.setText(str(int(self.controller.powsys.command_speed * 2.237)) + " mph")
         self.ui.power_text.setText(str(int(self.controller.powsys.power/1000.0)) + " kW")
+
+    def emergency_brake(self):
+        if not self.controller.emergency_brake:
+            self.ui.brake_button.setText("CANCEL")
+            self.ui.brake_button.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
+            self.controller.emergency_brake = True
+            self.controller.announce = "EMERGENCY BRAKING!\n\nREMAIN SEATED"
+        #else:
+        #    self.brake_button.setText("EMERGENCY BRAKE")
+        #    self.brake_button.setStyleSheet("background-color: red; color: white;")
+        #    self.brake = False;
+        #    self.ui.textBrowser_2.setText("Off")
+        #    self.announce_text.clear()
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)

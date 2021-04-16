@@ -15,12 +15,12 @@ class timing(QObject):
 		self.time = 0
 
 		self.timer = QTimer()
+		self.timer.setInterval(1000)
+		self.timer.start()
 
 		self.timer.timeout.connect(self.time_incr)
 		signals.time_multiplier.connect(self.set_multiplier)
 
-	def start(self):
-		self.timer.start()
 
 	def time_incr(self):
 		self.sec = self.time - (self.check*60)
