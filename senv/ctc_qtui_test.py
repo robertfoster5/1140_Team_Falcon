@@ -22,9 +22,6 @@ class Ui_MainWindow(object):
         self.tabWidget.setObjectName("tabWidget")
         self.tab_transit = QtWidgets.QWidget()
         self.tab_transit.setObjectName("tab_transit")
-        self.graphicsView = QtWidgets.QGraphicsView(self.tab_transit)
-        self.graphicsView.setGeometry(QtCore.QRect(20, 10, 731, 201))
-        self.graphicsView.setObjectName("graphicsView")
         self.tabWidget.addTab(self.tab_transit, "")
         self.tabWidget_2 = QtWidgets.QTabWidget(self.centralwidget)
         self.tabWidget_2.setGeometry(QtCore.QRect(10, 290, 1031, 401))
@@ -342,7 +339,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "CTC"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_transit), _translate("MainWindow", "Transit System"))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_schedule), _translate("MainWindow", "Schedule"))
         self.label_3.setText(_translate("MainWindow", "Dispatch Train (Manual):"))
@@ -352,7 +349,7 @@ class Ui_MainWindow(object):
         self.btnDispatchMan.setText(_translate("MainWindow", "Dispatch Train"))
         self.comboStation.setItemText(0, _translate("MainWindow", "Edgebrook"))
         self.comboStation.setItemText(1, _translate("MainWindow", "Pioneer"))
-        self.comboStation.setItemText(2, _translate("MainWindow", "Station X"))
+        self.comboStation.setItemText(2, _translate("MainWindow", "Falcon"))
         self.comboStation.setItemText(3, _translate("MainWindow", "Whited"))
         self.comboStation.setItemText(4, _translate("MainWindow", "South Bank"))
         self.comboStation.setItemText(5, _translate("MainWindow", "Central"))

@@ -301,7 +301,7 @@ class ctc_qtui_test(QObject):
         green_station_info = [
          TrainStation([1],[[8,7,6,5,4,3,2]]), # Edgebrook
          TrainStation([2],[[1,0,12,13,14]]), # Pioneer
-         TrainStation([0,3],[[15,14,13,12,11,10,9],[15,16,17,18,19,20]]), # Station X
+         TrainStation([0,3],[[15,14,13,12,11,10,9],[15,16,17,18,19,20]]), # Falcon
          TrainStation([2,4],[[21,20,19,18,17,16,15],[21,22,23,24,25,26,27,28,29]]), # Whited
          TrainStation([5],[[30,31,32,33,34,35,36,37]]), # South Bank
          TrainStation([3,6],[[140,141,142,143,144,145,146,147,148,149,28,27,26,25,24,23,22],[38,39,40,41,42,43,44,45,46]]), # Central
@@ -318,6 +318,102 @@ class ctc_qtui_test(QObject):
         
         green_station_pathway = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,11,10,9,7,6,5,3,2] 
         
+        
+        # Green Line Block Information
+        red_block_info = [ # block length (m), block speed limit (km/hr), next-block-index (-1 if none),bidirectional-block-index (-1 if none), switch-neighbor-index (-1 if none)
+         [50,40,15,1,-1], # Section A (Bidirectional)
+         [50,40,0,2,-1],
+         [50,40,1,3,-1],
+         [50,40,2,4,-1], # Section B (Bidirectional)
+         [50,40,3,5,-1],
+         [50,40,4,6,-1],
+         [75,40,5,7,-1], # Section C (Bidirectional)
+         [75,40,6,8,-1],
+         [75,40,7,9,-1],
+         [75,40,8,10,-1], # Section D (Bidirectional)
+         [75,40,9,11,-1],
+         [75,40,10,12,-1],
+         [70,40,11,13,-1], # Section E (Bidirectional)
+         [60,40,12,14,-1],
+         [60,40,13,15,-1],
+         [50,40,14,16,0], # Section F (Bidirectional)
+         [200,55,15,17,-1],
+         [400,70,16,18,-1],
+         [400,70,17,19,-1],
+         [200,70,18,20,-1],
+         [100,55,19,21,-1], # Section G (Bidirectional)
+         [100,55,20,22,-1],
+         [100,55,21,23,-1],
+         [50,70,22,24,-1], # Section H (Bidirectional)
+         [50,70,23,25,-1],
+         [50,70,24,26,-1],
+         [50,70,25,27,75],
+         [50,70,26,28,-1],
+         [60,70,27,29,-1],
+         [60,70,28,30,-1],
+         [50,70,29,31,-1],
+         [50,70,30,32,71],
+         [50,70,31,33,-1],
+         [50,70,32,34,-1],
+         [50,70,33,35,-1],
+         [50,70,34,36,-1],
+         [50,70,35,37,-1],
+         [50,70,36,38,70],
+         [50,70,37,39,-1],
+         [60,70,38,40,-1],
+         [60,70,39,41,-1],
+         [50,70,40,42,-1],
+         [50,70,41,43,66],
+         [50,70,42,44,-1],
+         [50,70,43,45,-1],
+         [75,70,44,46,-1], # Section I (Bidirectional)
+         [75,70,45,47,-1],
+         [75,70,46,48,-1],
+         [50,60,47,49,-1], # Section J (Bidirectional)
+         [50,60,48,50,-1],
+         [50,55,49,51,-1],
+         [43.2,55,50,52,65],
+         [50,55,51,53,-1],
+         [50,55,52,54,-1],
+         [75,55,53,55,-1], # Section K (Bidirectional)
+         [75,55,54,56,-1],
+         [75,55,55,57,-1],
+         [75,55,56,58,-1], # Section L (Bidirectional)
+         [75,55,57,59,-1],
+         [75,55,58,60,-1],
+         [75,55,59,61,-1], # Section M (Bidirectional)
+         [75,55,60,62,-1],
+         [75,55,61,63,-1],
+         [75,55,62,64,-1], # Section N (Bidirectional)
+         [75,55,63,65,-1],
+         [75,55,64,51,-1],
+         [50,55,42,67,-1], # Section O (Bidirectional)
+         [50,55,66,68,-1], # Section P (Bidirectional)
+         [50,55,67,69,-1],
+         [50,55,68,70,-1],
+         [50,55,69,37,-1], # Section Q (Bidirectional)
+         [50,55,31,72,-1], # Section R (Bidirectional)
+         [50,55,71,73,-1], # Section S (Bidirectional)
+         [50,55,72,74,-1],
+         [50,55,73,75,-1],
+         [50,55,74,26,-1] # Section T (Bidirectional)
+        ]
+        
+        """
+        # Red track station information
+        red_station_info = [
+         TrainStation([1,2],[[6,7],[6,5,4,3,2,1,0]]), # Shadyside
+         TrainStation([0,2],[[8,7],[8,9,10,11,12,13,14]]), # Yard
+         TrainStation([0,1,3],[[15,14,13,12,11,10,9],[15,0,1,2,3,4,5],[15,16,17,18,19]]), # Herron Ave
+         TrainStation([2,4],[[20,19,18,17,16],[20,21,22,23]]), # Swissville
+         TrainStation([3,5],[[],[]]), # Penn Station
+         TrainStation([],[[]]), # Steel Plaza
+         TrainStation([],[[]]), # First Ave
+         TrainStation([],[[]]), # Station Square
+         TrainStation([],[[]]), # South Hills Junction
+         
+        ] # Station-index Block-index position
+        """
         
         self.ui.model = TableModel(global_schedule_display,header)
         
