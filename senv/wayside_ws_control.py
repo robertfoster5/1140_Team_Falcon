@@ -12,13 +12,10 @@ class Wayside:
 		self.block_occ = []
 		self.sw_connect = []
 		self.cr_connect = []
+		self.b_speed = []
 		self.num_switch = 0
 		self.num_cross = 0
 		self.load_plc()
-	
-	def update_wayside(self):
-		self.cross_change()
-		self.switch_state_change()
 			
 	def m_order_block(self, order):
 		temp_block = []
@@ -47,7 +44,6 @@ class Wayside:
 		self.block_occ = temp_occ
 					
 	def m_order_switch(self, order):
-		
 		temp_switch = []
 		temp = self.switch_state
 		self.switch_state = []
@@ -62,18 +58,14 @@ class Wayside:
 				self.switch_state.append("0")
 					
 	def cross_change(self):
-		
 		if self.num_cross != 0:
 			cr1 = self.cr_connect[0]
-			#index1 = self.cross_name.index(cr1)
-			#print(index1)
 			if self.block_occ[19-2] == "1" or self.block_occ[19-1] == "1" or self.block_occ[19] == "1":
 				self.cross_state[0] = "1"
 			else:
 				self.cross_state[0] = "0"
 	
 	def switch_state_change(self):
-		
 		temp_count = 0
 		self.switch_state = []
 		if self.num_switch > 0:
@@ -93,7 +85,7 @@ class Wayside:
 				else:
 					index3 = self.block_name.index(sw3)
 					index4 = self.block_name.index(sw4)
-				if self.authority[int(index1)] == "1" and self.authority[int(index2)] == "1":
+				if self.authority[int(index1)] == "1" and self.authority[int(index2)] == "1" and self.authority[int(index3)] and sw3 != "yard":
 					self.switch_state.append("0")
 				elif self.authority[int(index3)] == "1" and sw4 == "yard" and self.authority[int(index2)] == "0":
 					self.switch_state.append("1")
