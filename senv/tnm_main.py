@@ -331,6 +331,9 @@ class tnm_display(QObject):
 		tnm_beacondID = pyqtSignal(int)
 		tnm_ebrake = pyqtSignal(bool)
 		tnm_cab_temp = pyqtSignal(int)
+		tnm_sendYard = pyqtSignal(int)
+		tnm_block_finished = pyqtSignal(bool)
+		tnm_curr_station = pyqtSignal(string)
 
 		
 	#Define variables to be used in tnm_display
@@ -373,9 +376,9 @@ class tnm_display(QObject):
 		self.curr_mass = 0
 		self.Occupancy = pass_crew_count(self.pass_count, self.crew_count)
 		self.RouteName = "Green Line"
-		self.TrainDirection = "stopped"
-		self.CurrStation = " --- "
-		self.NextStation = " Dormont "
+		self.TrainDirection = 1
+		self.CurrStation = "Dormont"
+		self.NextStation = " --- "
 		self.DoorStatus = False
 	#Beacon ID connected from tkm
 		self.beacon_bin = 0b00000000
@@ -449,7 +452,7 @@ class tnm_display(QObject):
 		signals.tnm_comm_speed.emit(self.comm_speed)
 		
 		#Display stopping distance based on current speed
-		stopping_dist(self.curr_speed)
+		stopping_dist(self.comm_speed)
 
 #_______________________________________________________________________	
 	#function to update Train Statistics (Mass, Pass & Crew count)
@@ -483,7 +486,7 @@ class tnm_display(QObject):
 		self.ui.lineEdit_19.setText(self.CurrStation)
 		self.ui.lineEdit_10.setText(self.NextStation)
 		
-		#Update Doors Status
+		#Update Doors Status		#Doors will be held open for one minute
 		if (self.DoorStatus == False):
 			self.ui.lineEdit_11.setText("Closed")
 		else:
@@ -491,7 +494,7 @@ class tnm_display(QObject):
 			
 		#Update Beacon ID Status
 		if (self.BeaconIDStatus == False):
-			self.ui.lineEdit_12.setText("Error")
+			self.ui.lineEdit_12.setText("Waiting")
 		else:
 			self.ui.lineEdit_12.setText("Recieved")
 			signals.tnm_beaconID.emit(self.BeaconID)					#emit int BeaconID
@@ -529,6 +532,7 @@ class tnm_display(QObject):
 			self.eBrake = True
 			signals.tnm_ebrake.emit(self.eBrake)
 			print("eBrake is " + str(self.eBrake))
+			
 
 #_______________________________________________________________________
 	#function to Update Current Temperature of the cabin
@@ -593,14 +597,17 @@ class tnm_display(QObject):
 		elif(self.beacon_bin[1] == 1):
 			self.lights_Tun == True
 		#3rd bit - 0 Left(decrement)/1 Right(increment) directionality
+		#0 means left doors open, 1 means right doors open
 		if(self.beacon_bin[2] == 0):
-			self.TrainDirection = "counting down"
+			self.TrainDirection = 0
+			self.tnm_TrainDir.emit(self.TrainDirection)
 		elif(self.beacon_bin[2] == 1):
-			self.TrainDirection = "counting up"
+			self.TrainDirection = 1
+			self.tnm_TrainDir.emit(self.TrainDirection)
 		
 		#Add beacon specification here (for last 5 bits)
 		#Green Line stations defined here, with the train incrementally (13 Stations)	
-		if(self.RouteName == "Green Line" and self.TrainDirection == "counting up"):
+		if(self.RouteName == "Green Line" and self.TrainDirection == 1):
 			if(self.beacon_bin[3:] == 0b00001):
 				self.CurrStation = "Pioneer"
 				self.NextStation = "EdgeBrook"
@@ -644,8 +651,9 @@ class tnm_display(QObject):
 			else:
 				self.CurrStation = " ---- "
 				self.NextStation = " ---- "
+			signals.tnm_curr_station.emit(self.CurrStation)
 		#Train Going reverse direction on the green line		(13 Stations)
-		if(self.RouteName == "Green Line" and self.TrainDirection == "counting down"):
+		if(self.RouteName == "Green Line" and self.TrainDirection == 0):
 			if(self.beacon_bin[3:] == 0b00001):
 				self.CurrStation = "Pioneer"
 				#self.TrainDirection = "counting up"
@@ -689,8 +697,9 @@ class tnm_display(QObject):
 			else:
 				self.CurrStation = " ---- "
 				self.NextStation = " ---- "
+			signals.tnm_curr_station.emit(self.CurrStation)
 		#Route names for the Red Line going to stations incrementally (7 Stations)
-		elif(self.RouteName == "Red Line" and self.TrainDirection == "counting up"):
+		elif(self.RouteName == "Red Line" and self.TrainDirection == 1):
 			if(self.beacon_bin[3:] == 0b00001):
 				self.CurrStation = "ShadySide"
 				self.NextStation = "Herron Ave"
@@ -716,8 +725,9 @@ class tnm_display(QObject):
 			else:
 				self.CurrStation = " ---- "
 				self.NextStation = " ---- "
+			signals.tnm_curr_station.emit(self.CurrStation)
 		#Route names for the Red Line going to stations decrementally	(7 Stations)
-		elif(self.RouteName == "Red Line" and self.TrainDirection == "counting down"):
+		elif(self.RouteName == "Red Line" and self.TrainDirection == 0):
 			if(self.beacon_bin[3:] == 0b00001):
 				self.CurrStation = "ShadySide"
 				#self.TrainDirection = "counting up"
@@ -743,7 +753,7 @@ class tnm_display(QObject):
 			else:
 				self.CurrStation = " ---- "
 				self.NextStation = " ---- "
-		
+			signals.tnm_curr_station.emit(self.CurrStation)
 	
 	#Function to specify block number for each line
 	def blockNum(self,BlockNum):
