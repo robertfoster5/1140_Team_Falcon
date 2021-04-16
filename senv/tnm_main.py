@@ -333,7 +333,7 @@ class tnm_display(QObject):
 		tnm_cab_temp = pyqtSignal(int)
 		tnm_sendYard = pyqtSignal(int)
 		tnm_block_finished = pyqtSignal(bool)
-		tnm_curr_station = pyqtSignal(string)
+		tnm_curr_station = pyqtSignal(str)
 
 		
 	#Define variables to be used in tnm_display
