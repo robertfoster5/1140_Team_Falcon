@@ -39,7 +39,7 @@ def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, Sp
 			force = 0.0
 			curr_accl = 0.0
 			curr_speed = 0.0
-			print("Train has stopped")
+			print("Train has stopped, eBrake")
 		#Slow down train using eBrake deceleration till 0.0
 		elif(SpeedN1 > 0.0):
 			force = (Power/curr_speed)
@@ -154,14 +154,15 @@ def stopping_dist(curr_speed):
 	service_dec_mps = (service_dec/2.237)
 	service_stop_time = (curr_speed_mps/service_dec_mps)	#seconds
 	service_stop_distance = ((curr_speed_mps/2)*service_stop_time)
-	print(round(service_stop_distance,0))
+	print(str(service_stop_time) + " service stop time")
+	print(str(round(service_stop_distance,0)) + " service brake stop dist")
 	
 	#For Emergency Braking
 	eBrake_dec = 6.11		#MPH
 	eBrake_dec_mps = (eBrake_dec/2.237)
 	eBrake_stop_time = (curr_speed_mps/eBrake_dec_mps)	#seconds
 	eBrake_stop_distance = ((curr_speed_mps/2)*eBrake_stop_time)
-	print(round(eBrake_stop_distance, 0))
+	print(str(round(eBrake_stop_distance, 0)) + " eBrake stop dist")
 	
 
 #Function to convert between KPH and MPH

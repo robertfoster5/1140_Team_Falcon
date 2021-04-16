@@ -4,7 +4,7 @@ from PyQt5.QtCore import Qt, QObject, QThread, pyqtSignal
 from wayside_qtui_test import Ui_MainWindow
 from wayside_ws_control import Wayside
 from signals import signals
-
+#rob
 class TableModel(QtCore.QAbstractTableModel):
 
     def __init__(self, data,header):
