@@ -171,17 +171,24 @@ class wayside_qtui_test(QObject):
 					self.r2.m_order_block(or2)
 					self.r3.m_order_block(or3)
 				elif order[1] == "s":
-					self.r1.m_order_switch(temp_order[1:2])
-					self.r2.m_order_switch(temp_order[3:6])
+					self.r1.m_order_switch(temp_order[1:3])
+					self.r2.m_order_switch(temp_order[3:7])
 					self.r3.m_order_switch(temp_order[7])
+				self.compile_switch_red()
+				self.compile_health_red()
+				self.compile_block_occ()
 			else:
 				temp_order = order[1:-1]
-				if order[1] == "b":
-					or1 = temp_order[0] + temp_order[1:20]
-					or2 = temp_order[0] + temp_order[22:35] + temp_order[147:150]
-					or3 = temp_order[0] + temp_order[36:73]
-					or4 = temp_order[0] + temp_order[74:109]
-					or5 = temp_order[0] + temp_order[110:146]
+				if order[1] == "b":  
+					or1 = temp_order[1:21]
+					or2 = temp_order[21:36]
+					or2.append(temp_order[147])
+					or2.append(temp_order[148])
+					or2.append(temp_order[149])
+					or2.append(temp_order[150])
+					or3 = temp_order[36:74]
+					or4 = temp_order[74:110]
+					or5 = temp_order[110:147]
 					self.g1.m_order(or1)
 					self.g2.m_order(or2)
 					self.g3.m_order(or3)
@@ -190,10 +197,11 @@ class wayside_qtui_test(QObject):
 				elif order[1] == "s":
 					self.g1.m_order_switch(temp_order[1])
 					self.g2.m_order_switch(temp_order[2])
-					self.g3.m_order_switch(temp_order[3:4])
-					self.g4.m_order_switch(temp_order[5:6])
-			self.compile_switch_green()
-			self.compile_cross_green()
+					self.g3.m_order_switch(temp_order[3:5])
+					self.g4.m_order_switch(temp_order[5:-1])
+				self.compile_switch_green()
+				self.compile_health_green()
+				self.compile_block_occ_green()
 		self.update_tables(self.curr_ws)
 			
 	def new_authority(self, authority):
@@ -216,6 +224,8 @@ class wayside_qtui_test(QObject):
 			self.r1.switch_state_change()
 			self.r2.switch_state_change()
 			self.r3.switch_state_change()
+			self.compile_switch_red()
+			self.compile_auth_red()
 		else:
 			self.g1.authority = authority[1:21]
 			temp = authority[21:36]
@@ -256,6 +266,8 @@ class wayside_qtui_test(QObject):
 			self.r1.cross_change()
 			self.r2.cross_change()
 			self.r3.cross_change()
+			self.compile_cross_red()
+			self.compile_auth_red()
 		else:
 			self.g1.block_occ = occupancy[1:21]
 			temp = occupancy[21:36]
@@ -273,6 +285,7 @@ class wayside_qtui_test(QObject):
 			self.g4.cross_change()
 			self.g5.cross_change()
 			self.compile_cross_green()
+			self.compile_auth_green()
 		self.update_tables(self.curr_ws)
 		
 	def update_speed(self, speed):
@@ -280,33 +293,61 @@ class wayside_qtui_test(QObject):
 		signals.way_speed.emit(self.speed)
 		
 	def compile_health_red(self):
-		
+		temp_h = []
+		temp_h.append("0")
+		j = 0
+		for i in range(24):
+			temp_h.append(self.r1.block_health[i])
+			j=j+1
+		for i in range(22):
+			temp_h.append(self.r2.block_health[i])
+		for i in range(21):
+			temp_h.append(self.r3.block_health[i])
+		for i in range(11):
+			temp_h.append(self.r2.block_health[i+j])
+		signals.way_red_health.emit(temp_h)
 					
 	def compile_health_green(self):
 		temp_occ = []
 		temp_occ.append("1")
+		j=0
 		for i in range(20):
-			temp_occ.append(self.g1.block_occ[i])
-		for i in range(15):
-			temp_occ.append(self.g2.block_occ[i])
-		for i in range(38):
-			temp_occ.append(self.g3.block_occ[i])
-		for i in range(36):
-			temp_occ.append(self.g4.block_occ[i])
-		for i in range(37):
-			temp_occ.append(self.g5.block_occ[i])
-		for i in range(4):
-			temp_occ.append(self.g2.block_occ[i])
-		signals.way_green_occupancy.emit(temp_occ)
+			temp_occ.append(self.g1.block_health[i])
+			j=j+1
+		for i in range(15):               
+			temp_occ.append(self.g2.block_health[i])
+		for i in range(38):               
+			temp_occ.append(self.g3.block_health[i])
+		for i in range(36):            
+			temp_occ.append(self.g4.block_health[i])
+		for i in range(37):         
+			temp_occ.append(self.g5.block_health[i])
+		for i in range(4):         
+			temp_occ.append(self.g2.block_health[i+j])
+		signals.way_green_health.emit(temp_occ)
 		
 	def compile_block_occ_red(self):
-		temp_occ = []
-	
+		temp_h = []
+		temp_h.append("0")
+		j = 0
+		for i in range(24):
+			temp_h.append(self.r1.block_occ[i])
+			j=j+1
+		for i in range(22):
+			temp_h.append(self.r2.block_occ[i])
+		for i in range(21):
+			temp_h.append(self.r3.block_occ[i])
+		for i in range(11):
+			temp_h.append(self.r2.block_occ[i+j])
+		signals.way_red_occupancy.emit(temp_h)
+		
 	def compile_block_occ_green(self):
 		temp_occ = []
 		temp_occ.append("1")
+		j=0
 		for i in range(20):
 			temp_occ.append(self.g1.block_occ[i])
+			j=j+1
 		for i in range(15):
 			temp_occ.append(self.g2.block_occ[i])
 		for i in range(38):
@@ -316,11 +357,20 @@ class wayside_qtui_test(QObject):
 		for i in range(37):
 			temp_occ.append(self.g5.block_occ[i])
 		for i in range(4):
-			temp_occ.append(self.g2.block_occ[i])
+			temp_occ.append(self.g2.block_occ[i+j])
 		signals.way_green_occupancy.emit(temp_occ)
 	
 	def compile_switch_red(self):
 		temp_sw = []
+		temp_sw.append("0")
+		temp_sw.append(self.r1.switch_state[0])
+		temp_sw.append(self.r1.switch_state[1])
+		temp_sw.append(self.r2.switch_state[0])
+		temp_sw.append(self.r2.switch_state[1])
+		temp_sw.append(self.r2.switch_state[2])
+		temp_sw.append(self.r2.switch_state[3])
+		temp_sw.append(self.r3.switch_state[0])
+		signal.way_red_switch_state.emit(temp_sw)
 	
 	def compile_switch_green(self):
 		temp_sw = []
@@ -335,6 +385,9 @@ class wayside_qtui_test(QObject):
 		
 	def compile_cross_red(self):
 		temp_cr = []
+		temp_cr.append("0")
+		temp_cr.append(self.r3.cross_state[0])
+		signal.way_red_cross_state.emit(temp_cr)
 		
 	def compile_cross_green(self):
 		temp_cr = []
@@ -343,7 +396,19 @@ class wayside_qtui_test(QObject):
 		signals.way_green_cross_state.emit(temp_cr)
 		
 	def compile_auth_red(self):
-		temp_auth = []
+		temp_h = []
+		temp_h.append("0")
+		j = 0
+		for i in range(24):
+			temp_h.append(self.r1.authority[i])
+			j=j+1
+		for i in range(22):
+			temp_h.append(self.r2.authority[i])
+		for i in range(21):
+			temp_h.append(self.r3.authority[i])
+		for i in range(11):
+			temp_h.append(self.r2.authority[i+j])
+		signals.way_red_authority.emit(temp_h)
 		
 	def compile_auth_green(self):
 		temp_auth = []
@@ -359,7 +424,7 @@ class wayside_qtui_test(QObject):
 		for i in range(37):
 			temp_auth.append(self.g5.authority[i])
 		for i in range(4):
-			temp_auth.append(self.g2.authority[i])
+			temp_auth.append(self.g2.authority[i+19])
 		signals.way_green_authority.emit(temp_auth)
 		
 if __name__ == "__main__":

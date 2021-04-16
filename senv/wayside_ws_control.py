@@ -22,29 +22,29 @@ class Wayside:
 			
 	def m_order_block(self, order):
 		temp_block = []
-		if order != "0":
-			for i in range(len(order)):
-				if order[i] == "1" and self.block_health[i-1] == "1":
-					temp_block.append("0")
-				if order[i] == "1" and self.block_health[i-1] == "0":
-					temp_block.append("1")
-				if order[i] == "1" and self.switch_state[i-1] == "1":
-					temp_switch.append("0")
-				if order[i] == "1" and self.switch_state[i-1] == "0":
-					temp_switch.append("1")
-			self.block_health = []
-			temp = self.block_occ
-			self.block_occ = []
+		temp_occ = []
 		for i in range(len(order)):
-			self.block_health.append(temp_block[i])
-			if temp[i] == "0" and temp_block[i] == "0":
-				self.bloc_occ.append("0")
-			if temp[i] == "0" and temp_block[i] == "1":
-				self.bloc_occ.append("1")
-			if temp[i] == "1" and temp_block[i] == "0":
-				self.bloc_occ.append("1")
-			if temp[i] == "1" and temp_block[i] == "1":
-				self.bloc_occ.append("0")
+			if order[i] == "1" and self.block_health[i] == "1":
+				temp_block.append("0")
+			if order[i] == "1" and self.block_health[i] == "0":
+				temp_block.append("1")
+			if order[i] == "0" and self.block_health[i] == "1":
+				temp_block.append("0")
+			if order[i] == "0" and self.block_health[i] == "0":
+				temp_block.append("0")
+		self.block_health = []
+		self.block_health = temp_block
+		for i in range(len(order)):
+			if order[i] == "0" and self.block_occ[i] == "0":
+				temp_occ.append("0")
+			if order[i] == "0" and self.block_occ[i] == "1":
+				temp_occ.append("1")
+			if order[i] == "1" and self.block_occ[i] == "0":
+				temp_occ.append("1")
+			if order[i] == "1" and self.block_occ[i] == "1":
+				temp_occ.append("1")
+		self.block_occ = []
+		self.block_occ = temp_occ
 					
 	def m_order_switch(self, order):
 		
@@ -152,7 +152,6 @@ class Wayside:
 			if line[0:2] == "cr":
 				d1 = plc[linecount+2]
 				self.cr_connect.append(int(d1[0:-1]))
-				print(self.cr_connect)
 			if line[0:2] == "end proc":
 				break
 			linecount = linecount+1
