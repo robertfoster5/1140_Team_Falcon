@@ -6,7 +6,9 @@ from ctc_main import ctc_qtui_test
 from wayside_main import wayside_qtui_test
 from tkm_main import tkm_test
 from tnm_main import tnm_display
+from tnm_main import tnm_failureTest
 from tnc_main import TrainControllerMain
+from time_main import TimeMain
 
 
 #from t_time import timing
@@ -42,36 +44,21 @@ class SystemEnvironment(QObject):
 		self.tnm = tnm_display()
 		self.tnm.moveToThread(self.tnm_thread)
 		self.tnm_thread.start()
+		
+		self.tnm_thread = QThread()
+		self.tnm = tnm_failureTest()
+		self.tnm.moveToThread(self.tnm_thread)
+		self.tnm_thread.start()
 
 		self.tnc_thread = QThread()
 		self.tnc = TrainControllerMain()
 		self.tnc.moveToThread(self.tnc_thread)
 		self.tnc_thread.start()
 
-		self.time_thread = QThread()
-		self.timer = QTimer()
-		self.timer.setInterval(1000);
-		self.timer.moveToThread(self.time_thread)
-
-		self.time_thread.started.connect(self.timer.start)
-		self.timer.timeout.connect(self.timing)
-
-		self.time_thread.start()
-
-	def timing(self):
-		self.sec = self.time - (self.check*60)
-		if self.sec == 60:
-			self.mint = self.mint+1
-			self.sec = 0
-			self.check = self.check+1
-			if self.mint ==  60:
-				self.hr = self.hr+1
-				self.mint = 0
-				if self.hr == 24:
-					self.hr = 0
-		print('The time is ' + str(self.hr)+ ':' + str(self.mint) + ':' +str(self.sec))
-		signals.time.emit(self.sec,self.mint,self.hr,self.time)
-		self.time += 1
+		self.time_ui_thread = QThread()
+		self.time_ui = TimeMain()
+		self.time_ui.moveToThread(self.time_ui_thread)
+		self.time_ui_thread.start()
 
 if __name__ == '__main__':
 
