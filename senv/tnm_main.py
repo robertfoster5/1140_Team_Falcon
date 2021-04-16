@@ -23,15 +23,6 @@ from signals import signals
 from t_time import timing
 
 
-"""
-self.tmodel_thread = QThread()
-self.tmodel_test = tnm_failureTest()
-#self.tmodel_main = tnm_display()
-self.tmodel_test.moveToThread(self.tmodel_thread)
-self.tmodel_thread.start()
-"""
-
-
 #_______________________________________________________________________
 #Failure Test State
 class tnm_failureTest(QObject):
@@ -458,7 +449,7 @@ class tnm_display(QObject):
 		signals.tnm_comm_speed.emit(self.comm_speed)
 		
 		#Display stopping distance based on current speed
-		#stopping_dist(self.curr_speed)
+		stopping_dist(self.curr_speed)
 
 #_______________________________________________________________________	
 	#function to update Train Statistics (Mass, Pass & Crew count)

@@ -162,7 +162,7 @@ def stopping_dist(curr_speed):
 	eBrake_dec_mps = (eBrake_dec/2.237)
 	eBrake_stop_time = (curr_speed_mps/eBrake_dec_mps)	#seconds
 	eBrake_stop_distance = ((curr_speed_mps/2)*eBrake_stop_time)
-	print(str(round(eBrake_stop_distance, 0)) + " eBrake stop dist")
+	#print(str(round(eBrake_stop_distance, 0)) + " eBrake stop dist")
 	
 
 #Function to convert between KPH and MPH
