@@ -4,7 +4,7 @@ from PyQt5.QtCore import Qt, QObject, QThread, pyqtSignal
 from wayside_qtui_test import Ui_MainWindow
 from wayside_ws_control import Wayside
 from signals import signals
-#rob
+
 class TableModel(QtCore.QAbstractTableModel):
 
     def __init__(self, data,header):
@@ -103,6 +103,7 @@ class wayside_qtui_test(QObject):
 		
 			
 	def update_tables(self, ws):
+		self.curr_ws = ws
 		self.update_block(ws)
 		self.update_switch(ws)
 		self.update_cross(ws)
@@ -186,6 +187,7 @@ class wayside_qtui_test(QObject):
 			self.compile_switch_green()
 			self.compile_cross_green()
 			self.compile_auth_green()
+			self.update_tables(self.curr_ws)
 			
 	def new_authority(self, authority):
 		temp = []
@@ -227,6 +229,7 @@ class wayside_qtui_test(QObject):
 		self.compile_switch_green()
 		#self.compile_cross_green()
 		self.compile_auth_green()
+		self.update_tables(self.curr_ws)
 				
 	def update_occupancy(self, occupancy):
 		temp = []
@@ -264,10 +267,8 @@ class wayside_qtui_test(QObject):
 		self.g3.cross_change()
 		self.g4.cross_change()
 		self.g5.cross_change()
-		#self.compile_block_occ_green()
-		#self.compile_switch_green()
 		self.compile_cross_green()
-		#self.compile_auth_green()
+		self.update_tables(self.curr_ws)
 		
 	def update_speed(self, speed):
 		self.speed = speed
