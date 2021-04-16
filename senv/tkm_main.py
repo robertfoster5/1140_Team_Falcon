@@ -61,7 +61,7 @@ class TableModel(QtCore.QAbstractTableModel):
 class tkm_test(QObject):
 	def __init__(self):		
 		super().__init__()
-		
+		print("running track model")
 		self.MainWindow = QtWidgets.QMainWindow()
 		
 		self.ui = Ui_MainWindow()  
@@ -71,9 +71,13 @@ class tkm_test(QObject):
 		track = load_track("tkm_load_g.xls")
 		t = Track(track)
 		
+		track = load_track("tkm_load_g.xls")
+		q = Track(track)
+		
 		#create tracks
 		self.info = []
 		self.info.append(t)
+		self.info.append(q)
 		self.version = 0
 		
 		#create trains
@@ -116,12 +120,19 @@ class tkm_test(QObject):
 		self.ui.enterF.clicked.connect(lambda: self.load_f())
 		self.ui.enterV.clicked.connect(lambda: self.display_v())
 		
-		signals.way_speed.connect(self.info[0].set_speed)
-		signals.way_occupancy.connect(self.info[0].set_occ)
-		signals.way_switch_state.connect(self.info[0].set_swit)
-		signals.way_authority.connect(self.info[0].set_auth)
+		signals.way_green_speed.connect(self.info[0].set_speed)
+		signals.way_red_speed.connect(self.info[1].set_speed)
+		
+		signals.way_green_occupancy.connect(self.info[0].set_occ)
+		signals.way_red_occupancy.connect(self.info[1].set_occ)
+		
+		signals.way_green_switch_state.connect(self.info[0].set_swit)
+		signals.way_red_switch_state.connect(self.info[1].set_swit)
+		
+		signals.way_green_authority.connect(self.info[0].set_auth)
+		signals.way_red_authority.connect(self.info[1].set_auth)
         
-		signals.tnm_block_finished.connect(self.info[0].set_train_block)
+		signals.tnm_block_finished.connect(self.info[1].set_train_block)
         		
 	#for changing block info
 	def display_b(self):
