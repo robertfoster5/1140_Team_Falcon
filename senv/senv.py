@@ -6,6 +6,7 @@ from ctc_main import ctc_qtui_test
 from wayside_main import wayside_qtui_test
 from tkm_main import tkm_test
 from tnm_main import tnm_display
+from tnm_main import tnm_failureTest
 from tnc_main import TrainControllerMain
 from time_main import TimeMain
 
@@ -41,6 +42,11 @@ class SystemEnvironment(QObject):
 
 		self.tnm_thread = QThread()
 		self.tnm = tnm_display()
+		self.tnm.moveToThread(self.tnm_thread)
+		self.tnm_thread.start()
+		
+		self.tnm_thread = QThread()
+		self.tnm = tnm_failureTest()
 		self.tnm.moveToThread(self.tnm_thread)
 		self.tnm_thread.start()
 
