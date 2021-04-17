@@ -293,7 +293,7 @@ class wayside_qtui_test(QObject):
 	def update_speed(self, speed):
 		self.speed = speed
 		temp_s = []
-		for i in range(len(speed)):
+		for i in range(len(speed)-1):
 			if speed[i] == "0":
 				temp_s[i] = "0"
 			else:
