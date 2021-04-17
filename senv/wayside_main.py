@@ -434,7 +434,7 @@ class wayside_qtui_test(QObject):
 		temp_sw.append("0")
 		temp_sw.append(self.r1.switch_state[0])
 		temp_sw.append(self.r1.switch_state[1])
-		temp_sw.append(self.r2.switch_state[0])-******************7
+		temp_sw.append(self.r2.switch_state[0])
 		temp_sw.append(self.r2.switch_state[1])
 		temp_sw.append(self.r2.switch_state[2])
 		temp_sw.append(self.r2.switch_state[3])
