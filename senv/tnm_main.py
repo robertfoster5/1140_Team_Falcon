@@ -48,7 +48,7 @@ class tnm_failureTest(QObject):
 		self.train1_status = True
 		self.sendYard = False
 		self.train1_test = "Train 1 Test Interface"
-		self.eBrake = False
+		self.eBrakeTest = False
 		signals.tnc_emergency_brake.connect(self.SetEBrakeTest)
 		
 		
@@ -417,6 +417,7 @@ class tnm_display(QObject):
 		
 	#Define variables to be used in tnm_display
 		self.train1 = "Train 1 Information"
+		self.train1 = "Train 2 Information"
 		self.time_initial = 0
 		self.timeSeconds = 0
 	#power connected from tnc
@@ -461,7 +462,7 @@ class tnm_display(QObject):
 		self.DoorStatus = False
 	#Beacon ID connected from tkm
 		self.beacon_bin = 0b00000000
-		self.BeaconID = 11101001					#bit1 (red vs green) bit2 (UG vs Station) bit3 (Left side (62->63) vs Right side(63->64))
+		self.BeaconID = 00000000					#bit1 (red vs green) bit2 (UG vs Station) bit3 (Left side (62->63) vs Right side(63->64))
 		signals.tkm_get_beacon.connect(self.SetBeaconID)
 		self.BeaconIDStatus = True
 	#Internal control status's
@@ -691,7 +692,10 @@ class tnm_display(QObject):
 		#Add beacon specification here (for last 5 bits)
 		#Green Line stations defined here, with the train incrementally (13 Stations)	
 		if(self.RouteName == "Green Line" and self.TrainDirection == 1):
-			if(self.beacon_bin[3:] == 0b00001):
+			if(self.beacon_bin[3:] == 0b00000):
+				self.CurrStation = "Yard"
+				self.NextStation = "Pioneer"
+			elif(self.beacon_bin[3:] == 0b00001):
 				self.CurrStation = "Pioneer"
 				self.NextStation = "EdgeBrook"
 			elif(self.beacon_bin[3:] == 0b00010):
@@ -737,7 +741,10 @@ class tnm_display(QObject):
 			signals.tnm_curr_station.emit(self.CurrStation)
 		#Train Going reverse direction on the green line		(13 Stations)
 		if(self.RouteName == "Green Line" and self.TrainDirection == 0):
-			if(self.beacon_bin[3:] == 0b00001):
+			if(self.beacon_bin[3:] == 0b00000):			#Likely won't reach this unless sent to Yard
+				self.CurrStation = "Yard"
+				self.NextStation = " ---- "
+			elif(self.beacon_bin[3:] == 0b00001):
 				self.CurrStation = "Pioneer"
 				#self.TrainDirection = 1 	#"counting up"
 				self.NextStation = "EdgeBrook"
@@ -783,7 +790,10 @@ class tnm_display(QObject):
 			signals.tnm_curr_station.emit(self.CurrStation)
 		#Route names for the Red Line going to stations incrementally (7 Stations)
 		elif(self.RouteName == "Red Line" and self.TrainDirection == 1):
-			if(self.beacon_bin[3:] == 0b00001):
+			if(self.beacon_bin[3:] == 0b00000):
+				self.CurrStation = "Yard"
+				self.NextStation = "Shady Side"
+			elif(self.beacon_bin[3:] == 0b00001):
 				self.CurrStation = "Shady Side"
 				self.NextStation = "Herron Ave"
 			elif(self.beacon_bin[3:] == 0b00010):
@@ -811,7 +821,10 @@ class tnm_display(QObject):
 			signals.tnm_curr_station.emit(self.CurrStation)
 		#Route names for the Red Line going to stations decrementally	(7 Stations)
 		elif(self.RouteName == "Red Line" and self.TrainDirection == 0):
-			if(self.beacon_bin[3:] == 0b00001):
+			if(self.beacon_bin[3:] == 0b00000):					#Likely won't reach this unless sent to yard
+				self.CurrStation = "Yard"
+				self.NextStation = " ---- "
+			elif(self.beacon_bin[3:] == 0b00001):
 				self.CurrStation = "Shady Side"
 				#self.TrainDirection = 1	#"counting up"
 				self.NextStation = "Herron Ave"
