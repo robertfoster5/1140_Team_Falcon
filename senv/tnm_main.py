@@ -414,7 +414,6 @@ class tnm_display(QObject):
 		tnm_block_finished = pyqtSignal(bool)
 		tnm_curr_station = pyqtSignal(str)
 
-		
 #Define variables to be used in tnm_display
 		self.train1 = "Train 1 Information"
 		self.train2 = "Train 2 Information"
@@ -475,7 +474,7 @@ class tnm_display(QObject):
 
 		#Defining Actions for specific UI Interactions
 		signals.time.connect(self.update_MoveStat)						#Update Movement Statistics
-			
+		#signals.time.connect(self.SetCommSpeed)
 		signals.time.connect(self.update_TrainStat)						#Update Train Statistics
 		
 		signals.time.connect(self.update_RouteInfo)						#Update Route Information
@@ -883,7 +882,7 @@ class tnm_display(QObject):
 	#Function to set Commanded Speed from track model signal
 	def SetCommSpeed(self,commSpeed):
 		self.comm_speed = meterToMile(commSpeed)			#convert mps value to MPH
-		print(str(commSpeed) + " comm speed from tnm")
+		#print(str(self.comm_speed) + " comm speed from tnm")
 	
 	#Function to set Passenger count from track model signal
 	def SetOccupancy(self,tkm_pass_count):

@@ -151,7 +151,7 @@ def pass_crew_count(p, c):
 	
 
 #function to calculate stopping distance
-def stopping_dist(curr_speed):
+def stopping_dist(comm_speed):
 	
 	#For Service Braking
 	comm_speed_mps = (comm_speed/2.237)

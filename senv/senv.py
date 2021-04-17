@@ -46,8 +46,8 @@ class SystemEnvironment(QObject):
 		self.tnm_thread.start()
 
 		self.tnm_thread_two = QThread()
-		self.tnm = tnm_failureTest()
-		self.tnm.moveToThread(self.tnm_thread_two)
+		self.tnm1 = tnm_failureTest()
+		self.tnm1.moveToThread(self.tnm_thread_two)
 		self.tnm_thread_two.start()
 
 		self.tnc_thread = QThread()
