@@ -323,7 +323,7 @@ class tnm_display(QObject):
 		#display main program
 		self.ui.setupUi(self.MainWindow)
 		self.MainWindow.show()
-		#Line Here
+		
 		#Signals defined here
 		tnm_comm_speed = pyqtSignal(float)		#All signals for Track Controller
 		tnm_curr_speed = pyqtSignal(float)
@@ -613,9 +613,9 @@ class tnm_display(QObject):
 				self.NextStation = "EdgeBrook"
 			elif(self.beacon_bin[3:] == 0b00010):
 				self.CurrStation = "EdgeBrook"
-				self.NextStation = "Oakmont"
+				self.NextStation = "Falcon"
 			elif(self.beacon_bin[3:] == 0b00011):
-				self.CurrStation = "Oakmont"
+				self.CurrStation = "Falcon"
 				self.NextStation = "Whited"
 			elif(self.beacon_bin[3:] == 0b00100):
 				self.CurrStation = "Whited"
@@ -662,11 +662,11 @@ class tnm_display(QObject):
 				self.CurrStation = "EdgeBrook"
 				self.NextStation = "Pioneer"
 			elif(self.beacon_bin[3:] == 0b00011):
-				self.CurrStation = "Oakmont"
+				self.CurrStation = "Falcon"
 				self.NextStation = "EdgeBrook"
 			elif(self.beacon_bin[3:] == 0b00100):
 				self.CurrStation = "Whited"
-				self.NextStation = "Oakmont"
+				self.NextStation = "Falcon"
 			elif(self.beacon_bin[3:] == 0b00101):
 				self.CurrStation = "South Bank"
 				self.NextStation = "Whited"
