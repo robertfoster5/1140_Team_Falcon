@@ -325,6 +325,7 @@ class wayside_qtui_test(QObject):
 			self.g3.b_speed = temp_s[36:74]
 			self.g4.b_speed = temp_s[74:110]
 			self.g5.b_speed = temp_s[110:147]
+		self.update_tables(self.curr_ws)
 			
 	def compile_health_red(self):
 		temp_h = []
@@ -433,7 +434,7 @@ class wayside_qtui_test(QObject):
 		temp_sw.append("0")
 		temp_sw.append(self.r1.switch_state[0])
 		temp_sw.append(self.r1.switch_state[1])
-		temp_sw.append(self.r2.switch_state[0])
+		temp_sw.append(self.r2.switch_state[0])-******************7
 		temp_sw.append(self.r2.switch_state[1])
 		temp_sw.append(self.r2.switch_state[2])
 		temp_sw.append(self.r2.switch_state[3])
