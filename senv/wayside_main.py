@@ -86,6 +86,8 @@ class wayside_qtui_test(QObject):
 		
 		self.ui.tableView_3.setModel(self.ui.model)
 		
+		self.update_tables(self.g1)
+		
 		self.ui.pushButton.clicked.connect(lambda: self.update_tables(self.r1))
 		self.ui.pushButton_2.clicked.connect(lambda: self.update_tables(self.r2))
 		self.ui.pushButton_3.clicked.connect(lambda: self.update_tables(self.r3))
@@ -226,6 +228,7 @@ class wayside_qtui_test(QObject):
 			self.r3.switch_state_change()
 			self.compile_switch_red()
 			self.compile_auth_red()
+			self.compile_speed_green()
 		else:
 			self.g1.authority = authority[1:21]
 			temp = authority[21:36]
@@ -293,11 +296,13 @@ class wayside_qtui_test(QObject):
 	def update_speed(self, speed):
 		self.speed = speed
 		temp_s = []
-		for i in range(len(speed)-1):
-			if speed[i] == "0":
-				temp_s[i] = "0"
+		for i in range(len(speed)):
+			if self.speed[i] == 0:
+				temp_s.append(0)
+			elif i == 0:
+				temp_s.append(self.speed[0])
 			else:
-				temp_s[i] = "1"
+				temp_s.append(1)
 		temp = []
 		if self.speed[0] == "r":
 			self.r1.b_speed = temp_s[1:24]
@@ -325,6 +330,7 @@ class wayside_qtui_test(QObject):
 			self.g3.b_speed = temp_s[36:74]
 			self.g4.b_speed = temp_s[74:110]
 			self.g5.b_speed = temp_s[110:147]
+			self.compile_speed_green()
 		self.update_tables(self.curr_ws)
 			
 	def compile_health_red(self):
@@ -339,7 +345,7 @@ class wayside_qtui_test(QObject):
 		for i in range(21):
 			temp_h.append(self.r3.block_health[i])
 		for i in range(11):
-			temp_h.append(self.r2.block_health[i+j])
+			temp_h.append(self.r2.block_health[i+j-1])
 		signals.way_red_health.emit(temp_h)
 					
 	def compile_health_green(self):
@@ -357,8 +363,10 @@ class wayside_qtui_test(QObject):
 			temp_occ.append(self.g4.block_health[i])
 		for i in range(37):         
 			temp_occ.append(self.g5.block_health[i])
-		for i in range(4):         
-			temp_occ.append(self.g2.block_health[i+j])
+		temp_occ.append(self.g2.block_health[15])
+		temp_occ.append(self.g2.block_health[16])
+		temp_occ.append(self.g2.block_health[17])
+		temp_occ.append(self.g2.block_health[18])
 		signals.way_green_health.emit(temp_occ)
 		
 	def compile_block_occ_red(self):
@@ -373,7 +381,7 @@ class wayside_qtui_test(QObject):
 		for i in range(21):
 			temp_h.append(self.r3.block_occ[i])
 		for i in range(11):
-			temp_h.append(self.r2.block_occ[i+j])
+			temp_h.append(self.r2.block_occ[i+j-1])
 		signals.way_red_occupancy.emit(temp_h)
 		
 	def compile_block_occ_green(self):
@@ -391,8 +399,10 @@ class wayside_qtui_test(QObject):
 			temp_occ.append(self.g4.block_occ[i])
 		for i in range(37):
 			temp_occ.append(self.g5.block_occ[i])
-		for i in range(4):
-			temp_occ.append(self.g2.block_occ[i+j])
+		temp_occ.append(self.g2.block_occ[15])
+		temp_occ.append(self.g2.block_occ[16])
+		temp_occ.append(self.g2.block_occ[17])
+		temp_occ.append(self.g2.block_occ[18])
 		signals.way_green_occupancy.emit(temp_occ)
 	
 	def compile_speed_red(self):
@@ -407,26 +417,50 @@ class wayside_qtui_test(QObject):
 		for i in range(21):
 			temp_h.append(self.r3.b_speed[i])
 		for i in range(11):
-			temp_h.append(self.r2.b_speed[i+j])
+			temp_h.append(self.r2.b_speed[i+j-1])
 		signals.way_red_speed.emit(temp_h)
 		
 	def compile_speed_green(self):
 		temp_occ = []
-		temp_occ.append("1")
+		temp_occ.append("g")
 		j=0
 		for i in range(20):
-			temp_occ.append(self.g1.b_speed[i])
-			j=j+1
+			if(self.g1.b_speed[i] == 0):
+				temp_occ.append(self.g1.b_speed[i])
+				j=j+1
+			else:
+				temp_occ.append(self.speed[i+1])
 		for i in range(15):
-			temp_occ.append(self.g2.b_speed[i])
+			if(self.g2.b_speed[i] == 0):
+				temp_occ.append(self.g2.b_speed[i])
+				j=j+1
+			else:
+				temp_occ.append(self.speed[i+1])
 		for i in range(38):
-			temp_occ.append(self.g3.b_speed[i])
+			if(self.g3.b_speed[i] == 0):
+				temp_occ.append(self.g3.b_speed[i])
+				j=j+1
+			else:
+				temp_occ.append(self.speed[j+1])
+				j=j+1
 		for i in range(36):
-			temp_occ.append(self.g4.b_speed[i])
+			if(self.g4.b_speed[i] == 0):
+				temp_occ.append(self.g4.b_speed[i])
+				j=j+1
+			else:
+				temp_occ.append(self.speed[i+1])
 		for i in range(37):
-			temp_occ.append(self.g5.b_speed[i])
-		for i in range(4):
-			temp_occ.append(self.g2.b_speed[i+j])
+			if(self.g5.b_speed[i] == 0):
+				temp_occ.append(self.g5.b_speed[i])
+				j=j+1
+			else:
+				temp_occ.append(self.speed[i+1])
+		for i in range(15,19):
+			if(self.g2.b_speed[i] == 0):
+				temp_occ.append(self.g2.b_speed[i])
+				j=j+1
+			else:
+				temp_occ.append(self.speed[i+1])
 		signals.way_green_speed.emit(temp_occ)
 		
 	def compile_switch_red(self):
@@ -476,24 +510,28 @@ class wayside_qtui_test(QObject):
 		for i in range(21):
 			temp_h.append(self.r3.authority[i])
 		for i in range(11):
-			temp_h.append(self.r2.authority[i+j])
+			temp_h.append(self.r2.authority[i+j-1])
 		signals.way_red_authority.emit(temp_h)
 		
 	def compile_auth_green(self):
 		temp_auth = []
 		temp_auth.append("1")
+		j = 0
 		for i in range(20):
 			temp_auth.append(self.g1.authority[i])
 		for i in range(15):
 			temp_auth.append(self.g2.authority[i])
+			j=j+1
 		for i in range(38):
 			temp_auth.append(self.g3.authority[i])
 		for i in range(36):
 			temp_auth.append(self.g4.authority[i])
 		for i in range(37):
 			temp_auth.append(self.g5.authority[i])
-		for i in range(4):
-			temp_auth.append(self.g2.authority[i+19])
+		temp_auth.append(self.g2.authority[15])
+		temp_auth.append(self.g2.authority[16])
+		temp_auth.append(self.g2.authority[17])
+		temp_auth.append(self.g2.authority[18])
 		signals.way_green_authority.emit(temp_auth)
 		
 if __name__ == "__main__":
