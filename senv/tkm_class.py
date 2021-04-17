@@ -340,9 +340,10 @@ class Track:
 		print(str(s) + " tkm")
 		signals.tkm_get_speed.emit(s)
 		signals.tkm_get_train_auth.emit(bool(block.auth))
+		print("tkm auth " + str(block.auth))
 		print(block.s_limit)
 		s = self.train[n-1].set_speed(block)
-		print(str(s) + "tkm")
+		print(str(s) + " tkm - add train")
 		signals.tkm_get_speed.emit(s)
 		#signals.tkm_get_auth.emit(block.auth)
 		

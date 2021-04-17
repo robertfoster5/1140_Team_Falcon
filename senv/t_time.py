@@ -33,7 +33,7 @@ class timing(QObject):
 				self.mint = 0
 				if self.hr == 24:
 					self.hr = 0
-		#print('The time is ' + str(self.hr)+ ':' + str(self.mint) + ':' +str(self.sec))
+		print('The time is ' + str(self.hr)+ ':' + str(self.mint) + ':' +str(self.sec))
 		signals.time.emit(self.sec,self.mint,self.hr,self.time)
 		self.time += 1
 

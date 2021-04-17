@@ -24,7 +24,7 @@ from t_time import timing
 
 
 #_______________________________________________________________________
-#Failure Test State
+#Failure Test State for Train Model Interface
 class tnm_failureTest(QObject):
 	def __init__(self):
 		super().__init__()
@@ -415,10 +415,9 @@ class tnm_display(QObject):
 		tnm_curr_station = pyqtSignal(str)
 
 		
-	#Define variables to be used in tnm_display
+#Define variables to be used in tnm_display
 		self.train1 = "Train 1 Information"
-		self.train1 = "Train 2 Information"
-		self.time_initial = 0
+		self.train2 = "Train 2 Information"
 		self.timeSeconds = 0
 	#power connected from tnc
 		self.curr_power = 0
@@ -427,6 +426,7 @@ class tnm_display(QObject):
 		self.curr_accl = 0.0
 		self.comm_speed = 0.0
 		signals.tkm_get_speed.connect(self.SetCommSpeed)
+		print(str(self.comm_speed) + " comm speed tnm from tkm")
 		#train starts at rest v
 		self.SpeedN1 = 0.0					#Used as value for inital speed for curr_speed calculation. Then is set to curr_speed for next calculation
 		self.AcclN1 = 0.0
@@ -452,8 +452,7 @@ class tnm_display(QObject):
 		signals.tkm_get_pass_count.connect(self.SetOccupancy)
 		self.crew_count = 3
 	#Route Information
-		self.Mass_Empty = (5*40.9)
-		self.curr_mass = 0
+		self.Mass_Empty = (5*40.9)								#Tons with no passengers/crew
 		self.Occupancy = pass_crew_count(self.pass_count, self.crew_count)
 		self.RouteName = "Green Line"
 		self.TrainDirection = 1
@@ -462,7 +461,7 @@ class tnm_display(QObject):
 		self.DoorStatus = False
 	#Beacon ID connected from tkm
 		self.beacon_bin = 0b00000000
-		self.BeaconID = 00000000					#bit1 (red vs green) bit2 (UG vs Station) bit3 (Left side (62->63) vs Right side(63->64))
+		self.BeaconID = 00000000								#bit1 (red vs green) bit2 (UG vs Station) bit3 (Left side (62->63) vs Right side(63->64))
 		signals.tkm_get_beacon.connect(self.SetBeaconID)
 		self.BeaconIDStatus = True
 	#Internal control status's
@@ -863,7 +862,6 @@ class tnm_display(QObject):
 	def blockTime(self, BlockLen):
 		#set variables
 		self.block_length = BlockLen
-		self.time_initial = 0
 		
 		#calculations
 		curr_speed_mps = (self.curr_speed/2.237)					#MPH to mps
@@ -885,7 +883,7 @@ class tnm_display(QObject):
 	#Function to set Commanded Speed from track model signal
 	def SetCommSpeed(self,commSpeed):
 		self.comm_speed = meterToMile(commSpeed)			#convert mps value to MPH
-		#print(str(commSpeed) + " comm speed")
+		print(str(commSpeed) + " comm speed from tnm")
 	
 	#Function to set Passenger count from track model signal
 	def SetOccupancy(self,tkm_pass_count):

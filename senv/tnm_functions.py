@@ -13,10 +13,10 @@ def EmergencyBraking(eBrake):
 #Set Speed (MPH) Based on Power command from Train Controller
 def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, SpeedN1, AcclN1):
 	#Variables defined:
-	curr_accl = AcclN1					#Just an initialization, will be recalculated
-	SpeedN1 = MiletoMeter(SpeedN1)		#Convert MPH to mps for calculations
-	curr_speed = SpeedN1				#Just an initialization, will be recalculated
-	max_speed = 43.5					#miles/hour
+	curr_accl = AcclN1										#Just an initialization, will be recalculated
+	SpeedN1 = MiletoMeter(SpeedN1)							#Convert MPH to mps for calculations
+	curr_speed = SpeedN1									#Just an initialization, will be recalculated
+	max_speed = 43.5										#miles/hour
 	train_accl_max = 0.5006848		#actually the median (2/3 of load)#mps2 from max 1.12 miles/hour^2
 	#train_accl_max = 0.75
 	train_dec_service = 1.2 			#mph2 deceleration service
@@ -101,13 +101,14 @@ def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, Sp
 				curr_accl = (force/curr_mass)
 				curr_speed = meterToMile(SpeedN1 + ((time_initial + 1)/2)*(curr_accl + AcclN1))			#Calculate Vn = Vn-1 + T/2(an +an-1) and convert to mph
 
-	
+	#Check to make sure speed doesn't exceed Max
 	if(curr_speed > max_speed):
 		curr_speed = max_speed
 		
 	#round the speed to a integer
 	print(str(round(curr_speed, 2)) + "mph curr speed at " + str(timeSec))
 	curr_speed = round(curr_speed, 2)
+	
 	return curr_speed, curr_accl;
 
 
