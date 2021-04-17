@@ -48,6 +48,8 @@ class tnm_failureTest(QObject):
 		self.train1_status = True
 		self.sendYard = False
 		self.train1_test = "Train 1 Test Interface"
+		self.eBrake = False
+		signals.tnc_emergency_brake.connect(self.SetEBrakeTest)
 		
 		
 		#Defining Actions for specific UI Interactions
@@ -86,7 +88,18 @@ class tnm_failureTest(QObject):
 		self.ui.lineEdit_19.setReadOnly(True)		
 		self.ui.lineEdit_20.setReadOnly(True)		
 		self.ui.lineEdit_26.setReadOnly(True)		#Signal Pickup Status
-		
+
+#_______________________________________________________________________
+	#function to delegate variables when Emergency Brake triggered
+	def EmergencyBrakingTest(self):
+		if(self.eBrakeTest == True):
+			signals.tnm_ebrake.emit(self.eBrakeTest)
+			print("eBrake is " + str(self.eBrakeTest))
+			
+#_______________________________________________________________________
+	#function to set Emergency Brake from tnc
+	def SetEBrakeTest(self, eBrakeTNC):
+		self.eBrakeTest = eBrakeTNC
 		
 #_______________________________________________________________________
 	#function to address Brake Failure Status's
@@ -96,17 +109,23 @@ class tnm_failureTest(QObject):
 		if(self.ui.lineEdit.text() == "Off" or self.ui.lineEdit.text() == "OFF" or self.ui.lineEdit.text() == "off"):	
 			self.car1_status = True
 			self.ui.lineEdit_6.setText("Operational")
+			self.eBrakeTest = False
+			self.EmergencyBrakingTest()
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)	
 		elif(self.ui.lineEdit.text() == "On" or self.ui.lineEdit.text() == "ON" or self.ui.lineEdit.text() == "on"):
 			self.car1_status = False	
 			self.ui.lineEdit_6.setText("Broken")
+			self.eBrakeTest = True
+			self.EmergencyBrakingTest()
 			self.sendYard = True
 			signals.tnm_sendyard.emit(True)
 		else:
 			self.car1_status = True
 			self.ui.lineEdit.setText("Off")
 			self.ui.lineEdit_6.setText("Operational")
+			self.eBrakeTest = False
+			self.EmergencyBrakingTest()
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 			
@@ -115,17 +134,23 @@ class tnm_failureTest(QObject):
 		if(self.ui.lineEdit_2.text() == "Off" or self.ui.lineEdit_2.text() == "OFF" or self.ui.lineEdit_2.text() == "off"):
 			self.car2_status = True	
 			self.ui.lineEdit_11.setText("Operational")
+			self.eBrakeTest = False
+			self.EmergencyBrakingTest()
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 		elif(self.ui.lineEdit_2.text() == "On" or self.ui.lineEdit_2.text() == "ON" or self.ui.lineEdit_2.text() == "on"):
 			self.car2_status = False	
 			self.ui.lineEdit_11.setText("Broken")
+			self.eBrakeTest = True
+			self.EmergencyBrakingTest()
 			self.sendYard = True
 			signals.tnm_sendyard.emit(True)				
 		else:
 			self.car2_status = True
 			self.ui.lineEdit_2.setText("Off")
 			self.ui.lineEdit_11.setText("Operational")
+			self.eBrakeTest = False
+			self.EmergencyBrakingTest()
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 		
@@ -134,17 +159,23 @@ class tnm_failureTest(QObject):
 		if(self.ui.lineEdit_3.text() == "Off" or self.ui.lineEdit_3.text() == "OFF" or self.ui.lineEdit_3.text() == "off"):		
 			self.car3_status = True
 			self.ui.lineEdit_8.setText("Operational")
+			self.eBrakeTest = False
+			self.EmergencyBrakingTest()
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 		elif(self.ui.lineEdit_3.text() == "On" or self.ui.lineEdit_3.text() == "ON" or self.ui.lineEdit_3.text() == "on"):
 			self.car3_status = False
 			self.ui.lineEdit_8.setText("Broken")
+			self.eBrakeTest = True
+			self.EmergencyBrakingTest()
 			self.sendYard = True		
 			signals.tnm_sendyard.emit(True)			
 		else:
 			self.car3_status = True
 			self.ui.lineEdit_3.setText("Off")
 			self.ui.lineEdit_8.setText("Operational")
+			self.eBrakeTest = False
+			self.EmergencyBrakingTest()
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 			
@@ -153,17 +184,23 @@ class tnm_failureTest(QObject):
 		if(self.ui.lineEdit_4.text() == "Off" or self.ui.lineEdit_4.text() == "OFF" or self.ui.lineEdit_4.text() == "off"):									
 			self.car4_status = True
 			self.ui.lineEdit_9.setText("Operational")
+			self.eBrakeTest = False
+			self.EmergencyBrakingTest()
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 		elif(self.ui.lineEdit_4.text() == "On" or self.ui.lineEdit_4.text() == "ON" or self.ui.lineEdit_4.text() == "on"):
 			self.car4_status = False
 			self.ui.lineEdit_9.setText("Broken")
+			self.eBrakeTest = True
+			self.EmergencyBrakingTest()
 			self.sendYard = True
 			signals.tnm_sendyard.emit(True)							
 		else:
 			self.car4_status = True
 			self.ui.lineEdit_4.setText("Off")
 			self.ui.lineEdit_9.setText("Operational")
+			self.eBrakeTest = False
+			self.EmergencyBrakingTest()
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 		
@@ -172,17 +209,23 @@ class tnm_failureTest(QObject):
 		if(self.ui.lineEdit_5.text() == "Off" or self.ui.lineEdit_5.text() == "OFF" or self.ui.lineEdit_5.text() == "off"):										
 			self.car5_status = True
 			self.ui.lineEdit_10.setText("Operational")
+			self.eBrakeTest = False
+			self.EmergencyBrakingTest()
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 		elif(self.ui.lineEdit_5.text() == "On" or self.ui.lineEdit_5.text() == "ON" or self.ui.lineEdit_5.text() == "on"):
 			self.car5_status = False
 			self.ui.lineEdit_10.setText("Broken")
+			self.eBrakeTest = True
+			self.EmergencyBrakingTest()
 			self.sendYard = True
 			signals.tnm_sendyard.emit(True)					
 		else:
 			self.car5_status = True
 			self.ui.lineEdit_5.setText("Off")
 			self.ui.lineEdit_10.setText("Operational")
+			self.eBrakeTest = False
+			self.EmergencyBrakingTest()
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 		
@@ -195,17 +238,23 @@ class tnm_failureTest(QObject):
 		if(self.ui.lineEdit_7.text() == "Off" or self.ui.lineEdit_7.text() == "OFF" or self.ui.lineEdit_7.text() == "off"):	
 			self.car1_status = True
 			self.ui.lineEdit_16.setText("Operational")
+			self.eBrakeTest = False
+			self.EmergencyBrakingTest()
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 		elif(self.ui.lineEdit_7.text() == "On" or self.ui.lineEdit_7.text() == "ON" or self.ui.lineEdit_7.text() == "on"):
 			self.car1_status = False	
 			self.ui.lineEdit_16.setText("Broken")
+			self.eBrakeTest = True
+			self.EmergencyBrakingTest()
 			self.sendYard = True
 			signals.tnm_sendyard.emit(True)				
 		else:
 			self.car1_status = True
 			self.ui.lineEdit_7.setText("Off")
 			self.ui.lineEdit_16.setText("Operational")
+			self.eBrakeTest = False
+			self.EmergencyBrakingTest()
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 			
@@ -214,17 +263,23 @@ class tnm_failureTest(QObject):
 		if(self.ui.lineEdit_12.text() == "Off" or self.ui.lineEdit_12.text() == "OFF" or self.ui.lineEdit_12.text() == "off"):
 			self.car2_status = True	
 			self.ui.lineEdit_17.setText("Operational")
+			self.eBrakeTest = False
+			self.EmergencyBrakingTest()
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 		elif(self.ui.lineEdit_12.text() == "On" or self.ui.lineEdit_12.text() == "ON" or self.ui.lineEdit_12.text() == "on"):
 			self.car2_status = False	
 			self.ui.lineEdit_17.setText("Broken")
+			self.eBrakeTest = True
+			self.EmergencyBrakingTest()
 			self.sendYard = True	
 			signals.tnm_sendyard.emit(True)				
 		else:
 			self.car2_status = True
 			self.ui.lineEdit_12.setText("Off")
 			self.ui.lineEdit_17.setText("Operational")
+			self.eBrakeTest = False
+			self.EmergencyBrakingTest()
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 		
@@ -233,17 +288,23 @@ class tnm_failureTest(QObject):
 		if(self.ui.lineEdit_13.text() == "Off" or self.ui.lineEdit_13.text() == "OFF" or self.ui.lineEdit_13.text() == "off"):		
 			self.car3_status = True
 			self.ui.lineEdit_18.setText("Operational")
+			self.eBrakeTest = False
+			self.EmergencyBrakingTest()
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 		elif(self.ui.lineEdit_13.text() == "On" or self.ui.lineEdit_13.text() == "ON" or self.ui.lineEdit_13.text() == "on"):
 			self.car3_status = False
 			self.ui.lineEdit_18.setText("Broken")
+			self.eBrakeTest = True
+			self.EmergencyBrakingTest()
 			self.sendYard = True
 			signals.tnm_sendyard.emit(True)					
 		else:
 			self.car3_status = True
 			self.ui.lineEdit_13.setText("Off")
 			self.ui.lineEdit_18.setText("Operational")
+			self.eBrakeTest = False
+			self.EmergencyBrakingTest()
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 		
@@ -252,17 +313,23 @@ class tnm_failureTest(QObject):
 		if(self.ui.lineEdit_14.text() == "Off" or self.ui.lineEdit_14.text() == "OFF" or self.ui.lineEdit_14.text() == "off"):									
 			self.car4_status = True
 			self.ui.lineEdit_19.setText("Operational")
+			self.eBrakeTest = False
+			self.EmergencyBrakingTest()
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 		elif(self.ui.lineEdit_14.text() == "On" or self.ui.lineEdit_14.text() == "ON" or self.ui.lineEdit_14.text() == "on"):
 			self.car4_status = False
 			self.ui.lineEdit_19.setText("Broken")
+			self.eBrakeTest = True
+			self.EmergencyBrakingTest()
 			self.sendYard = True
 			signals.tnm_sendyard.emit(True)					
 		else:
 			self.car4_status = True
 			self.ui.lineEdit_14.setText("Off")
 			self.ui.lineEdit_19.setText("Operational")
+			self.eBrakeTest = False
+			self.EmergencyBrakingTest()
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 		
@@ -271,17 +338,23 @@ class tnm_failureTest(QObject):
 		if(self.ui.lineEdit_15.text() == "Off" or self.ui.lineEdit_15.text() == "OFF" or self.ui.lineEdit_15.text() == "off"):										
 			self.car5_status = True
 			self.ui.lineEdit_20.setText("Operational")
+			self.eBrakeTest = False
+			self.EmergencyBrakingTest()
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 		elif(self.ui.lineEdit_15.text() == "On" or self.ui.lineEdit_15.text() == "ON" or self.ui.lineEdit_15.text() == "on"):
 			self.car5_status = False
 			self.ui.lineEdit_20.setText("Broken")
+			self.eBrakeTest = True
+			self.EmergencyBrakingTest()
 			self.sendYard = True
 			signals.tnm_sendyard.emit(True)					
 		else:
 			self.car5_status = True
 			self.ui.lineEdit_15.setText("Off")
 			self.ui.lineEdit_20.setText("Operational")
+			self.eBrakeTest = False
+			self.EmergencyBrakingTest()
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 			
@@ -294,17 +367,23 @@ class tnm_failureTest(QObject):
 		if(self.ui.lineEdit_21.text() == "Off" or self.ui.lineEdit_21.text() == "OFF" or self.ui.lineEdit_21.text() == "off"):	
 			self.train1_status = True
 			self.ui.lineEdit_26.setText("Operational")
+			self.eBrakeTest = False
+			self.EmergencyBrakingTest()
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 		elif(self.ui.lineEdit_21.text() == "On" or self.ui.lineEdit_21.text() == "ON" or self.ui.lineEdit_21.text() == "on"):
 			self.train1_status = False	
 			self.ui.lineEdit_26.setText("Broken")	
+			self.eBrakeTest = True
+			self.EmergencyBrakingTest()
 			self.sendYard = True
 			signals.tnm_sendyard.emit(True)			
 		else:
 			self.train1_status = True
 			self.ui.lineEdit_21.setText("Off")
 			self.ui.lineEdit_26.setText("Operational")
+			self.eBrakeTest = False
+			self.EmergencyBrakingTest()
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 			
@@ -589,8 +668,12 @@ class tnm_display(QObject):
 		#check if first value is: 1 = green line/0 = red line #Was 2, 3, 4, 5:
 		if(self.beacon_bin[0] == 0):
 			self.RouteName = "Red Line"
+			self.CurrStation = "Yard"
+			self.NextStation = "Shady Side"
 		elif(self.beacon_bin[0] == 1):
 			self.RouteName = "Green Line"
+			self.CurrStation = "Yard"
+			self.NextStation = "Pioneer"
 		#check if second value is: 0 = station/1 = underground
 		if(self.beacon_bin[1] == 0):
 			self.lights_Tun == False
@@ -646,7 +729,7 @@ class tnm_display(QObject):
 				self.NextStation = "Castle Shannon"
 			elif(self.beacon_bin[3:] == 0b01101):
 				self.CurrStation = "Castle Shannon"
-				#self.TrainDirection = "counting down"
+				#self.TrainDirection = 0 	#"counting down"
 				self.NextStation = "Poplar"
 			else:
 				self.CurrStation = " ---- "
@@ -656,7 +739,7 @@ class tnm_display(QObject):
 		if(self.RouteName == "Green Line" and self.TrainDirection == 0):
 			if(self.beacon_bin[3:] == 0b00001):
 				self.CurrStation = "Pioneer"
-				#self.TrainDirection = "counting up"
+				#self.TrainDirection = 1 	#"counting up"
 				self.NextStation = "EdgeBrook"
 			elif(self.beacon_bin[3:] == 0b00010):
 				self.CurrStation = "EdgeBrook"
@@ -701,7 +784,7 @@ class tnm_display(QObject):
 		#Route names for the Red Line going to stations incrementally (7 Stations)
 		elif(self.RouteName == "Red Line" and self.TrainDirection == 1):
 			if(self.beacon_bin[3:] == 0b00001):
-				self.CurrStation = "ShadySide"
+				self.CurrStation = "Shady Side"
 				self.NextStation = "Herron Ave"
 			elif(self.beacon_bin[3:] == 0b00010):
 				self.CurrStation = "Herron Ave"
@@ -720,7 +803,7 @@ class tnm_display(QObject):
 				self.NextStation = "South Hills"
 			elif(self.beacon_bin[3:] == 0b00111):
 				self.CurrStation = "South Hills"
-				#self.TrainDirection = "counting down"
+				#self.TrainDirection = 0	#"counting down"
 				self.NextStation = "Station Square"
 			else:
 				self.CurrStation = " ---- "
@@ -729,12 +812,12 @@ class tnm_display(QObject):
 		#Route names for the Red Line going to stations decrementally	(7 Stations)
 		elif(self.RouteName == "Red Line" and self.TrainDirection == 0):
 			if(self.beacon_bin[3:] == 0b00001):
-				self.CurrStation = "ShadySide"
-				#self.TrainDirection = "counting up"
+				self.CurrStation = "Shady Side"
+				#self.TrainDirection = 1	#"counting up"
 				self.NextStation = "Herron Ave"
 			elif(self.beacon_bin[3:] == 0b00010):
 				self.CurrStation = "Herron Ave"
-				self.NextStation = "ShadySide"
+				self.NextStation = "Shady Side"
 			elif(self.beacon_bin[3:] == 0b00011):
 				self.CurrStation = "Penn Station"
 				self.NextStation = "Herron Ave"
