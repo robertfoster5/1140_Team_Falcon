@@ -209,6 +209,7 @@ class wayside_qtui_test(QObject):
 	def new_authority(self, authority):
 		temp = []
 		if authority[0] == "r":
+			self.red_authority = authority
 			self.r1.authority = authority[1:24]
 			temp = authority[24:46]
 			temp.append(authority[67])
@@ -230,6 +231,7 @@ class wayside_qtui_test(QObject):
 			self.compile_auth_red()
 			self.compile_speed_green()
 		else:
+			self.green_authority = authority
 			self.g1.authority = authority[1:21]
 			temp = authority[21:36]
 			temp.append(authority[147])
@@ -270,8 +272,7 @@ class wayside_qtui_test(QObject):
 			self.r2.cross_change()
 			self.r3.cross_change()
 			self.compile_cross_red()
-			self.compile_auth_red()
-			self.compile_speed_red()
+			self.compile_switch_red()
 		else:
 			self.g1.block_occ = occupancy[1:21]
 			temp = occupancy[21:36]
@@ -289,7 +290,7 @@ class wayside_qtui_test(QObject):
 			self.g4.cross_change()
 			self.g5.cross_change()
 			self.compile_cross_green()
-			self.compile_auth_green()
+			self.compile_switch_green()
 		self.update_tables(self.curr_ws)
 		
 	def update_speed(self, speed):
@@ -426,40 +427,39 @@ class wayside_qtui_test(QObject):
 		for i in range(20):
 			if(self.g1.b_speed[i] == 0):
 				temp_occ.append(self.g1.b_speed[i])
-				j=j+1
 			else:
 				temp_occ.append(self.speed[i+1])
+			j=j+1
 		for i in range(15):
 			if(self.g2.b_speed[i] == 0):
 				temp_occ.append(self.g2.b_speed[i])
-				j=j+1
 			else:
 				temp_occ.append(self.speed[i+1])
+			j=j+1
 		for i in range(38):
 			if(self.g3.b_speed[i] == 0):
 				temp_occ.append(self.g3.b_speed[i])
-				j=j+1
 			else:
 				temp_occ.append(self.speed[j+1])
-				j=j+1
+			j=j+1
 		for i in range(36):
 			if(self.g4.b_speed[i] == 0):
 				temp_occ.append(self.g4.b_speed[i])
-				j=j+1
 			else:
 				temp_occ.append(self.speed[i+1])
+			j=j+1
 		for i in range(37):
 			if(self.g5.b_speed[i] == 0):
 				temp_occ.append(self.g5.b_speed[i])
-				j=j+1
 			else:
 				temp_occ.append(self.speed[i+1])
+			j=j+1
 		for i in range(15,19):
 			if(self.g2.b_speed[i] == 0):
 				temp_occ.append(self.g2.b_speed[i])
-				j=j+1
 			else:
 				temp_occ.append(self.speed[i+1])
+			j=j+1
 		signals.way_green_speed.emit(temp_occ)
 		
 	def compile_switch_red(self):
@@ -513,25 +513,47 @@ class wayside_qtui_test(QObject):
 		signals.way_red_authority.emit(temp_h)
 		
 	def compile_auth_green(self):
-		temp_auth = []
-		temp_auth.append("1")
-		j = 0
+		temp_occ = []
+		temp_occ.append("1")
+		j=0
 		for i in range(20):
-			temp_auth.append(self.g1.authority[i])
+			if(self.g1.authority[i] == 0):
+				temp_occ.append(self.g1.authority[i])
+			else:
+				temp_occ.append(self.green_authority[j+1])
+			j=j+1
 		for i in range(15):
-			temp_auth.append(self.g2.authority[i])
+			if(self.g2.authority[i] == 0):
+				temp_occ.append(self.g2.authority[i])
+			else:
+				temp_occ.append(self.green_authority[j+1])
 			j=j+1
 		for i in range(38):
-			temp_auth.append(self.g3.authority[i])
+			if(self.g3.authority[i] == 0):
+				temp_occ.append(self.g3.authority[i])
+			else:
+				temp_occ.append(self.green_authority[j+1])
+			j=j+1
 		for i in range(36):
-			temp_auth.append(self.g4.authority[i])
+			if(self.g4.authority[i] == 0):
+				temp_occ.append(self.g4.authority[i])
+			else:
+				temp_occ.append(self.green_authority[j+1])
+			j=j+1
 		for i in range(37):
-			temp_auth.append(self.g5.authority[i])
-		temp_auth.append(self.g2.authority[15])
-		temp_auth.append(self.g2.authority[16])
-		temp_auth.append(self.g2.authority[17])
-		temp_auth.append(self.g2.authority[18])
-		signals.way_green_authority.emit(temp_auth)
+			if(self.g5.authority[i] == 0):
+				temp_occ.append(self.g5.authority[i])
+				
+			else:
+				temp_occ.append(self.green_authority[j+1])
+			j=j+1
+		for i in range(15,19):
+			if(self.g2.authority[i] == 0):
+				temp_occ.append(self.g2.authority[i])
+			else:
+				temp_occ.append(self.green_authority[j+1])
+			j=j+1
+		signals.way_green_authority.emit(temp_occ)
 		
 if __name__ == "__main__":
     import sys
