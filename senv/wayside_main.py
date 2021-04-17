@@ -290,7 +290,6 @@ class wayside_qtui_test(QObject):
 			self.g5.cross_change()
 			self.compile_cross_green()
 			self.compile_auth_green()
-			self.compile_speed_green()
 		self.update_tables(self.curr_ws)
 		
 	def update_speed(self, speed):
