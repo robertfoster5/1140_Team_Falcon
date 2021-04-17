@@ -17,8 +17,8 @@ def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, Sp
 	SpeedN1 = MiletoMeter(SpeedN1)		#Convert MPH to mps for calculations
 	curr_speed = SpeedN1				#Just an initialization, will be recalculated
 	max_speed = 43.5					#miles/hour
-	#train_accl_max = 0.5006848		actually the median (2/3 of load)#mps2 from max 1.12 miles/hour^2
-	train_accl_max = 0.75
+	train_accl_max = 0.5006848		#actually the median (2/3 of load)#mps2 from max 1.12 miles/hour^2
+	#train_accl_max = 0.75
 	train_dec_service = 1.2 			#mph2 deceleration service
 	train_dec_eBrake = 2.73				#mph2 decleration eBrake
 	Empty_Mass = 5*40.9					#Tons
@@ -27,7 +27,8 @@ def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, Sp
 	curr_mass = (Empty_Mass + Occupancy_Mass)*907.185		#tons*kg const = kg <--	
 	time_initial = 0
 
-	print(str(round(Power,0)) + " W of Power")
+
+	#print(str(round(Power,0)) + " W of Power")
 	#current acceleration = change in v/change in t			#acc continues to change changing
 	#Force = M*A & Velocity = Power/M*A
 	
@@ -39,7 +40,7 @@ def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, Sp
 			force = 0.0
 			curr_accl = 0.0
 			curr_speed = 0.0
-			print("Train has stopped, eBrake")
+			#print("Train has stopped, eBrake")
 		#Slow down train using eBrake deceleration till 0.0
 		elif(SpeedN1 > 0.0):
 			force = (Power/curr_speed)
@@ -47,6 +48,7 @@ def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, Sp
 			curr_speed = meterToMile(SpeedN1 - ((time_initial + 1)/2)*(curr_accl))		#time_initial + 1 = currTime - currTime_n-1
 			if(curr_speed < 0.0):
 				curr_speed = 0.0
+				print("Train has stopped, eBrake")
 			
 	#Second, check if train has authority to speed up and move forward
 	elif(EmerBrake == False):
@@ -58,11 +60,12 @@ def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, Sp
 				curr_speed = meterToMile(SpeedN1 - ((time_initial + 1)/2)*(curr_accl))		#timeSec - time_initial 
 				if(curr_speed < 0.0):
 					curr_speed = 0.0
+					print("Train has stopped, service")
 			elif(SpeedN1 == 0.0):
 				force = 0.0
 				curr_accl = 0.0
 				curr_speed = 0.0
-				print("Train has stopped, service")
+				#print("Train has stopped, service")
 		#if authority is true, calculate speed based on Power and Vn-1 speed, using Max accleration
 		elif(Authority == True and SerBrake == True):
 			#time_initial = 0
@@ -73,13 +76,14 @@ def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, Sp
 				force = 0.0
 				curr_accl = 0.0		#train_dec_service
 				curr_speed = 0.0
-				print("Train has stopped, service")
+				#print("Train has stopped, service")
 			elif(timeSec > 0 and SpeedN1 > 0.0):
 				force = (Power/curr_speed)
 				curr_accl = train_dec_service
 				curr_speed = meterToMile(SpeedN1 + ((time_initial + 1)/2)*(curr_accl))			#Calculate Vn = Vn-1 + T/2(an +an-1) and convert to mph
 				if(curr_speed < 0.0):
 					curr_speed = 0.0
+					print("Train has stopped, service")
 		#else if authority is true, calculate speed based on Power and Vn-1 speed, using Max accleration
 		elif(Authority == True and SerBrake == False):
 			#time_initial = 0
@@ -88,8 +92,8 @@ def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, Sp
 				curr_speed = 0.0
 			elif(timeSec > 0 and SpeedN1 == 0.0):
 				#time_initial = timeSec
-				force = 140000											#Max estimated force N for max accelertion
-				curr_accl = (force/curr_mass) 							#max 0.75 mps2		set to max accl to start
+				force = 94400 #140000	at 0.75 mps2 max speed			#Max estimated force N for max accelertion
+				curr_accl = (force/curr_mass) 							#max 0.50 mps2		set to max accl to start
 				curr_speed = meterToMile(curr_accl/1)				#Calculate V = A/s and convert to mph	 #***Point of Failure
 				#curr_speed = meterToMile(SpeedN1 + ((time_initial + 1)/2)*(curr_accl + AcclN1))
 			elif(timeSec > 0 and SpeedN1 > 0.0):
