@@ -105,7 +105,7 @@ class TrainController(QObject):
         else:
             self.service_brake = False
 
-        if(self.driver_serv_brake)
+        if(self.driver_serv_brake):
             self.service_brake = True
 
         signals.tnc_service_brake.emit(self.service_brake)
