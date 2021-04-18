@@ -209,8 +209,6 @@ class wayside_qtui_test(QObject):
 			
 	def new_authority_red(self, authority):
 		temp = []
-		print("red authority")
-		print(red_authority)
 		self.red_authority = authority
 		self.r1.authority = authority[1:24]
 		temp = authority[24:46]
@@ -473,7 +471,7 @@ class wayside_qtui_test(QObject):
 			else:
 				temp.append(self.green_speed[j+1])
 			j=j+1
-		for i in range(15,19):
+		for i in range(15,-1):
 			if(self.g2.b_speed[i] == 0):
 				temp.append(self.g2.b_speed[i])
 			else:
@@ -520,7 +518,7 @@ class wayside_qtui_test(QObject):
 		temp = []
 		temp.append("0")
 		j = 0
-		for i in range(24):
+		for i in range(23):
 			if(self.r1.authority[i] == 0):
 				temp.append(self.r1.authority[i])
 			else:
@@ -538,7 +536,7 @@ class wayside_qtui_test(QObject):
 			else:
 				temp.append(self.red_authority[j+1])
 			j=j+1
-		for i in range(23,33):
+		for i in range(23,-1):
 			if(self.r2.authority[i] == 0):
 				temp.append(self.r2.authority[i])
 			else:
@@ -581,7 +579,7 @@ class wayside_qtui_test(QObject):
 			else:
 				temp.append(self.green_authority[j+1])
 			j=j+1
-		for i in range(15,19):
+		for i in range(15,-1):
 			if(self.g2.authority[i] == 0):
 				temp.append(self.g2.authority[i])
 			else:
