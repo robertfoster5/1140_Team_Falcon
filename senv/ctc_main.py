@@ -785,8 +785,8 @@ class ctc_qtui_test(QObject):
         suggested_speed = self.find_suggested_speed(authority,0.75,test_block_info)
         # print("Suggested Speed: " + str(suggested_speed))
         
-        print(authority)
-        print(suggested_speed)
+        # print(authority)
+        # print(suggested_speed)
         
         return [authority,suggested_speed]
         
@@ -1129,15 +1129,15 @@ class ctc_qtui_test(QObject):
                 #print(len(sendable_auth))
                 #print(sendable_auth)
                 #print(sendable_sugg_speed)
-                print(sendable_sugg_speed_green)
-                print(sendable_auth_green)
-                print(sendable_sugg_speed_red)
-                print(sendable_auth_red)
+                #print(sendable_sugg_speed_green)
+                #print(sendable_auth_green)
+                #print(sendable_sugg_speed_red)
+                #print(sendable_auth_red)
                 
-                signals.ctc_suggested_speed.emit(sendable_sugg_speed_green)
-                signals.ctc_authority.emit(sendable_auth_green)
-                signals.ctc_suggested_speed.emit(sendable_sugg_speed_red)
-                signals.ctc_authority.emit(sendable_auth_red)
+                signals.ctc_suggested_speed_green.emit(sendable_sugg_speed_green)
+                signals.ctc_authority_green.emit(sendable_auth_green)
+                signals.ctc_suggested_speed_red.emit(sendable_sugg_speed_red)
+                signals.ctc_authority_red.emit(sendable_auth_red)
            
             
     def update_time(self,seconds,minutes,hours,total_time):

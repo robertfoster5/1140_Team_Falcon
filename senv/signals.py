@@ -7,8 +7,10 @@ class Signal(QObject):
     time_multiplier = pyqtSignal(int)
 
     #ctc signals
-    ctc_authority = pyqtSignal(list)
-    ctc_suggested_speed = pyqtSignal(list)
+    ctc_authority_green = pyqtSignal(list)
+    ctc_suggested_speed_green = pyqtSignal(list)
+    ctc_authority_red = pyqtSignal(list)
+    ctc_suggested_speed_red = pyqtSignal(list)
     ctc_maintenance = pyqtSignal(list)
 
     #wayside signals
