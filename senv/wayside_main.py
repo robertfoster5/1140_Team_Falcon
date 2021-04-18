@@ -267,7 +267,7 @@ class wayside_qtui_test(QObject):
 			self.r3.update_ws()
 			self.compile_cross_red()
 			self.compile_switch_red()
-			self.compile_block_occ_red()
+			self.compile_block_occ_red_ctc()
 			self.compile_auth_red()
 			self.compile_speed_red()
 		else:
@@ -288,7 +288,7 @@ class wayside_qtui_test(QObject):
 			self.g5.update_ws()
 			self.compile_cross_green()
 			self.compile_switch_green()
-			self.compile_block_occ_green()
+			self.compile_block_occ_green_ctc()
 			self.compile_auth_green()
 			self.compile_speed_green()
 		self.update_tables(self.curr_ws)
@@ -398,6 +398,21 @@ class wayside_qtui_test(QObject):
 		print(temp)
 		signals.way_red_occupancy.emit(temp)
 		
+	def compile_block_occ_red_ctc(self):
+		temp = []
+		temp.append("0")
+		for i in range(24):
+			temp.append(self.r1.block_occ[i])
+		for i in range(23):
+			temp.append(self.r2.block_occ[i])
+		for i in range(21):
+			temp.append(self.r3.block_occ[i])
+		for i in range(23,33):
+			temp.append(self.r2.block_occ[i])
+		print("red occupancy output")
+		print(temp)
+		signals.way_red_occupancy_ctc.emit(temp)
+		
 	def compile_block_occ_green(self):
 		temp_occ = []
 		temp_occ.append("1")
@@ -417,6 +432,25 @@ class wayside_qtui_test(QObject):
 		temp_occ.append(self.g2.block_occ[18])
 		signals.way_green_occupancy.emit(temp_occ)
 	
+	def compile_block_occ_green_ctc(self):
+		temp_occ = []
+		temp_occ.append("1")
+		for i in range(20):
+			temp_occ.append(self.g1.block_occ[i])
+		for i in range(15):
+			temp_occ.append(self.g2.block_occ[i])
+		for i in range(38):
+			temp_occ.append(self.g3.block_occ[i])
+		for i in range(36):
+			temp_occ.append(self.g4.block_occ[i])
+		for i in range(37):
+			temp_occ.append(self.g5.block_occ[i])
+		temp_occ.append(self.g2.block_occ[15])
+		temp_occ.append(self.g2.block_occ[16])
+		temp_occ.append(self.g2.block_occ[17])
+		temp_occ.append(self.g2.block_occ[18])
+		signals.way_green_occupancy_ctc.emit(temp_occ)
+		
 	def compile_speed_red(self):
 		temp = []
 		temp.append("0")
