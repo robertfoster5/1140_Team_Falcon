@@ -50,7 +50,8 @@ class Signal(QObject):
     tnm_ebrake = pyqtSignal(bool)
     tnm_sendyard = pyqtSignal(bool)
     tnm_cab_temp = pyqtSignal(list)
-    tnm_block_finished = pyqtSignal(int)
+    tnm_block_finished_green = pyqtSignal(int)
+    tnm_block_finished_red = pyqtSignal(int)
     tnm_curr_station = pyqtSignal(str)
     tnm_TrainDir = pyqtSignal(bool)
 

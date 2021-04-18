@@ -411,10 +411,14 @@ class tnm_display(QObject):
 		tnm_ebrake = pyqtSignal(bool)
 		tnm_cab_temp = pyqtSignal(int)
 		tnm_sendYard = pyqtSignal(int)
-		tnm_block_finished = pyqtSignal(list)
+		tnm_block_finished_green = pyqtSignal(int)
+		tnm_block_finished_red = pyqtSignal(int)
 		tnm_curr_station = pyqtSignal(str)
+		tnm_TrainDir = pyqtSignal(bool)
 
 #Define variables to be used in tnm_display
+		self.TrainNum = 0
+		self.TrainName = " -- Information"
 		self.train1, self.train2, self.train3, self.train4, self.train5 = "Train 1 Information", "Train 2 Information", "Train 3 Information", "Train 4 Information", "Train 5 Information"
 		self.timeSeconds = 0
 	#power connected from tnc
@@ -438,7 +442,7 @@ class tnm_display(QObject):
 		self.dist_traveled = 0
 		signals.tkm_get_blength.connect(self.blockTime)
 		signals.tkm_get_block.connect(self.blockNum)
-		#self.blockTime(self.block_length)
+		signals.tkm_get_train_num.connect(self.setTrainStart)
 	#brake states
 		self.Brake = False
 		self.eBrake = False
@@ -451,7 +455,8 @@ class tnm_display(QObject):
 	#Route Information
 		self.Mass_Empty = (5*40.9)								#Tons with no passengers/crew
 		self.Occupancy = pass_crew_count(self.pass_count, self.crew_count)
-		self.RouteName = "Green Line"
+		self.RouteLine = 0		#0 for Red line, 1 for Green line
+		self.RouteName = " --- "
 		self.TrainDirection = 1
 		self.CurrStation = "Yard"
 		self.NextStation = " --- "
@@ -557,7 +562,7 @@ class tnm_display(QObject):
 	def update_RouteInfo(self):
 		
 		#Update Train Numbering Header
-		self.ui.label_23.setText(self.train1)
+		self.ui.label_23.setText(self.TrainName)
 		
 		#Update Route Line
 		self.ui.lineEdit_9.setText(self.RouteName)
@@ -889,7 +894,10 @@ class tnm_display(QObject):
 				self.block_finished = True
 				print(str(self.block_finished) + " change blocks")
 				self.dist_traveled = 0
-				signals.tnm_block_finished.emit(self.block_finished)
+				if(self.RouteLine == 0):
+					signals.tnm_block_finished_red.emit(self.TrainNum)
+				elif(self.RouteLine == 1):
+					signals.tnm_block_finished_green.emit(self.TrainNum)
 			
 	
 	#Function to set Authority from track model signal
@@ -936,6 +944,32 @@ class tnm_display(QObject):
 	#Function to update High Beam Light status
 	def setHighLight(self, tncHighLight):
 		self.light_High = tncHighLight
+		
+	#Function to set the train number, and specify the line name
+	def setTrainStart(self, tkmTrainNum, tkmTrainLine):			#Num, Line
+		self.TrainNum = tkmTrainNum
+		self.RouteLine = tkmTrainLine
+		#Determine which Train Number -> Train Name
+		if(self.TrainNum == 1):
+			self.TrainName = self.train1
+		elif(self.TrainNum == 2):
+			self.TrainName = self.train2
+		elif(self.TrainNum == 3):
+			self.TrainName = self.train3
+		elif(self.TrainNum == 4):
+			self.TrainName = self.train4
+		elif(self.TrainNum == 5):
+			self.TrainName = self.train5
+		else:
+			self.TrainName = " ----- "
+		
+		#Specify which track the train is on, red or green
+		if(self.RouteLine == 0):
+			self.RouteName = "Red Line"
+		elif(self.RouteLine == 1):
+			self.RouteName = "GreenLine"
+		
+			
 	
 	#Function for TIME
 	def getTime(self, time_sec, time_min, time_hr, time_tot):
