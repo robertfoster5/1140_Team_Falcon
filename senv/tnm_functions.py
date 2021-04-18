@@ -80,7 +80,7 @@ def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, Sp
 			elif(timeSec > 0 and SpeedN1 > 0.0):
 				force = (Power/curr_speed)
 				curr_accl = train_dec_service
-				curr_speed = meterToMile(SpeedN1 + ((time_initial + 1)/2)*(curr_accl))			#Calculate Vn = Vn-1 + T/2(an +an-1) and convert to mph
+				curr_speed = meterToMile(SpeedN1 - ((time_initial + 1)/2)*(curr_accl))			#Calculate Vn = Vn-1 + T/2(an +an-1) and convert to mph
 				if(curr_speed < 0.0):
 					curr_speed = 0.0
 					print("Train has stopped, service")
@@ -159,8 +159,8 @@ def stopping_dist(comm_speed):
 	service_dec_mps = (service_dec/2.237)
 	service_stop_time = (comm_speed_mps/service_dec_mps)	#seconds
 	service_stop_distance = ((comm_speed_mps/2)*service_stop_time)
-	print(str(service_stop_time) + " service stop time")
-	print(str(round(service_stop_distance,0)) + " service brake stop dist")
+	#print(str(service_stop_time) + " service stop time")
+	#print(str(round(service_stop_distance,0)) + " service brake stop dist")
 	
 	#For Emergency Braking
 	eBrake_dec = 6.11		#MPH
