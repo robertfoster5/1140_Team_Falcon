@@ -113,12 +113,6 @@ class Wayside:
 		crc = 0
 		proc = 0
 		plc = f.readlines()
-		if (self.line == "Green"):
-			self.authority.append("g")
-			self.b_speed.append("g")
-		else:
-			self.authority.append("r")
-			self.b_speed.append("r")
 		for line in plc[0:]:
 			if line == "var":
 				proc = 0
