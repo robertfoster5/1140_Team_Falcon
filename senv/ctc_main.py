@@ -523,14 +523,26 @@ class ctc_qtui_test(QObject):
         # DISPATCH ACTIONS
         # -----------------------------
         
-        # Manually dispatch train into the system
+        # Manually dispatch train into the system (GREEN LINE)
         self.ui.btnDispatchMan.clicked.connect(lambda: self.dispatch_manual(self.ui,green_block_info,green_station_info,green_station_pathway,current_time))        
         
-        # Choose file for automatic dispatch
+        # Choose file for automatic dispatch (GREEN LINE)
         self.ui.btnImportSchedFile.clicked.connect(lambda: self.import_schedule_file(self.ui))
         
-        # Automatically dispatch train into the system
+        # Automatically dispatch train into the system (GREEN LINE)
         self.ui.btnDispatchAuto.clicked.connect(lambda: self.dispatch_automatic(self.ui,green_block_info,green_station_info,green_station_pathway,current_time))        
+        
+        # NEED TO IMPLEMENT
+        # Manually dispatch train into the system (RED LINE)
+        self.ui.btnDispatchMan_2.clicked.connect(lambda: self.dispatch_manual(self.ui,red_block_info,red_station_info,red_station_pathway,current_time))        
+        
+        # NEED TO IMPLEMENT
+        # Choose file for automatic dispatch (RED LINE)
+        self.ui.btnImportSchedFile_2.clicked.connect(lambda: self.import_schedule_file(self.ui))
+        
+        # NEED TO IMPLEMENT
+        # Automatically dispatch train into the system (RED LINE)
+        self.ui.btnDispatchAuto_2.clicked.connect(lambda: self.dispatch_automatic(self.ui,red_block_info,red_station_info,red_station_pathway,current_time))        
         
         
         # -----------------------------
@@ -652,9 +664,14 @@ class ctc_qtui_test(QObject):
         # Dispatch a train using values inputted in the main window
         
         # Get info inputted in the main window
-        train = ui.comboTrain.currentIndex()
-        destination_station = ui.comboStation.currentIndex()
-        arrival_time = ui.lineEditTime.text()
+        if len(test_block_info) == 150:
+            train = ui.comboTrain.currentIndex()
+            destination_station = ui.comboStation.currentIndex()
+            arrival_time = ui.lineEditTime.text()
+        else:
+            train = ui.comboTrain_2.currentIndex()
+            destination_station = ui.comboStation_2.currentIndex()
+            arrival_time = ui.lineEditTime_2.text()
         # print(train)
         # print(destination_station)
         # print(arrival_time)
@@ -727,10 +744,13 @@ class ctc_qtui_test(QObject):
         # Calculate authority (distance from the start position to end position)
         
         # Assume start station is index 8
-        if train >= 0:
-            curr_station_path = 8
+        if train == 0:
+            if len(test_block_info) == 150:
+                curr_station_path = 8
+            else:
+                curr_station_path = 1
         else:
-            curr_station_path = global_expected_train_location[train]
+            curr_station_path = global_expected_train_location[train - 1]
         # print(curr_block)
         
         # if train != 0:
@@ -761,7 +781,7 @@ class ctc_qtui_test(QObject):
     def find_suggested_speed(self,authority,speed_mod,track_info):
         sugg_speed = []
         for i in range(len(authority)):
-            sugg_speed.append(self.kmph_to_mps(speed_mod*track_info[i][1]))
+            sugg_speed.append(self.kmph_to_mps(speed_mod*track_info[authority[i]][1]))
         
         # Slow down speed as the train reaches destination
         if len(sugg_speed) >= 3:
