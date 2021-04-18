@@ -16,6 +16,7 @@ class TrainController(QObject):
         self.left_side = False
         self.emergency_brake = False
         self.service_brake = False
+        self.pass_brake = False
         self.tunnel_light = False
         self.cabin_light = False
         self.high_beam_light = False
@@ -34,6 +35,7 @@ class TrainController(QObject):
         signals.tnm_comm_speed.connect(self.set_command_speed)
         signals.tnm_curr_speed.connect(self.set_curr_speed)
         signals.tnm_authority.connect(self.set_authority)
+        #signals.tnm_ebrake.connect(self.set_pass_brake)
 
         self.init_periph()
 
@@ -87,18 +89,14 @@ class TrainController(QObject):
                 self.left_door = True
 
             if(self.emergency_brake):
-                self.powsys.braking = True
                 self.announcement = "EMERGENCY BRAKING!\nPLEASE REMAIN SEATED"
             elif(not self.authority):
-                self.powsys.braking = True
                 self.service_brake = True
             elif(self.powsys.command_speed == 0 and self.authority):
                 self.at_station = True
                 if(self.powsys.current_speed > 10):
-                    self.powsys.braking = True
                     self.service_brake = True
                 else:
-                    self.powsys.braking = False
                     self.service_brake = False
                     self.set_command_speed(10)
             else:
@@ -107,12 +105,18 @@ class TrainController(QObject):
 
             signals.tnc_service_brake.emit(self.service_brake)
 
+            if(self.emergency_brake or self.service_brake or self.pass_brake):
+                self.powsys.braking = True
+            else:
+                self.powsys.braking = False
+
             #if(self.in_tunnel):
             #    self.tunnel_light = True
             #else:
             #    self.tunnel_light = False
 
-        print(str(round(self.powsys.command_speed,1)) + " comm speed")
+        print(str(round(self.powsys.command_speed,1)) + " comm speed in m/s")
+        print(str(int(self.controller.powsys.command_speed * 2.237)) + "comm speed in mph"))
         #print(round(self.powsys.set_speed,1))
 
         self.powsys.update_power()
