@@ -16,6 +16,7 @@ class TrainController(QObject):
         self.left_side = False
         self.emergency_brake = False
         self.service_brake = False
+        self.driver_serv_brake = False
         self.pass_brake = False
         self.tunnel_light = False
         self.cabin_light = False
@@ -91,26 +92,28 @@ class TrainController(QObject):
             if (self.at_station and (not self.authority) and self.powsys.current_speed == 0):
                 self.left_door = True
 
-            if(self.emergency_brake):
-                self.announcement = "EMERGENCY BRAKING!\nPLEASE REMAIN SEATED"
-            elif(not self.authority):
+        if(self.emergency_brake or self.pass_brake):
+            self.announcement = "EMERGENCY BRAKING!\nPLEASE REMAIN SEATED"
+        elif(not self.authority):
+            self.service_brake = True
+        elif(self.powsys.command_speed == 0 and self.authority):
+            if(self.powsys.current_speed > 5):
                 self.service_brake = True
-            elif(self.powsys.command_speed == 0 and self.authority):
-                self.at_station = True
-                if(self.powsys.current_speed > 5):
-                    self.service_brake = True
-                else:
-                    self.service_brake = False
-                    self.set_command_speed(5)
             else:
                 self.service_brake = False
+                self.set_command_speed(5)
+        else:
+            self.service_brake = False
 
-            signals.tnc_service_brake.emit(self.service_brake)
+        if(self.driver_serv_brake)
+            self.service_brake = True
 
-            if(self.emergency_brake or self.service_brake or self.pass_brake):
-                self.powsys.braking = True
-            else:
-                self.powsys.braking = False
+        signals.tnc_service_brake.emit(self.service_brake)
+
+        if(self.emergency_brake or self.service_brake or self.pass_brake):
+            self.powsys.braking = True
+        else:
+            self.powsys.braking = False
 
             #if(self.in_tunnel):
             #    self.tunnel_light = True
@@ -118,7 +121,7 @@ class TrainController(QObject):
             #    self.tunnel_light = False
 
         #print(str(round(self.powsys.command_speed,1)) + " comm speed in m/s")
-        print(str(int(self.controller.powsys.command_speed * 2.237)) + "comm speed in mph")
+        print(str(int(self.powsys.command_speed * 2.237)) + "comm speed in mph")
         #print(round(self.powsys.set_speed,1))
 
         self.powsys.update_power()
