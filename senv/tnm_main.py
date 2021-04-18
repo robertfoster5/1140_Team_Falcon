@@ -415,8 +415,7 @@ class tnm_display(QObject):
 		tnm_curr_station = pyqtSignal(str)
 
 #Define variables to be used in tnm_display
-		self.train1 = "Train 1 Information"
-		self.train2 = "Train 2 Information"
+		self.train1, self.train2, self.train3, self.train4, self.train5 = "Train 1 Information", "Train 2 Information", "Train 3 Information", "Train 4 Information", "Train 5 Information"
 		self.timeSeconds = 0
 	#power connected from tnc
 		self.curr_power = 0
@@ -425,7 +424,6 @@ class tnm_display(QObject):
 		self.curr_accl = 0.0
 		self.comm_speed = 0.0
 		signals.tkm_get_speed.connect(self.SetCommSpeed)
-		print(str(self.comm_speed) + " comm speed tnm from tkm")
 		#train starts at rest v
 		self.SpeedN1 = 0.0					#Used as value for inital speed for curr_speed calculation. Then is set to curr_speed for next calculation
 		self.AcclN1 = 0.0
@@ -536,8 +534,6 @@ class tnm_display(QObject):
 		#Address Commanded Speed
 		signals.tnm_comm_speed.emit(self.comm_speed)
 		
-		#Display stopping distance based on current speed
-		stopping_dist(self.comm_speed)
 
 #_______________________________________________________________________	
 	#function to update Train Statistics (Mass, Pass & Crew count)
@@ -617,11 +613,24 @@ class tnm_display(QObject):
 #_______________________________________________________________________			
 	#function to delegate variables when Emergency Brake triggered
 	def EmergencyBraking(self):
-		if(self.eBrake == False):
+		if not self.eBrake:
+			self.ui.pushButton.setText("CANCEL")
+			self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
 			self.eBrake = True
 			signals.tnm_ebrake.emit(self.eBrake)
 			print("eBrake is " + str(self.eBrake))
+		else:
+			self.ui.pushButton.setText("Emergency Brake")
+			self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: black;")
+			self.eBrake = False
+			signals.tnm_ebrake.emit(False)
 			
+		"""   
+		if(self.eBrake == False):
+		self.eBrake = True
+		signals.tnm_ebrake.emit(self.eBrake)
+		print("eBrake is " + str(self.eBrake))
+		"""
 
 #_______________________________________________________________________
 	#function to Update Current Temperature of the cabin
@@ -863,9 +872,6 @@ class tnm_display(QObject):
 	#Function to specify block number for each line
 	def blockNum(self,BlockNum):
 		self.block_num = BlockNum
-		#print(str(self.block_num) + " block num")
-		
-		#ie)If block_num = 14 , station name = Glenwood, next station block 17
 		
 	
 	#Function to take in block length and calculate when train reaches next block
@@ -878,12 +884,13 @@ class tnm_display(QObject):
 
 		self.dist_traveled += curr_speed_mps*(1)		#distance in meters
 		#print(str(self.dist_traveled) + " dist " + str(self.timeSeconds))
-			
-		if((self.block_length - self.dist_traveled) <= 0.0):
-			self.block_finished = True
-			print(str(self.block_finished) + " change blocks")
-			self.dist_traveled = 0
-			signals.tnm_block_finished.emit(self.block_finished)
+		
+		if(curr_speed_mps > 0.0):
+			if((self.block_length - self.dist_traveled) <= 0.0):
+				self.block_finished = True
+				print(str(self.block_finished) + " change blocks")
+				self.dist_traveled = 0
+				signals.tnm_block_finished.emit(self.block_finished)
 			
 	
 	#Function to set Authority from track model signal
@@ -922,10 +929,10 @@ class tnm_display(QObject):
 	#Function to update Cab Light status
 	def setCabLight(self, tncCabLight):
 		self.light_Cab = tncCabLight
-	#Function to update Cab Light status
+	#Function to update Tun Light status
 	def setTunLight(self, tncTunLight):
 		self.light_Tun = tncTunLight
-	#Function to update Cab Light status
+	#Function to update High Beam Light status
 	def setHighLight(self, tncHighLight):
 		self.light_High = tncHighLight
 	
@@ -957,11 +964,7 @@ if __name__ == "__main__":
 	#Initialize main program and test program
 	prog = tnm_display()
 	test = tnm_failureTest()
-	"""
-	#display main program and test program, then exit program
-	MainWindow.show()
-	TestUi.show()
-	"""
+	
 	sys.exit(app.exec_())
 	
 
