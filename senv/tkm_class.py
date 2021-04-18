@@ -95,27 +95,76 @@ class Train:
 #_______________________________________________________________________
 	
 	#change block location
-	def set_block(self,blocks,num):
+	def set_block(self,blocks,num,line):
 		self.block = self.past
 		print(str(self.num)+" num")
-		if self.way == 1:
-			if blocks[num].switch.top == 0:
-				self.block = blocks[num].num+1
-				print("hi")
+		
+		#green
+		if line == "Green":
+			if self.way == 1:
+				if blocks[num].switch.top == 0 and blocks[num].num != 100 and blocks[num].num != 150:
+					self.block = blocks[num+1].num
+				elif blocks[num].num == 100:
+					self.block = 85
+					self.way = -1
+				elif blocks[num].num == 150:
+					self.block = 29
+					self.way = -1
+			#way = -1
 			else:
-				if blocks[self.block-1].switch.state == 0:
+				if blocks[num].num != 13:
+					self.block = blocks[num].num-1
+				elif blocks[num].num == 13:
+					self.block = 1
+					self.way = 1
+			'''
+			if self.way == 1:
+				if blocks[num].switch.top == 0:
 					self.block = blocks[num].num+1
-					print("bye")
-				else:
-					self.block = blocks[num].switch.bottom
-					print("fine")
 					
-		#else:
-			#if past.switch.top == 0:
-				#self.block = past.num
-			#else:
-				#if past.switch.bottom == block.num and past.switch.state == 0:
-					#self.block = 
+				else:
+					if blocks[self.block-1].switch.state == 0:
+						self.block = blocks[num].num+1
+						
+					else:
+						self.block = blocks[num].switch.bottom
+			'''
+		#red
+		else:
+			# way = 1
+			if self.way == 1:
+				if blocks[num].switch.top == 0 and blocks[num].num != 66 and blocks[num].num != 71 and blocks[num].num != 76:
+					self.block = blocks[num].num+1
+				elif blocks[num].num == 66 :
+					if blocks[53].switch.state == 1:
+						self.block = 52
+						self.way = -1
+				elif blocks[num].num == 71:
+					if blocks[39].switch.state == 1:
+						self.block = 38
+						self.way = -1
+				elif blocks[num].num == 76:
+					if blocks[28].switch.state == 1:
+						self.block = 27
+						self.way = -1
+				else:
+					if blocks[num].switch.state == 0:
+						self.block = blocks[num].switch.top
+					else:
+						self.block = blocks[num].switch.bottom
+						self.way = -1
+			else:# way == -1
+				if blocks[num-1].switch.top == 0 and blocks[num].num != 72 and blocks[num].num != 67 and blocks[num].num != 1:
+					self.block = self.blocks[num].num-1
+				elif blocks[num].num == 72:
+					self.block = 33
+					self.way = 1
+				elif blocks[num].num == 67:
+					self.block = 44
+					self.way = 1
+				elif blocks[num].num == 1:
+					self.block = 16
+					self.way = -1
 			
 		signals.tkm_get_block.emit(self.block)
 		print(str(self.block) + " block tkm")
@@ -315,10 +364,10 @@ class Track:
 		r = 0
 		
 		if self.line == "Red":
-			yards[0] = 9
+			yards.append(9)
 		else:
-			yards[0] = 57
-			yards[1] = 63
+			yards.append(57)
+			yards.append(63)
 		
 		self.yards = yards
 		
@@ -431,7 +480,7 @@ class Track:
 					a = a+1
 				
 				if a == len(self.blocks)-1:
-					#this does nothing
+					10
 				else:
 					self.blocks[a-1].set_beac_u(b,1)
 				b = b+1
@@ -481,30 +530,31 @@ class Track:
 	
 #_______________________________________________________________________
 	#set train blocks
-	def set_train_block(self,cool):
-		if(cool):
-			r = 1
-			q = 0
-			a = []
-			s = 0
-			while r <= len(self.train):
-				while self.blocks[q].occ == 0 and q < self.end-1:
-					q = q+1
+	def set_train_block(self,num):
+		a = []
+		s = 0
+		
+		loc = self.train[num-1].block
+		way = self.train[num-1].way
+		
+		#print(str(q)+" this is q") 
+			
+		
+		a.append(self.train[num-1].set_block(self.blocks,loc,self.line))
+		
+		
+		self.blocks[q+1].occ = 1
+		self.blocks[q].occ = 0
+		
+		s = self.train[r-1].set_speed(self.blocks[q])
+		r = r+1
+		q = q+1
 				
-				#print(str(q)+" this is q") 
-				a.append(self.train[r-1].set_block(self.blocks,q))
-				self.blocks[q+1].occ = 1
-				self.blocks[q].occ = 0
-				
-				s = self.train[r-1].set_speed(self.blocks[q])
-				r = r+1
-				q = q+1
-				
-			bull = self.get_occ()
-			self.set_occ(bull)
-			#print(str(s) + "tkm")
-			signals.tkm_get_speed.emit(s)
-			signals.tkm_get_auth.emit(a)
+		bull = self.get_occ()
+		self.set_occ(bull)
+		#print(str(s) + "tkm")
+		signals.tkm_get_speed.emit(s)
+		signals.tkm_get_auth.emit(a)
 			
 			
 #_______________________________________________________________________
@@ -519,24 +569,32 @@ class Track:
 			r = r+1
 			q = q+1
 		
-		if len(self.train) == 0:
-			if self.blocks[self.yards[0]].auth == 1:
-				#print("if")
-				if ((self.blocks[self.yards[0]-1].auth == 0 and self.blocks[self.yards[0]+1].auth == 1) or (self.blocks[self.yards[0]-1].auth == 1 and self.blocks[self.yards[0]+1].auth == 0)) and self.blocks[self.yards[0]].occ == 0:
-					self.add_train(len(train)+1,1,self.blocks[self.yards[0]-1])
-					self.train[len(train)-1].set_way(self.blocks,self.yards[0])
-				
+		
+		if self.line == "Green":
+			if len(self.train) == 0:
+				if self.blocks[self.yards[0]].auth == 1:
+					#print("if")
+					if ((self.blocks[self.yards[0]-1].auth == 0 and self.blocks[self.yards[0]+1].auth == 1) or (self.blocks[self.yards[0]-1].auth == 1 and self.blocks[self.yards[0]+1].auth == 0)) and self.blocks[self.yards[0]].occ == 0:
+						self.add_train(len(train)+1,1,self.blocks[self.yards[0]-1])
+						self.train[len(train)-1].set_way(self.blocks,self.yards[0])
+					
 
-			elif self.blocks[self.yards[1]-1].auth == 1:
-				if ((self.blocks[self.yards[1]-2].auth == 0 and self.blocks[self.yards[1]].auth == 1) or (self.blocks[self.yards[1]-2].auth == 1 and self.blocks[self.yards[1]].auth == 0)) and self.blocks[self.yards[1]-1].occ == 0:
-					self.add_train(len(self.train)+1,1,self.blocks[self.yards[1]-1])
-					#print(str(self.yards[1]-1) + " yards 1")
-					self.train[len(self.train)-1].set_way(self.blocks,self.yards[1]-1)
-			elif self.blocks[self.yards[1]].auth == 1:
-				#print("elif")
-				if ((self.blocks[self.yards[1]-1].auth == 0 and self.blocks[self.yards[1]+1].auth == 1) or (self.blocks[self.yards[1]-1].auth == 1 and self.blocks[self.yards[1]+1].auth == 0)) and self.blocks[self.yards[1]].occ == 0:
-					self.add_train(len(self.train)+1,1,self.blocks[self.yards[1]])
-					self.train[len(self.train)-1].set_way(self.blocks,self.yards[1])
+				elif self.blocks[self.yards[1]-1].auth == 1:
+					if ((self.blocks[self.yards[1]-2].auth == 0 and self.blocks[self.yards[1]].auth == 1) or (self.blocks[self.yards[1]-2].auth == 1 and self.blocks[self.yards[1]].auth == 0)) and self.blocks[self.yards[1]-1].occ == 0:
+						self.add_train(len(self.train)+1,1,self.blocks[self.yards[1]-1])
+						#print(str(self.yards[1]-1) + " yards 1")
+						self.train[len(self.train)-1].set_way(self.blocks,self.yards[1]-1)
+				elif self.blocks[self.yards[1]].auth == 1:
+					#print("elif")
+					if ((self.blocks[self.yards[1]-1].auth == 0 and self.blocks[self.yards[1]+1].auth == 1) or (self.blocks[self.yards[1]-1].auth == 1 and self.blocks[self.yards[1]+1].auth == 0)) and self.blocks[self.yards[1]].occ == 0:
+						self.add_train(len(self.train)+1,1,self.blocks[self.yards[1]])
+						self.train[len(self.train)-1].set_way(self.blocks,self.yards[1])
+						
+		elif self.line == "Red":
+			if len(self.train) == 0:
+				if self.blocks[self.yards[0]-1].auth == 1:
+					self.add_train(len(self.train)+1,-1,self.blocks[self.yards[0]-1])
+				
 
 		
 

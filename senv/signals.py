@@ -40,7 +40,7 @@ class Signal(QObject):
     tkm_get_pass_count = pyqtSignal(int)
     tkm_get_block = pyqtSignal(int)
     tkm_get_blength = pyqtSignal(int)
-    tkm_get_train_num = pyqtSiganl(list)
+    tkm_get_train_num = pyqtSignal(list)
 
     #train model signals
     tnm_comm_speed = pyqtSignal(float)

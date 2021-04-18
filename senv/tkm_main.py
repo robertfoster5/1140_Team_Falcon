@@ -132,7 +132,9 @@ class tkm_test(QObject):
 		signals.way_green_authority.connect(self.info[0].set_auth)
 		signals.way_red_authority.connect(self.info[1].set_auth)
         
-		signals.tnm_block_finished.connect(self.info[0].set_train_block)
+		signals.tnm_block_finished_green.connect(self.info[0].set_train_block)
+		signals.tnm_block_finished_red.connect(self.info[1].set_train_block)
+        
         		
 	#for changing block info
 	def display_b(self):
@@ -179,13 +181,14 @@ class tkm_test(QObject):
 			new = load_track(str(self.ui.lineEdit_f.text())+".xls")
 			new = Track(new)
 			self.info.append(new)
-			print(self.info[1].blocks[0].num)
-			print(self.info[1].blocks[31].num)
+			#print(self.info[1].blocks[0].num)
+			#print(self.info[1].blocks[31].num)
 			
 	def display_v(self):
 		i = 0
 		while i < len(self.info):
 			if self.ui.lineEdit_v.text() == self.info[i].line:
+				print(i)
 				break
 			i = i+1
 			

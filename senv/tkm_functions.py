@@ -116,7 +116,6 @@ def load_track(fileN):
 				track.append(Block(t_file.cell(j,0).value,t_file.cell(j,1).value,t_file.cell(j,2).value,t_file.cell(j,3).value,t_file.cell(j,4).value,t_file.cell(j,5).value,0,swit_t,swit_b,0,t_file.cell(j,7).value,t_file.cell(j,8).value,t_file.cell(j,9).value,t_file.cell(j,10).value))
 				
 			elif name[7:9] == "TO":
-				print(name[21])
 				if name[21] == "9":
 					swit_b = ["YARD",int(name[21])]
 				else:
