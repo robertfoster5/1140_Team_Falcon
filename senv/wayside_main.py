@@ -47,16 +47,12 @@ class wayside_qtui_test(QObject):
 		#self.MainWindow.show()
 		
 		self.g1 = Wayside("g1.txt", "Green")
-		print("g1")
-		print(self.g1.authority)
 		self.g2 = Wayside("g2.txt", "Green")
 		self.g3 = Wayside("g3.txt", "Green")
 		self.g4 = Wayside("g4.txt", "Green")
 		self.g5 = Wayside("g5.txt", "Green")
 		self.r1 = Wayside("r1.txt", "Red")
 		self.r2 = Wayside("r2.txt", "Red")
-		print("r2")
-		print(self.r2.authority)
 		self.r3 = Wayside("r3.txt", "Red")
 		
 		"""self.g1_thread = QThread()
