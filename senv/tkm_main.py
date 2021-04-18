@@ -71,7 +71,7 @@ class tkm_test(QObject):
 		track = load_track("tkm_load_g.xls")
 		t = Track(track)
 		
-		track = load_track("tkm_load_g.xls")
+		track = load_track("tkm_load_r.xls")
 		q = Track(track)
 		
 		#create tracks
@@ -188,7 +188,6 @@ class tkm_test(QObject):
 		i = 0
 		while i < len(self.info):
 			if self.ui.lineEdit_v.text() == self.info[i].line:
-				print(i)
 				break
 			i = i+1
 			
