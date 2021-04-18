@@ -1091,12 +1091,17 @@ class ctc_qtui_test(QObject):
         
     def send_dispatch_order(self):
         global global_dispatch_orders
+        
         sendable_sugg_speed_green = [0] * 151
         sendable_sugg_speed_green[0] = "g"
-        sendable_auth_green = ["g"]
+        sendable_auth_green = [0] * 151
+        sendable_auth_green[0] = "g"
+        
         sendable_sugg_speed_red = [0] * 77
         sendable_sugg_speed_red[0] = "r"
-        sendable_auth_red = ["r"]
+        sendable_auth_red = [0] * 151
+        sendable_auth_red[0] = "g"
+        
         if len(global_dispatch_orders) > 1:
             #print("Wait for t = " + str(global_dispatch_orders[1][3]))
             #if self.current_time >= global_dispatch_orders[1][3]:
@@ -1104,21 +1109,21 @@ class ctc_qtui_test(QObject):
                 if global_dispatch_orders[1][6] == "g":
                     for i in range(150):
                         if i in global_dispatch_orders[1][4]:
-                            sendable_auth_green.append("1")
+                            sendable_auth_green[i+1] = "1"
                             sendable_sugg_speed_green[i+1] = global_dispatch_orders[1][5][global_dispatch_orders[1][4].index(i)]
                             #print(str(sendable_sugg_speed[i+1]) + " Curr Speed")
                             #print("Index w/ Authority: " + str(i))
                         else:
-                            sendable_auth_green.append("0")
+                            sendable_auth_green[i+1] = "0"
                 else:
                     for i in range(76):
                         if i in global_dispatch_orders[1][4]:
-                            sendable_auth_red.append("1")
+                            sendable_auth_red[i+1] = "1"
                             sendable_sugg_speed_red[i+1] = global_dispatch_orders[1][5][global_dispatch_orders[1][4].index(i)]
                             #print(str(sendable_sugg_speed[i+1]) + " Curr Speed")
                             #print("Index w/ Authority: " + str(i))
                         else:
-                            sendable_auth_red.append("0")
+                            sendable_auth_red[i+1] = "0"
 
                 #print("Authority")
                 #print(len(sendable_auth))
