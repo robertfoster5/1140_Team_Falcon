@@ -54,6 +54,8 @@ def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, Sp
 	elif(EmerBrake == False):
 		#without eBrake, check authority, if 0 start stopping using service deceleration
 		if(Authority == False and SerBrake == True):
+			#Display stopping distance based on current speed
+			#stopping_dist(curr_speed)
 			if(SpeedN1 > 0.0 and Power == 0.0):
 				force = (Power/curr_speed)
 				curr_accl = train_dec_service
@@ -151,22 +153,22 @@ def pass_crew_count(p, c):
 	
 
 #function to calculate stopping distance
-def stopping_dist(comm_speed):
+def stopping_dist(curr_speed):
 	
 	#For Service Braking
-	comm_speed_mps = (comm_speed/2.237)
+	curr_speed_mps = (curr_speed/2.237)
 	service_dec = 2.84		#MPH
 	service_dec_mps = (service_dec/2.237)
-	service_stop_time = (comm_speed_mps/service_dec_mps)	#seconds
-	service_stop_distance = ((comm_speed_mps/2)*service_stop_time)
-	#print(str(service_stop_time) + " service stop time")
-	#print(str(round(service_stop_distance,0)) + " service brake stop dist")
+	service_stop_time = (curr_speed_mps/service_dec_mps)	#seconds
+	service_stop_distance = ((curr_speed_mps/2)*service_stop_time)
+	print(str(service_stop_time) + " service stop time")
+	print(str(round(service_stop_distance,0)) + " service brake stop dist")
 	
 	#For Emergency Braking
 	eBrake_dec = 6.11		#MPH
 	eBrake_dec_mps = (eBrake_dec/2.237)
-	eBrake_stop_time = (comm_speed_mps/eBrake_dec_mps)	#seconds
-	eBrake_stop_distance = ((comm_speed_mps/2)*eBrake_stop_time)
+	eBrake_stop_time = (curr_speed_mps/eBrake_dec_mps)	#seconds
+	eBrake_stop_distance = ((curr_speed_mps/2)*eBrake_stop_time)
 	#print(str(round(eBrake_stop_distance, 0)) + " eBrake stop dist")
 	
 
