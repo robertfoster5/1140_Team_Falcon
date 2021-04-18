@@ -35,7 +35,7 @@ class TrainController(QObject):
         signals.tnm_comm_speed.connect(self.set_command_speed)
         signals.tnm_curr_speed.connect(self.set_curr_speed)
         signals.tnm_authority.connect(self.set_authority)
-        #signals.tnm_ebrake.connect(self.set_pass_brake)
+        signals.tnm_ebrake.connect(self.set_pass_brake)
 
         self.init_periph()
 
@@ -67,6 +67,9 @@ class TrainController(QObject):
     def set_authority(self,on):
         self.authority = on
 
+    def set_pass_brake(self,on):
+        self.pass_brake = on
+
     def set_set_speed(self,num):
         if(self.auto_mode or (num > self.powsys.command_speed)):
             self.powsys.set_speed = self.powsys.command_speed
@@ -94,13 +97,12 @@ class TrainController(QObject):
                 self.service_brake = True
             elif(self.powsys.command_speed == 0 and self.authority):
                 self.at_station = True
-                if(self.powsys.current_speed > 10):
+                if(self.powsys.current_speed > 5):
                     self.service_brake = True
                 else:
                     self.service_brake = False
-                    self.set_command_speed(10)
+                    self.set_command_speed(5)
             else:
-                self.powsys.braking = False
                 self.service_brake = False
 
             signals.tnc_service_brake.emit(self.service_brake)
@@ -116,7 +118,7 @@ class TrainController(QObject):
             #    self.tunnel_light = False
 
         #print(str(round(self.powsys.command_speed,1)) + " comm speed in m/s")
-        print(str(int(self.controller.powsys.command_speed * 2.237)) + "comm speed in mph"))
+        print(str(int(self.controller.powsys.command_speed * 2.237)) + "comm speed in mph")
         #print(round(self.powsys.set_speed,1))
 
         self.powsys.update_power()
