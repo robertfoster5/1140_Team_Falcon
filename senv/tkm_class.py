@@ -580,7 +580,6 @@ class Track:
 					if ((self.blocks[self.yards[0]-1].auth == 0 and self.blocks[self.yards[0]+1].auth == 1) or (self.blocks[self.yards[0]-1].auth == 1 and self.blocks[self.yards[0]+1].auth == 0)) and self.blocks[self.yards[0]].occ == 0:
 						self.add_train(len(train)+1,1,self.blocks[self.yards[0]-1])
 						self.train[len(train)-1].set_way(self.blocks,self.yards[0])
-					
 
 				elif self.blocks[self.yards[1]-1].auth == 1:
 					if ((self.blocks[self.yards[1]-2].auth == 0 and self.blocks[self.yards[1]].auth == 1) or (self.blocks[self.yards[1]-2].auth == 1 and self.blocks[self.yards[1]].auth == 0)) and self.blocks[self.yards[1]-1].occ == 0:

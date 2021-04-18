@@ -948,6 +948,11 @@ class tnm_display(QObject):
 	#Function to set the train number, and specify the line name
 	def setTrainStart(self, tkmTrainNum, tkmTrainLine):			#Num, Line
 		self.TrainNum = tkmTrainNum
+		if tkmTrainLine == "Red":
+			self.RouteLine = 0
+		elif tkmTrainLine == "Green":
+			self.RouteLine = 1
+		
 		self.RouteLine = tkmTrainLine
 		#Determine which Train Number -> Train Name
 		if(self.TrainNum == 1):
