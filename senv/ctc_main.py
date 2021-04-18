@@ -27,9 +27,9 @@ global_schedule_display = [[0,0,0]]
 global_dispatched_trains = 0
 
 global_order_path_hold = []
-# [Train Name, Destination Station, Arrival Time(seconds),Start Time(seconds), Authority(meters), Suggested Speed(meters/second)]
+# [Train Name, Destination Station, Arrival Time(seconds),Start Time(seconds), Authority(meters), Suggested Speed(meters/second), Red or Green Line]
 global_dispatch_orders = [
-                           ["","",0,0,[0],[0]] 
+                           ["","",0,0,[0],[0],""] 
                          ]
 
 global_dispatch_file = ""
@@ -699,11 +699,18 @@ class ctc_qtui_test(QObject):
             if ui.comboTrain.currentIndex() == 0:
                 global_dispatched_trains = global_dispatched_trains + 1
                 valid_train_name = "Train " + str(global_dispatched_trains)
-                ui.comboTrain.addItem(valid_train_name)
-                global_expected_train_location.append(test_station_info[destination_station])
+                if len(test_block_info) == 150:
+                    ui.comboTrain.addItem(valid_train_name)
+                else:
+                    ui.comboTrain_2.addItem(valid_train_name)
+                
+                global_expected_train_location.append(destination_station)
             else:
-                valid_train_name = ui.comboTrain.currentText()
-                global_expected_train_location[int(train)] = test_station_info[destination_station]
+                if len(test_block_info) == 150:
+                    valid_train_name = ui.comboTrain.currentText()
+                else:
+                    valid_train_name = ui.comboTrain_2.currentText()
+                global_expected_train_location[int(train)] = destination_station
             # for i in global_expected_train_location:
                     # print(i)
             global_schedule_display.append([valid_train_name,ui.comboStation.currentText(),arrival_time])
@@ -712,7 +719,16 @@ class ctc_qtui_test(QObject):
             ui.tableView_schedule.setModel(ui.model)
             # for i in global_order_path_hold:
             #     print(i)
-            global_dispatch_orders.append([valid_train_name,ui.comboStation.currentText(),self.military_to_seconds(str(arrival_time)),valid_train_metrics[2],valid_train_metrics[0],valid_train_metrics[1]])
+            
+            if len(test_block_info) == 150:
+                fin_destination_station = ui.comboStation.currentText()
+                lin_spec = "g"
+            else:
+                fin_destination_station = ui.comboStation_2.currentText()
+                lin_spec = "r"
+            
+            
+            global_dispatch_orders.append([valid_train_name,fin_destination_station,self.military_to_seconds(str(arrival_time)),valid_train_metrics[2],valid_train_metrics[0],valid_train_metrics[1],lin_spec])
             
             #print(valid_train_metrics[0])
             #print(valid_train_metrics[1])
@@ -750,7 +766,7 @@ class ctc_qtui_test(QObject):
             else:
                 curr_station_path = 1
         else:
-            curr_station_path = global_expected_train_location[train - 1]
+            curr_station_path = global_expected_train_location[train]
         # print(curr_block)
         
         # if train != 0:
@@ -768,6 +784,9 @@ class ctc_qtui_test(QObject):
         arrival_time_seconds = self.military_to_seconds(str(arrival_time))
         suggested_speed = self.find_suggested_speed(authority,0.75,test_block_info)
         # print("Suggested Speed: " + str(suggested_speed))
+        
+        print(authority)
+        print(suggested_speed)
         
         return [authority,suggested_speed]
         
@@ -1072,27 +1091,48 @@ class ctc_qtui_test(QObject):
         
     def send_dispatch_order(self):
         global global_dispatch_orders
-        sendable_sugg_speed = [0] * 151
-        sendable_sugg_speed[0] = "g"
-        sendable_auth = ["g"]
+        sendable_sugg_speed_green = [0] * 151
+        sendable_sugg_speed_green[0] = "g"
+        sendable_auth_green = ["g"]
+        sendable_sugg_speed_red = [0] * 77
+        sendable_sugg_speed_red[0] = "r"
+        sendable_auth_red = ["r"]
         if len(global_dispatch_orders) > 1:
             #print("Wait for t = " + str(global_dispatch_orders[1][3]))
             #if self.current_time >= global_dispatch_orders[1][3]:
             if self.current_time >= 0:
-                for i in range(150):
-                    if i in global_dispatch_orders[1][4]:
-                        sendable_auth.append("1")
-                        sendable_sugg_speed[i+1] = global_dispatch_orders[1][5][global_dispatch_orders[1][4].index(i)]
-                        #print(str(sendable_sugg_speed[i+1]) + " Curr Speed")
-                        #print("Index w/ Authority: " + str(i))
-                    else:
-                        sendable_auth.append("0")
+                if global_dispatch_orders[1][6] == "g":
+                    for i in range(150):
+                        if i in global_dispatch_orders[1][4]:
+                            sendable_auth_green.append("1")
+                            sendable_sugg_speed_green[i+1] = global_dispatch_orders[1][5][global_dispatch_orders[1][4].index(i)]
+                            #print(str(sendable_sugg_speed[i+1]) + " Curr Speed")
+                            #print("Index w/ Authority: " + str(i))
+                        else:
+                            sendable_auth_green.append("0")
+                else:
+                    for i in range(76):
+                        if i in global_dispatch_orders[1][4]:
+                            sendable_auth_red.append("1")
+                            sendable_sugg_speed_red[i+1] = global_dispatch_orders[1][5][global_dispatch_orders[1][4].index(i)]
+                            #print(str(sendable_sugg_speed[i+1]) + " Curr Speed")
+                            #print("Index w/ Authority: " + str(i))
+                        else:
+                            sendable_auth_red.append("0")
+
                 #print("Authority")
                 #print(len(sendable_auth))
                 #print(sendable_auth)
                 #print(sendable_sugg_speed)
-                signals.ctc_suggested_speed.emit(sendable_sugg_speed)
-                signals.ctc_authority.emit(sendable_auth)
+                print(sendable_sugg_speed_green)
+                print(sendable_auth_green)
+                print(sendable_sugg_speed_red)
+                print(sendable_auth_red)
+                
+                signals.ctc_suggested_speed.emit(sendable_sugg_speed_green)
+                signals.ctc_authority.emit(sendable_auth_green)
+                signals.ctc_suggested_speed.emit(sendable_sugg_speed_red)
+                signals.ctc_authority.emit(sendable_auth_red)
            
             
     def update_time(self,seconds,minutes,hours,total_time):
