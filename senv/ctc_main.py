@@ -1099,7 +1099,7 @@ class ctc_qtui_test(QObject):
         
         sendable_sugg_speed_red = [0] * 77
         sendable_sugg_speed_red[0] = "r"
-        sendable_auth_red = [0] * 151
+        sendable_auth_red = [0] * 77
         sendable_auth_red[0] = "r"
         
         if len(global_dispatch_orders) > 1:
