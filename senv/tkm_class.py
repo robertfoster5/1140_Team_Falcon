@@ -523,6 +523,9 @@ class Track:
 	#set speed of blocks
 	def set_speed(self,speeds):
 		n = 1
+		#print(len(self.blocks))
+		#print(len(speeds))
+		
 		while n <= int(self.end):
 			self.blocks[n-1].set_speed(float(speeds[n]))
 			#print(str(speeds[n]) + " speed " + str(self.blocks[n-1].speed))
