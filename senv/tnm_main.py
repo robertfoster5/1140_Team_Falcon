@@ -411,7 +411,7 @@ class tnm_display(QObject):
 		tnm_ebrake = pyqtSignal(bool)
 		tnm_cab_temp = pyqtSignal(int)
 		tnm_sendYard = pyqtSignal(int)
-		tnm_block_finished = pyqtSignal(bool)
+		tnm_block_finished = pyqtSignal(list)
 		tnm_curr_station = pyqtSignal(str)
 
 #Define variables to be used in tnm_display
@@ -453,7 +453,7 @@ class tnm_display(QObject):
 		self.Occupancy = pass_crew_count(self.pass_count, self.crew_count)
 		self.RouteName = "Green Line"
 		self.TrainDirection = 1
-		self.CurrStation = "Dormont"
+		self.CurrStation = "Yard"
 		self.NextStation = " --- "
 		self.DoorStatus = False
 		self.LeftDoor = False
@@ -534,7 +534,6 @@ class tnm_display(QObject):
 		#Address Commanded Speed
 		signals.tnm_comm_speed.emit(self.comm_speed)
 		
-
 #_______________________________________________________________________	
 	#function to update Train Statistics (Mass, Pass & Crew count)
 	def update_TrainStat(self):
@@ -921,10 +920,12 @@ class tnm_display(QObject):
 	#Function to update status of Train Left Door
 	def setLeftDoor(self, tncLeftDoor):
 		self.LeftDoor = tncLeftDoor
+		print("Left door = " + str(self.LeftDoor))
 		
 	#Function to update status of Train Right Door
 	def setRightDoor(self, tncRightDoor):
 		self.RightDoor = tncRightDoor
+		print("Right door = " + str(self.RightDoor))
 		
 	#Function to update Cab Light status
 	def setCabLight(self, tncCabLight):

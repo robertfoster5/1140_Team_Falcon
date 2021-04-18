@@ -313,13 +313,14 @@ class Track:
 		
 		yards = []
 		r = 0
-		while r<self.end and q != 2:
-			if self.blocks[r].switch.top == -1 or self.blocks[r].switch.bottom == -1:
-				yards.append(int(self.blocks[r+1].num))
-			r = r+1
-		#print(str(yards[1]) + " yard 2")
-		self.yards = yards
 		
+		if self.line == "Red":
+			yards[0] = 9
+		else:
+			yards[0] = 57
+			yards[1] = 63
+		
+		self.yards = yards
 		
 		self.check_swit()
 		self.check_stat()
@@ -329,6 +330,7 @@ class Track:
 	
 	def add_train(self,n,way,block):
 		self.train.append(Train(n,way,block.num))
+		signals.tkm_get_train_num.emit(n,self.line)
 		signals.tkm_get_block.emit(block.num)
 		signals.tkm_get_blength.emit(block.length)
 		block.occ = 1
@@ -428,7 +430,10 @@ class Track:
 				while self.blocks[a].und == 1 and a < len(self.blocks)-1:
 					a = a+1
 				
-				self.blocks[a-1].set_beac_u(b,1)
+				if a == len(self.blocks)-1:
+					#this does nothing
+				else:
+					self.blocks[a-1].set_beac_u(b,1)
 				b = b+1
 				
 			a = a+1
@@ -438,7 +443,10 @@ class Track:
 	def get_occ(self):
 		c = 0 
 		occ = []
-		occ.append("1")
+		if self.line == "Red":
+			occ.append("0")
+		else:
+			occ.append("1")
 		while c < int(self.end):
 			occ.append(str(self.blocks[c].occ))
 			c = c+1
