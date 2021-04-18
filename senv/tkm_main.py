@@ -132,7 +132,7 @@ class tkm_test(QObject):
 		signals.way_green_authority.connect(self.info[0].set_auth)
 		signals.way_red_authority.connect(self.info[1].set_auth)
         
-		signals.tnm_block_finished.connect(self.info[1].set_train_block)
+		signals.tnm_block_finished.connect(self.info[0].set_train_block)
         		
 	#for changing block info
 	def display_b(self):
