@@ -154,14 +154,14 @@ class Train:
 			#print(block.speed)
 		#print(self.speed)
 		#signals.tkm_get_speed.emit(self.speed)
-		print(str(block.num) + " block num")
+		#print(str(block.num) + " block num")
 		if block.s_limit > block.speed:
 			self.speed = block.speed
 			
 		else:
 			self.speed = block.s_limit
 			print(block.speed)
-		print(self.speed)
+		print(str(round(self.speed,1)) + " mps tkm ")
 		#signals.tkm_get_speed.emit(self.speed)
 		return self.speed
 	
@@ -341,7 +341,7 @@ class Track:
 		#signals.tkm_get_speed.emit(s)
 		signals.tkm_get_train_auth.emit(bool(block.auth))
 		print("tkm auth " + str(block.auth))
-		print(block.s_limit)
+		#print(block.s_limit)
 		s = self.train[n-1].set_speed(block)
 		print(str(s) + " tkm - add train")
 		signals.tkm_get_speed.emit(s)
@@ -483,7 +483,7 @@ class Track:
 				while self.blocks[q].occ == 0 and q < self.end-1:
 					q = q+1
 				
-				print(str(q)+" this is q") 
+				#print(str(q)+" this is q") 
 				a.append(self.train[r-1].set_block(self.blocks,q))
 				self.blocks[q+1].occ = 1
 				self.blocks[q].occ = 0
@@ -494,7 +494,7 @@ class Track:
 				
 			bull = self.get_occ()
 			self.set_occ(bull)
-			print(str(s) + "tkm")
+			#print(str(s) + "tkm")
 			signals.tkm_get_speed.emit(s)
 			signals.tkm_get_auth.emit(a)
 			

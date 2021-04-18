@@ -458,6 +458,10 @@ class tnm_display(QObject):
 		self.CurrStation = "Dormont"
 		self.NextStation = " --- "
 		self.DoorStatus = False
+		self.LeftDoor = False
+		self.RightDoor = False
+		signals.tnc_left_door.connect(self.setRightDoor)
+		signals.tnc_right_door.connect(self.setLeftDoor)
 	#Beacon ID connected from tkm
 		self.beacon_bin = 0b00000000
 		self.BeaconID = 00000000								#bit1 (red vs green) bit2 (UG vs Station) bit3 (Left side (62->63) vs Right side(63->64))
@@ -467,6 +471,9 @@ class tnm_display(QObject):
 		self.lights_Cab = True
 		self.lights_High = False
 		self.lights_Tun = False
+		signals.tnc_cab_light.connect(self.setCabLight)
+		signals.tnc_tunnel_light.connect(self.setTunLight)
+		signals.tnc_high_beam_light.connect(self.setHighLight)
 		self.set_temp = 0		#degrees Fahrenheit
 		self.curr_temp = 68		#degrees Fahrenheit
 		self.announce = "Watch your step. Have a great day!"
@@ -565,10 +572,14 @@ class tnm_display(QObject):
 		self.ui.lineEdit_10.setText(self.NextStation)
 		
 		#Update Doors Status		#Doors will be held open for one minute
+		if(self.LeftDoor == True or self.RightDoor == True):
+			self.DoorStatus = True
+			
 		if (self.DoorStatus == False):
 			self.ui.lineEdit_11.setText("Closed")
-		else:
+		elif(self.DoorStatus == True):
 			self.ui.lineEdit_11.setText("Open")
+			self.Brake = True
 			
 		#Update Beacon ID Status
 		if (self.BeaconIDStatus == False):
@@ -899,6 +910,24 @@ class tnm_display(QObject):
 	#Function to read in announcement from tnc
 	def SetAnnounce(self, CurrentAnnouncement):
 		self.announce = CurrentAnnouncement
+		
+	#Function to update status of Train Left Door
+	def setLeftDoor(self, tncLeftDoor):
+		self.LeftDoor = tncLeftDoor
+		
+	#Function to update status of Train Right Door
+	def setRightDoor(self, tncRightDoor):
+		self.RightDoor = tncRightDoor
+		
+	#Function to update Cab Light status
+	def setCabLight(self, tncCabLight):
+		self.light_Cab = tncCabLight
+	#Function to update Cab Light status
+	def setTunLight(self, tncTunLight):
+		self.light_Tun = tncTunLight
+	#Function to update Cab Light status
+	def setHighLight(self, tncHighLight):
+		self.light_High = tncHighLight
 	
 	#Function for TIME
 	def getTime(self, time_sec, time_min, time_hr, time_tot):
