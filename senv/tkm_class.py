@@ -174,7 +174,8 @@ class Train:
 		signals.tkm_get_block.emit(self.block)
 		print(str(self.block) + " block tkm")
 		print("/////////////////////////////////////////////////////////////////////////////////////")
-		signals.tkm_get_blength.emit(blocks[num].length)
+		print(str(blocks[int(self.block)-1].length)+" this is block length")
+		signals.tkm_get_blength.emit(blocks[int(self.block)-1].length)
 		signals.tkm_get_train_auth.emit(blocks[int(self.block-1)].auth)
 		print(str(blocks[int(self.block-1)].auth) + " tkm auth")
 		
