@@ -468,7 +468,7 @@ class tnm_display(QObject):
 	#Beacon ID connected from tkm
 		self.beacon_bin = 0b00000000
 		self.BeaconID = 00000000								#bit1 (red vs green) bit2 (UG vs Station) bit3 (Left side (62->63) vs Right side(63->64))
-		#signals.tkm_get_beacon.connect(self.SetBeaconID)
+		signals.tkm_get_beacon.connect(self.SetBeaconID)
 		self.BeaconIDStatus = True
 	#Internal control status's
 		self.lights_Cab = True
@@ -686,28 +686,59 @@ class tnm_display(QObject):
 		self.BeaconId = tkm_beacon
 		
 		self.beacon_bin = bin(self.BeaconId)
-		#remove first two char: 0b
-		#self.beacon_bin = self.beacon_bin[2:]
+		print(str(self.beacon_bin) + " Beacon binary")
+		
+		#Ensure Beacon ID is correct by appending necessary 0's after conversion
+		if(len(self.beacon_bin) == 10):
+			#remove first two char: 0b
+			self.beacon_bin = self.beacon_bin[2:]
+			#print(str(self.beacon_bin) + " Beacon binary 2")
+		elif(len(self.beacon_bin) == 9):
+			self.beacon_bin = self.beacon_bin[2:]
+			self.beacon_bin = ("0" + self.beacon_bin)
+		elif(len(self.beacon_bin) == 8):
+			self.beacon_bin = self.beacon_bin[2:]
+			self.beacon_bin = ("00" + self.beacon_bin)
+			print(self.beacon_bin)
+		elif(len(self.beacon_bin) == 7):
+			self.beacon_bin = self.beacon_bin[2:]
+			self.beacon_bin = ("000" + self.beacon_bin)
+		elif(len(self.beacon_bin) == 6):
+			self.beacon_bin = self.beacon_bin[2:]
+			self.beacon_bin = ("0000" + self.beacon_bin)
+		elif(len(self.beacon_bin) == 5):
+			self.beacon_bin = self.beacon_bin[2:]
+			self.beacon_bin = ("00000" + self.beacon_bin)
+		elif(len(self.beacon_bin) == 4):
+			self.beacon_bin = self.beacon_bin[2:]
+			self.beacon_bin = ("000000" + self.beacon_bin)
+		elif(len(self.beacon_bin) == 3):
+			self.beacon_bin = self.beacon_bin[2:]
+			self.beacon_bin = ("0000000" + self.beacon_bin)
+		elif(len(self.beacon_bin) == 2):
+			self.beacon_bin = self.beacon_bin[2:]
+			self.beacon_bin = ("00000000" + self.beacon_bin)
+	
 		#check if first value is: 1 = green line/0 = red line #Was 2, 3, 4, 5:
-		if(self.beacon_bin[2] == 0):
+		if(self.beacon_bin[0] == 0):
 			self.RouteName = "Red Line"
 			self.CurrStation = "Yard"
 			self.NextStation = "Shady Side"
-		elif(self.beacon_bin[2] == 1):
+		elif(self.beacon_bin[0] == 1):
 			self.RouteName = "Green Line"
 			self.CurrStation = "Yard"
 			self.NextStation = "Pioneer"
 		#check if second value is: 0 = station/1 = underground
-		if(self.beacon_bin[3] == 0):
+		if(self.beacon_bin[1] == 0):
 			self.lights_Tun == False
-		elif(self.beacon_bin[3] == 1):
+		elif(self.beacon_bin[1] == 1):
 			self.lights_Tun == True
 		#3rd bit - 0 Left(decrement)/1 Right(increment) directionality
 		#0 means left doors open, 1 means right doors open
-		if(self.beacon_bin[4] == 0):
+		if(self.beacon_bin[2] == 0):
 			self.TrainDirection = 0
 			self.tnm_TrainDir.emit(self.TrainDirection)
-		elif(self.beacon_bin[4] == 1):
+		elif(self.beacon_bin[2] == 1):
 			self.TrainDirection = 1
 			self.tnm_TrainDir.emit(self.TrainDirection)
 		
@@ -812,15 +843,19 @@ class tnm_display(QObject):
 			signals.tnm_curr_station.emit(self.CurrStation)
 		#Route names for the Red Line going to stations incrementally (7 Stations)
 		elif(self.RouteName == "Red Line" and self.TrainDirection == 1):
+			print("elif red line"
 			if(self.beacon_bin[3:] == 0b00000):
 				self.CurrStation = "Yard"
 				self.NextStation = "Shady Side"
+				print("SS")
 			elif(self.beacon_bin[3:] == 0b00001):
 				self.CurrStation = "Shady Side"
 				self.NextStation = "Herron Ave"
+				print("HA")
 			elif(self.beacon_bin[3:] == 0b00010):
 				self.CurrStation = "Herron Ave"
 				self.NextStation = "Penn Station"
+				print("PS")
 			elif(self.beacon_bin[3:] == 0b00011):
 				self.CurrStation = "Penn Station"
 				self.NextStation = "Steel Plaza"
@@ -929,12 +964,12 @@ class tnm_display(QObject):
 	#Function to update status of Train Left Door
 	def setLeftDoor(self, tncLeftDoor):
 		self.LeftDoor = tncLeftDoor
-		print("Left door = " + str(self.LeftDoor))
+		#print("Left door = " + str(self.LeftDoor))
 		
 	#Function to update status of Train Right Door
 	def setRightDoor(self, tncRightDoor):
 		self.RightDoor = tncRightDoor
-		print("Right door = " + str(self.RightDoor))
+		#print("Right door = " + str(self.RightDoor))
 		
 	#Function to update Cab Light status
 	def setCabLight(self, tncCabLight):
@@ -972,8 +1007,10 @@ class tnm_display(QObject):
 		#Specify which track the train is on, red or green
 		if(self.RouteLine == 0):
 			self.RouteName = "Red Line"
+			self.NextStation = "Shady Side"
 		elif(self.RouteLine == 1):
 			self.RouteName = "Green Line"
+			self.NextStation = "Glenbury"
 		
 			
 	
