@@ -17,9 +17,14 @@ class Station:
 		
 	#number of ticket sales
 	def get_sales(self):
-		self.sales = random.randrange(10,1000)
-		self.occ = self.occ + self.sales
-		return self.sales
+		now = random.randrange(0,100)
+		if self.sales+now > 300:
+			hol = self.sales+now -300
+			now = now - hol
+		else:
+			"hi"
+		self.sales = self.sales + now
+		self.occ = self.occ + now
 
 #_______________________________________________________________________
 	
@@ -27,6 +32,7 @@ class Station:
 	def get_boarding(self,train):
 		board = random.randrange(0,100)
 		train.inc_occ(board)
+		self.occ = self.occ - board
 		return board
 		
 

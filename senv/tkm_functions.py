@@ -73,20 +73,26 @@ def make_data(blocks,j):
 		c = "None"
 	else:
 		c = blocks[j].cross.state
+		
+	if blocks[j].beacon1 != 0:
+		bid = bin(blocks[j].beacon1)
+	else:
+		bid = "N/a"
 	
 	data = [
 	 ["Section", blocks[j].sect],
 	 ["Number", blocks[j].num],
-	 ["Length", blocks[j].length], #mToF(track[j].length,0)],
+	 ["Length", m_to_f(blocks[j].length,0)],
 	 ["Grade", blocks[j].grade],
 	 ["Speed Limit", blocks[j].s_limit],
 	 ["Block Station", sn],
 	 ["Switch", sb],
 	 ["Switch State", blocks[j].switch.state],
 	 ["Crossing", c],
-	 ["Elevation", blocks[j].elev], #mToF(track[j].elev,1)],
-	 ["Cumulative Elevation", blocks[j].c_elev], #mToF(track[j].c_elev,1)],
-	 ["Underground", blocks[j].und]
+	 ["Elevation", m_to_f(blocks[j].elev,1)],
+	 ["Cumulative Elevation", m_to_f(blocks[j].c_elev,1)],
+	 ["Underground", blocks[j].und],
+	 ["Beacon ID", bid]
 	]
 	return data
 	 

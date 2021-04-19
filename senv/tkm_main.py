@@ -86,6 +86,8 @@ class tkm_test(QObject):
 		self.info.append(q)
 		self.version = 0
 		
+		self.mins = 0
+		
 		#create trains
 		self.trains = []
 		#self.info[0].add_train(1,1,1)
@@ -142,6 +144,8 @@ class tkm_test(QObject):
         
 		signals.tnm_block_finished_green.connect(self.info[0].set_train_block)
 		signals.tnm_block_finished_red.connect(self.info[1].set_train_block)
+		
+		signals.time.connect(self.sales)
         
         		
 	#for changing block info
@@ -159,7 +163,6 @@ class tkm_test(QObject):
 		if self.ui.lineEdit_t.text() != "":
 			t_num = int(self.ui.lineEdit_t.text())-1
 			if t_num <= len(self.info[self.version].train):
-				print(str(t_num)+" this is t_num")
 				self.data_t = make_data_t(self.info[self.version].train[t_num],self.info[self.version].blocks)
 				self.ui.model_t = TableModel(self.data_t, self.header_t)
 				self.ui.tableView_T.setModel(self.ui.model_t)
@@ -223,6 +226,21 @@ class tkm_test(QObject):
 		elif self.temp.temp > 4.44:
 			self.temp.th.toggle(0)
 			self.ui.heat_stat.setText("Off")
+			
+	def sales(self,sec,mini,hr,tot):
+		print(str(self.mins)+"  " +str(mini))
+		if self.mins < mini or (self.mins == 59 and mini == 0):
+			self.mins = mini
+			q = 0
+			while q < len(self.info):
+				p = 0
+				while p < len(self.info[q].blocks):
+					if self.info[q].blocks[p].station.name != 0:
+							if self.info[q].blocks[p].station.occ < 300:	
+								self.info[q].blocks[p].station.get_sales()
+								#print(self.info[q].blocks[p].station.name+" "+str(self.info[q].blocks[p].station.sales
+					p = p+1
+				q = q+1
 				
 				
 			
