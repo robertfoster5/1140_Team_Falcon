@@ -439,7 +439,7 @@ class tnm_display(QObject):
 		self.block_num = 0
 		self.block_finished = False
 		self.timeBlock = 0
-		self.dist_traveled = 0
+		self.dist_traveled = 0.0
 		signals.tkm_get_blength.connect(self.blockTime)
 		signals.tkm_get_block.connect(self.blockNum)
 		signals.tkm_get_train_num.connect(self.setTrainStart)
@@ -468,7 +468,7 @@ class tnm_display(QObject):
 	#Beacon ID connected from tkm
 		self.beacon_bin = 0b00000000
 		self.BeaconID = 00000000								#bit1 (red vs green) bit2 (UG vs Station) bit3 (Left side (62->63) vs Right side(63->64))
-		signals.tkm_get_beacon.connect(self.SetBeaconID)
+		#signals.tkm_get_beacon.connect(self.SetBeaconID)
 		self.BeaconIDStatus = True
 	#Internal control status's
 		self.lights_Cab = True
@@ -687,27 +687,27 @@ class tnm_display(QObject):
 		
 		self.beacon_bin = bin(self.BeaconId)
 		#remove first two char: 0b
-		self.beacon_bin = self.beacon_bin[2:]
+		#self.beacon_bin = self.beacon_bin[2:]
 		#check if first value is: 1 = green line/0 = red line #Was 2, 3, 4, 5:
-		if(self.beacon_bin[0] == 0):
+		if(self.beacon_bin[2] == 0):
 			self.RouteName = "Red Line"
 			self.CurrStation = "Yard"
 			self.NextStation = "Shady Side"
-		elif(self.beacon_bin[0] == 1):
+		elif(self.beacon_bin[2] == 1):
 			self.RouteName = "Green Line"
 			self.CurrStation = "Yard"
 			self.NextStation = "Pioneer"
 		#check if second value is: 0 = station/1 = underground
-		if(self.beacon_bin[1] == 0):
+		if(self.beacon_bin[3] == 0):
 			self.lights_Tun == False
-		elif(self.beacon_bin[1] == 1):
+		elif(self.beacon_bin[3] == 1):
 			self.lights_Tun == True
 		#3rd bit - 0 Left(decrement)/1 Right(increment) directionality
 		#0 means left doors open, 1 means right doors open
-		if(self.beacon_bin[2] == 0):
+		if(self.beacon_bin[4] == 0):
 			self.TrainDirection = 0
 			self.tnm_TrainDir.emit(self.TrainDirection)
-		elif(self.beacon_bin[2] == 1):
+		elif(self.beacon_bin[4] == 1):
 			self.TrainDirection = 1
 			self.tnm_TrainDir.emit(self.TrainDirection)
 		
@@ -882,7 +882,7 @@ class tnm_display(QObject):
 	def blockTime(self, BlockLen):
 		#set variables
 		self.block_length = BlockLen
-		
+		#print(str(BlockLen) + " block len initial")
 		#calculations
 		curr_speed_mps = (self.curr_speed/2.237)					#MPH to mps
 
@@ -893,6 +893,7 @@ class tnm_display(QObject):
 			if((self.block_length - self.dist_traveled) <= 0.0):
 				self.block_finished = True
 				print(str(self.block_finished) + " change blocks")
+				print("next block " + str(BlockLen) + " meters")
 				self.dist_traveled = 0
 				if(self.RouteLine == 0):
 					signals.tnm_block_finished_red.emit(self.TrainNum)
@@ -948,12 +949,12 @@ class tnm_display(QObject):
 	#Function to set the train number, and specify the line name
 	def setTrainStart(self, tkmTrainNum, tkmTrainLine):			#int, str
 		self.TrainNum = tkmTrainNum
+		#Check which line the train is added to, and specify RouteLine variable
 		if(tkmTrainLine == "Red"):
 			self.RouteLine = 0
 		elif(tkmTrainLine == "Green"):
 			self.RouteLine = 1
 		
-		#self.RouteLine = tkmTrainLine
 		#Determine which Train Number -> Train Name
 		if(self.TrainNum == 1):
 			self.TrainName = self.train1
