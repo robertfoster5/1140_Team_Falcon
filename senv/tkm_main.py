@@ -77,7 +77,7 @@ class tkm_test(QObject):
 		q = Track(track)
 		
 		self.ui.spinBox.setValue(40)
-		temp = Envi_Temp(self.ui.spinBox.value())
+		self.temp = Envi_Temp(self.ui.spinBox.value())
 		
 		#create tracks
 		self.info = []
@@ -209,8 +209,11 @@ class tkm_test(QObject):
 			self.version = i
 			
 		def display_temp(self):
-			
-			10
+			self.temp.set_temp(self.ui.spinBox.value())
+			if self.temp.th.state == 1 and self.ui.heat_stat.text() != "On":
+				self.ui.heat_stat.setText("On")
+				
+				
 			
 			
 				

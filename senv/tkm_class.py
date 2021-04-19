@@ -96,26 +96,26 @@ class Train:
 	
 	#change block location
 	def set_block(self,blocks,num,line):
-		self.block = self.past
+		self.past = self.block
 		print(str(self.num)+" num")
 		num = int(num)
 		
 		#green
 		if line == "Green":
 			if self.way == 1:
-				if blocks[num].switch.top == 0 and int(blocks[num].num) != 100 and int(blocks[num].num) != 150:
-					self.block = blocks[num].num
-				elif int(blocks[num].num) == 100:
+				if blocks[num-1].switch.top == 0 and int(blocks[num-1].num) != 100 and int(blocks[num-1].num) != 150:
+					self.block = blocks[num+1].num
+				elif int(blocks[num-1].num) == 100:
 					self.block = 85
 					self.way = -1
-				elif int(blocks[num].num) == 150:
+				elif int(blocks[num-1].num) == 150:
 					self.block = 29
 					self.way = -1
 			#way = -1
 			else:
-				if blocks[num].num != 13:
-					self.block = blocks[num].num-1
-				elif blocks[num].num == 13:
+				if blocks[num-1].num != 13:
+					self.block = blocks[num-1].num-1
+				elif blocks[num-1].num == 13:
 					self.block = 1
 					self.way = 1
 			'''
@@ -134,40 +134,40 @@ class Train:
 		else:
 			# way = 1
 			if self.way == 1:
-				if blocks[num].switch.top == 0 and int(blocks[num].num) != 66 and int(blocks[num].num) != 71 and int(blocks[num].num) != 76:
-					self.block = blocks[num].num
-				elif int(blocks[num].num) == 66 :
+				if blocks[num-1].switch.top == 0 and int(blocks[num-1].num) != 66 and int(blocks[num-1].num) != 71 and int(blocks[num-1].num) != 76:
+					self.block = blocks[num-1].num
+				elif int(blocks[num-1].num) == 66 :
 					if blocks[53].switch.state == 1:
 						self.block = 52
 						self.way = -1
-				elif int(blocks[num].num) == 71:
+				elif int(blocks[num-1].num) == 71:
 					if blocks[39].switch.state == 1:
 						self.block = 38
 						self.way = -1
-				elif int(blocks[num].num) == 76:
+				elif int(blocks[num-1].num) == 76:
 					if blocks[28].switch.state == 1:
 						self.block = 27
 						self.way = -1
 				else:
-					if blocks[num].switch.state == 0:
-						self.block = blocks[num].switch.top
+					if blocks[num-1].switch.state == 0:
+						self.block = blocks[num-1].switch.top
 					else:
-						self.block = blocks[num].switch.bottom
+						self.block = blocks[num-1].switch.bottom
 						self.way = -1
 			else:# way == -1
-				if blocks[num-1].switch.top == 0 and int(blocks[num].num) != 72 and int(blocks[num].num) != 67 and int(blocks[num].num) != 1:
-					self.block = self.blocks[num].num-1
-				elif int(blocks[num].num) == 72:
+				if blocks[num+1].switch.top == 0 and int(blocks[num-1].num) != 72 and int(blocks[num-1].num) != 67 and int(blocks[num-1].num) != 1 or int(blocks[num-1].num) == 9:
+					self.block = blocks[num-1].num-1
+				elif int(blocks[num-1].num) == 72:
 					self.block = 33
 					self.way = 1
-				elif int(blocks[num].num) == 67:
+				elif int(blocks[num-1].num) == 67:
 					self.block = 44
 					self.way = 1
-				elif int(blocks[num].num) == 1:
+				elif int(blocks[num-1].num) == 1:
 					self.block = 16
 					self.way = -1
 		
-			
+		
 		signals.tkm_get_block.emit(self.block)
 		print(str(self.block) + " block tkm")
 		print("/////////////////////////////////////////////////////////////////////////////////////")
@@ -178,13 +178,13 @@ class Train:
 		if blocks[int(self.block-1)].beacon1 == 0 and blocks[int(self.block-1)].beacon2 == 0:
 			pass
 		elif blocks[int(self.block-1)].beacon1 == 0 and blocks[int(self.block-1)].beacon2 != 0:
-			signals.tkm_get_beacon(blocks[int(self.block-1)].beacon2)
+			signals.tkm_get_beacon.emit(blocks[int(self.block-1)].beacon2)
 		elif blocks[int(self.block-1)].beacon1 != 0 and blocks[int(self.block-1)].beacon2 == 0:
-			signals.tkm_get_beacon(blocks[int(self.block-1)].beacon1)
-		elif blocks[int(self.past-1)].beacon2 != 0 and way == 1:
-			signals.tkm_get_beacon(blocks[int(self.past-1)].beacon2)
-		elif blocks[int(self.past-1)].beacon1 != 0 and way == -1:
-			signals.tkm_get_beacon(blocks[int(self.block-1)].beacon1)
+			signals.tkm_get_beacon.emit(blocks[int(self.block-1)].beacon1)
+		elif blocks[int(self.past-1)].beacon2 != 0 and self.way == 1:
+			signals.tkm_get_beacon.emit(blocks[int(self.past-1)].beacon2)
+		elif blocks[int(self.past-1)].beacon1 != 0 and self.way == -1:
+			signals.tkm_get_beacon.emit(blocks[int(self.block-1)].beacon1)
 		else:
 			if self.way == 1:
 				signals.tkm_get_beacon.emit(blocks[int(self.block-1)].beacon1)
@@ -542,7 +542,7 @@ class Track:
 		q = int(self.train[num-1].block)
 		way = self.train[num-1].way
 		
-		#print(str(q)+" this is q") 
+		print(str(q)+" this is q") 
 			
 		
 		a.append(self.train[num-1].set_block(self.blocks,q,self.line))
