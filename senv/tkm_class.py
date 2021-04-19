@@ -103,14 +103,14 @@ class Train:
 	#change block location
 	def set_block(self,blocks,num,line):
 		self.past = self.block
-		print(str(self.num)+" num")
+		print(str(self.num)+" train num")
 		num = int(num)
 		
 		#green
 		if line == "Green":
 			if self.way == 1:
-				if blocks[num-1].switch.top == 0 and int(blocks[num-1].num) != 100 and int(blocks[num-1].num) != 150:
-					self.block = blocks[num+1].num
+				if blocks[num-1].switch.top == 0 and int(blocks[num-1].num) != 100 and int(blocks[num-1].num) != 150 or (int(blocks[num-1].num) == 63):
+					self.block = blocks[num].num
 				elif int(blocks[num-1].num) == 100:
 					self.block = 85
 					self.way = -1
@@ -207,7 +207,7 @@ class Train:
 	def set_speed(self,block):
 		#print(block.speed)
 		print(block.s_limit)
-		
+		print(block.speed)
 		if block.s_limit > block.speed:
 			self.speed = block.speed
 		else:
