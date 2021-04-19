@@ -105,7 +105,7 @@
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>780</x>
+      <x>770</x>
       <y>380</y>
       <width>171</width>
       <height>31</height>
@@ -361,6 +361,19 @@
      <string>Select File to Load</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="enterTemp">
+    <property name="geometry">
+     <rect>
+      <x>820</x>
+      <y>190</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Enter</string>
+    </property>
+   </widget>
    <zorder>textBrowser</zorder>
    <zorder>checkBox</zorder>
    <zorder>checkBox_2</zorder>
@@ -388,6 +401,7 @@
    <zorder>enterV</zorder>
    <zorder>label_3</zorder>
    <zorder>label_4</zorder>
+   <zorder>enterTemp</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

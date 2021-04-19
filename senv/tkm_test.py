@@ -39,7 +39,7 @@ class Ui_MainWindow(object):
         self.label_18.setGeometry(QtCore.QRect(670, 130, 81, 16))
         self.label_18.setObjectName("label_18")
         self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_2.setGeometry(QtCore.QRect(780, 380, 171, 31))
+        self.pushButton_2.setGeometry(QtCore.QRect(770, 380, 171, 31))
         self.pushButton_2.setObjectName("pushButton_2")
         self.tableView = QtWidgets.QTableView(self.centralwidget)
         self.tableView.setGeometry(QtCore.QRect(0, 120, 321, 581))
@@ -113,6 +113,9 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.label_4.setFont(font)
         self.label_4.setObjectName("label_4")
+        self.enterTemp = QtWidgets.QPushButton(self.centralwidget)
+        self.enterTemp.setGeometry(QtCore.QRect(820, 190, 81, 31))
+        self.enterTemp.setObjectName("enterTemp")
         self.textBrowser.raise_()
         self.checkBox.raise_()
         self.checkBox_2.raise_()
@@ -140,6 +143,7 @@ class Ui_MainWindow(object):
         self.enterV.raise_()
         self.label_3.raise_()
         self.label_4.raise_()
+        self.enterTemp.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1037, 18))
@@ -171,6 +175,7 @@ class Ui_MainWindow(object):
         self.enterV.setText(_translate("MainWindow", "Enter"))
         self.label_3.setText(_translate("MainWindow", "Select Line to View"))
         self.label_4.setText(_translate("MainWindow", "Select File to Load"))
+        self.enterTemp.setText(_translate("MainWindow", "Enter"))
 
 
 if __name__ == "__main__":

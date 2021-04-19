@@ -165,6 +165,7 @@ class Train:
 				elif blocks[num].num == 1:
 					self.block = 16
 					self.way = -1
+		
 			
 		signals.tkm_get_block.emit(self.block)
 		print(str(self.block) + " block tkm")
@@ -536,7 +537,7 @@ class Track:
 	def set_train_block(self,num):
 		a = []
 		s = 0
-		
+		print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhhhhhhhhhh")
 		loc = self.train[num-1].block
 		way = self.train[num-1].way
 		
@@ -596,9 +597,6 @@ class Track:
 			if len(self.train) == 0:
 				if self.blocks[self.yards[0]-1].auth == 1:
 					self.add_train(len(self.train)+1,-1,self.blocks[self.yards[0]-1])
-				
-
-		
 
 from tkm_functions import f_to_c
 

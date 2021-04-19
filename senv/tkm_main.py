@@ -119,6 +119,7 @@ class tkm_test(QObject):
 		self.ui.enterT.clicked.connect(lambda: self.display_t())
 		self.ui.enterF.clicked.connect(lambda: self.load_f())
 		self.ui.enterV.clicked.connect(lambda: self.display_v())
+		self.ui.enterTemp.clicked.connect(lambda: self.display_temp())
 		
 		signals.way_green_speed.connect(self.info[0].set_speed)
 		signals.way_red_speed.connect(self.info[1].set_speed)
@@ -201,6 +202,11 @@ class tkm_test(QObject):
 				return i
 			'''
 			self.version = i
+			
+		def display_temp(self):
+			#hi
+			10
+			
 			
 				
 #end of main
