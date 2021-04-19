@@ -76,6 +76,7 @@ class tkm_test(QObject):
 		track = load_track("tkm_load_r.xls")
 		q = Track(track)
 		
+		self.ui.heat_stat.setText("Off")
 		self.ui.spinBox.setValue(40)
 		self.temp = Envi_Temp(self.ui.spinBox.value())
 		
@@ -125,6 +126,7 @@ class tkm_test(QObject):
 		self.ui.enterF.clicked.connect(lambda: self.load_f())
 		self.ui.enterV.clicked.connect(lambda: self.display_v())
 		self.ui.enterTemp.clicked.connect(lambda: self.display_temp())
+		self.ui.enterH.clicked.connect(lambda: self.track_heat())
 		
 		signals.way_green_speed.connect(self.info[0].set_speed)
 		signals.way_red_speed.connect(self.info[1].set_speed)
@@ -212,6 +214,14 @@ class tkm_test(QObject):
 			self.temp.set_temp(self.ui.spinBox.value())
 			if self.temp.th.state == 1 and self.ui.heat_stat.text() != "On":
 				self.ui.heat_stat.setText("On")
+				
+		def track_heat(self):
+			if self.ui.heat_stat.text() == "Off":
+				self.temp.th.toggle(1)
+				self.ui.heat_stat.setText("On")
+			elif self.temp.temp > 4.44:
+				self.temp.th.toggle(0)
+				self.ui.heat_stat.setText("Off")
 				
 				
 			

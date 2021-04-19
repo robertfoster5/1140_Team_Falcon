@@ -155,7 +155,7 @@ class Train:
 						self.block = blocks[num-1].switch.bottom
 						self.way = -1
 			else:# way == -1
-				if blocks[num+1].switch.top == 0 and int(blocks[num-1].num) != 72 and int(blocks[num-1].num) != 67 and int(blocks[num-1].num) != 1 or int(blocks[num-1].num) == 9:
+				if blocks[num-2].switch.top == 0 and int(blocks[num-1].num) != 72 and int(blocks[num-1].num) != 67 and int(blocks[num-1].num) != 1 or int(blocks[num-1].num) == 9:
 					self.block = blocks[num-1].num-1
 				elif int(blocks[num-1].num) == 72:
 					self.block = 33
