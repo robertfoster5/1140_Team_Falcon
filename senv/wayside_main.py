@@ -208,8 +208,6 @@ class wayside_qtui_test(QObject):
 		self.update_tables(self.curr_ws)
 			
 	def new_authority_red(self, authority):
-		print("red authority")
-		print(authority)
 		temp = []
 		self.red_authority = authority
 		self.r1.authority = authority[1:24]
@@ -294,8 +292,6 @@ class wayside_qtui_test(QObject):
 		self.update_tables(self.curr_ws)
 		
 	def update_speed_red(self, speed):
-		print("red speed")
-		print(speed)
 		temp_s = []
 		for i in range(len(speed)):
 			if speed[i] == 0:
@@ -304,8 +300,6 @@ class wayside_qtui_test(QObject):
 				temp_s.append(speed[0])
 			else:
 				temp_s.append(1)
-		print("red b_speed")
-		print(temp_s)
 		temp = []
 		self.red_speed = speed
 		self.r1.b_speed = temp_s[1:24]
@@ -358,10 +352,8 @@ class wayside_qtui_test(QObject):
 			temp_h.append(self.r2.block_health[i])
 		for i in range(21):
 			temp_h.append(self.r3.block_health[i])
-		for i in range(23,33):
+		for i in range(23,32):
 			temp_h.append(self.r2.block_health[i])
-		print("red health output")
-		print(temp_h)
 		signals.way_red_health.emit(temp_h)
 					
 	def compile_health_green(self):
@@ -392,10 +384,8 @@ class wayside_qtui_test(QObject):
 			temp.append(self.r2.block_occ[i])
 		for i in range(21):
 			temp.append(self.r3.block_occ[i])
-		for i in range(23,33):
+		for i in range(23,32):
 			temp.append(self.r2.block_occ[i])
-		print("red occupancy output")
-		print(temp)
 		signals.way_red_occupancy.emit(temp)
 		
 	def compile_block_occ_red_ctc(self):
@@ -407,10 +397,8 @@ class wayside_qtui_test(QObject):
 			temp.append(self.r2.block_occ[i])
 		for i in range(21):
 			temp.append(self.r3.block_occ[i])
-		for i in range(23,33):
+		for i in range(23,32):
 			temp.append(self.r2.block_occ[i])
-		print("red occupancy output")
-		print(temp)
 		signals.way_red_occupancy_ctc.emit(temp)
 		
 	def compile_block_occ_green(self):
@@ -473,14 +461,12 @@ class wayside_qtui_test(QObject):
 			else:
 				temp.append(self.red_speed[j+1])
 			j=j+1
-		for i in range(23,33):
+		for i in range(23,32):
 			if(self.r2.b_speed[i] == 0):
 				temp.append(self.r2.b_speed[i])
 			else:
 				temp.append(self.red_speed[j+1])
 			j=j+1
-		print("red speed output")
-		print(temp)
 		signals.way_red_speed.emit(temp)
 		
 	def compile_speed_green(self):
@@ -582,14 +568,12 @@ class wayside_qtui_test(QObject):
 			else:
 				temp.append(self.red_authority[j+1])
 			j=j+1
-		for i in range(23,33):
+		for i in range(23,32):
 			if(self.r2.authority[i] == 0):
 				temp.append(self.r2.authority[i])
 			else:
 				temp.append(self.red_authority[j+1])
 			j=j+1
-		print("red authority output")
-		print(temp)
 		signals.way_red_authority.emit(temp)
 		
 	def compile_auth_green(self):
