@@ -507,7 +507,7 @@ class tnm_display(QObject):
 	#function to update Movement Statistics
 	def update_MoveStat(self):
 		#Calculate current speed
-		self.curr_speed, self.current_accl = set_curr_speed(self.timeSeconds, self.eBrake, self.Brake, self.block_authority, self.curr_power, self.Occupancy, self.SpeedN1, self.AcclN1)
+		self.curr_speed, self.current_accl = set_curr_speed(self.timeSeconds, self.eBrake, self.Brake, self.block_authority, self.curr_power, self.Occupancy, self.SpeedN1, self.AcclN1, self.comm_speed)
 
 		#Set At - 1 variables for use in next sec. speed calculation
 		self.SpeedN1 = self.curr_speed
@@ -520,12 +520,11 @@ class tnm_display(QObject):
 		
 		#Variable to check speed, then calculate when block changes based on speed
 		curr_speed_mps = 0.0
-
-		#calculations
+		#calculations of current distance
 		curr_speed_mps = MiletoMeter(self.curr_speed)					#MPH to mps
 		self.dist_traveled = (self.dist_traveled + curr_speed_mps*(1))		#distance in meters m/s *s = m
-		print(str(round(self.dist_traveled,2)) + " meters at " + str(self.timeSeconds))
-		
+		#print(str(round(self.dist_traveled,2)) + " meters at " + str(self.timeSeconds))
+		#If distance > length, change blocks and emit signal
 		if(curr_speed_mps > 0.0):
 			if(self.dist_traveled >= self.block_length):
 				self.block_finished = True
@@ -536,6 +535,7 @@ class tnm_display(QObject):
 					signals.tnm_block_finished_red.emit(self.TrainNum)
 				elif(self.RouteLine == 1):
 					signals.tnm_block_finished_green.emit(self.TrainNum)
+				signals.tkm_get_blength.connect(self.blockLen)
 		
 		
 		#Update brake status
@@ -581,9 +581,6 @@ class tnm_display(QObject):
 #_______________________________________________________________________
 	#function to update Route Information and Train Internal Controls
 	def update_RouteInfo(self):
-		
-		#connect to block length each second - from TKM
-		#signals.tkm_get_blength.connect(self.blockChange)
 		
 		#Update Train Numbering Header
 		self.ui.label_23.setText(self.TrainName)
@@ -929,12 +926,10 @@ class tnm_display(QObject):
 	def blockNum(self,BlockNum):
 		self.block_num = BlockNum
 		
-	
 	#Function to take in block length and calculate when train reaches next block
 	def blockLen(self, BlockLen):
 		#set variables
 		self.block_length = BlockLen
-			
 	
 	#Function to set Authority from track model signal
 	def SetAuthority(self,tkm_authority):
