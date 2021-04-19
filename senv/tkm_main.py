@@ -159,6 +159,7 @@ class tkm_test(QObject):
 		if self.ui.lineEdit_t.text() != "":
 			t_num = int(self.ui.lineEdit_t.text())-1
 			if t_num <= len(self.info[self.version].train):
+				print(str(t_num)+" this is t_num")
 				self.data_t = make_data_t(self.info[self.version].train[t_num],self.info[self.version].blocks)
 				self.ui.model_t = TableModel(self.data_t, self.header_t)
 				self.ui.tableView_T.setModel(self.ui.model_t)

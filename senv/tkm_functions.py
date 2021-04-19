@@ -82,6 +82,7 @@ def make_data(blocks,j):
 	 ["Speed Limit", blocks[j].s_limit],
 	 ["Block Station", sn],
 	 ["Switch", sb],
+	 ["Switch State", blocks[j].switch.state],
 	 ["Crossing", c],
 	 ["Elevation", blocks[j].elev], #mToF(track[j].elev,1)],
 	 ["Cumulative Elevation", blocks[j].c_elev], #mToF(track[j].c_elev,1)],
