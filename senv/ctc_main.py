@@ -1235,10 +1235,10 @@ class ctc_qtui_test(QObject):
                 #print(sendable_sugg_speed_red)
                 #print(sendable_auth_red)
                 
-                print(sendable_auth_green)
-                print(sendable_sugg_speed_green)
-                print(sendable_auth_red)
-                print(sendable_sugg_speed_red)
+                #print(sendable_auth_green)
+                #print(sendable_sugg_speed_green)
+                #print(sendable_auth_red)
+                #print(sendable_sugg_speed_red)
                 
                 signals.ctc_suggested_speed_green.emit(sendable_sugg_speed_green)
                 signals.ctc_authority_green.emit(sendable_auth_green)
