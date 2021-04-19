@@ -210,18 +210,18 @@ class tkm_test(QObject):
 			'''
 			self.version = i
 			
-		def display_temp(self):
-			self.temp.set_temp(self.ui.spinBox.value())
-			if self.temp.th.state == 1 and self.ui.heat_stat.text() != "On":
-				self.ui.heat_stat.setText("On")
+	def display_temp(self):
+		self.temp.set_temp(self.ui.spinBox.value())
+		if self.temp.th.state == 1 and self.ui.heat_stat.text() != "On":
+			self.ui.heat_stat.setText("On")
 				
-		def track_heat(self):
-			if self.ui.heat_stat.text() == "Off":
-				self.temp.th.toggle(1)
-				self.ui.heat_stat.setText("On")
-			elif self.temp.temp > 4.44:
-				self.temp.th.toggle(0)
-				self.ui.heat_stat.setText("Off")
+	def track_heat(self):
+		if self.ui.heat_stat.text() == "Off":
+			self.temp.th.toggle(1)
+			self.ui.heat_stat.setText("On")
+		elif self.temp.temp > 4.44:
+			self.temp.th.toggle(0)
+			self.ui.heat_stat.setText("Off")
 				
 				
 			

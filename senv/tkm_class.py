@@ -168,6 +168,9 @@ class Train:
 					self.way = -1
 		
 		
+		
+		blocks[int(self.past)-1].occ = 0
+		blocks[int(self.block)-1].occ = 1
 		signals.tkm_get_block.emit(self.block)
 		print(str(self.block) + " block tkm")
 		print("/////////////////////////////////////////////////////////////////////////////////////")
@@ -536,7 +539,6 @@ class Track:
 #_______________________________________________________________________
 	#set train blocks
 	def set_train_block(self,num):
-		a = []
 		s = 0
 		
 		q = int(self.train[num-1].block)
@@ -545,20 +547,19 @@ class Track:
 		print(str(q)+" this is q") 
 			
 		
-		a.append(self.train[num-1].set_block(self.blocks,q,self.line))
+		a = self.train[num-1].set_block(self.blocks,q,self.line)
+		#pas = a[0]
+		#self.blocks[a[0]-1].occ == 0
+		#self.blocks[int(self.train[num-1].block)-1].occ = 1
 		
-		
-		self.blocks[q+1].occ = 1
-		self.blocks[q].occ = 0
-		
-		s = self.train[0].set_speed(self.blocks[q])
+		s = self.train[num-1].set_speed(self.blocks[q])
 		
 				
 		bull = self.get_occ()
 		self.set_occ(bull)
 		#print(str(s) + "tkm")
 		signals.tkm_get_speed.emit(s)
-		signals.tkm_get_auth.emit(a)
+		#signals.tkm_get_auth.emit(a)
 			
 			
 #_______________________________________________________________________
