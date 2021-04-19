@@ -98,16 +98,17 @@ class Train:
 	def set_block(self,blocks,num,line):
 		self.block = self.past
 		print(str(self.num)+" num")
+		num = int(num)
 		
 		#green
 		if line == "Green":
 			if self.way == 1:
-				if blocks[num].switch.top == 0 and blocks[num].num != 100 and blocks[num].num != 150:
-					self.block = blocks[num+1].num
-				elif blocks[num].num == 100:
+				if blocks[num].switch.top == 0 and int(blocks[num].num) != 100 and int(blocks[num].num) != 150:
+					self.block = blocks[num].num
+				elif int(blocks[num].num) == 100:
 					self.block = 85
 					self.way = -1
-				elif blocks[num].num == 150:
+				elif int(blocks[num].num) == 150:
 					self.block = 29
 					self.way = -1
 			#way = -1
@@ -133,17 +134,17 @@ class Train:
 		else:
 			# way = 1
 			if self.way == 1:
-				if blocks[num].switch.top == 0 and blocks[num].num != 66 and blocks[num].num != 71 and blocks[num].num != 76:
-					self.block = blocks[num].num+1
-				elif blocks[num].num == 66 :
+				if blocks[num].switch.top == 0 and int(blocks[num].num) != 66 and int(blocks[num].num) != 71 and int(blocks[num].num) != 76:
+					self.block = blocks[num].num
+				elif int(blocks[num].num) == 66 :
 					if blocks[53].switch.state == 1:
 						self.block = 52
 						self.way = -1
-				elif blocks[num].num == 71:
+				elif int(blocks[num].num) == 71:
 					if blocks[39].switch.state == 1:
 						self.block = 38
 						self.way = -1
-				elif blocks[num].num == 76:
+				elif int(blocks[num].num) == 76:
 					if blocks[28].switch.state == 1:
 						self.block = 27
 						self.way = -1
@@ -154,15 +155,15 @@ class Train:
 						self.block = blocks[num].switch.bottom
 						self.way = -1
 			else:# way == -1
-				if blocks[num-1].switch.top == 0 and blocks[num].num != 72 and blocks[num].num != 67 and blocks[num].num != 1:
+				if blocks[num-1].switch.top == 0 and int(blocks[num].num) != 72 and int(blocks[num].num) != 67 and int(blocks[num].num) != 1:
 					self.block = self.blocks[num].num-1
-				elif blocks[num].num == 72:
+				elif int(blocks[num].num) == 72:
 					self.block = 33
 					self.way = 1
-				elif blocks[num].num == 67:
+				elif int(blocks[num].num) == 67:
 					self.block = 44
 					self.way = 1
-				elif blocks[num].num == 1:
+				elif int(blocks[num].num) == 1:
 					self.block = 16
 					self.way = -1
 		
@@ -537,22 +538,21 @@ class Track:
 	def set_train_block(self,num):
 		a = []
 		s = 0
-		print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhhhhhhhhhh")
-		loc = self.train[num-1].block
+		
+		q = int(self.train[num-1].block)
 		way = self.train[num-1].way
 		
 		#print(str(q)+" this is q") 
 			
 		
-		a.append(self.train[num-1].set_block(self.blocks,loc,self.line))
+		a.append(self.train[num-1].set_block(self.blocks,q,self.line))
 		
 		
 		self.blocks[q+1].occ = 1
 		self.blocks[q].occ = 0
 		
-		s = self.train[r-1].set_speed(self.blocks[q])
-		r = r+1
-		q = q+1
+		s = self.train[0].set_speed(self.blocks[q])
+		
 				
 		bull = self.get_occ()
 		self.set_occ(bull)

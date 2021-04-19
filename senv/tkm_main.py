@@ -21,6 +21,8 @@ from tkm_class import Block
 from tkm_class import Station
 from tkm_class import Train
 from tkm_class import Track
+from tkm_class import Envi_Temp
+from tkm_class import Track_Heater
 
 from tkm_functions import m_to_f
 from tkm_functions import make_data
@@ -73,6 +75,9 @@ class tkm_test(QObject):
 		
 		track = load_track("tkm_load_r.xls")
 		q = Track(track)
+		
+		self.ui.spinBox.setValue(40)
+		temp = Envi_Temp(self.ui.spinBox.value())
 		
 		#create tracks
 		self.info = []
@@ -204,7 +209,7 @@ class tkm_test(QObject):
 			self.version = i
 			
 		def display_temp(self):
-			#hi
+			
 			10
 			
 			
