@@ -713,7 +713,10 @@ class ctc_qtui_test(QObject):
                 global_expected_train_location[int(train)] = destination_station
             # for i in global_expected_train_location:
                     # print(i)
-            global_schedule_display.append([valid_train_name,ui.comboStation.currentText(),arrival_time])
+            if len(test_block_info) == 150:
+                global_schedule_display.append([valid_train_name,ui.comboStation.currentText(),arrival_time])
+            else:
+                global_schedule_display.append([valid_train_name,ui.comboStation_2.currentText(),arrival_time])
             header = ['Train', 'Destination Station', 'Arrival Time (2400)']
             ui.model = TableModel(global_schedule_display, header)
             ui.tableView_schedule.setModel(ui.model)
@@ -747,7 +750,11 @@ class ctc_qtui_test(QObject):
             #     order_path_string += str(i) + " "
             # print("Order Path: [ " + order_path_string + "]")
         else:
-            ui.labelManError.setText("*Invalid Dispatch.")
+            
+            if len(test_block_info) == 150:
+                ui.labelManError.setText("*Invalid Dispatch.")
+            else:
+                ui.labelManError_2.setText("*Invalid Dispatch.")
             return
             # Put the dispatch in the system internally and display it on the "Schedule" Tab
         #     print("It's a working dispatch")
@@ -972,6 +979,8 @@ class ctc_qtui_test(QObject):
         global global_dispatch_file
         global global_schedule_display
         
+        
+        
         ui.labelAutoError.setText("")
         
         if global_dispatch_file == "":
@@ -981,85 +990,176 @@ class ctc_qtui_test(QObject):
         with open(global_dispatch_file) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
             line_count = 0
-            for row in csv_reader:
-                global_order_path_hold = []
-                if line_count == 0:
-                    line_count += 1
-                else:
-                    train = int(row[0][len(row[0]) - 1])
-                        
-                    if row[1] == "Edgebrook":
-                        destination_station = 0
-                    elif row[1] == "Pioneer":
-                        destination_station = 1
-                    elif row[1] == "Station X":
-                        destination_station = 2
-                    elif row[1] == "Whited":
-                        destination_station = 3
-                    elif row[1] == "South Bank":
-                        destination_station = 4
-                    elif row[1] == "Central":
-                        destination_station = 5
-                    elif row[1] == "Inglewood":
-                        destination_station = 6
-                    elif row[1] == "Overbrook":
-                        destination_station = 7
-                    elif row[1] == "Yard":
-                        destination_station = 8
-                    elif row[1] == "Glenbury":
-                        destination_station = 9
-                    elif row[1] == "Dormont":
-                        destination_station = 10
-                    elif row[1] == "Mt Lebanon":
-                        destination_station = 11
-                    elif row[1] == "Poplar":
-                        destination_station = 12
-                    elif row[1] == "Castle Shannon":
-                        destination_station = 13
-                        
-                    arrival_time = row[2]
-                    
-                    # print(train)
-                    train_metrics = self.calculate_train_metrics(test_block_info,test_station_info,test_station_pathway,train,destination_station,arrival_time,current_time)
-        
-        
-                    valid_train_metrics = self.validate_dispatch(ui,train_metrics,train,current_time,arrival_time,test_block_info,test_station_info)
-        
-                    # validate_dispatch() will make suggested_speed = -1 if dispatch is invalid
-                    # Otherwise, it will adjust the train_metrics to make sure it is valid
-                    if valid_train_metrics[1] != -1 and valid_train_metrics[0] != -1:
-                        if ui.comboTrain.count() == train:
-                            global_dispatched_trains = global_dispatched_trains + 1
-                            valid_train_name = "Train " + str(global_dispatched_trains)
-                            ui.comboTrain.addItem(valid_train_name)
-                            global_expected_train_location.append(test_station_info[destination_station])
-                        else:
-                            valid_train_name = ui.comboTrain.currentText()
-                            global_expected_train_location[int(train)] = test_station_info[destination_station]
-                        # for i in global_expected_train_location:
-                                # print(i)
-                        global_schedule_display.append([row[0],row[1],row[2]])
-                        header = ['Train', 'Destination Station', 'Arrival Time (2400)']
-                        ui.model = TableModel(global_schedule_display, header)
-                        ui.tableView_schedule.setModel(ui.model)
-                        global_dispatch_orders.append([row[0],row[1],self.military_to_seconds(str(arrival_time)),valid_train_metrics[2],valid_train_metrics[0],valid_train_metrics[1]])
-                        # [Train Name, Destination Station, Arrival Time(seconds),Start Time(seconds), Authority(meters), Suggested Speed(meters/second)]
-                        #print("Train Name: " + global_dispatch_orders[len(global_dispatch_orders)-1][0])
-                        # print("Destination Station: " + global_dispatch_orders[len(global_dispatch_orders)-1][1])
-                        # print("Arrival Time: " + str(global_dispatch_orders[len(global_dispatch_orders)-1][2]))
-                        # print("Start Time: " + str(global_dispatch_orders[len(global_dispatch_orders)-1][3]))
-                        #print("Authority: " + str(global_dispatch_orders[len(global_dispatch_orders)-1][4]) + " meters")
-                        #print("Suggested Speed: " + str(global_dispatch_orders[len(global_dispatch_orders)-1][5]) + " meters/second")
-                        #print("")
-                        # order_path_string = ""
-                        # for i in global_dispatch_orders[len(global_dispatch_orders)-1][6]:
-                        #     order_path_string += str(i) + " "
-                        # print("Order Path: [ " + order_path_string + "]")
+            
+            if len(test_block_info) == 150:
+            
+                # GREEN LINE IMPLEMENTATION  
+                for row in csv_reader:
+                    global_order_path_hold = []
+                    if line_count == 0:
+                        line_count += 1
                     else:
-                        ui.labelAutoError.setText("*NOTICE: There Was An Invalid Dispatch.")
-                    # print(f'\t{row[0]} works in the {row[1]} department, and was born in {row[2]}.')
-                    # line_count += 1
-        
+                        
+                        train_name = int(row[0][len(row[0]) - 1])
+                        if global_dispatched_trains < train_name:
+                            train = 0
+                        else:
+                            train = train_name
+                            
+                        if row[1] == "Edgebrook":
+                            destination_station = 0
+                        elif row[1] == "Pioneer":
+                            destination_station = 1
+                        elif row[1] == "Station X":
+                            destination_station = 2
+                        elif row[1] == "Whited":
+                            destination_station = 3
+                        elif row[1] == "South Bank":
+                            destination_station = 4
+                        elif row[1] == "Central":
+                            destination_station = 5
+                        elif row[1] == "Inglewood":
+                            destination_station = 6
+                        elif row[1] == "Overbrook":
+                                destination_station = 7
+                        elif row[1] == "Yard":
+                            destination_station = 8
+                        elif row[1] == "Glenbury":
+                            destination_station = 9
+                        elif row[1] == "Dormont":
+                            destination_station = 10
+                        elif row[1] == "Mt Lebanon":
+                            destination_station = 11
+                        elif row[1] == "Poplar":
+                            destination_station = 12
+                        elif row[1] == "Castle Shannon":
+                            destination_station = 13
+                            
+                        arrival_time = row[2]
+                        
+                        # print(train)
+                        train_metrics = self.calculate_train_metrics(test_block_info,test_station_info,test_station_pathway,train,destination_station,arrival_time,current_time)
+            
+            
+                        valid_train_metrics = self.validate_dispatch(ui,train_metrics,train,current_time,arrival_time,test_block_info,test_station_info)
+            
+                        # validate_dispatch() will make suggested_speed = -1 if dispatch is invalid
+                        # Otherwise, it will adjust the train_metrics to make sure it is valid
+                        if valid_train_metrics[1] != -1 and valid_train_metrics[0] != -1:
+                            if global_dispatched_trains < train_name:
+                                global_dispatched_trains = global_dispatched_trains + 1
+                                valid_train_name = row[0]
+                                ui.comboTrain.addItem(valid_train_name)
+                                global_expected_train_location.append(destination_station)
+                            else:
+                                valid_train_name = row[0]
+                                global_expected_train_location[int(train_name)] = destination_station
+                            # for i in global_expected_train_location:
+                                    # print(i)
+                            global_schedule_display.append([row[0],row[1],row[2]])
+                            header = ['Train', 'Destination Station', 'Arrival Time (2400)']
+                            ui.model = TableModel(global_schedule_display, header)
+                            ui.tableView_schedule.setModel(ui.model)
+                            
+                            global_dispatch_orders.append([row[0],row[1],self.military_to_seconds(str(arrival_time)),valid_train_metrics[2],valid_train_metrics[0],valid_train_metrics[1],"g"])
+                            # [Train Name, Destination Station, Arrival Time(seconds),Start Time(seconds), Authority(meters), Suggested Speed(meters/second)]
+                            #print("Train Name: " + global_dispatch_orders[len(global_dispatch_orders)-1][0])
+                            # print("Destination Station: " + global_dispatch_orders[len(global_dispatch_orders)-1][1])
+                            # print("Arrival Time: " + str(global_dispatch_orders[len(global_dispatch_orders)-1][2]))
+                            # print("Start Time: " + str(global_dispatch_orders[len(global_dispatch_orders)-1][3]))
+                            #print("Authority: " + str(global_dispatch_orders[len(global_dispatch_orders)-1][4]) + " meters")
+                            #print("Suggested Speed: " + str(global_dispatch_orders[len(global_dispatch_orders)-1][5]) + " meters/second")
+                            #print("")
+                            # order_path_string = ""
+                            # for i in global_dispatch_orders[len(global_dispatch_orders)-1][6]:
+                            #     order_path_string += str(i) + " "
+                            # print("Order Path: [ " + order_path_string + "]")
+                        else:
+                            ui.labelAutoError.setText("*NOTICE: There Was An Invalid Dispatch.")
+                        # print(f'\t{row[0]} works in the {row[1]} department, and was born in {row[2]}.')
+                        # line_count += 1
+            
+                    
+            else:
+                
+                # RED LINE FILE
+                for row in csv_reader:
+                    global_order_path_hold = []
+                    if line_count == 0:
+                        line_count += 1
+                    else:
+                        train_name = int(row[0][len(row[0]) - 1])
+                        if global_dispatched_trains < train_name:
+                            train = 0
+                        else:
+                            train = train_name
+                            
+                        if row[1] == "Shadyside":
+                            destination_station = 0
+                        elif row[1] == "Yard":
+                            destination_station = 1
+                        elif row[1] == "Herron Ave":
+                            destination_station = 2
+                        elif row[1] == "Swissville":
+                            destination_station = 3
+                        elif row[1] == "Penn Station":
+                            destination_station = 4
+                        elif row[1] == "Steel Plaza":
+                            destination_station = 5
+                        elif row[1] == "First Ave":
+                            destination_station = 6
+                        elif row[1] == "Station Square":
+                            destination_station = 7
+                        elif row[1] == "South Hills Junction":
+                            destination_station = 8
+                                
+                        arrival_time = row[2]
+                        
+                        # print(train)
+                        train_metrics = self.calculate_train_metrics(test_block_info,test_station_info,test_station_pathway,train,destination_station,arrival_time,current_time)
+            
+            
+                        valid_train_metrics = self.validate_dispatch(ui,train_metrics,train,current_time,arrival_time,test_block_info,test_station_info)
+            
+                        # validate_dispatch() will make suggested_speed = -1 if dispatch is invalid
+                        # Otherwise, it will adjust the train_metrics to make sure it is valid
+                        if valid_train_metrics[1] != -1 and valid_train_metrics[0] != -1:
+                            if global_dispatched_trains < train_name:
+                                global_dispatched_trains = global_dispatched_trains + 1
+                                valid_train_name = row[0]
+                                ui.comboTrain_2.addItem(valid_train_name)
+                                global_expected_train_location.append(destination_station)
+                            else:
+                                valid_train_name = row[0]
+                                global_expected_train_location[int(train_name)] = destination_station
+                            # for i in global_expected_train_location:
+                                    # print(i)
+                            global_schedule_display.append([row[0],row[1],row[2]])
+                            header = ['Train', 'Destination Station', 'Arrival Time (2400)']
+                            ui.model = TableModel(global_schedule_display, header)
+                            ui.tableView_schedule.setModel(ui.model)
+                            
+                            global_dispatch_orders.append([row[0],row[1],self.military_to_seconds(str(arrival_time)),valid_train_metrics[2],valid_train_metrics[0],valid_train_metrics[1],"r"])
+                            # [Train Name, Destination Station, Arrival Time(seconds),Start Time(seconds), Authority(meters), Suggested Speed(meters/second)]
+                            #print("Train Name: " + global_dispatch_orders[len(global_dispatch_orders)-1][0])
+                            # print("Destination Station: " + global_dispatch_orders[len(global_dispatch_orders)-1][1])
+                            # print("Arrival Time: " + str(global_dispatch_orders[len(global_dispatch_orders)-1][2]))
+                            # print("Start Time: " + str(global_dispatch_orders[len(global_dispatch_orders)-1][3]))
+                            #print("Authority: " + str(global_dispatch_orders[len(global_dispatch_orders)-1][4]) + " meters")
+                            #print("Suggested Speed: " + str(global_dispatch_orders[len(global_dispatch_orders)-1][5]) + " meters/second")
+                            #print("")
+                            # order_path_string = ""
+                            # for i in global_dispatch_orders[len(global_dispatch_orders)-1][6]:
+                            #     order_path_string += str(i) + " "
+                            # print("Order Path: [ " + order_path_string + "]")
+                        else:
+                            ui.labelAutoError_2.setText("*NOTICE: There Was An Invalid Dispatch.")
+                        # print(f'\t{row[0]} works in the {row[1]} department, and was born in {row[2]}.')
+                        # line_count += 1
+            
+                    
+            
+            
         # Dispatch a train using values inputted in the main window
         
         # Get info inputted in the main window
@@ -1086,6 +1186,7 @@ class ctc_qtui_test(QObject):
         root.withdraw()
         file_path = filedialog.askopenfilename()
         ui.labelSchedFile.setText(str(file_path).split('/')[len(str(file_path).split('/')) - 1])
+        ui.labelSchedFile_2.setText(str(file_path).split('/')[len(str(file_path).split('/')) - 1])
         global_dispatch_file = str(file_path)
         
         
@@ -1133,6 +1234,11 @@ class ctc_qtui_test(QObject):
                 #print(sendable_auth_green)
                 #print(sendable_sugg_speed_red)
                 #print(sendable_auth_red)
+                
+                print(sendable_auth_green)
+                print(sendable_sugg_speed_green)
+                print(sendable_auth_red)
+                print(sendable_sugg_speed_red)
                 
                 signals.ctc_suggested_speed_green.emit(sendable_sugg_speed_green)
                 signals.ctc_authority_green.emit(sendable_auth_green)
