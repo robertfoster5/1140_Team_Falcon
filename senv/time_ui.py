@@ -14,11 +14,11 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Time(object):
     def setupUi(self, Time):
         Time.setObjectName("Time")
-        Time.resize(193, 190)
+        Time.resize(250, 250)
         self.centralwidget = QtWidgets.QWidget(Time)
         self.centralwidget.setObjectName("centralwidget")
         self.splitter = QtWidgets.QSplitter(self.centralwidget)
-        self.splitter.setGeometry(QtCore.QRect(10, 10, 171, 151))
+        self.splitter.setGeometry(QtCore.QRect(10, 10, 200, 190))
         self.splitter.setOrientation(QtCore.Qt.Vertical)
         self.splitter.setObjectName("splitter")
         self.label = QtWidgets.QLabel(self.splitter)

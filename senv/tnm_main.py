@@ -440,7 +440,7 @@ class tnm_display(QObject):
 		self.block_finished = False
 		self.timeBlock = 0
 		self.dist_traveled = 0.0
-		signals.tkm_get_blength.connect(self.blockTime)
+		signals.tkm_get_blength.connect(self.blockChange)
 		signals.tkm_get_block.connect(self.blockNum)
 		signals.tkm_get_train_num.connect(self.setTrainStart)
 	#brake states
@@ -493,8 +493,6 @@ class tnm_display(QObject):
 		
 		signals.time.connect(self.getTime)
 		
-		signals.time.connect(self.blockTime)
-		
 		if(signals.time.connect(self.GetDatetime)):							#Display running time
 			self.ui.dateTimeEdit.setDateTime(QtCore.QDateTime.currentDateTime())
 			self.ui.dateTimeEdit.setDisplayFormat("MM/dd/yyyy hh:mm:ss")
@@ -509,6 +507,7 @@ class tnm_display(QObject):
 	def update_MoveStat(self):
 		#Calculate current speed
 		self.curr_speed, self.current_accl = set_curr_speed(self.timeSeconds, self.eBrake, self.Brake, self.block_authority, self.curr_power, self.Occupancy, self.SpeedN1, self.AcclN1)
+
 		#Set At - 1 variables for use in next sec. speed calculation
 		self.SpeedN1 = self.curr_speed
 		self.AcclN1 = self.current_accl
@@ -560,6 +559,9 @@ class tnm_display(QObject):
 #_______________________________________________________________________
 	#function to update Route Information and Train Internal Controls
 	def update_RouteInfo(self):
+		
+		#connect to block length each second - from TKM
+		signals.tkm_get_blength.connect(self.blockChange)
 		
 		#Update Train Numbering Header
 		self.ui.label_23.setText(self.TrainName)
@@ -907,21 +909,26 @@ class tnm_display(QObject):
 		
 	
 	#Function to take in block length and calculate when train reaches next block
-	def blockTime(self, BlockLen):
+	def blockChange(self, BlockLen):
 		#set variables
 		self.block_length = BlockLen
-		#print(str(BlockLen) + " block len initial")
-		#calculations
-		curr_speed_mps = (self.curr_speed/2.237)					#MPH to mps
+		curr_speed_mps = 0.0
 
-		self.dist_traveled += curr_speed_mps*(1)		#distance in meters
-		#print(str(self.dist_traveled) + " dist " + str(self.timeSeconds))
+		#calculations
+		if(self.curr_speed > 0.0):
+			curr_speed_mps = (self.curr_speed/2.237)					#MPH to mps
+			self.dist_traveled = (self.dist_traveled + curr_speed_mps*(1))		#distance in meters
+			print(str(self.curr_speed) + " curr speed block change 1 ")
+			print(str(self.dist_traveled) + " dist at " + str(self.timeSeconds))
+		else:
+			print("speed is 0")
 		
 		if(curr_speed_mps > 0.0):
-			if((self.block_length - self.dist_traveled) <= 0.0):
+			if(self.dist_traveled >= self.block_length):
 				self.block_finished = True
 				print(str(self.block_finished) + " change blocks")
-				print("next block " + str(BlockLen) + " meters - TNM")
+				#print("next block " + str(BlockLen) + " meters - TNM")
+				
 				self.dist_traveled = 0
 				if(self.RouteLine == 0):
 					signals.tnm_block_finished_red.emit(self.TrainNum)
@@ -1022,6 +1029,7 @@ class tnm_display(QObject):
 		if(finished == 0):
 			self.block_finished = True
 			signals.tnm_block_finished.emit(self.block_finished)
+
 	
 		
 #_______________________________________________________________________
