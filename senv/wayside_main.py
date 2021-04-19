@@ -52,6 +52,7 @@ class wayside_qtui_test(QObject):
 		self.g4 = Wayside("g4.txt", "Green")
 		self.g5 = Wayside("g5.txt", "Green")
 		self.r1 = Wayside("r1.txt", "Red")
+		print(self.r1.block_occ)
 		self.r2 = Wayside("r2.txt", "Red")
 		self.r3 = Wayside("r3.txt", "Red")
 		"""self.g1_thread = QThread()
@@ -244,9 +245,11 @@ class wayside_qtui_test(QObject):
 		self.update_tables(self.curr_ws)
 				
 	def update_occupancy(self, occupancy):
+		print(occupancy)
 		temp = []
 		if occupancy[0] == "0":
 			self.r1.block_occ = occupancy[1:24]
+			print(self.r1.block_occ)
 			temp = occupancy[24:46]
 			temp.append(occupancy[67])
 			temp.append(occupancy[68])
@@ -346,7 +349,7 @@ class wayside_qtui_test(QObject):
 	def compile_health_red(self):
 		temp_h = []
 		temp_h.append("0")
-		for i in range(24):
+		for i in range(23):
 			temp_h.append(self.r1.block_health[i])
 		for i in range(23):
 			temp_h.append(self.r2.block_health[i])
@@ -378,7 +381,7 @@ class wayside_qtui_test(QObject):
 	def compile_block_occ_red(self):
 		temp = []
 		temp.append("0")
-		for i in range(24):
+		for i in range(23):
 			temp.append(self.r1.block_occ[i])
 		for i in range(23):
 			temp.append(self.r2.block_occ[i])
@@ -391,7 +394,7 @@ class wayside_qtui_test(QObject):
 	def compile_block_occ_red_ctc(self):
 		temp = []
 		temp.append("0")
-		for i in range(24):
+		for i in range(23):
 			temp.append(self.r1.block_occ[i])
 		for i in range(23):
 			temp.append(self.r2.block_occ[i])
@@ -521,7 +524,7 @@ class wayside_qtui_test(QObject):
 		temp_sw.append(self.r2.switch_state[2])
 		temp_sw.append(self.r2.switch_state[3])
 		temp_sw.append(self.r3.switch_state[0])
-		signal.way_red_switch_state.emit(temp_sw)
+		signals.way_red_switch_state.emit(temp_sw)
 	
 	def compile_switch_green(self):
 		temp_sw = []
@@ -538,7 +541,7 @@ class wayside_qtui_test(QObject):
 		temp_cr = []
 		temp_cr.append("0")
 		temp_cr.append(self.r3.cross_state[0])
-		signal.way_red_cross_state.emit(temp_cr)
+		signals.way_red_cross_state.emit(temp_cr)
 		
 	def compile_cross_green(self):
 		temp_cr = []
