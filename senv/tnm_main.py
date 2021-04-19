@@ -946,14 +946,14 @@ class tnm_display(QObject):
 		self.light_High = tncHighLight
 		
 	#Function to set the train number, and specify the line name
-	def setTrainStart(self, tkmTrainNum, tkmTrainLine):			#Num, Line
+	def setTrainStart(self, tkmTrainNum, tkmTrainLine):			#int, str
 		self.TrainNum = tkmTrainNum
-		if tkmTrainLine == "Red":
+		if(tkmTrainLine == "Red"):
 			self.RouteLine = 0
-		elif tkmTrainLine == "Green":
+		elif(tkmTrainLine == "Green"):
 			self.RouteLine = 1
 		
-		self.RouteLine = tkmTrainLine
+		#self.RouteLine = tkmTrainLine
 		#Determine which Train Number -> Train Name
 		if(self.TrainNum == 1):
 			self.TrainName = self.train1
@@ -972,7 +972,7 @@ class tnm_display(QObject):
 		if(self.RouteLine == 0):
 			self.RouteName = "Red Line"
 		elif(self.RouteLine == 1):
-			self.RouteName = "GreenLine"
+			self.RouteName = "Green Line"
 		
 			
 	
