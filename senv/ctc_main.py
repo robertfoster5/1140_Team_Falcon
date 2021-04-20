@@ -729,8 +729,17 @@ class ctc_qtui_test(QObject):
             else:
                 fin_destination_station = ui.comboStation_2.currentText()
                 lin_spec = "r"
+                
+            if (test_block_info[valid_train_metrics[0][-1]][2] != -1 and test_block_info[valid_train_metrics[0][-1]][2] != valid_train_metrics[0][-2]):
+                fin_dest_block = test_block_info[valid_train_metrics[0][-1]][2]
+            elif (test_block_info[valid_train_metrics[0][-1]][3] != -1 and test_block_info[valid_train_metrics[0][-1]][3] != valid_train_metrics[0][-2]):
+                fin_dest_block = test_block_info[valid_train_metrics[0][-1]][3]
+            elif (test_block_info[valid_train_metrics[0][-1]][4] != -1 and test_block_info[valid_train_metrics[0][-1]][4] != valid_train_metrics[0][-2]):
+                fin_dest_block = test_block_info[valid_train_metrics[0][-1]][4]
+            else:
+                fin_dest_block = -1
             
-            fin_dest_block = test_station_pathway[destination_station]
+            
             global_dispatch_orders.append([valid_train_name,fin_destination_station,self.military_to_seconds(str(arrival_time)),valid_train_metrics[2],valid_train_metrics[0],valid_train_metrics[1],lin_spec,fin_dest_block])
             
             #print(valid_train_metrics[0])
@@ -1063,7 +1072,15 @@ class ctc_qtui_test(QObject):
                             
                             
                             
-                            fin_dest_block = test_station_pathway[destination_station]
+                            if (test_block_info[valid_train_metrics[0][-1]][2] != -1 and test_block_info[valid_train_metrics[0][-1]][2] != valid_train_metrics[0][-2]):
+                                fin_dest_block = test_block_info[valid_train_metrics[0][-1]][2]
+                            elif (test_block_info[valid_train_metrics[0][-1]][3] != -1 and test_block_info[valid_train_metrics[0][-1]][3] != valid_train_metrics[0][-2]):
+                                fin_dest_block = test_block_info[valid_train_metrics[0][-1]][3]
+                            elif (test_block_info[valid_train_metrics[0][-1]][4] != -1 and test_block_info[valid_train_metrics[0][-1]][4] != valid_train_metrics[0][-2]):
+                                fin_dest_block = test_block_info[valid_train_metrics[0][-1]][4]
+                            else:
+                                fin_dest_block = -1
+                                
                             global_dispatch_orders.append([row[0],row[1],self.military_to_seconds(str(arrival_time)),valid_train_metrics[2],valid_train_metrics[0],valid_train_metrics[1],"g",fin_dest_block])
                             # [Train Name, Destination Station, Arrival Time(seconds),Start Time(seconds), Authority(meters), Suggested Speed(meters/second)]
                             #print("Train Name: " + global_dispatch_orders[len(global_dispatch_orders)-1][0])
@@ -1143,7 +1160,14 @@ class ctc_qtui_test(QObject):
                             ui.tableView_schedule.setModel(ui.model)
                             
                             
-                            fin_dest_block = test_station_pathway[destination_station]
+                            if (test_block_info[valid_train_metrics[0][-1]][2] != -1 and test_block_info[valid_train_metrics[0][-1]][2] != valid_train_metrics[0][-2]):
+                                fin_dest_block = test_block_info[valid_train_metrics[0][-1]][2]
+                            elif (test_block_info[valid_train_metrics[0][-1]][3] != -1 and test_block_info[valid_train_metrics[0][-1]][3] != valid_train_metrics[0][-2]):
+                                fin_dest_block = test_block_info[valid_train_metrics[0][-1]][3]
+                            elif (test_block_info[valid_train_metrics[0][-1]][4] != -1 and test_block_info[valid_train_metrics[0][-1]][4] != valid_train_metrics[0][-2]):
+                                fin_dest_block = test_block_info[valid_train_metrics[0][-1]][4]
+                            else:
+                                fin_dest_block = -1
                             
                             global_dispatch_orders.append([row[0],row[1],self.military_to_seconds(str(arrival_time)),valid_train_metrics[2],valid_train_metrics[0],valid_train_metrics[1],"r",fin_dest_block])
                             # [Train Name, Destination Station, Arrival Time(seconds),Start Time(seconds), Authority(meters), Suggested Speed(meters/second)]
@@ -1213,6 +1237,9 @@ class ctc_qtui_test(QObject):
             #print("Wait for t = " + str(global_dispatch_orders[1][3]))
             
             for order_num in global_dispatch_orders:
+                #print(order_num[4])
+                #print(order_num[5])
+                #print("Destination Block : " + str(order_num[7]))
                 print(order_num[0] + " will start at t = " + str(order_num[3]))
                 if self.current_time >= order_num[3] and order_num[6] != "skip":
                     #if self.current_time >= 0:
@@ -1229,7 +1256,7 @@ class ctc_qtui_test(QObject):
                                 sendable_auth_green[i+1] = "0"
                                 
                             if i == order_num[7]:
-                                sendable_auth_green[i+1] = "1"
+                                sendable_auth_green[i+1] = "0"
                     else:
                         if self.current_time == order_num[3]:
                             signals.ctc_make_train_red.emit("r")
@@ -1244,7 +1271,7 @@ class ctc_qtui_test(QObject):
                             
                             
                             if i == order_num[7]:
-                                sendable_auth_red[i+1] = "1"
+                                sendable_auth_red[i+1] = "0"
                     #print(sendable_auth_green)
                     #print(sendable_sugg_speed_green)
                     #print(sendable_auth_red)
@@ -1259,13 +1286,12 @@ class ctc_qtui_test(QObject):
                 #print(sendable_sugg_speed_red)
                 #print(sendable_auth_red)
                 
-                #print(sendable_auth_green)
-                #print(sendable_sugg_speed_green)
-                #print(sendable_auth_red)
-                #print(sendable_sugg_speed_red)
+            #print(sendable_auth_green)
+            #print(sendable_sugg_speed_green)
+            #print(sendable_auth_red)
+            #print(sendable_sugg_speed_red)
                 
                 
-
             signals.ctc_suggested_speed_green.emit(sendable_sugg_speed_green)
             signals.ctc_authority_green.emit(sendable_auth_green)
             signals.ctc_suggested_speed_red.emit(sendable_sugg_speed_red)
