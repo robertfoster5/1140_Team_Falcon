@@ -29,7 +29,7 @@ global_dispatched_trains = 0
 global_order_path_hold = []
 # [Train Name, Destination Station, Arrival Time(seconds),Start Time(seconds), Authority(meters), Suggested Speed(meters/second), Red or Green Line]
 global_dispatch_orders = [
-                           ["","",0,0,[0],[0],""] 
+                           ["","",0,0,[0],[0],"skip"] 
                          ]
 
 global_dispatch_file = ""
@@ -945,7 +945,7 @@ class ctc_qtui_test(QObject):
                     current_block = self.find_train_position(authority,temp_start_time,suggested_speed,i,test_block_info)
                     for j in global_dispatch_orders:
                         if j[3] <= i and j[2] > i:
-                            if current_block == self.find_train_position(j[6],j[3],j[5],i,test_block_info):
+                            if current_block == self.find_train_position(j[4],j[3],j[5],i,test_block_info):
                                 # print("There is a collision at Block")
                                 isValid = False
                             
@@ -1205,26 +1205,33 @@ class ctc_qtui_test(QObject):
         
         if len(global_dispatch_orders) > 1:
             #print("Wait for t = " + str(global_dispatch_orders[1][3]))
-            #if self.current_time >= global_dispatch_orders[1][3]:
-            if self.current_time >= 0:
-                if global_dispatch_orders[1][6] == "g":
-                    for i in range(150):
-                        if i in global_dispatch_orders[1][4]:
-                            sendable_auth_green[i+1] = "1"
-                            sendable_sugg_speed_green[i+1] = global_dispatch_orders[1][5][global_dispatch_orders[1][4].index(i)]
-                            #print(str(sendable_sugg_speed[i+1]) + " Curr Speed")
-                            #print("Index w/ Authority: " + str(i))
-                        else:
-                            sendable_auth_green[i+1] = "0"
-                else:
-                    for i in range(76):
-                        if i in global_dispatch_orders[1][4]:
-                            sendable_auth_red[i+1] = "1"
-                            sendable_sugg_speed_red[i+1] = global_dispatch_orders[1][5][global_dispatch_orders[1][4].index(i)]
-                            #print(str(sendable_sugg_speed[i+1]) + " Curr Speed")
-                            #print("Index w/ Authority: " + str(i))
-                        else:
-                            sendable_auth_red[i+1] = "0"
+            
+            for order_num in global_dispatch_orders:
+                print(order_num[0] + " will start at t = " + str(order_num[3]))
+                if self.current_time >= order_num[3] and order_num[6] != "skip":
+                    #if self.current_time >= 0:
+                    if global_dispatch_orders[1][6] == "g":
+                        if self.current_time == order_num[3]:
+                            signals.ctc_make_train_green.emit("g")
+                        for i in range(150):
+                            if i in global_dispatch_orders[1][4]:
+                                sendable_auth_green[i+1] = "1"
+                                sendable_sugg_speed_green[i+1] = global_dispatch_orders[1][5][global_dispatch_orders[1][4].index(i)]
+                                #print(str(sendable_sugg_speed[i+1]) + " Curr Speed")
+                                #print("Index w/ Authority: " + str(i))
+                            else:
+                                sendable_auth_green[i+1] = "0"
+                    else:
+                        if self.current_time == order_num[3]:
+                            signals.ctc_make_train_red.emit("r")
+                        for i in range(76):
+                            if i in global_dispatch_orders[1][4]:
+                                sendable_auth_red[i+1] = "1"
+                                sendable_sugg_speed_red[i+1] = global_dispatch_orders[1][5][global_dispatch_orders[1][4].index(i)]
+                                #print(str(sendable_sugg_speed[i+1]) + " Curr Speed")
+                                #print("Index w/ Authority: " + str(i))
+                            else:
+                                sendable_auth_red[i+1] = "0"
 
                 #print("Authority")
                 #print(len(sendable_auth))
