@@ -38,6 +38,7 @@ class tnm_failureTest(QObject):
 		
 
 		#Signals defined
+		tnm_ebrake = pyqtSignal(bool)
 		tnm_sendyard = pyqtSignal(bool)			#Track Model and Track Controller
 		
 		#define variables to be used in the Failure Interface
@@ -48,7 +49,10 @@ class tnm_failureTest(QObject):
 		self.car5_status = True
 		self.train1_status = True
 		self.sendYard = False
-		self.train1_test = "Train 1 Test Interface"
+		self.trainNum = 0
+		self.routeLine = 0
+		self.train1_red, self.train2_red, self.train3_red, self.train4_red, self.train5_red = "Train 1 Status - Red", "Train 2 Status - Red", "Train 3 Status - Red", "Train 4 Status - Red", "Train 5 Status - Red"
+		self.train1_green, self.train2_green, self.train3_green, self.train4_green, self.train5_green = "Train 1 Status - Green", "Train 2 Status - Green", "Train 3 Status - Green", "Train 4 Status - Green", "Train 5 Status - Green"
 		self.eBrakeTest = False
 		signals.tnc_emergency_brake.connect(self.SetEBrakeTest)
 		
@@ -74,8 +78,31 @@ class tnm_failureTest(QObject):
 #_______________________________________________________________________
 	#function to update Train Failure interface Info
 	def update_Info(self):
-		#Update Train Number
-		self.ui.label.setText(self.train1_test)
+		#Update Train Number based on Route Line
+		if(self.routeLine == 0):		#red line
+			if(self.trainNum == 1):
+				self.ui.label.setText(self.train1_red)
+			elif(self.trainNum == 2):
+				self.ui.label.setText(self.train2_red)
+			elif(self.trainNum == 3):
+				self.ui.label.setText(self.train3_red)
+			elif(self.trainNum == 4):
+				self.ui.label.setText(self.train4_red)
+			elif(self.trainNum == 5):
+				self.ui.label.setText(self.train5_red)
+		elif(self.routeLine == 1):		#green line
+			if(self.trainNum == 1):
+				self.ui.label.setText(self.train1_green)
+			elif(self.trainNum == 2):
+				self.ui.label.setText(self.train2_green)
+			elif(self.trainNum == 3):
+				self.ui.label.setText(self.train3_green)
+			elif(self.trainNum == 4):
+				self.ui.label.setText(self.train4_green)
+			elif(self.trainNum == 5):
+				self.ui.label.setText(self.train5_green)
+		
+		
 		
 		#Don't let Status LineEdits to be edited
 		self.ui.lineEdit_6.setReadOnly(True)		#Brake Status's
@@ -388,6 +415,16 @@ class tnm_failureTest(QObject):
 			self.sendYard = False
 			signals.tnm_sendyard.emit(False)
 			
+
+	#Function to check which line the train is on
+	def setTrainInfo(self, tkmTrainNum, tkmTrainLine):
+		#Set train Number
+		self.trainNum = tkmTrainNum
+		#Set route line
+		if(tkmTrainLine == "Red"):
+			self.routeLine = 0
+		elif(tkmTrainLine == "Green"):
+			self.routeLine = 1
 		
 #_____________________________________________________________________________________________________________		
 #_____________________________________________________________________________________________________________
