@@ -161,7 +161,7 @@ class tkm_test(QObject):
 				
 	#for changing train info
 	def display_t(self):
-		if self.ui.lineEdit_t.text() != "":
+		if self.ui.lineEdit_t.text() != "" and len(self.info[self.version].train) >0 :
 			t_num = int(self.ui.lineEdit_t.text())-1
 			if t_num <= len(self.info[self.version].train):
 				self.data_t = make_data_t(self.info[self.version].train[t_num],self.info[self.version].blocks)
@@ -249,6 +249,10 @@ class tkm_test(QObject):
 		if self.ui.checkBox.isChecked() == 1 or self.ui.checkBox_2.isChecked() == 1 or self.ui.checkBox_3.isChecked() == 1:
 			self.info[self.version].blocks[int(self.ui.selectE.text())-1].health = 1
 			self.info[self.version].blocks[int(self.ui.selectE.text())-1].occ = 1
+			self.ui.checkBox.setChecked(False)
+			self.ui.checkBox_2.setChecked(False)
+			self.ui.checkBox_3.setChecked(False)
+			self.ui.selectE.clear()
 			
 	def ref(self):
 		if self.ui.lineEdit.text() != "":
