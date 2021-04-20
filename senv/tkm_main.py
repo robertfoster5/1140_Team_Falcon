@@ -148,6 +148,9 @@ class tkm_test(QObject):
 		signals.tnm_block_finished_green.connect(self.info[0].set_train_block)
 		signals.tnm_block_finished_red.connect(self.info[1].set_train_block)
 		
+		signals.ctc_make_train_green.connect(self.info[0].add_train)
+		signals.ctc_make_train_red.connect(self.info[1].add_train)
+		
 		signals.time.connect(self.sales)
         
         		
