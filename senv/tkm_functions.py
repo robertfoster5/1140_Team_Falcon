@@ -19,6 +19,11 @@ def f_to_c(num):
 	numb = (numb*5)/9
 	return numb
 
+#kilometers per hour to miles per hour
+def ms_to_mph(num):
+	num = round(num*2.23694,2)	
+	return num
+
 def up_x(x):
 	x = x+62
 	return x
@@ -79,12 +84,23 @@ def make_data(blocks,j):
 	else:
 		bid = "N/a"
 	
+	if blocks[j].occ == 1:
+		oc = "Occupied"
+	else:
+		oc = "Empty"
+		
+	if blocks[j].health == 1:
+		er = "Malfunction"
+	else:
+		er = "Operational"
+	
+	
 	data = [
 	 ["Section", blocks[j].sect],
 	 ["Number", blocks[j].num],
 	 ["Length", m_to_f(blocks[j].length,0)],
 	 ["Grade", blocks[j].grade],
-	 ["Speed Limit", blocks[j].s_limit],
+	 ["Speed Limit", ms_to_mph(blocks[j].s_limit)],
 	 ["Block Station", sn],
 	 ["Switch", sb],
 	 ["Switch State", blocks[j].switch.state],
@@ -92,7 +108,9 @@ def make_data(blocks,j):
 	 ["Elevation", m_to_f(blocks[j].elev,1)],
 	 ["Cumulative Elevation", m_to_f(blocks[j].c_elev,1)],
 	 ["Underground", blocks[j].und],
-	 ["Beacon ID", bid]
+	 ["Beacon ID", bid],
+	 ["Occupancy", oc],
+	 ["Block Error", er]
 	]
 	return data
 	 

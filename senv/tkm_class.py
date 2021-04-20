@@ -1,6 +1,11 @@
 import random
 from signals import signals
 
+def kmhr_to_ms(num):
+	num = round(num*0.277778,2)
+	return num
+
+
 class Station:
 	def __init__(self,name,block,side):
 		#name and location of station
@@ -17,7 +22,7 @@ class Station:
 		
 	#number of ticket sales
 	def get_sales(self):
-		now = random.randrange(0,100)
+		now = random.randrange(0,50)
 		if self.sales+now > 300:
 			hol = self.sales+now -300
 			now = now - hol
@@ -256,6 +261,7 @@ class Block:
 	def __init__(self,line,sect,num,length,grade,s_limit,station,swit_t,swit_b,cross,stat_side,elev,c_elev,und):
 		#14 inputs
 		#line of block, section of block, number of block
+		self.health = 0
 		self.line = line
 		self.sect = sect
 		self.num = num
@@ -263,7 +269,7 @@ class Block:
 		#length, grade, and speed limit of block
 		self.length = length
 		self.grade = grade
-		self.s_limit = s_limit
+		self.s_limit = kmhr_to_ms(s_limit)
 		self.speed = -1
 		
 		#if station, name of station passed, if not 0

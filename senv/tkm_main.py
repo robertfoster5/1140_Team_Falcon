@@ -129,6 +129,8 @@ class tkm_test(QObject):
 		self.ui.enterV.clicked.connect(lambda: self.display_v())
 		self.ui.enterTemp.clicked.connect(lambda: self.display_temp())
 		self.ui.enterH.clicked.connect(lambda: self.track_heat())
+		self.ui.enterE.clicked.connect(lambda: self.error_select())
+		self.ui.refresh.clicked.connect(lambda: self.ref())
 		
 		signals.way_green_speed.connect(self.info[0].set_speed)
 		signals.way_red_speed.connect(self.info[1].set_speed)
@@ -152,7 +154,6 @@ class tkm_test(QObject):
 	def display_b(self):
 		if self.ui.lineEdit.text() != "":
 			b_num = int(self.ui.lineEdit.text())-1
-			print(self.version)
 			if b_num <= self.info[self.version].end+1 and b_num > 0: 
 				self.data_b = make_data(self.info[self.version].blocks,b_num)
 				self.ui.model_b = TableModel(self.data_b, self.header_b)
@@ -241,6 +242,20 @@ class tkm_test(QObject):
 								#print(self.info[q].blocks[p].station.name+" "+str(self.info[q].blocks[p].station.sales
 					p = p+1
 				q = q+1
+				
+	def error_select(self):
+		if self.ui.checkBox.isChecked() == 1 or self.ui.checkBox_2.isChecked() == 1 or self.ui.checkBox_3.isChecked() == 1:
+			self.info[self.version].blocks[int(self.ui.selectE.text())-1].health = 1
+			self.info[self.version].blocks[int(self.ui.selectE.text())-1].occ = 1
+			
+	def ref(self):
+		if self.ui.lineEdit.text() != "":
+			self.display_b()
+		elif self.ui.lineEdit_s.text() != "":
+			self.display_s()
+		if len(self.info[self.version].train) > 0:
+			if self.ui.lineEdit_t.text() != "":
+				self.display_t() 
 				
 				
 			
