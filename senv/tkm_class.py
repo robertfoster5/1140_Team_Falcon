@@ -5,6 +5,8 @@ def kmhr_to_ms(num):
 	num = round(num*0.277778,2)
 	return num
 
+#total num
+train_num = 0
 
 class Station:
 	def __init__(self,name,block,side):

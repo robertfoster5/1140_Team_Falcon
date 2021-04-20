@@ -12,6 +12,7 @@ class Signal(QObject):
     ctc_authority_red = pyqtSignal(list)
     ctc_suggested_speed_red = pyqtSignal(list)
     ctc_maintenance = pyqtSignal(list)
+    ctc_make_train = pyqtSignal(str)
 
     #wayside signals
     #green line
