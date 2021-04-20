@@ -88,6 +88,8 @@ class tkm_test(QObject):
 		
 		self.mins = 0
 		
+		self.ui.curLin.setText(self.info[self.version].line)
+		
 		#create trains
 		self.trains = []
 		#self.info[0].add_train(1,1,1)
@@ -109,7 +111,6 @@ class tkm_test(QObject):
 			 
 		#set station info
 		self.data_s = make_data_s(self.info[self.version].blocks[i].station)
-		#self.data_t = make_data_t(self.info[0].train[0],self.info[0].blocks)
 		self.data_t = [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]]
 		
         #final set up of data tables
@@ -194,26 +195,19 @@ class tkm_test(QObject):
 			new = load_track(str(self.ui.lineEdit_f.text())+".xls")
 			new = Track(new)
 			self.info.append(new)
-			#print(self.info[1].blocks[0].num)
-			#print(self.info[1].blocks[31].num)
 			
 	def display_v(self):
-		i = 0
-		while i < len(self.info):
-			if self.ui.lineEdit_v.text() == self.info[i].line:
-				break
-			i = i+1
-			
-			self.display_b()
-			self.display_s()
-			'''
-			if len(self.info[i].train) == 0:
-				return i
-			else:
-				self.display_t(i)
-				return i
-			'''
-			self.version = i
+		if self.ui.lineEdit_v.text() != "":
+			i = 0
+			while i < len(self.info):
+				if self.ui.lineEdit_v.text() == self.info[i].line or self.ui.lineEdit_v.text() == self.info[i].line.upper() or self.ui.lineEdit_v.text() == self.info[i].line.lower():
+					break
+				i = i+1
+			if i < len(self.info):
+				self.display_b()
+				self.display_s()
+				self.version = i
+				self.ui.curLin.setText(self.info[self.version].line)
 			
 	def display_temp(self):
 		self.temp.set_temp(self.ui.spinBox.value())

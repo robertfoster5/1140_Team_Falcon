@@ -14,16 +14,6 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QGraphicsView" name="graphicsView">
-    <property name="geometry">
-     <rect>
-      <x>930</x>
-      <y>0</y>
-      <width>71</width>
-      <height>41</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QCheckBox" name="checkBox">
     <property name="geometry">
      <rect>
@@ -447,6 +437,34 @@
      <string>Refresh</string>
     </property>
    </widget>
+   <widget class="QLineEdit" name="curLin">
+    <property name="geometry">
+     <rect>
+      <x>680</x>
+      <y>50</y>
+      <width>261</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>680</x>
+      <y>20</y>
+      <width>161</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Current Line</string>
+    </property>
+   </widget>
    <zorder>textBrowser</zorder>
    <zorder>checkBox</zorder>
    <zorder>checkBox_2</zorder>
@@ -458,7 +476,6 @@
    <zorder>tableView</zorder>
    <zorder>tableView_S</zorder>
    <zorder>tableView_T</zorder>
-   <zorder>graphicsView</zorder>
    <zorder>spinBox</zorder>
    <zorder>label</zorder>
    <zorder>lineEdit</zorder>
@@ -478,6 +495,8 @@
    <zorder>label_5</zorder>
    <zorder>selectE</zorder>
    <zorder>refresh</zorder>
+   <zorder>curLin</zorder>
+   <zorder>label_2</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
