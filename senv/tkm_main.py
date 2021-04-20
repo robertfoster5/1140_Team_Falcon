@@ -233,15 +233,17 @@ class tkm_test(QObject):
 		if self.mins < mini or (self.mins == 59 and mini == 0):
 			self.mins = mini
 			q = 0
+			tots = 0
 			while q < len(self.info):
 				p = 0
 				while p < len(self.info[q].blocks):
 					if self.info[q].blocks[p].station.name != 0:
 							if self.info[q].blocks[p].station.occ < 300:	
-								self.info[q].blocks[p].station.get_sales()
-								#print(self.info[q].blocks[p].station.name+" "+str(self.info[q].blocks[p].station.sales
+								tots = tots + self.info[q].blocks[p].station.get_sales()
 					p = p+1
 				q = q+1
+				
+			signals.tkm_get_sales.emit(tots)
 				
 	def error_select(self):
 		if self.ui.checkBox.isChecked() == 1 or self.ui.checkBox_2.isChecked() == 1 or self.ui.checkBox_3.isChecked() == 1:

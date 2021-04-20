@@ -30,6 +30,7 @@ class Station:
 			"hi"
 		self.sales = self.sales + now
 		self.occ = self.occ + now
+		return self.sales
 
 #_______________________________________________________________________
 	
