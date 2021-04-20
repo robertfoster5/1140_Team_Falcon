@@ -399,6 +399,7 @@ class Track:
 #_______________________________________________________________________
 	
 	def add_train(self,letter):#n,way,block):
+		global train_num
 		if self.line == "Red":
 			way = -1
 			blo = 9
@@ -412,18 +413,18 @@ class Track:
 		
 		self.train.append(Train(n,way,blo))
 		signals.tkm_get_train_num.emit(n,self.line)
-		signals.tkm_get_block.emit(self.blocks[blo+1].num)
-		signals.tkm_get_blength.emit(self.blocks[blo+1].length)
-		block.occ = 1
+		signals.tkm_get_block.emit(self.blocks[blo-1].num)
+		signals.tkm_get_blength.emit(self.blocks[blo-1].length)
+		self.blocks[blo-1].occ = 1
 		bull = self.get_occ()
 		signals.tkm_get_occ.emit(bull)
-		s = self.train[n-1].set_speed(self.blocks[blo+1])
+		s = self.train[n-1].set_speed(self.blocks[blo-1])
 		#print(str(s) + " tkm")
 		#signals.tkm_get_speed.emit(s)
-		signals.tkm_get_train_auth.emit(bool(self.blocks[blo+1].auth))
-		print("tkm auth " + str(self.blocks[blo+1].auth))
+		signals.tkm_get_train_auth.emit(bool(self.blocks[blo-1].auth))
+		print("tkm auth " + str(self.blocks[blo-1].auth))
 		#print(block.s_limit)
-		s = self.train[n-1].set_speed(self.blocks[blo+1])
+		s = self.train[n-1].set_speed(self.blocks[blo-1])
 		print(str(s) + " tkm - add train")
 		signals.tkm_get_speed.emit(s)
 		#signals.tkm_get_auth.emit(block.auth)
