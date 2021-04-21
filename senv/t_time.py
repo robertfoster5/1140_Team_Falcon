@@ -38,7 +38,10 @@ class timing(QObject):
 		self.time += 1
 
 	def set_multiplier(self,mult):
-		self.timer.setInterval(1000/mult)
+		if(mult == 0):
+			self.timer.setInterval(1000000000)
+		else:
+			self.timer.setInterval(1000/mult)
 
 
 
