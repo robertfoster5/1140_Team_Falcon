@@ -23,8 +23,9 @@ class TrainControllerMain(QObject):
         self.controller_thread.start()
 
         self.controller.updated.connect(self.update_gui)
-
         self.ui.brake_button.clicked.connect(self.emergency_brake)
+        self.ui.brake_button_2.clicked.connect(self.service_brake)
+
 
     def update_gui(self):
         self.ui.curr_speed_text.setText(str(int(self.controller.powsys.current_speed * 2.237)) + " mph")
@@ -37,27 +38,22 @@ class TrainControllerMain(QObject):
             self.ui.brake_button.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
             self.controller.emergency_brake = True
             signals.tnc_emergency_brake.emit(True)
-            self.controller.announce = "EMERGENCY BRAKING!\n\nREMAIN SEATED"
         else:
             self.ui.brake_button.setText("EMERGENCY BRAKE")
             self.ui.brake_button.setStyleSheet("background-color: red; color: white;")
             self.controller.emergency_brake = False
             signals.tnc_emergency_brake.emit(False)
-            self.controller.announce = ""
 
     def service_brake(self):
         if not self.controller.driver_serv_brake:
-            self.ui.brake_button.setText("CANCEL")
-            self.ui.brake_button.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
-            self.controller.emergency_brake = True
-            signals.tnc_emergency_brake.emit(True)
-            self.controller.announce = "EMERGENCY BRAKING!\n\nREMAIN SEATED"
+            self.ui.brake_button_2.setText("cancel")
+            self.ui.brake_button_2.setStyleSheet("background-color: lightgray; color: white;")
+            self.controller.driver_serv_brake = True
         else:
-            self.ui.brake_button.setText("EMERGENCY BRAKE")
-            self.ui.brake_button.setStyleSheet("background-color: red; color: white;")
-            self.controller.emergency_brake = False
-            signals.tnc_emergency_brake.emit(False)
-            self.controller.announce = ""
+            self.ui.brake_button_2.setText("Service Brake")
+            self.ui.brake_button_2.setStyleSheet("background-color: gray; color: white;")
+            self.controller.driver_serv_brake = False
+
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
