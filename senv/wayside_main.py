@@ -268,7 +268,6 @@ class wayside_qtui_test(QObject):
 			self.compile_block_occ_red_ctc()
 			self.compile_auth_red()
 			self.compile_speed_red()
-			print("output speed occupancy red")
 		else:
 			self.g1.block_occ = occupancy[1:21]
 			temp = occupancy[21:36]
@@ -290,12 +289,9 @@ class wayside_qtui_test(QObject):
 			self.compile_block_occ_green_ctc()
 			self.compile_auth_green()
 			self.compile_speed_green()
-			print("output speed occupancy green")
 		self.update_tables(self.curr_ws)
 		
 	def update_speed_red(self, speed):
-		print("update speeds red")
-		print(speed)
 		temp_s = []
 		for i in range(len(speed)):
 			if speed[i] == 0:
@@ -324,8 +320,6 @@ class wayside_qtui_test(QObject):
 		self.update_tables(self.curr_ws)
 			
 	def update_speed_green(self, speed):
-		print("update speeds green")
-		print(speed)
 		temp_s = []
 		for i in range(len(speed)):
 			if speed[i] == 0:
@@ -347,8 +341,6 @@ class wayside_qtui_test(QObject):
 		self.g4.b_speed = temp_s[74:110]
 		self.g5.b_speed = temp_s[110:147]
 		self.compile_speed_green()
-		print("output speeds green")
-		print(temp_s)
 		self.update_tables(self.curr_ws)
 			
 	def compile_health_red(self):
@@ -475,8 +467,6 @@ class wayside_qtui_test(QObject):
 			else:
 				temp.append(self.red_speed[j+1])
 			j=j+1
-		print("output speeds red")
-		print(temp)
 		signals.way_red_speed.emit(temp)
 		
 	def compile_speed_green(self):
