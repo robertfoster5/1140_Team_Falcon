@@ -210,6 +210,7 @@ class wayside_qtui_test(QObject):
 			
 	def new_authority_red(self, authority):
 		temp = []
+		print(authority)
 		self.red_authority = authority
 		self.r1.authority = authority[1:24]
 		temp = authority[24:46]
