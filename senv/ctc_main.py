@@ -34,6 +34,7 @@ global_dispatch_orders = [
 
 global_dispatch_file = ""
 global_expected_train_location = [0]
+global_train_blocks = []
 
 def upX(x):
     x = x+62
@@ -571,7 +572,9 @@ class ctc_qtui_test(QObject):
         # -----------------------------
             
         signals.time.connect(lambda: self.send_dispatch_order())
-        signals.time.connect( self.update_time)
+        signals.time.connect(self.update_time)
+        signals.way_green_occupancy_ctc.connect(self.update_order_authority)
+        signals.way_red_occupancy_ctc.connect(self.update_order_authority)
         
             
     def change_data(self, ui):
@@ -1223,6 +1226,9 @@ class ctc_qtui_test(QObject):
     def send_dispatch_order(self):
         global global_dispatch_orders
         
+        make_green_train = False
+        make_red_train = False
+        
         sendable_sugg_speed_green = [0] * 151
         sendable_sugg_speed_green[0] = "g"
         sendable_auth_green = [0] * 151
@@ -1245,7 +1251,8 @@ class ctc_qtui_test(QObject):
                     #if self.current_time >= 0:
                     if order_num[6] == "g":
                         if self.current_time == order_num[3]:
-                            signals.ctc_make_train_green.emit("g")
+                            #print("SENDING GREEN TRAIN")
+                            make_green_train = True
                         for i in range(150):
                             if i in order_num[4]:
                                 sendable_auth_green[i+1] = "1"
@@ -1259,7 +1266,8 @@ class ctc_qtui_test(QObject):
                                 sendable_auth_green[i+1] = "0"
                     else:
                         if self.current_time == order_num[3]:
-                            signals.ctc_make_train_red.emit("r")
+                            #print("SENDING RED TRAIN")
+                            make_red_train = True
                         for i in range(76):
                             if i in order_num[4]:
                                 sendable_auth_red[i+1] = "1"
@@ -1291,15 +1299,53 @@ class ctc_qtui_test(QObject):
             #print(sendable_auth_red)
             #print(sendable_sugg_speed_red)
                 
-                
+             
             signals.ctc_suggested_speed_green.emit(sendable_sugg_speed_green)
             signals.ctc_authority_green.emit(sendable_auth_green)
             signals.ctc_suggested_speed_red.emit(sendable_sugg_speed_red)
             signals.ctc_authority_red.emit(sendable_auth_red)
+            
+            if make_green_train:
+                signals.ctc_make_train_green.emit("g")
+            if make_red_train:
+                signals.ctc_make_train_red.emit("r")
            
             
     def update_time(self,seconds,minutes,hours,total_time):
-        self.current_time = total_time 
+        self.current_time = total_time
+    
+    
+    def update_order_authority(self,track_state):
+        global global_dispatch_orders
+        global global_train_blocks
+        
+        checked_train = []
+        
+        if track_state[0] == 1: # Green Line
+            for order_num in global_dispatch_orders:
+                if order_num[6] != "skip" and order_num[6] == "g":
+                    if order_num[0] not in checked_train:
+                        checked_train.append(order_num[0])
+                        if len(order_num[4]) == 1:
+                            if int(track_state[order_num[4][0] + 1]) == 0:
+                                del order_num
+                        else:
+                            if int(track_state[order_num[4][0] + 1]) == 0 and int(track_state[order_num[4][1] + 1]) == 1:
+                                order_num[4].pop(0)
+                                order_num[5].pop(0)
+                                        
+        if track_state[0] == 0: # Red Line
+            for order_num in global_dispatch_orders:
+                if order_num[6] != "skip" and order_num[6] == "r":
+                    if order_num[0] not in checked_train:
+                        checked_train.append(order_num[0])
+                        if len(order_num[4]) == 1:
+                            if int(track_state[order_num[4][0] + 1]) == 0:
+                                del order_num
+                        else:
+                            if int(track_state[order_num[4][0] + 1]) == 0 and int(track_state[order_num[4][1] + 1]) == 1:
+                                order_num[4].pop(0)
+                                order_num[5].pop(0)
             
 
 class TrainStation:
