@@ -572,6 +572,7 @@ class ctc_qtui_test(QObject):
         # -----------------------------
             
         signals.time.connect(lambda: self.send_dispatch_order())
+        signals.time.connect(lambda: self.update_ctc_displays(self.ui))
         signals.time.connect(self.update_time)
         signals.way_green_occupancy_ctc.connect(self.update_order_authority)
         signals.way_red_occupancy_ctc.connect(self.update_order_authority)
@@ -1253,6 +1254,7 @@ class ctc_qtui_test(QObject):
                         if self.current_time == order_num[3]:
                             #print("SENDING GREEN TRAIN")
                             make_green_train = True
+                        #print(order_num[4])
                         for i in range(150):
                             if i in order_num[4]:
                                 sendable_auth_green[i+1] = "1"
@@ -1268,6 +1270,7 @@ class ctc_qtui_test(QObject):
                         if self.current_time == order_num[3]:
                             #print("SENDING RED TRAIN")
                             make_red_train = True
+                        #print(order_num[4])
                         for i in range(76):
                             if i in order_num[4]:
                                 sendable_auth_red[i+1] = "1"
@@ -1317,35 +1320,52 @@ class ctc_qtui_test(QObject):
     
     def update_order_authority(self,track_state):
         global global_dispatch_orders
+        global global_schedule_display
         global global_train_blocks
         
         checked_train = []
         
-        if track_state[0] == 1: # Green Line
+        if int(track_state[0]) == 1: # Green Line
             for order_num in global_dispatch_orders:
                 if order_num[6] != "skip" and order_num[6] == "g":
                     if order_num[0] not in checked_train:
                         checked_train.append(order_num[0])
                         if len(order_num[4]) == 1:
                             if int(track_state[order_num[4][0] + 1]) == 0:
-                                del order_num
+                                #print("DELETE THIS DUDE")
+                                order_num[4].pop(0)
+                                order_num[5].pop(0)
                         else:
                             if int(track_state[order_num[4][0] + 1]) == 0 and int(track_state[order_num[4][1] + 1]) == 1:
                                 order_num[4].pop(0)
                                 order_num[5].pop(0)
                                         
-        if track_state[0] == 0: # Red Line
+        if int(track_state[0]) == 0: # Red Line
             for order_num in global_dispatch_orders:
                 if order_num[6] != "skip" and order_num[6] == "r":
                     if order_num[0] not in checked_train:
                         checked_train.append(order_num[0])
                         if len(order_num[4]) == 1:
                             if int(track_state[order_num[4][0] + 1]) == 0:
+                                #print("DELETE THIS DUDE")
                                 del order_num
                         else:
                             if int(track_state[order_num[4][0] + 1]) == 0 and int(track_state[order_num[4][1] + 1]) == 1:
                                 order_num[4].pop(0)
                                 order_num[5].pop(0)
+        
+        for i in range(len(global_dispatch_orders)):
+            if global_dispatch_orders[i][4] == [] and i != 0:
+                global_dispatch_orders.pop(i)
+                global_schedule_display.pop(i)
+        
+    def update_ctc_displays(self,ui):
+        global global_schedule_display
+        global global_train_blocks
+        
+        header = ['Train', 'Destination Station', 'Arrival Time (2400)']
+        ui.model = TableModel(global_schedule_display, header)
+        ui.tableView_schedule.setModel(ui.model)
             
 
 class TrainStation:
