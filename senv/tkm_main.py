@@ -167,7 +167,7 @@ class tkm_test(QObject):
 	def display_t(self):
 		if self.ui.lineEdit_t.text() != "" and len(self.info[self.version].train) >0 :
 			t_num = int(self.ui.lineEdit_t.text())-1
-			if t_num <= len(self.info[self.version].train):
+			if t_num < len(self.info[self.version].train):
 				self.data_t = make_data_t(self.info[self.version].train[t_num],self.info[self.version].blocks)
 				self.ui.model_t = TableModel(self.data_t, self.header_t)
 				self.ui.tableView_T.setModel(self.ui.model_t)
@@ -226,7 +226,6 @@ class tkm_test(QObject):
 			self.ui.heat_stat.setText("Off")
 			
 	def sales(self,sec,mini,hr,tot):
-		print(str(self.mins)+"  " +str(mini))
 		if self.mins < mini or (self.mins == 59 and mini == 0):
 			self.mins = mini
 			q = 0

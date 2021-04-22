@@ -109,7 +109,7 @@ class Train:
 #_______________________________________________________________________
 	
 	#change block location
-	def set_block(self,blocks,num,line):
+	def set_block(self,blocks,num,line,flag):
 		self.past = self.block
 		print(str(self.num)+" train num")
 		num = int(num)
@@ -117,20 +117,24 @@ class Train:
 		#green
 		if line == "Green":
 			if self.way == 1:
-				if blocks[num-1].switch.top == 0 and int(blocks[num-1].num) != 100 and int(blocks[num-1].num) != 150 or (int(blocks[num-1].num) == 63):
+				if '''blocks[num-1].switch.top == 0''' and int(blocks[num-1].num) != 100 and flag != 1 or (int(blocks[num-1].num) == 63):
 					self.block = blocks[num].num
 				elif int(blocks[num-1].num) == 100:
 					self.block = 85
 					self.way = -1
-				elif int(blocks[num-1].num) == 150:
+				elif flag == 1:
 					self.block = 29
 					self.way = -1
+					print(self.way)
 			#way = -1
 			else:
-				if blocks[num-1].num != 13:
+				if blocks[num-1].num != 13 and blocks[num-1].num != 77:
 					self.block = blocks[num-1].num-1
 				elif blocks[num-1].num == 13:
 					self.block = 1
+					self.way = 1
+				elif blocks[num-1].num == 77:
+					self.block = 101
 					self.way = 1
 			'''
 			if self.way == 1:
@@ -148,7 +152,7 @@ class Train:
 		else:
 			# way = 1
 			if self.way == 1:
-				if blocks[num-1].switch.top == 0 and int(blocks[num-1].num) != 66 and int(blocks[num-1].num) != 71 and int(blocks[num-1].num) != 76:
+				if blocks[num-1].switch.top == 0 and int(blocks[num-1].num) != 66 and int(blocks[num-1].num) != 71 and flag != 1:
 					self.block = blocks[num-1].num
 				elif int(blocks[num-1].num) == 66 :
 					if blocks[53].switch.state == 1:
@@ -158,7 +162,7 @@ class Train:
 					if blocks[39].switch.state == 1:
 						self.block = 38
 						self.way = -1
-				elif int(blocks[num-1].num) == 76:
+				elif flag == 1:
 					if blocks[28].switch.state == 1:
 						self.block = 27
 						self.way = -1
@@ -213,9 +217,9 @@ class Train:
 #_______________________________________________________________________
 	
 	def set_speed(self,block):
-		#print(block.speed)
 		print(block.s_limit)
 		print(block.speed)
+		print(block.num)
 		if block.s_limit > block.speed:
 			self.speed = block.speed
 		else:
@@ -409,8 +413,7 @@ class Track:
 			blo = 63
 			n = train_num+1
 			
-		train_num = train_num+1		
-		
+		train_num = train_num+1
 		self.train.append(Train(n,way,blo))
 		signals.tkm_get_train_num.emit(n,self.line)
 		signals.tkm_get_block.emit(self.blocks[blo-1].num)
@@ -419,6 +422,7 @@ class Track:
 		bull = self.get_occ()
 		signals.tkm_get_occ.emit(bull)
 		s = self.train[n-1].set_speed(self.blocks[blo-1])
+		print("speeeeeeeeeeeeeeeeed "+str(s))
 		#print(str(s) + " tkm")
 		#signals.tkm_get_speed.emit(s)
 		signals.tkm_get_train_auth.emit(bool(self.blocks[blo-1].auth))
@@ -566,14 +570,27 @@ class Track:
 	#set train blocks
 	def set_train_block(self,num):
 		s = 0
-		
-		q = int(self.train[num-1].block)
+		f = 0
 		way = self.train[num-1].way
+		
+		if self.line == "Green":
+			if self.train[num-1].block == 150:
+				q = 28
+				f = 1
+			else:
+				q = int(self.train[num-1].block)
+		elif self.line == "Red":
+			if self.train[num-1].block == 76:
+				q = 26
+				f = 1
+			else:
+				q = int(self.train[num-1].block)
+		
 		
 		print(str(q)+" this is q") 
 			
 		
-		a = self.train[num-1].set_block(self.blocks,q,self.line)
+		a = self.train[num-1].set_block(self.blocks,q,self.line,f)
 		#pas = a[0]
 		#self.blocks[a[0]-1].occ == 0
 		#self.blocks[int(self.train[num-1].block)-1].occ = 1
@@ -591,7 +608,6 @@ class Track:
 #_______________________________________________________________________
 	#set authority
 	def set_auth(self,auth):
-		#print("auth")
 		r = 1
 		q = 0
 		check = 0
