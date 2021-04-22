@@ -111,7 +111,7 @@ def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, Sp
 				curr_speed = 0.0
 				print("Train has stopped, service")
 		elif(Authority == True and SerBrake == False and SpeedN1 == CommSpeed):
-			force = (Power/curr_speed)
+			force = 0.0
 			curr_accl = 0.0
 			curr_speed = meterToMile(SpeedN1)
 
