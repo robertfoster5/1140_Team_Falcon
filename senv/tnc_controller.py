@@ -44,6 +44,9 @@ class TrainController(QObject):
         signals.tnm_authority.connect(self.set_authority)
         signals.tnm_ebrake.connect(self.set_pass_brake)
         signals.tnm_curr_station.connect(self.set_station)
+        signals.tnm_beaconID.connect(self.set_tunnels)
+        signals.tnm_TrainDir.connect(self.set_side)
+        #signals.tnm_sendyard.connect(self.failure)
 
         self.init_periph()
 
@@ -111,21 +114,21 @@ class TrainController(QObject):
 
     def set_tunnels(self,beaconID):
         beacon = bin(beaconID)
-        tunnel = beaconID[3]
-        if(self.auto_mode and tunnel == "1"):
-            if(not self.tunnel_light):
-                self.tunnel_light = True;
-                self.high_beam_light = False;
+        if(len(beacon)>3):
+            tunnel = beacon[3]
+            if(self.auto_mode and tunnel == "1"):
+                if(not self.tunnel_light):
+                    self.tunnel_light = True;
+                    self.high_beam_light = False;
 
-                signals.tnc_tunnel_light.emit(True)
-                signals.tnc_high_beam_light.emit(False)
-            else:
-                self.tunnel_light = False;
+                    signals.tnc_tunnel_light.emit(True)
+                    signals.tnc_high_beam_light.emit(False)
+                else:
+                    self.tunnel_light = False;
 
-                signals.tnc_tunnel_light.emit(False)
+                    signals.tnc_tunnel_light.emit(False)
 
-
-
+    #def failure(self,fail):
 
     def run(self):
         if(self.auto_mode):
@@ -194,6 +197,9 @@ class TrainController(QObject):
 
         if(self.powsys.power == 0):
             self.service_brake = True
+
+        if(self.service_brake):
+            print("service brake on")
 
         signals.tnc_service_brake.emit(self.service_brake)
 
