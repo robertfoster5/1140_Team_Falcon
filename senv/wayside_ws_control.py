@@ -65,7 +65,8 @@ class Wayside:
 	def cross_change(self):
 		if self.num_cross != 0:
 			cr1 = self.cr_connect[0]
-			if self.block_occ[19-2] == "1" or self.block_occ[19-1] == "1" or self.block_occ[19] == "1":
+			index1 = self.block_name.index(cr1)
+			if self.block_occ[int(index1) - 2] == "1" or self.block_occ[int(index1)-1] == "1" or self.block_occ[int(index1)] == "1":
 				self.cross_state[0] = "1"
 			else:
 				self.cross_state[0] = "0"
@@ -75,33 +76,65 @@ class Wayside:
 		self.switch_state = []
 		if self.num_switch > 0:
 			for i in range(self.num_switch):
+				fork = 0
+				swname = self.switch_name[i]
 				sw1 = self.sw_connect[temp_count][0]
 				sw2 = self.sw_connect[temp_count][1]
 				sw3 = self.sw_connect[temp_count+1][0]
 				sw4 = self.sw_connect[temp_count+1][1]
 				index1 = self.block_name.index(sw1)
 				index2 = self.block_name.index(sw2)
-				index4 = "0"
-				index3 = "0"
-				if sw4 == "yard":
+				if sw3 != "yard":
 					index3 = self.block_name.index(sw3)
-				elif sw3 == "yard":
+				if sw4 != "yard":
 					index4 = self.block_name.index(sw4)
-				else:
-					index3 = self.block_name.index(sw3)
-					index4 = self.block_name.index(sw4)
-				if self.authority[int(index1)] == "1" and self.authority[int(index2)] == "1" and self.authority[int(index3)] and sw3 != "yard":
+				if sw3 != "yard":
+					if self.block_occ[int(index3)] == "1":
+						self.switch_state.append("1")
+						fork = 0
+				elif self.block_occ[int(index1)] == "1":
 					self.switch_state.append("0")
-				elif self.authority[int(index3)] == "1" and sw4 == "yard" and self.authority[int(index2)] == "0":
-					self.switch_state.append("1")
-				elif self.authority[int(index4)] == "1" and sw3 == "yard" and self.authority[int(index1)] == "0":
-					self.switch_state.append("1")
-				elif self.authority[int(index3)] == "1" and self.authority[int(index4)] == "1" and sw3 != "yard" and sw4 != "yard":
-					self.switch_state.append("1")
+					fork = 0
+				else:
+					fork = 1
+				if self.line == "Green" and fork == 1:
+					if swname == "1" or swname == "2" or swname == "6":
+						self.switch_state.append("0")
+					elif swname == "3":
+						if self.authority[int(index1)] == "1":
+							self.switch_state.append("0")
+						else:
+							self.switch_state.append("1")
+					elif swname == "4":
+						if self.authority[int(index2)] == "1" and self.authority[int(index1)] == "1":
+							self.switch_state.append("0")
+						else:
+							self.switch_state.append("1")
+					elif swname == "5":
+						self.switch_state.append("1")
+					else:
+						self.switch_state.append("0")
+				elif self.line == "Red" and fork == 1:
+					if swname == "1":
+						if self.authority[int(index3)] == "1":
+							self.switch_state.append("0")
+						else:
+							self.switch_state.append("1")
+					elif swname == "2":
+						if self.authority[10] == "1":
+							self.switch_state.append("0")
+						else:
+							self.switch_state.append("1")
+					elif swname == "3" or swname == "5" or swname == "7":
+						self.switch_state.append("0")
+					elif swname == "4" or swname == "6":
+						self.switch_state.append("1")
+					else:
+						self.switch_state.append("0")
 				else:
 					self.switch_state.append("0")
-				temp_count = temp_count + 2
-			
+				temp_count = temp_count +2
+				
 	def load_plc(self):
 		f = open(self.plcfile)
 		swcount = 0
@@ -150,7 +183,7 @@ class Wayside:
 				self.sw_connect.append([d3[0:-1], d4[0:-1]])
 			if line[0:2] == "cr":
 				d1 = plc[linecount+2]
-				self.cr_connect.append(int(d1[0:-1]))
+				self.cr_connect.append(d1[0:-1])
 			if line[0:2] == "end proc":
 				break
 			linecount = linecount+1

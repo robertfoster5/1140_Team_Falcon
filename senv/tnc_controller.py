@@ -43,6 +43,7 @@ class TrainController(QObject):
         signals.tnm_curr_speed.connect(self.set_curr_speed)
         signals.tnm_authority.connect(self.set_authority)
         signals.tnm_ebrake.connect(self.set_pass_brake)
+        signals.tnm_curr_station.connect(self.set_station)
 
         self.init_periph()
 
@@ -180,8 +181,6 @@ class TrainController(QObject):
         else:
             self.service_brake = False
 
-        signals.tnc_service_brake.emit(self.service_brake)
-
         if(self.emergency_brake or self.service_brake or self.pass_brake or self.station_stop):
             self.powsys.braking = True
         else:
@@ -192,6 +191,13 @@ class TrainController(QObject):
         #print(round(self.powsys.set_speed,1))
 
         self.powsys.update_power()
+
+        if(self.powsys.power == 0):
+            self.service_brake = True
+
+        signals.tnc_service_brake.emit(self.service_brake)
+
+        signals.tnc_power.emit(self.powsys.power)
 
         self.updated.emit()
 

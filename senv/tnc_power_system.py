@@ -38,7 +38,8 @@ class PowerSystem():
         if(self.power < 0):
             self.power = 0;
 
-        signals.tnc_power.emit(self.power)
+        if(self.power > 120000):
+            self.power = 120000
 
 
     def set_coeffs(self,p,i):
