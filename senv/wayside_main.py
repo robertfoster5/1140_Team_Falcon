@@ -54,6 +54,7 @@ class wayside_qtui_test(QObject):
 		self.r1 = Wayside("r1.txt", "Red")
 		self.r2 = Wayside("r2.txt", "Red")
 		self.r3 = Wayside("r3.txt", "Red")
+		print(self.r3.block_name)
 		"""self.g1_thread = QThread()
         self.g1 = Wayside("g1.txt", "Green")
         self.g1.moveToThread(self.g1_thread)
