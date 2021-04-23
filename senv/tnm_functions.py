@@ -17,11 +17,12 @@ def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, Sp
 	curr_accl = AcclN1										#Just an initialization, will be recalculated
 	SpeedN1 = MiletoMeter(SpeedN1)							#Convert MPH to mps for calculations
 	curr_speed = SpeedN1									#Just an initialization, will be recalculated
+	comm_speed = MiletoMeter(CommSpeed)						#mps for calculations
 	max_speed = 43.5										#miles/hour , used at the end once converted back
 	train_accl_max = 0.5006848		#actually the median (2/3 of load)#mps2 from max 1.12 miles/hour^2
 	#train_accl_max = 0.75
-	train_dec_service = MiletoMeter(1.2) 			#mph2 deceleration service
-	train_dec_eBrake = MiletoMeter(2.73)				#mph2 decleration eBrake
+	train_dec_service = 1.2 			# deceleration service
+	train_dec_eBrake = 2.73				# decleration eBrake
 	Empty_Mass = 5*40.9					#Tons
 	Occupancy_Mass = ((Occupancy*56.699)/2000) #Number -> (125lb)Kg -> tons
 	#current mass based on ticket sales and inital train mass
@@ -41,10 +42,9 @@ def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, Sp
 			force = 0.0
 			curr_accl = 0.0
 			curr_speed = 0.0
-			#print("Train has stopped, eBrake")
 		#Slow down train using eBrake deceleration till 0.0
 		elif(SpeedN1 > 0.0):
-			force = (Power/curr_speed)
+			#force = (Power/SpeedN1)
 			curr_accl = train_dec_eBrake
 			curr_speed = meterToMile(SpeedN1 - ((time_initial + 1)/2)*(curr_accl))		#time_initial + 1 = currTime - currTime_n-1
 			if(curr_speed < 0.0):
@@ -58,7 +58,7 @@ def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, Sp
 			#Display stopping distance based on current speed
 			#stopping_dist(curr_speed)
 			if(SpeedN1 > 0.0 and Power == 0.0):
-				force = (Power/curr_speed)
+				force = (Power/SpeedN1)
 				curr_accl = train_dec_service
 				curr_speed = meterToMile(SpeedN1 - ((time_initial + 1)/2)*(curr_accl))		#timeSec - time_initial 
 				if(curr_speed < 0.0):
@@ -81,7 +81,7 @@ def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, Sp
 				curr_speed = 0.0
 				#print("Train has stopped, service")
 			elif(timeSec > 0 and SpeedN1 > 0.0):
-				force = (Power/curr_speed)
+				#force = (Power/curr_speed)
 				curr_accl = train_dec_service
 				curr_speed = meterToMile(SpeedN1 - ((time_initial + 1)/2)*(curr_accl))			#Calculate Vn = Vn-1 + T/2(an +an-1) and convert to mph
 				if(curr_speed < 0.0):
@@ -100,20 +100,17 @@ def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, Sp
 				curr_speed = meterToMile(curr_accl/1)				#Calculate V = A/s and convert to mph	 #***Point of Failure
 				#curr_speed = meterToMile(SpeedN1 + ((time_initial + 1)/2)*(curr_accl + AcclN1))
 			elif(timeSec > 0 and SpeedN1 > 0.0):
-				force = (Power/curr_speed)
+				force = (Power/SpeedN1)
 				curr_accl = (force/curr_mass)
 				curr_speed = meterToMile(SpeedN1 + ((time_initial + 1)/2)*(curr_accl + AcclN1))			#Calculate Vn = Vn-1 + T/2(an +an-1) and convert to mph
-		elif(Authority == True and SerBrake == False and SpeedN1 > CommSpeed):
-			force = (Power/curr_speed)
+		elif(Authority == True and SerBrake == False and SpeedN1 >= CommSpeed):
+			force = (Power/SpeedN1)
 			curr_accl = train_dec_service
-			curr_speed = meterToMile(SpeedN1 - ((time_initial + 1)/2)*(curr_accl))
-			if(curr_speed < 0.0):
-				curr_speed = 0.0
-				print("Train has stopped, service")
-		elif(Authority == True and SerBrake == False and SpeedN1 == CommSpeed):
-			force = 0.0
-			curr_accl = 0.0
-			curr_speed = meterToMile(SpeedN1)
+			curr_speed = meterToMile(CommSpeed)
+			#curr_speed = meterToMile(SpeedN1 - ((time_initial + 1)/2)*(curr_accl))
+			#if(curr_speed < 0.0):
+				#curr_speed = 0.0
+				#print("Train has stopped, service"
 
 	#Check to make sure speed doesn't exceed Max
 	if(curr_speed > max_speed):
@@ -197,7 +194,7 @@ def KilotoMile(comm_speed):
 #Function to convert between mps and MPH
 def meterToMile(curr_speed):
 	
-	#Use commanded speed on the track KPH, but convert to Miles/Hour
+	#Use current speed mps into MPH
 	speed_MPH = (curr_speed * 2.23694)
 	
 	return speed_MPH
@@ -205,7 +202,7 @@ def meterToMile(curr_speed):
 #Function to convert between MPH and mps
 def MiletoMeter(curr_speed):
 	
-	#Use commanded speed on the track KPH, but convert to Miles/Hour
+	#Use current speed MPH into mps
 	speed_mps = (curr_speed / 2.23694)
 	
 	return speed_mps

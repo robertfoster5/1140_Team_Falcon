@@ -43,7 +43,7 @@ class TimeMain(QObject):
 			signals.time_multiplier.emit(1)
 		elif(self.ui.lineEdit.text().isdigit() == True):
 			AlphaFlag = False
-			self.ui.label_5.setText(" " + mult)
+			self.ui.label_5.setText(" " + str(mult))
 			signals.time_multiplier.emit(int(mult))
 
 

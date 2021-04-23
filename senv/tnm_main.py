@@ -974,7 +974,7 @@ class tnm_display(QObject):
 		
 	#Function to set Commanded Speed from track model signal
 	def SetCommSpeed(self,commSpeed):
-		self.comm_speed = commSpeed			#convert mps value to MPH
+		self.comm_speed = meterToMile(commSpeed)			#convert mps to MPH
 		#print(str(self.comm_speed) + " comm speed from tnm")
 	
 	#Function to set Passenger count from track model signal
