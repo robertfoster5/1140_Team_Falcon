@@ -171,12 +171,12 @@ class TrainController(QObject):
             self.announcement = "EMERGENCY BRAKING!\nPLEASE REMAIN SEATED"
         elif(not self.authority):
             self.service_brake = True
-        elif(self.powsys.command_speed == 0 and self.authority):
-            if(self.powsys.current_speed > 5):
-                self.service_brake = True
-            else:
-                self.service_brake = False
-                self.set_command_speed(5)
+        #elif(self.powsys.command_speed == 0 and self.authority):
+        #    if(self.powsys.current_speed > 5):
+        #        self.service_brake = True
+        #    else:
+        #        self.service_brake = False
+        #        self.set_command_speed(5)
         elif(self.station_stop):
             self.service_brake = True
         elif(self.driver_serv_brake):
@@ -195,7 +195,7 @@ class TrainController(QObject):
 
         self.powsys.update_power()
 
-        if(self.powsys.power == 0):
+        if(self.powsys.power == 0 and (self.powsys.command_speed != self.powsys.current_speed)):
             self.service_brake = True
 
         if(self.service_brake):
