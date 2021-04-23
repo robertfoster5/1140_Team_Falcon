@@ -15,7 +15,7 @@ class timing(QObject):
 		self.time = 0
 
 		self.timer = QTimer()
-		self.timer.setInterval(1000)
+		self.timer.setInterval(1000000000)
 		self.timer.start()
 
 		self.timer.timeout.connect(self.time_incr)

@@ -128,13 +128,13 @@ class Train:
 					print(self.way)
 			#way = -1
 			else:
-				if blocks[num-1].num != 13 and blocks[num-1].num != 77:
+				if blocks[num-1].num != 1 and blocks[num-1].num != 77:
 					self.block = blocks[num-1].num-1
-				elif blocks[num-1].num == 13:
-					self.block = 1
-					self.way = 1
 				elif blocks[num-1].num == 77:
 					self.block = 101
+					self.way = 1
+				elif blocks[num-1].num == 1:
+					self.block = 13
 					self.way = 1
 			'''
 			if self.way == 1:

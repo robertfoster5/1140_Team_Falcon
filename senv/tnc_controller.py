@@ -22,6 +22,7 @@ class TrainController(QObject):
         self.emergency_brake = False
         self.service_brake = False
         self.driver_serv_brake = False
+        self.driver_emer_brake = False
         self.pass_brake = False
         self.tunnel_light = False
         self.cabin_light = False
@@ -44,6 +45,9 @@ class TrainController(QObject):
         signals.tnm_authority.connect(self.set_authority)
         signals.tnm_ebrake.connect(self.set_pass_brake)
         signals.tnm_curr_station.connect(self.set_station)
+        signals.tnm_beaconID.connect(self.set_tunnels)
+        signals.tnm_TrainDir.connect(self.set_side)
+        signals.tnm_sendyard.connect(self.failure)
 
         self.init_periph()
 
@@ -111,21 +115,29 @@ class TrainController(QObject):
 
     def set_tunnels(self,beaconID):
         beacon = bin(beaconID)
-        tunnel = beaconID[3]
-        if(self.auto_mode and tunnel == "1"):
-            if(not self.tunnel_light):
-                self.tunnel_light = True;
-                self.high_beam_light = False;
+        if(len(beacon)>3):
+            tunnel = beacon[3]
+            if(self.auto_mode and tunnel == "1"):
+                if(not self.tunnel_light):
+                    self.tunnel_light = True;
+                    self.high_beam_light = False;
 
-                signals.tnc_tunnel_light.emit(True)
-                signals.tnc_high_beam_light.emit(False)
-            else:
-                self.tunnel_light = False;
+                    signals.tnc_tunnel_light.emit(True)
+                    signals.tnc_high_beam_light.emit(False)
+                else:
+                    self.tunnel_light = False;
 
-                signals.tnc_tunnel_light.emit(False)
+                    signals.tnc_tunnel_light.emit(False)
 
-
-
+    def failure(self,fail):
+        if(fail):
+            self.emergency_brake = True
+            signals.tnc_emergency_brake.emit(True)
+        elif(not self.driver_emer_brake):
+            self.emergency_brake = False
+            signals.tnc_emergency_brake.emit(False)
+        else:
+            self.emergency_brake = False
 
     def run(self):
         if(self.auto_mode):
@@ -164,16 +176,16 @@ class TrainController(QObject):
                 signals.tnc_right_door.emit(False)
 
 
-        if(self.emergency_brake or self.pass_brake):
+        if(self.emergency_brake or self.pass_brake or self.driver_emer_brake):
             self.announcement = "EMERGENCY BRAKING!\nPLEASE REMAIN SEATED"
         elif(not self.authority):
             self.service_brake = True
-        elif(self.powsys.command_speed == 0 and self.authority):
-            if(self.powsys.current_speed > 5):
-                self.service_brake = True
-            else:
-                self.service_brake = False
-                self.set_command_speed(5)
+        #elif(self.powsys.command_speed == 0 and self.authority):
+        #    if(self.powsys.current_speed > 5):
+        #        self.service_brake = True
+        #    else:
+        #        self.service_brake = False
+        #        self.set_command_speed(5)
         elif(self.station_stop):
             self.service_brake = True
         elif(self.driver_serv_brake):
@@ -192,8 +204,11 @@ class TrainController(QObject):
 
         self.powsys.update_power()
 
-        if(self.powsys.power == 0):
+        if(self.powsys.power == 0 and (self.powsys.command_speed != self.powsys.current_speed)):
             self.service_brake = True
+
+        if(self.service_brake):
+            print("service brake on")
 
         signals.tnc_service_brake.emit(self.service_brake)
 

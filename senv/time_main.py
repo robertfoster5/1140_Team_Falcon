@@ -20,7 +20,8 @@ class TimeMain(QObject):
 		self.time.moveToThread(self.time_thread)
 		self.time_thread.start()
 
-		self.ui.label_5.setText(" " + str(1))
+		self.ui.label_5.setText(" " + str(0))
+		self.ui.label_3.setText(" 0:0:0")
 
 		signals.time.connect(self.update_gui)
 		self.ui.lineEdit.editingFinished.connect(self.set_multiplier)

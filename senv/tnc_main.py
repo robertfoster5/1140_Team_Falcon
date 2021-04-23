@@ -36,13 +36,14 @@ class TrainControllerMain(QObject):
         if not self.controller.emergency_brake:
             self.ui.brake_button.setText("CANCEL")
             self.ui.brake_button.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
-            self.controller.emergency_brake = True
+            self.controller.driver_emer_brake = True
             signals.tnc_emergency_brake.emit(True)
         else:
             self.ui.brake_button.setText("EMERGENCY BRAKE")
             self.ui.brake_button.setStyleSheet("background-color: red; color: white;")
-            self.controller.emergency_brake = False
-            signals.tnc_emergency_brake.emit(False)
+            self.controller.driver_emer_brake = False
+            if(!self.controller.emergency_brake):
+                signals.tnc_emergency_brake.emit(False)
 
     def service_brake(self):
         if not self.controller.driver_serv_brake:
