@@ -15,13 +15,17 @@ class Wayside:
 		self.b_speed = []
 		self.num_switch = 0
 		self.num_cross = 0
+		self.num_block = 0
 		self.load_plc()
 	
 	def update_ws(self):
 		#self.safety_change()
 		self.cross_change()
 		self.switch_state_change()
-				
+	
+	"""def safety_change(self):
+		for i in range(self.num_block):"""
+						
 	def m_order_block(self, order):
 		temp_block = []
 		temp_occ = []
@@ -61,7 +65,17 @@ class Wayside:
 				self.switch_state.append("1")
 			if temp[i] == "1" and temp_switch[i] == "1":
 				self.switch_state.append("0")
-					
+	
+	def occ_change(self, occupancy):
+		temp = []
+		for i in range(self.num_block):
+			if self.block_health[i] == "1":
+				temp.append("1")
+			else:
+				temp.append(occupancy[i])
+		self.block_occ = []
+		self.block_occ = temp
+						
 	def cross_change(self):
 		if self.num_cross != 0:
 			cr1 = self.cr_connect[0]
@@ -165,6 +179,7 @@ class Wayside:
 				self.block_occ.append("0")
 				self.authority.append("0")
 				self.b_speed.append(0)
+				self.num_block = self.num_block +1
 			#stopping distance
 			elif line[0:2] == "st" and proc == 0:
 				self.stop_distance = int(line[2:])

@@ -54,7 +54,6 @@ class wayside_qtui_test(QObject):
 		self.r1 = Wayside("r1.txt", "Red")
 		self.r2 = Wayside("r2.txt", "Red")
 		self.r3 = Wayside("r3.txt", "Red")
-		print(self.r3.block_name)
 		"""self.g1_thread = QThread()
         self.g1 = Wayside("g1.txt", "Green")
         self.g1.moveToThread(self.g1_thread)
@@ -247,7 +246,7 @@ class wayside_qtui_test(QObject):
 	def update_occupancy(self, occupancy):
 		temp = []
 		if occupancy[0] == "0":
-			self.r1.block_occ = occupancy[1:24]
+			self.r1.occ_change(occupancy[1:24])
 			temp = occupancy[24:46]
 			temp.append(occupancy[67])
 			temp.append(occupancy[68])
@@ -259,8 +258,8 @@ class wayside_qtui_test(QObject):
 			temp.append(occupancy[74])
 			temp.append(occupancy[75])
 			temp.append(occupancy[76])
-			self.r2.block_occ = temp
-			self.r3.block_occ = occupancy[46:67]
+			self.r2.occ_change(temp)
+			self.r3.occ_change(occupancy[46:67])
 			self.r1.update_ws()
 			self.r2.update_ws()
 			self.r3.update_ws()
@@ -270,16 +269,16 @@ class wayside_qtui_test(QObject):
 			self.compile_auth_red()
 			self.compile_speed_red()
 		else:
-			self.g1.block_occ = occupancy[1:21]
+			self.g1.occ_change(occupancy[1:21])
 			temp = occupancy[21:36]
 			temp.append(occupancy[147])
 			temp.append(occupancy[148])
 			temp.append(occupancy[149])
 			temp.append(occupancy[150])
-			self.g2.block_occ = temp
-			self.g3.block_occ = occupancy[36:74]
-			self.g4.block_occ = occupancy[74:110]
-			self.g5.block_occ = occupancy[110:147]
+			self.g2.occ_change(temp)
+			self.g3.occ_change(occupancy[36:74])
+			self.g4.occ_change(occupancy[74:110])
+			self.g5.occ_change(occupancy[110:147])
 			self.g1.update_ws()
 			self.g2.update_ws()
 			self.g3.update_ws()
