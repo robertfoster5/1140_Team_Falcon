@@ -303,7 +303,7 @@ class ctc_qtui_test(QObject):
          TrainStation([1],[[8,7,6,5,4,3,2]]), # Edgebrook
          TrainStation([2],[[1,0,12,13,14]]), # Pioneer
          TrainStation([0,3],[[15,14,13,12,11,10,9],[15,16,17,18,19,20]]), # Falcon
-         TrainStation([2,4],[[21,20,19,18,17,16,15],[21,22,23,24,25,26,27,28,29]]), # Whited
+         TrainStation([2,4],[[21,20,19,18,17,16],[21,22,23,24,25,26,27,28,29]]), # Whited
          TrainStation([5],[[30,31,32,33,34,35,36,37]]), # South Bank
          TrainStation([3,6],[[140,141,142,143,144,145,146,147,148,149,28,27,26,25,24,23,22],[38,39,40,41,42,43,44,45,46]]), # Central
          TrainStation([5,7],[[131,132,133,134,135,136,137,138,139],[47,48,49,50,51,52,53,54,55]]), # Inglewood
@@ -1069,6 +1069,7 @@ class ctc_qtui_test(QObject):
                                 global_expected_train_location[int(train_name)] = destination_station
                             # for i in global_expected_train_location:
                                     # print(i)
+                            print([row[0],row[1],row[2]])
                             global_schedule_display.append([row[0],row[1],row[2]])
                             header = ['Train', 'Destination Station', 'Arrival Time (2400)']
                             ui.model = TableModel(global_schedule_display, header)
@@ -1325,6 +1326,7 @@ class ctc_qtui_test(QObject):
         global global_schedule_display
         global global_train_blocks
         
+        
         checked_train = []
         
         if int(track_state[0]) == 1: # Green Line
@@ -1336,7 +1338,7 @@ class ctc_qtui_test(QObject):
                             if int(track_state[order_num[4][0] + 1]) == 0:
                                 #print("DELETE THIS DUDE")
                                 global_train_blocks[int(order_num[0][-1]) - 1] = order_num[7]
-                                del order_num
+                                order_num[4] = [-1]
                                 
                         else:
                             if int(track_state[order_num[4][0] + 1]) == 0 and int(track_state[order_num[4][1] + 1]) == 1:
@@ -1353,17 +1355,19 @@ class ctc_qtui_test(QObject):
                             if int(track_state[order_num[4][0] + 1]) == 0:
                                 #print("DELETE THIS DUDE")
                                 global_train_blocks[int(order_num[0][-1]) - 1] = order_num[7]
-                                del order_num
+                                order_num[4] = [-1]
                         else:
                             if int(track_state[order_num[4][0] + 1]) == 0 and int(track_state[order_num[4][1] + 1]) == 1:
                                 order_num[4].pop(0)
                                 order_num[5].pop(0)
                                 global_train_blocks[int(order_num[0][-1]) - 1] = order_num[4][0]
         
-        for i in range(len(global_dispatch_orders)):
-            if global_dispatch_orders[i][4] == [] and i != 0:
+        print(global_dispatch_orders)
+        for i in range(len(global_dispatch_orders) + 1):
+            if i != 0 and global_dispatch_orders[i][4] == [-1]:
                 global_dispatch_orders.pop(i)
                 global_schedule_display.pop(i)
+        
         
     def update_ctc_displays(self,ui):
         global global_schedule_display
