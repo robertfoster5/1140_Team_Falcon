@@ -5,7 +5,9 @@ from signals import signals
 
 
 class TrainController(QObject):
-    updated = pyqtSignal()
+    stations = ["Pioneer","EdgeBrook","Falcon","Whited","South Bank","Central","Inglewood","Overbrook","Glenbury","Dormont","Mt Lebanon","Poplar","Castle Shannon","Shady Side","Herron Ave","Penn Station","Steel Plaza","First Ave","Station Square","South Hills","Swissville"]
+
+    doors = [0,0,2,2,0,1,1,1,1,1,2,0,0,2,2,2,2,2,2,2,2]
 
     def __init__(self):
         super().__init__()
@@ -13,7 +15,7 @@ class TrainController(QObject):
         self.authority = False
         self.at_station = False
         self.in_tunnel = False
-        self.left_side = False
+        self.station_side = 0
         self.emergency_brake = False
         self.service_brake = False
         self.driver_serv_brake = False
@@ -84,13 +86,62 @@ class TrainController(QObject):
         else:
             self.auto_mode = True
 
-    #def read_beacon(int):
+    def set_station(self,name):
+        self.station = name
+
+    def set_side(self,direction):
+        if(stations.count(self.station) > 0):
+            side = doors[stations.index(self.station)]
+            if((not direction) or (side == 2)):
+                self.station_side = side
+            elif(side == 1):
+                self.station_side = 0
+            else:
+                self.station_side = 1
+
+        if(not self.at_station):
+            self.at_station = True
+        else:
+            self.at_station = False
+
 
 
     def run(self):
         if(self.auto_mode):
-            if (self.at_station and (not self.authority) and self.powsys.current_speed == 0):
-                self.left_door = True
+            if (self.at_station and (not self.authority) and self.powsys.current_speed == 0 and self.count == 0):
+                count+=1
+                self.station_stop = True
+                if(self.station_side == 0):
+                    self.left_door = True
+                    signals.tnc_left_door.emit(True)
+                elif(self.station_side == 1)
+                    self.right_door = True
+                    signals.tnc_right_door.emit(True)
+                else:
+                    self.left_door = True
+                    signals.tnc_left_door.emit(True)
+                    self.right_door = True
+                    signals.tnc_right_door.emit(True)
+
+            if(count == 60):
+                self.count = 0
+                self.station_stop = False
+                self.left_door = False
+                signals.tnc_left_door.emit(False)
+                self.right_door = False
+                signals.tnc_right_door.emit(False)
+            elif(count > 0):
+                count+=1
+
+        else:
+            if(self.at_station):
+                self.count = 0
+                self.station_stop = False
+                self.left_door = False
+                signals.tnc_left_door.emit(False)
+                self.right_door = False
+                signals.tnc_right_door.emit(False)
+
 
         if(self.emergency_brake or self.pass_brake):
             self.announcement = "EMERGENCY BRAKING!\nPLEASE REMAIN SEATED"
@@ -102,30 +153,25 @@ class TrainController(QObject):
             else:
                 self.service_brake = False
                 self.set_command_speed(5)
+        elif(self.station_stop):
+            self.service_brake = True
+        elif(self.driver_serv_brake):
+            self.service_brake = True
         else:
             self.service_brake = False
 
-        if(self.driver_serv_brake):
-            self.service_brake = True
-
         signals.tnc_service_brake.emit(self.service_brake)
 
-        if(self.emergency_brake or self.service_brake or self.pass_brake):
+        if(self.emergency_brake or self.service_brake or self.pass_brake or self.station_stop):
             self.powsys.braking = True
         else:
             self.powsys.braking = False
-
-            #if(self.in_tunnel):
-            #    self.tunnel_light = True
-            #else:
-            #    self.tunnel_light = False
 
         #print(str(round(self.powsys.command_speed,1)) + " comm speed in m/s")
         print(str(int(self.powsys.command_speed * 2.237)) + " comm speed in mph")
         #print(round(self.powsys.set_speed,1))
 
         self.powsys.update_power()
-        self.updated.emit()
 
 if __name__ == '__main__':
     a = TrainController()
