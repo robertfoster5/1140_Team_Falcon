@@ -14,7 +14,7 @@ import sys
 import xlrd
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt, QObject, QThread, pyqtSignal
-from ctc_qtui_test import Ui_MainWindow
+from ctc_qtui_test import Ui_CTC_Office
 import csv
 import tkinter as tk
 from tkinter import filedialog
@@ -108,7 +108,7 @@ class ctc_qtui_test(QObject):
         print("running ctc")
         super().__init__()
         self.ctc_main_window = QtWidgets.QMainWindow()
-        self.ui = Ui_MainWindow()
+        self.ui = Ui_CTC_Office()
         self.ui.setupUi(self.ctc_main_window)
         self.ctc_main_window.show()
         
@@ -1023,7 +1023,7 @@ class ctc_qtui_test(QObject):
                             destination_station = 0
                         elif row[1] == "Pioneer":
                             destination_station = 1
-                        elif row[1] == "Station X":
+                        elif row[1] == "Falcon":
                             destination_station = 2
                         elif row[1] == "Whited":
                             destination_station = 3
@@ -1243,7 +1243,7 @@ class ctc_qtui_test(QObject):
         if len(global_dispatch_orders) > 1:
             #print("Wait for t = " + str(global_dispatch_orders[1][3]))
             
-            for order_num in global_dispatch_orders:
+            for order_num in reversed(global_dispatch_orders):
                 #print(order_num[4])
                 #print(order_num[5])
                 #print("Destination Block : " + str(order_num[7]))
@@ -1251,9 +1251,10 @@ class ctc_qtui_test(QObject):
                 if self.current_time >= order_num[3] and order_num[6] != "skip":
                     #if self.current_time >= 0:
                     if order_num[6] == "g":
-                        if self.current_time == order_num[3]:
+                        if self.current_time == order_num[3] and int(order_num[0][-1]) > len(global_train_blocks):
                             #print("SENDING GREEN TRAIN")
                             make_green_train = True
+                            global_train_blocks.append(order_num[4][0])
                         #print(order_num[4])
                         for i in range(150):
                             if i in order_num[4]:
@@ -1267,9 +1268,10 @@ class ctc_qtui_test(QObject):
                             if i == order_num[7]:
                                 sendable_auth_green[i+1] = "0"
                     else:
-                        if self.current_time == order_num[3]:
+                        if self.current_time == order_num[3] and int(order_num[0][-1]) > len(global_train_blocks):
                             #print("SENDING RED TRAIN")
                             make_red_train = True
+                            global_train_blocks.append(order_num[4][0])
                         #print(order_num[4])
                         for i in range(76):
                             if i in order_num[4]:
@@ -1333,12 +1335,14 @@ class ctc_qtui_test(QObject):
                         if len(order_num[4]) == 1:
                             if int(track_state[order_num[4][0] + 1]) == 0:
                                 #print("DELETE THIS DUDE")
-                                order_num[4].pop(0)
-                                order_num[5].pop(0)
+                                global_train_blocks[int(order_num[0][-1]) - 1] = order_num[7]
+                                del order_num
+                                
                         else:
                             if int(track_state[order_num[4][0] + 1]) == 0 and int(track_state[order_num[4][1] + 1]) == 1:
                                 order_num[4].pop(0)
                                 order_num[5].pop(0)
+                                global_train_blocks[int(order_num[0][-1]) - 1] = order_num[4][0]
                                         
         if int(track_state[0]) == 0: # Red Line
             for order_num in global_dispatch_orders:
@@ -1348,11 +1352,13 @@ class ctc_qtui_test(QObject):
                         if len(order_num[4]) == 1:
                             if int(track_state[order_num[4][0] + 1]) == 0:
                                 #print("DELETE THIS DUDE")
+                                global_train_blocks[int(order_num[0][-1]) - 1] = order_num[7]
                                 del order_num
                         else:
                             if int(track_state[order_num[4][0] + 1]) == 0 and int(track_state[order_num[4][1] + 1]) == 1:
                                 order_num[4].pop(0)
                                 order_num[5].pop(0)
+                                global_train_blocks[int(order_num[0][-1]) - 1] = order_num[4][0]
         
         for i in range(len(global_dispatch_orders)):
             if global_dispatch_orders[i][4] == [] and i != 0:
@@ -1366,6 +1372,27 @@ class ctc_qtui_test(QObject):
         header = ['Train', 'Destination Station', 'Arrival Time (2400)']
         ui.model = TableModel(global_schedule_display, header)
         ui.tableView_schedule.setModel(ui.model)
+        
+        if len(global_train_blocks) == 1:
+            ui.labelTrain_1.setText("Block " + str(global_train_blocks[0] + 1))
+        if len(global_train_blocks) == 2:
+            ui.labelTrain_2.setText("Block " + str(global_train_blocks[1] + 1))
+        if len(global_train_blocks) == 3:
+            ui.labelTrain_3.setText("Block " + str(global_train_blocks[2] + 1))
+        if len(global_train_blocks) == 4:
+            ui.labelTrain_4.setText("Block " + str(global_train_blocks[3] + 1))
+        if len(global_train_blocks) == 5:
+            ui.labelTrain_5.setText("Block " + str(global_train_blocks[4] + 1))
+        if len(global_train_blocks) == 6:
+            ui.labelTrain_6.setText("Block " + str(global_train_blocks[5] + 1))
+        if len(global_train_blocks) == 7:
+            ui.labelTrain_7.setText("Block " + str(global_train_blocks[6] + 1))
+        if len(global_train_blocks) == 8:
+            ui.labelTrain_8.setText("Block " + str(global_train_blocks[7] + 1))
+        if len(global_train_blocks) == 9:
+            ui.labelTrain_9.setText("Block " + str(global_train_blocks[8] + 1))
+        if len(global_train_blocks) == 10:
+            ui.labelTrain_10.setText("Block " + str(global_train_blocks[9] + 1))
             
 
 class TrainStation:
