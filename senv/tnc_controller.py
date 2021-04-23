@@ -104,6 +104,22 @@ class TrainController(QObject):
         else:
             self.at_station = False
 
+    def set_tunnels(self,beaconID):
+        beacon = bin(beaconID)
+        tunnel = beaconID[3]
+        if(self.auto_mode and tunnel == "1"):
+            if(not self.tunnel_light):
+                self.tunnel_light = True;
+                self.high_beam_light = False;
+
+                signals.tnc_tunnel_light.emit(True)
+                signals.tnc_high_beam_light.emit(False)
+            else:
+                self.tunnel_light = False;
+
+                signals.tnc_tunnel_light.emit(False)
+
+
 
 
     def run(self):
@@ -168,7 +184,7 @@ class TrainController(QObject):
             self.powsys.braking = False
 
         #print(str(round(self.powsys.command_speed,1)) + " comm speed in m/s")
-        print(str(int(self.powsys.command_speed * 2.237)) + " comm speed in mph")
+        print(str(int(self.powsys.command_speed)) + " comm speed in mph")
         #print(round(self.powsys.set_speed,1))
 
         self.powsys.update_power()
