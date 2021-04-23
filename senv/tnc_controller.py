@@ -5,6 +5,9 @@ from signals import signals
 
 
 class TrainController(QObject):
+
+    updated = pyqtSignal()
+
     stations = ["Pioneer","EdgeBrook","Falcon","Whited","South Bank","Central","Inglewood","Overbrook","Glenbury","Dormont","Mt Lebanon","Poplar","Castle Shannon","Shady Side","Herron Ave","Penn Station","Steel Plaza","First Ave","Station Square","South Hills","Swissville"]
 
     doors = [0,0,2,2,0,1,1,1,1,1,2,0,0,2,2,2,2,2,2,2,2]
@@ -33,6 +36,7 @@ class TrainController(QObject):
         self.stopping = False
         self.station_stop = False
         self.announcement = ""
+        self.count = 0
 
         signals.time.connect(self.run)
         signals.tnm_comm_speed.connect(self.set_command_speed)
@@ -125,7 +129,7 @@ class TrainController(QObject):
     def run(self):
         if(self.auto_mode):
             if (self.at_station and (not self.authority) and self.powsys.current_speed == 0 and self.count == 0):
-                count+=1
+                self.count+=1
                 self.station_stop = True
                 if(self.station_side == 0):
                     self.left_door = True
@@ -139,15 +143,15 @@ class TrainController(QObject):
                     self.right_door = True
                     signals.tnc_right_door.emit(True)
 
-            if(count == 60):
+            if(self.count == 60):
                 self.count = 0
                 self.station_stop = False
                 self.left_door = False
                 signals.tnc_left_door.emit(False)
                 self.right_door = False
                 signals.tnc_right_door.emit(False)
-            elif(count > 0):
-                count+=1
+            elif(self.count > 0):
+                self.count+=1
 
         else:
             if(self.at_station):
@@ -188,6 +192,8 @@ class TrainController(QObject):
         #print(round(self.powsys.set_speed,1))
 
         self.powsys.update_power()
+
+        self.updated.emit()
 
 if __name__ == '__main__':
     a = TrainController()
