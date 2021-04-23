@@ -103,14 +103,20 @@ def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, Sp
 				force = (Power/SpeedN1)
 				curr_accl = (force/curr_mass)
 				curr_speed = meterToMile(SpeedN1 + ((time_initial + 1)/2)*(curr_accl + AcclN1))			#Calculate Vn = Vn-1 + T/2(an +an-1) and convert to mph
-		elif(Authority == True and SerBrake == False and SpeedN1 >= CommSpeed):
+		elif(Authority == True and SerBrake == False and SpeedN1 == CommSpeed):
+			force = Power/SpeedN1
+			curr_accl = (force/curr_mass)
+			curr_speed = meterToMile(CommSpeed)
+
+		elif(Authority == True and SerBrake == False and SpeedN1 > CommSpeed):
 			force = (Power/SpeedN1)
 			curr_accl = train_dec_service
-			curr_speed = meterToMile(CommSpeed)
-			#curr_speed = meterToMile(SpeedN1 - ((time_initial + 1)/2)*(curr_accl))
-			#if(curr_speed < 0.0):
-				#curr_speed = 0.0
-				#print("Train has stopped, service"
+			curr_speed = meterToMile(SpeedN1 - ((time_initial + 1)/2)*(curr_accl))
+			#SerBrake = True
+			if(curr_speed < 0.0):
+				curr_speed = 0.0
+				print("Train has stopped, service")
+			
 
 	#Check to make sure speed doesn't exceed Max
 	if(curr_speed > max_speed):
