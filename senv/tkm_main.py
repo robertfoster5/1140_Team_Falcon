@@ -29,7 +29,7 @@ from tkm_functions import make_data
 from tkm_functions import make_data_s
 from tkm_functions import make_data_t
 from tkm_functions import load_track
-from tkm_functions import up_x
+from tkm_functions import make_data_sect
 
 from signals import signals
 
@@ -98,6 +98,7 @@ class tkm_test(QObject):
 		self.header_b = ['Block', 'Info']
 		self.header_s = ['Station', 'Info']
 		self.header_t = ['Train', 'Info']
+		self.header_sect = ["Num","Length","Grade","Speed Limit","Station","Switch","Switch State","Crossing","Elevation","Cumulative","Underground","Beacon ID","Occupancy","Block Error"] 
 		
 		#set default block data
 		self.data_b = make_data(self.info[self.version].blocks,0)
@@ -113,14 +114,19 @@ class tkm_test(QObject):
 		self.data_s = make_data_s(self.info[self.version].blocks[i].station)
 		self.data_t = [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]]
 		
+		#default section info
+		self.data_sect = make_data_sect(self.info[self.version].blocks,"A")
+		
         #final set up of data tables
 		self.ui.model_b = TableModel(self.data_b, self.header_b)
 		self.ui.model_s = TableModel(self.data_s, self.header_s)
 		self.ui.model_t = TableModel(self.data_t, self.header_t)
+		self.ui.model_sect = TableModel(self.data_sect, self.header_sect)
 		
 		self.ui.tableView.setModel(self.ui.model_b)
 		self.ui.tableView_S.setModel(self.ui.model_s)
 		self.ui.tableView_T.setModel(self.ui.model_t)
+		self.ui.tableView_Sect.setModel(self.ui.model_sect)
 		
 		#check if block change is entered
 		self.ui.enterB.clicked.connect(lambda: self.display_b())
@@ -132,6 +138,7 @@ class tkm_test(QObject):
 		self.ui.enterH.clicked.connect(lambda: self.track_heat())
 		self.ui.enterE.clicked.connect(lambda: self.error_select())
 		self.ui.refresh.clicked.connect(lambda: self.ref())
+		self.ui.enterSect.clicked.connect(lambda: self.display_sect())
 		
 		signals.way_green_speed.connect(self.info[0].set_speed)
 		signals.way_red_speed.connect(self.info[1].set_speed)
@@ -158,7 +165,7 @@ class tkm_test(QObject):
 	def display_b(self):
 		if self.ui.lineEdit.text() != "":
 			b_num = int(self.ui.lineEdit.text())-1
-			if b_num <= self.info[self.version].end+1 and b_num > 0: 
+			if b_num < len(self.info[self.version].blocks) and b_num >= 0: 
 				self.data_b = make_data(self.info[self.version].blocks,b_num)
 				self.ui.model_b = TableModel(self.data_b, self.header_b)
 				self.ui.tableView.setModel(self.ui.model_b)
@@ -192,7 +199,15 @@ class tkm_test(QObject):
 				self.data_s = make_data_s(self.info[self.version].blocks[i].station)
 				self.ui.model_s = TableModel(self.data_s, self.header_s)
 				self.ui.tableView_S.setModel(self.ui.model_s)
-				
+	
+	def display_sect(self):
+		if self.ui.select_sect.text() != "":
+			sect = self.ui.select_sect.text()
+			sect = sect.upper()
+			self.data_sect = make_data_sect(self.info[self.version].blocks,sect)
+			self.ui.model_sect = TableModel(self.data_sect, self.header_sect)
+			self.ui.tableView_Sect.setModel(self.ui.model_sect)
+			
 	def load_f(self):
 		if self.ui.lineEdit_f.text() != "":
 			new = load_track(str(self.ui.lineEdit_f.text())+".xls")
@@ -259,6 +274,7 @@ class tkm_test(QObject):
 			if self.ui.lineEdit_t.text() != "":
 				self.display_t() 
 				
+	
 				
 			
 			

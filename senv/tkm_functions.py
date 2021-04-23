@@ -113,7 +113,65 @@ def make_data(blocks,j):
 	 ["Block Error", er]
 	]
 	return data
-	 
+	
+	
+def make_data_sect(blocks,sect):
+	i = 0
+	start = 0
+	finish = 0
+	while i < len(blocks):
+		if str(sect) == blocks[i].sect:
+			start = i
+			finish = i
+			while finish < len(blocks) and blocks[finish].sect == str(sect):
+				finish = finish+1
+			finish = finish-1
+			i = len(blocks)
+		i = i+1
+	
+	if start == 0 and finish == 0:
+		return ["does not exist",0,0,0,0,0,0,0,0,0,0,0,0,0]
+	
+	num = finish - start + 1
+	data = []
+	while start <= finish:
+		if blocks[start].station.name == 0:
+			sn = "None"
+		else:
+			sn = blocks[start].station.name
+			
+		if blocks[start].switch.bottom == 0:
+			sb = "None"
+		else:
+			if blocks[start].switch.state == 0:
+				sb = blocks[start].switch.top
+			else:
+				sb = blocks[start].switch.bottom
+		
+		if blocks[start].cross == 0:
+			c = "None"
+		else:
+			c = blocks[start].cross.state
+			
+		if blocks[start].beacon1 != 0:
+			bid = bin(blocks[start].beacon1)
+		else:
+			bid = "N/a"
+		
+		if blocks[start].occ == 1:
+			oc = "Occupied"
+		else:
+			oc = "Empty"
+			
+		if blocks[start].health == 1:
+			er = "Malfunction"
+		else:
+			er = "Operational"
+			
+		data.append([blocks[start].num,m_to_f(blocks[start].length,0),blocks[start].grade,ms_to_mph(blocks[start].s_limit),sn,sb,blocks[start].switch.state,c,m_to_f(blocks[start].elev,1),m_to_f(blocks[start].c_elev,1),blocks[start].und,bid,oc,er])
+		start = start+1
+		
+	return data
 
 def load_track(fileN):
 	File = xlrd.open_workbook(fileN)
@@ -191,3 +249,4 @@ def load_track(fileN):
 		
 	return track;
 	
+
