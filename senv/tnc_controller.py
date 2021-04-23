@@ -130,7 +130,7 @@ class TrainController(QObject):
                 if(self.station_side == 0):
                     self.left_door = True
                     signals.tnc_left_door.emit(True)
-                elif(self.station_side == 1)
+                elif(self.station_side == 1):
                     self.right_door = True
                     signals.tnc_right_door.emit(True)
                 else:
