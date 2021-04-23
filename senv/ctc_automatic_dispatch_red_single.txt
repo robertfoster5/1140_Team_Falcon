@@ -1,0 +1,9 @@
+Train Name,Destination Station,Arrival Time
+Train 1,Shadyside,0004
+Train 1,Herron Ave,0007
+Train 1,Swissville,0009
+Train 1,Penn Station,0011
+Train 1,Steel Plaza,0014
+Train 1,First Ave,0017
+Train 1,Station Square,0019
+Train 1,South Hills Junction,0022
