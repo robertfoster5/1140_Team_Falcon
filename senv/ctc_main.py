@@ -409,8 +409,8 @@ class ctc_qtui_test(QObject):
          TrainStation([2,4],[[20,19,18,17,16],[20,21,22,23]]), # Swissville
          # Add Extra Cases where the path goes through the alt tracks
          TrainStation([3,5],[[24,23,22,21],[24,25,26,27,28,29,30,31,32,33]]), # Penn Station
-         TrainStation([4,6],[[34,33,32,31,30,29,28,27,26,25],[34,35,36,37,38,39,40,41,42,43]]), # Steel Plaza
-         TrainStation([5,7],[[44,43,42,41,40,39,38,37,36,35],[44,45,46]]), # First Ave
+         TrainStation([4,6],[[34,33,32,31,71,72,73,74,75,26,25],[34,35,36,37,38,39,40,41,42,43]]), # Steel Plaza
+         TrainStation([5,7],[[44,43,42,66,67,68,69,70,37,36,35],[44,45,46]]), # First Ave
          #
          TrainStation([6,8],[[47,46,45],[47,49,50,51,52,53,54,55,56,57,58]]), # Station Square
          TrainStation([7],[[59,60,61,62,63,64,65,51,50,49,48]]), # South Hills Junction
