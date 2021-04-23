@@ -22,6 +22,7 @@ class TrainController(QObject):
         self.emergency_brake = False
         self.service_brake = False
         self.driver_serv_brake = False
+        self.driver_emer_brake = False
         self.pass_brake = False
         self.tunnel_light = False
         self.cabin_light = False
@@ -46,7 +47,7 @@ class TrainController(QObject):
         signals.tnm_curr_station.connect(self.set_station)
         signals.tnm_beaconID.connect(self.set_tunnels)
         signals.tnm_TrainDir.connect(self.set_side)
-        #signals.tnm_sendyard.connect(self.failure)
+        signals.tnm_sendyard.connect(self.failure)
 
         self.init_periph()
 
@@ -128,7 +129,15 @@ class TrainController(QObject):
 
                     signals.tnc_tunnel_light.emit(False)
 
-    #def failure(self,fail):
+    def failure(self,fail):
+        if(fail):
+            self.emergency_brake = True
+            signals.tnc_emergency_brake.emit(True)
+        elif(not self.driver_emer_brake):
+            self.emergency_brake = False
+            signals.tnc_emergency_brake.emit(False)
+        else:
+            self.emergency_brake = False
 
     def run(self):
         if(self.auto_mode):
@@ -167,7 +176,7 @@ class TrainController(QObject):
                 signals.tnc_right_door.emit(False)
 
 
-        if(self.emergency_brake or self.pass_brake):
+        if(self.emergency_brake or self.pass_brake or self.driver_emer_brake):
             self.announcement = "EMERGENCY BRAKING!\nPLEASE REMAIN SEATED"
         elif(not self.authority):
             self.service_brake = True
