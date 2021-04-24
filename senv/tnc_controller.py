@@ -48,6 +48,7 @@ class TrainController(QObject):
         signals.tnm_beaconID.connect(self.set_tunnels)
         signals.tnm_TrainDir.connect(self.set_side)
         signals.tnm_sendyard.connect(self.failure)
+        signals.tnc_emergency_brake.connect(self.announce_emergency)
 
         self.init_periph()
 
@@ -139,9 +140,32 @@ class TrainController(QObject):
         else:
             self.emergency_brake = False
 
+    def announce_emergency(self,on):
+        if(on):
+            self.announcement = "EMERGENCY BRAKING!\nPLEASE STAY SEATED"
+            signals.tnc_announcement.emit(self.announcement)
+        else:
+            self.announcement = ""
+            signals.tnc_announcement.emit(self.announcement)
+
+
     def run(self):
         if(self.auto_mode):
+            if(self.count >= 60):
+                self.announcement = ""
+                signals.tnc_announcement.emit(self.announcement)
+                self.count = 0
+                self.station_stop = False
+                self.left_door = False
+                signals.tnc_left_door.emit(False)
+                self.right_door = False
+                signals.tnc_right_door.emit(False)
+            elif(self.count > 0):
+                self.count+=1
+
             if (self.at_station and (not self.authority) and self.powsys.current_speed == 0 and self.count == 0):
+                self.announcement = "Now Arriving at:\n" + self.station + " Station"
+                signals.tnc_announcement.emit(self.announcement)
                 self.count+=1
                 self.station_stop = True
                 if(self.station_side == 0):
@@ -156,16 +180,6 @@ class TrainController(QObject):
                     self.right_door = True
                     signals.tnc_right_door.emit(True)
 
-            if(self.count == 60):
-                self.count = 0
-                self.station_stop = False
-                self.left_door = False
-                signals.tnc_left_door.emit(False)
-                self.right_door = False
-                signals.tnc_right_door.emit(False)
-            elif(self.count > 0):
-                self.count+=1
-
         else:
             if(self.at_station):
                 self.count = 0
@@ -176,9 +190,7 @@ class TrainController(QObject):
                 signals.tnc_right_door.emit(False)
 
 
-        if(self.emergency_brake or self.pass_brake or self.driver_emer_brake):
-            self.announcement = "EMERGENCY BRAKING!\nPLEASE REMAIN SEATED"
-        elif(not self.authority):
+        if(not self.authority):
             self.service_brake = True
         #elif(self.powsys.command_speed == 0 and self.authority):
         #    if(self.powsys.current_speed > 5):

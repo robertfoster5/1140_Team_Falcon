@@ -306,7 +306,7 @@ class Ui_MainWindow(object):
 "border-color: black; ")
         self.set_speed_text.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.set_speed_text.setObjectName("set_speed_text")
-        self.gridLayout_10.addWidget(self.set_speed_text, 2, 0, 1, 6, QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter)
+        self.gridLayout_10.addWidget(self.set_speed_text, 2, 0, 1, 6, QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
         self.listWidget = QtWidgets.QListWidget(self.frame_3)
         self.listWidget.setMinimumSize(QtCore.QSize(30, 0))
         self.listWidget.setMaximumSize(QtCore.QSize(20, 16777215))
@@ -346,9 +346,10 @@ class Ui_MainWindow(object):
         font.setPointSize(9)
         self.label_17.setFont(font)
         self.label_17.setObjectName("label_17")
-        self.gridLayout_10.addWidget(self.label_17, 1, 0, 1, 7, QtCore.Qt.AlignHCenter)
+        self.gridLayout_10.addWidget(self.label_17, 1, 0, 1, 7, QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
         self.speed_slider = QtWidgets.QSlider(self.frame_3)
         self.speed_slider.setStyleSheet("")
+        self.speed_slider.setInputMethodHints(QtCore.Qt.ImhNone)
         self.speed_slider.setMaximum(45)
         self.speed_slider.setOrientation(QtCore.Qt.Vertical)
         self.speed_slider.setTickPosition(QtWidgets.QSlider.TicksBelow)
@@ -434,7 +435,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "TrainController"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.train_num.setItemText(0, _translate("MainWindow", "Train 1"))
         self.train_num.setItemText(1, _translate("MainWindow", "Train 2"))
         self.train_num.setItemText(2, _translate("MainWindow", "Train 3"))

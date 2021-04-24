@@ -22,18 +22,25 @@ class TrainControllerMain(QObject):
         self.controller.moveToThread(self.controller_thread)
         self.controller_thread.start()
 
+        self.ui.speed_slider.hide()
+        self.ui.listWidget.hide()
+
         self.controller.updated.connect(self.update_gui)
         self.ui.brake_button.clicked.connect(self.emergency_brake)
         self.ui.brake_button_2.clicked.connect(self.service_brake)
+        signals.tnc_announcement.connect(self.display_announcement)
 
 
     def update_gui(self):
-        self.ui.curr_speed_text.setText(str(int(self.controller.powsys.current_speed * 2.237)) + " mph")
-        self.ui.max_speed_text.setText(str(int(self.controller.powsys.command_speed * 2.237)) + " mph")
+        self.ui.curr_speed_text.setText(str(int(self.controller.powsys.current_speed)) + " mph")
+        self.ui.max_speed_text.setText(str(int(self.controller.powsys.command_speed)) + " mph")
         self.ui.power_text.setText(str(int(self.controller.powsys.power/1000.0)) + " kW")
+        if(self.controller.auto_mode):
+            self.ui.set_speed_text.setText(str(self.controller.powsys.set_speed) + " mph")
+            self.ui.speed_slider.setValue(int(self.controller.powsys.command_speed))
 
     def emergency_brake(self):
-        if not self.controller.emergency_brake:
+        if not self.controller.driver_emer_brake:
             self.ui.brake_button.setText("CANCEL")
             self.ui.brake_button.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
             self.controller.driver_emer_brake = True
@@ -55,6 +62,22 @@ class TrainControllerMain(QObject):
             self.ui.brake_button_2.setStyleSheet("background-color: gray; color: white;")
             self.controller.driver_serv_brake = False
 
+    def display_announcement(self,text):
+        self.ui.announce_text.setPlainText(text)
+
+    def automatic_mode(self):
+        if(self.auto_check.isChecked()):
+            self.ui.speed_slider.hide()
+            self.listWidget.hide()
+            self.ui.auto_check.setText("On")
+            self.controller.set_set_speed(self.controller.powsys.command_speed)
+            self.ui.speed_slider.setValue(int(self.controller.powsys.command_speed))
+            self.controller.auto_mode = True
+        else:
+            self.ui.speed_slider.show()
+            self.ui.listWidget.show()
+            self.ui.auto_check.setText("Off")
+            self.controller.auto_mode = False
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
