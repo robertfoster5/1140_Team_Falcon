@@ -61,7 +61,7 @@ class Ui_MainWindow(object):
         self.gridLayout_5.setObjectName("gridLayout_5")
         self.announce_text = QtWidgets.QPlainTextEdit(self.widget_6)
         font = QtGui.QFont()
-        font.setPointSize(29)
+        font.setPointSize(20)
         self.announce_text.setFont(font)
         self.announce_text.setStyleSheet("background-color: none; border: none;")
         self.announce_text.setObjectName("announce_text")
@@ -263,6 +263,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(9)
         self.auto_check.setFont(font)
+        self.auto_check.setChecked(True)
         self.auto_check.setObjectName("auto_check")
         self.gridLayout_9.addWidget(self.auto_check, 9, 0, 1, 1, QtCore.Qt.AlignHCenter)
         self.max_speed_text = QtWidgets.QTextBrowser(self.frame_4)
@@ -433,7 +434,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "TrainController"))
         self.train_num.setItemText(0, _translate("MainWindow", "Train 1"))
         self.train_num.setItemText(1, _translate("MainWindow", "Train 2"))
         self.train_num.setItemText(2, _translate("MainWindow", "Train 3"))
@@ -467,7 +468,7 @@ class Ui_MainWindow(object):
 "Speed"))
         self.label_12.setText(_translate("MainWindow", "Automatic\n"
 "Mode"))
-        self.auto_check.setText(_translate("MainWindow", "Off"))
+        self.auto_check.setText(_translate("MainWindow", "On"))
         self.max_speed_text.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
