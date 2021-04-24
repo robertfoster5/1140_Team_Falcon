@@ -1410,9 +1410,9 @@ class ctc_qtui_test(QObject):
         #print("for loop length" + str(len(global_dispatch_orders) + 1))
         i = 0
         while i < len(global_dispatch_orders):
-            print("i = " + str(i))
-            print(global_dispatch_orders[i])
-            print("Dispatch " + str(i) + ": " + str(global_dispatch_orders[i][4]))
+            #print("i = " + str(i))
+            #print(global_dispatch_orders[i])
+            #print("Dispatch " + str(i) + ": " + str(global_dispatch_orders[i][4]))
             if i != 0 and global_dispatch_orders[i][4] == [-1]:
                 global_dispatch_orders.pop(i)
                 global_schedule_display.pop(i)
