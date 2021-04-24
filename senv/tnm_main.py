@@ -543,6 +543,8 @@ class tnm_display(QObject):
 #_______________________________________________________________________
 	#function to update Movement Statistics
 	def update_MoveStat(self):
+		
+		signals.tnc_service_brake.connect(self.SetServiceBrake)
 		#Calculate current speed
 		self.curr_speed, self.current_accl = set_curr_speed(self.timeSeconds, self.eBrake, self.Brake, self.block_authority, self.curr_power, self.Occupancy, self.SpeedN1, self.AcclN1, self.comm_speed)
 
@@ -711,7 +713,7 @@ class tnm_display(QObject):
 		
 		#Use temp_control function to set the current temperature
 		self.ui.lineEdit_16.setText(str(temp_control(self.set_temp, self.curr_temp)) + " F")
-		signals.tnm_cab_temp.emit(self.curr_temp)
+		#signals.tnm_cab_temp.emit(self.curr_temp)
 		
 		#Don't allow time module to be edited
 		self.ui.lineEdit_16.setReadOnly(True)
