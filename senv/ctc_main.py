@@ -35,6 +35,7 @@ global_dispatch_orders = [
 global_dispatch_file = ""
 global_expected_train_location = [0]
 global_train_blocks = []
+global_expected_train_location_hold = 0
 
 def upX(x):
     x = x+62
@@ -570,10 +571,10 @@ class ctc_qtui_test(QObject):
         # -----------------------------
         # SIGNAL ACTIONS
         # -----------------------------
-            
+        
+        signals.time.connect(self.update_time)
         signals.time.connect(lambda: self.send_dispatch_order())
         signals.time.connect(lambda: self.update_ctc_displays(self.ui))
-        signals.time.connect(self.update_time)
         signals.way_green_occupancy_ctc.connect(self.update_order_authority)
         signals.way_red_occupancy_ctc.connect(self.update_order_authority)
         
@@ -662,6 +663,7 @@ class ctc_qtui_test(QObject):
         global global_dispatch_orders
         global global_order_path_hold
         global global_dispatched_trains
+        global global_train_blocks
         
         global_order_path_hold = []
         ui.labelManError.setText("")
@@ -707,14 +709,15 @@ class ctc_qtui_test(QObject):
                     ui.comboTrain.addItem(valid_train_name)
                 else:
                     ui.comboTrain_2.addItem(valid_train_name)
+                    
+                global_expected_train_location.append(global_expected_train_location_hold)
                 
-                global_expected_train_location.append(destination_station)
             else:
                 if len(test_block_info) == 150:
                     valid_train_name = ui.comboTrain.currentText()
                 else:
                     valid_train_name = ui.comboTrain_2.currentText()
-                global_expected_train_location[int(train)] = destination_station
+                global_expected_train_location[int(train)] = global_expected_train_location_hold
             # for i in global_expected_train_location:
                     # print(i)
             if len(test_block_info) == 150:
@@ -743,8 +746,10 @@ class ctc_qtui_test(QObject):
             else:
                 fin_dest_block = -1
             
+            #print(valid_train_name + " = " + str(valid_train_metrics[0]))
             
             global_dispatch_orders.append([valid_train_name,fin_destination_station,self.military_to_seconds(str(arrival_time)),valid_train_metrics[2],valid_train_metrics[0],valid_train_metrics[1],lin_spec,fin_dest_block])
+            
             
             #print(valid_train_metrics[0])
             #print(valid_train_metrics[1])
@@ -769,6 +774,8 @@ class ctc_qtui_test(QObject):
             else:
                 ui.labelManError_2.setText("*Invalid Dispatch.")
             return
+            
+        #print(global_expected_train_location)
             # Put the dispatch in the system internally and display it on the "Schedule" Tab
         #     print("It's a working dispatch")
         # else:
@@ -777,6 +784,8 @@ class ctc_qtui_test(QObject):
         #     print("It's not a working dispatch")
             
     def calculate_train_metrics(self,test_block_info,test_station_info,test_station_pathway,train,destination_station,arrival_time,current_time):
+        global global_expected_train_location
+        global global_expected_train_location_hold
         # Calculate authority (distance from the start position to end position)
         
         # Assume start station is index 8
@@ -788,6 +797,19 @@ class ctc_qtui_test(QObject):
         else:
             curr_station_path = global_expected_train_location[train]
         # print(curr_block)
+        #print ("Current_statiion = " + str(curr_station_path))
+        exp_dest_path_hold = curr_station_path
+        
+        while test_station_pathway[exp_dest_path_hold] != destination_station:
+            if exp_dest_path_hold == len(test_station_pathway) -1:
+                exp_dest_path_hold = 0
+            else:
+                exp_dest_path_hold = exp_dest_path_hold + 1
+        
+        global_expected_train_location_hold = exp_dest_path_hold
+        
+        
+        
         
         # if train != 0:
             # Start at the chosen train's position once all its dispatch orders are fulfilled
@@ -925,17 +947,24 @@ class ctc_qtui_test(QObject):
         min_start_time = current_time
         if authority == [-1]:
             return [authority,suggested_speed,min_start_time]
-            
-        # check if the current train has a dispatch outgoing
-        for i in global_dispatch_orders:
-            if train != 0 and ui.comboTrain.itemText(train) == i[0] and len(global_expected_train_location) < train:
-                # make the start time equal to the last dispatch arrival time + 60 seconds
-                min_start_time = i[2] + 60
-                # print("TRAIN IS OUT BEFORE! NEW START TIME: " + str(start_time))
-                # print("NEW SUGGESTED SPEED: " + str(suggested_speed))
         
-        # if global_dispatch_orders[len(global_dispatch_orders)-1][3] >= start_time:
-            
+        
+        if len(test_block_info) == 150:
+            curr_station_path = 8
+        else:
+            curr_station_path = 1
+        # check if the current train has a dispatch outgoing
+        #for i in global_dispatch_orders:
+        #    if train != 0 and ui.comboTrain.itemText(train) == i[0] and len(global_expected_train_location) < train:
+        #        # make the start time equal to the last dispatch arrival time + 60 seconds
+        #        min_start_time = i[2] + 60
+        #        # print("TRAIN IS OUT BEFORE! NEW START TIME: " + str(start_time))
+        #        # print("NEW SUGGESTED SPEED: " + str(suggested_speed))
+        
+        for order_num in global_dispatch_orders:
+            if order_num[0] != "" and train == int(order_num[0].rsplit(' ', 1)[1]):
+                min_start_time = order_num[2] + 60
+                
         
         isValid = True
         
@@ -991,6 +1020,8 @@ class ctc_qtui_test(QObject):
         global global_dispatched_trains
         global global_dispatch_file
         global global_schedule_display
+        global global_expected_train_location
+        global global_expected_train_location_hold
         
         
         
@@ -1013,7 +1044,7 @@ class ctc_qtui_test(QObject):
                         line_count += 1
                     else:
                         
-                        train_name = int(row[0][len(row[0]) - 1])
+                        train_name = int(row[0].rsplit(' ', 1)[1])
                         if global_dispatched_trains < train_name:
                             train = 0
                         else:
@@ -1063,10 +1094,10 @@ class ctc_qtui_test(QObject):
                                 global_dispatched_trains = global_dispatched_trains + 1
                                 valid_train_name = row[0]
                                 ui.comboTrain.addItem(valid_train_name)
-                                global_expected_train_location.append(destination_station)
+                                global_expected_train_location.append(global_expected_train_location_hold)
                             else:
                                 valid_train_name = row[0]
-                                global_expected_train_location[int(train_name)] = destination_station
+                                global_expected_train_location[int(train_name)] = global_expected_train_location_hold
                             # for i in global_expected_train_location:
                                     # print(i)
                             print([row[0],row[1],row[2]])
@@ -1153,10 +1184,10 @@ class ctc_qtui_test(QObject):
                                 global_dispatched_trains = global_dispatched_trains + 1
                                 valid_train_name = row[0]
                                 ui.comboTrain_2.addItem(valid_train_name)
-                                global_expected_train_location.append(destination_station)
+                                global_expected_train_location.append(global_expected_train_location_hold)
                             else:
                                 valid_train_name = row[0]
-                                global_expected_train_location[int(train_name)] = destination_station
+                                global_expected_train_location[int(train_name)] = global_expected_train_location_hold
                             # for i in global_expected_train_location:
                                     # print(i)
                             global_schedule_display.append([row[0],row[1],row[2]])
@@ -1252,7 +1283,7 @@ class ctc_qtui_test(QObject):
                 if self.current_time >= order_num[3] and order_num[6] != "skip":
                     #if self.current_time >= 0:
                     if order_num[6] == "g":
-                        if self.current_time == order_num[3] and int(order_num[0][-1]) > len(global_train_blocks):
+                        if self.current_time == order_num[3] and int(order_num[0].rsplit(' ', 1)[1]) > len(global_train_blocks):
                             #print("SENDING GREEN TRAIN")
                             make_green_train = True
                             global_train_blocks.append(order_num[4][0])
@@ -1269,7 +1300,7 @@ class ctc_qtui_test(QObject):
                             if i == order_num[7]:
                                 sendable_auth_green[i+1] = "0"
                     else:
-                        if self.current_time == order_num[3] and int(order_num[0][-1]) > len(global_train_blocks):
+                        if self.current_time == order_num[3] and int(order_num[0].rsplit(' ', 1)[1]) > len(global_train_blocks):
                             #print("SENDING RED TRAIN")
                             make_red_train = True
                             global_train_blocks.append(order_num[4][0])
@@ -1305,7 +1336,8 @@ class ctc_qtui_test(QObject):
             #print(sendable_auth_red)
             #print(sendable_sugg_speed_red)
                 
-             
+            print("Authority for Block 96: " + str(sendable_auth_green[96]))
+            print("Suggested_Speed for Block 96: " + str(sendable_sugg_speed_green[96]))
             signals.ctc_suggested_speed_green.emit(sendable_sugg_speed_green)
             signals.ctc_authority_green.emit(sendable_auth_green)
             signals.ctc_suggested_speed_red.emit(sendable_sugg_speed_red)
@@ -1331,42 +1363,54 @@ class ctc_qtui_test(QObject):
         
         if int(track_state[0]) == 1: # Green Line
             for order_num in global_dispatch_orders:
-                if order_num[6] != "skip" and order_num[6] == "g":
+                #print("Starting Time = " + str(order_num[3]))
+                if order_num[6] != "skip" and order_num[6] == "g" and order_num[3] < self.current_time:
                     if order_num[0] not in checked_train:
                         checked_train.append(order_num[0])
                         if len(order_num[4]) == 1:
-                            if int(track_state[order_num[4][0] + 1]) == 0:
+                            if int(track_state[order_num[4][0] + 1]) == 0 and int(track_state[order_num[7] + 1]):
                                 #print("DELETE THIS DUDE")
-                                global_train_blocks[int(order_num[0][-1]) - 1] = order_num[7]
+                                print(order_num[0])
+                                print("Searching Element " + str(int(order_num[0].rsplit(' ', 1)[1]) - 1) + " in " + str(global_train_blocks))
+                                global_train_blocks[int(order_num[0].rsplit(' ', 1)[1]) - 1] = order_num[7]
                                 order_num[4] = [-1]
                                 
                         else:
                             if int(track_state[order_num[4][0] + 1]) == 0 and int(track_state[order_num[4][1] + 1]) == 1:
                                 order_num[4].pop(0)
                                 order_num[5].pop(0)
-                                global_train_blocks[int(order_num[0][-1]) - 1] = order_num[4][0]
+                                if len(global_train_blocks) > int(order_num[0].rsplit(' ', 1)[1]) - 1:
+                                    global_train_blocks[int(order_num[0].rsplit(' ', 1)[1]) - 1] = order_num[4][0]
                                         
         if int(track_state[0]) == 0: # Red Line
             for order_num in global_dispatch_orders:
-                if order_num[6] != "skip" and order_num[6] == "r":
+                if order_num[6] != "skip" and order_num[6] == "r" and order_num[3] < self.current_time:
                     if order_num[0] not in checked_train:
                         checked_train.append(order_num[0])
                         if len(order_num[4]) == 1:
-                            if int(track_state[order_num[4][0] + 1]) == 0:
+                            if int(track_state[order_num[4][0] + 1]) == 0 and int(track_state[order_num[7] + 1]):
                                 #print("DELETE THIS DUDE")
-                                global_train_blocks[int(order_num[0][-1]) - 1] = order_num[7]
+                                global_train_blocks[int(order_num[0].rsplit(' ', 1)[1]) - 1] = order_num[7]
                                 order_num[4] = [-1]
                         else:
                             if int(track_state[order_num[4][0] + 1]) == 0 and int(track_state[order_num[4][1] + 1]) == 1:
                                 order_num[4].pop(0)
                                 order_num[5].pop(0)
-                                global_train_blocks[int(order_num[0][-1]) - 1] = order_num[4][0]
+                                if len(global_train_blocks) > int(order_num[0].rsplit(' ', 1)[1]) - 1:
+                                    global_train_blocks[int(order_num[0].rsplit(' ', 1)[1]) - 1] = order_num[4][0]
         
-        print(global_dispatch_orders)
-        for i in range(len(global_dispatch_orders) + 1):
+        #print("for loop length" + str(len(global_dispatch_orders) + 1))
+        i = 0
+        while i < len(global_dispatch_orders):
+            print("i = " + str(i))
+            print(global_dispatch_orders[i])
+            print("Dispatch " + str(i) + ": " + str(global_dispatch_orders[i][4]))
             if i != 0 and global_dispatch_orders[i][4] == [-1]:
                 global_dispatch_orders.pop(i)
                 global_schedule_display.pop(i)
+                i = i - 1
+            i = i+1
+        print("Length of global_dispatch_orders: " + str(len(global_dispatch_orders)))
         
         
     def update_ctc_displays(self,ui):
