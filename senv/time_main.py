@@ -22,6 +22,7 @@ class TimeMain(QObject):
 
 		self.ui.label_5.setText(" " + str(0))
 		self.ui.label_3.setText(" 0:0:0")
+		signals.time.emit(0,0,0,0)
 
 		signals.time.connect(self.update_gui)
 		self.ui.lineEdit.editingFinished.connect(self.set_multiplier)
