@@ -195,6 +195,7 @@ class Train:
 		#print(str(blocks[int(self.block)-1].length)+" this is block length")
 		signals.tkm_get_blength.emit(blocks[int(self.block)-1].length)
 		signals.tkm_get_train_auth.emit(blocks[int(self.block-1)].auth)
+		signals.tkm_get_elev.emit(blocks[int(self.block-1)].elev)
 		print(str(blocks[int(self.block-1)].auth) + " tkm auth")
 		
 		if blocks[int(self.block-1)].beacon1 == 0 and blocks[int(self.block-1)].beacon2 == 0:
@@ -578,6 +579,8 @@ class Track:
 #_______________________________________________________________________
 	#set speed of blocks
 	def set_speed(self,speeds):
+		global train_num
+		
 		n = 1
 		#print(len(self.blocks))
 		#print(len(speeds))
@@ -586,6 +589,18 @@ class Track:
 			self.blocks[n-1].set_speed(float(speeds[n]))
 			#print(str(speeds[n]) + " speed " + str(self.blocks[n-1].speed))
 			n = n+1
+			
+		if len(self.train) > 0:
+			i = 0
+			while i < len(self.train):
+				if self.blocks[int(self.train[i].block-1)].speed > 0:
+					if self.blocks[int(self.train[i].block-1)].speed < self.blocks[int(self.train[i].block-1)].s_limit:
+						signals.tkm_get_speed.emit(self.blocks[int(self.train[i].block-1)].speed)
+						print(str(self.blocks[int(self.train[i].block-1)].speed)+" spppppppppppppppppppppppppppeeeeeeeeeeeeeeeeeeddddd")
+					else:
+						signals.tkm_get_speed.emit(self.blocks[int(self.train[i].block-1)].s_limit)
+						#print(str(self.blocks[int(self.train[i].block-1)].s_limit)+" spppppppppppppppppppppppppppeeeeeeeeeeeeeeeeeeddddd")
+				i = i+1
 	
 #_______________________________________________________________________
 	#set train blocks
@@ -610,7 +625,6 @@ class Track:
 		
 		print(str(q)+" this is q") 
 			
-		
 		a = self.train[num-1].set_block(self.blocks,q,self.line,f)
 		#pas = a[0]
 		#self.blocks[a[0]-1].occ == 0
