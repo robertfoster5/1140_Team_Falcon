@@ -857,8 +857,10 @@ class ctc_qtui_test(QObject):
     def find_start_time(self,authority,sugg_speed,arrival_time,track_info):
         dispatch_time = 0
         
+        #print("Authority: " + str(authority))
+        #print("Sugg Speed: " + str(sugg_speed))
         for i in range(len(authority)):
-            dispatch_time += (track_info[i][0])/(sugg_speed[i])
+            dispatch_time += (track_info[authority[i]][0])/(sugg_speed[i])
         
         return math.ceil(arrival_time - dispatch_time)
         
@@ -1089,7 +1091,7 @@ class ctc_qtui_test(QObject):
             
                         # validate_dispatch() will make suggested_speed = -1 if dispatch is invalid
                         # Otherwise, it will adjust the train_metrics to make sure it is valid
-                        if valid_train_metrics[1] != -1 and valid_train_metrics[0] != -1:
+                        if valid_train_metrics[1] != [-1] and valid_train_metrics[0] != [-1]:
                             if global_dispatched_trains < train_name:
                                 global_dispatched_trains = global_dispatched_trains + 1
                                 valid_train_name = row[0]
@@ -1117,6 +1119,8 @@ class ctc_qtui_test(QObject):
                             else:
                                 fin_dest_block = -1
                                 
+                            #print("Authority: " + str(valid_train_metrics[0]))
+                            #print("Suggested Speed: " + str(valid_train_metrics[1]))
                             global_dispatch_orders.append([row[0],row[1],self.military_to_seconds(str(arrival_time)),valid_train_metrics[2],valid_train_metrics[0],valid_train_metrics[1],"g",fin_dest_block])
                             # [Train Name, Destination Station, Arrival Time(seconds),Start Time(seconds), Authority(meters), Suggested Speed(meters/second)]
                             #print("Train Name: " + global_dispatch_orders[len(global_dispatch_orders)-1][0])
@@ -1179,7 +1183,7 @@ class ctc_qtui_test(QObject):
             
                         # validate_dispatch() will make suggested_speed = -1 if dispatch is invalid
                         # Otherwise, it will adjust the train_metrics to make sure it is valid
-                        if valid_train_metrics[1] != -1 and valid_train_metrics[0] != -1:
+                        if valid_train_metrics[1] != [-1] and valid_train_metrics[0] != [-1]:
                             if global_dispatched_trains < train_name:
                                 global_dispatched_trains = global_dispatched_trains + 1
                                 valid_train_name = row[0]
@@ -1204,6 +1208,7 @@ class ctc_qtui_test(QObject):
                                 fin_dest_block = test_block_info[valid_train_metrics[0][-1]][4]
                             else:
                                 fin_dest_block = -1
+                            
                             
                             global_dispatch_orders.append([row[0],row[1],self.military_to_seconds(str(arrival_time)),valid_train_metrics[2],valid_train_metrics[0],valid_train_metrics[1],"r",fin_dest_block])
                             # [Train Name, Destination Station, Arrival Time(seconds),Start Time(seconds), Authority(meters), Suggested Speed(meters/second)]
@@ -1290,6 +1295,9 @@ class ctc_qtui_test(QObject):
                         #print(order_num[4])
                         for i in range(150):
                             if i in order_num[4]:
+                                
+                                #print("Authority: " + str(order_num[4]))
+                                #print("Suggested Speed: " + str(order_num[5]))
                                 sendable_auth_green[i+1] = "1"
                                 sendable_sugg_speed_green[i+1] = order_num[5][order_num[4].index(i)]
                                 #print(str(sendable_sugg_speed[i+1]) + " Curr Speed")
@@ -1336,8 +1344,8 @@ class ctc_qtui_test(QObject):
             #print(sendable_auth_red)
             #print(sendable_sugg_speed_red)
                 
-            print("Authority for Block 96: " + str(sendable_auth_green[96]))
-            print("Suggested_Speed for Block 96: " + str(sendable_sugg_speed_green[96]))
+            print("Authority for Block 65: " + str(sendable_auth_green[65]))
+            print("Suggested_Speed fir Block 65: " + str(sendable_sugg_speed_green[65]))
             signals.ctc_suggested_speed_green.emit(sendable_sugg_speed_green)
             signals.ctc_authority_green.emit(sendable_auth_green)
             signals.ctc_suggested_speed_red.emit(sendable_sugg_speed_red)

@@ -2,18 +2,18 @@ Train Name,Destination Station,Arrival Time
 Train 1,Glenbury,0003
 Train 1,Dormont,0006
 Train 1,Mt Lebanon,0009
-Train 1,Poplar,0014
-Train 1,Castle Shannon,0017
-Train 1,Dormont,0020
-Train 1,Glenbury,0023
-Train 1,Overbrook,0026
-Train 1,Inglewood,0029
-Train 1,Central,0032
-Train 1,Pioneer,0035
-Train 1,Edgebrook,0038
-Train 1,Falcon,0041
-Train 1,Whited,0044
-Train 1,South Bank,0047
-Train 1,Central,0049
-Train 1,Inglewood,0052
-Train 1,Overbrook,0055
+Train 1,Poplar,0015
+Train 1,Castle Shannon,0018
+Train 1,Dormont,0023
+Train 1,Glenbury,0026
+Train 1,Overbrook,0029
+Train 1,Inglewood,0032
+Train 1,Central,0035
+Train 1,Edgebrook,0041
+Train 1,Pioneer,0045
+Train 1,Falcon,0049
+Train 1,Whited,0053
+Train 1,South Bank,0056
+Train 1,Central,0058
+Train 1,Inglewood,0101
+Train 1,Overbrook,0104
