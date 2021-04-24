@@ -522,7 +522,7 @@ class tnm_display(QObject):
 
 		#Defining Actions for specific UI Interactions
 		signals.time.connect(self.update_MoveStat)						#Update Movement Statistics
-		#signals.time.connect(self.SetCommSpeed)
+		signals.time.connect(self.SetCommSpeed)
 		signals.time.connect(self.update_TrainStat)						#Update Train Statistics
 		
 		signals.time.connect(self.update_RouteInfo)						#Update Route Information
@@ -784,7 +784,7 @@ class tnm_display(QObject):
 		elif(self.beacon_bin[0] == 1):
 			self.RouteName = "Green Line"
 			self.CurrStation = "Yard"
-			self.NextStation = "Pioneer"
+			self.NextStation = "Glenbury"
 		#check if second value is: 0 = station/1 = underground
 		if(self.beacon_bin[1] == 0):
 			self.lights_Tun == False
@@ -804,47 +804,47 @@ class tnm_display(QObject):
 		if(self.RouteName == "Green Line" and self.TrainDirection == 1):
 			if(self.beacon_bin[3:] == "00000"):
 				self.CurrStation = "Yard"
-				self.NextStation = "Pioneer"
-			elif(self.beacon_bin[3:] == "00001"):
-				self.CurrStation = "Pioneer"
-				self.NextStation = "EdgeBrook"
-			elif(self.beacon_bin[3:] == "00010"):
-				self.CurrStation = "EdgeBrook"
-				self.NextStation = "Falcon"
-			elif(self.beacon_bin[3:] == "00011"):
-				self.CurrStation = "Falcon"
-				self.NextStation = "Whited"
-			elif(self.beacon_bin[3:] == "00100"):
-				self.CurrStation = "Whited"
-				self.NextStation = "South Bank"
-			elif(self.beacon_bin[3:] == "00101"):
-				self.CurrStation = "South Bank"
-				self.NextStation = "Central"
-			elif(self.beacon_bin[3:] == "00110"):
-				self.CurrStation = "Central"
-				self.NextStation = "Inglewood"
-			elif(self.beacon_bin[3:] == "00111"):
-				self.CurrStation = "Inglewood"
-				self.NextStation = "Overbrook"
-			elif(self.beacon_bin[3:] == "01000"):
-				self.CurrStation = "Overbrook"
 				self.NextStation = "Glenbury"
-			elif(self.beacon_bin[3:] == "01001"):
+			elif(self.beacon_bin[3:] == "00001"):
 				self.CurrStation = "Glenbury"
 				self.NextStation = "Dormont"
-			elif(self.beacon_bin[3:] == "01010"):
+			elif(self.beacon_bin[3:] == "00010"):
 				self.CurrStation = "Dormont"
 				self.NextStation = "Mt Lebanon"
-			elif(self.beacon_bin[3:] == "01011"):
+			elif(self.beacon_bin[3:] == "00011"):
 				self.CurrStation = "Mt Lebanon"
 				self.NextStation = "Poplar"
-			elif(self.beacon_bin[3:] == "01100"):
+			elif(self.beacon_bin[3:] == "00100"):
 				self.CurrStation = "Poplar"
 				self.NextStation = "Castle Shannon"
-			elif(self.beacon_bin[3:] == "01101"):
+			elif(self.beacon_bin[3:] == "00101"):
 				self.CurrStation = "Castle Shannon"
+				self.NextStation = "Mt Lebanon"
+			elif(self.beacon_bin[3:] == "00110"):
+				self.CurrStation = "Mt Lebanon"
+				self.NextStation = "Dormont"
+			elif(self.beacon_bin[3:] == "00111"):
+				self.CurrStation = "Dormont"
+				self.NextStation = "Glenbury"
+			elif(self.beacon_bin[3:] == "01000"):
+				self.CurrStation = "Glenbury"
+				self.NextStation = "Overbrook"
+			elif(self.beacon_bin[3:] == "01001"):
+				self.CurrStation = "Overbrook"
+				self.NextStation = "Inglewood"
+			elif(self.beacon_bin[3:] == "01010"):
+				self.CurrStation = "Inglewood"
+				self.NextStation = "Central"
+			elif(self.beacon_bin[3:] == "01011"):
+				self.CurrStation = "Central"
+				self.NextStation = "Whited"
+			elif(self.beacon_bin[3:] == "01100"):
+				self.CurrStation = "Whited"
+				self.NextStation = "Falcon"
+			elif(self.beacon_bin[3:] == "01101"):
+				self.CurrStation = "Falcon"
 				#self.TrainDirection = 0 	#"counting down"
-				self.NextStation = "Poplar"
+				self.NextStation = "Edgebrook"
 			else:
 				self.CurrStation = " ---- "
 				self.NextStation = " ---- "
@@ -902,28 +902,31 @@ class tnm_display(QObject):
 		elif(self.RouteName == "Red Line" and self.TrainDirection == 1):
 			if(self.beacon_bin[3:] == "00000"):
 				self.CurrStation = "Yard"
-				self.NextStation = "Shady Side"
+				self.NextStation = "Shadyside"
 			elif(self.beacon_bin[3:] == "00001"):
-				self.CurrStation = "Shady Side"
+				self.CurrStation = "Shadyside"
 				self.NextStation = "Herron Ave"
 			elif(self.beacon_bin[3:] == "00010"):
 				self.CurrStation = "Herron Ave"
-				self.NextStation = "Penn Station"
+				self.NextStation = "Swissvale"
 			elif(self.beacon_bin[3:] == "00011"):
+				self.CurrStation = "Swissvale"
+				self.NextStation = "Penn Station"
+			elif(self.beacon_bin[3:] == "00100"):
 				self.CurrStation = "Penn Station"
 				self.NextStation = "Steel Plaza"
-			elif(self.beacon_bin[3:] == "00100"):
+			elif(self.beacon_bin[3:] == "00101"):
 				self.CurrStation = "Steel Plaza"
 				self.NextStation = "First Ave"
-			elif(self.beacon_bin[3:] == "00101"):
+			elif(self.beacon_bin[3:] == "00110"):
 				self.CurrStation = "First Ave"
 				self.NextStation = "Station Square"
-			elif(self.beacon_bin[3:] == "00110"):
-				self.CurrStation = "Station Square"
-				self.NextStation = "South Hills"
 			elif(self.beacon_bin[3:] == "00111"):
-				self.CurrStation = "South Hills"
-				#self.TrainDirection = 0	#"counting down"
+				self.CurrStation = "Station Square"
+				self.NextStation = "South Hills J."
+			elif(self.beacon_bin[3:] == "01000"):
+				self.CurrStation = "South Hills J."
+				self.TrainDirection = 0	#"counting down"
 				self.NextStation = "Station Square"
 			else:
 				self.CurrStation = " ---- "
@@ -935,27 +938,27 @@ class tnm_display(QObject):
 				self.CurrStation = "Yard"
 				self.NextStation = " ---- "
 			elif(self.beacon_bin[3:] == "00001"):
-				self.CurrStation = "Shady Side"
-				#self.TrainDirection = 1	#"counting up"
+				self.CurrStation = "Shadyside"
+				self.TrainDirection = 1	#"counting up"
 				self.NextStation = "Herron Ave"
 			elif(self.beacon_bin[3:] == "00010"):
 				self.CurrStation = "Herron Ave"
-				self.NextStation = "Shady Side"
+				self.NextStation = "Shadyside"
 			elif(self.beacon_bin[3:] == "00011"):
-				self.CurrStation = "Penn Station"
+				self.CurrStation = "Swissvale"
 				self.NextStation = "Herron Ave"
 			elif(self.beacon_bin[3:] == "00100"):
+				self.CurrStation = "Penn Station"
+				self.NextStation = "Swissvale"
+			elif(self.beacon_bin[3:] == "00101"):
 				self.CurrStation = "Steel Plaza"
 				self.NextStation = "Penn Station"
-			elif(self.beacon_bin[3:] == "00101"):
+			elif(self.beacon_bin[3:] == "00110"):
 				self.CurrStation = "First Ave"
 				self.NextStation = "Steel Plaza"
-			elif(self.beacon_bin[3:] == "00110"):
+			elif(self.beacon_bin[3:] == "00111"):
 				self.CurrStation = "Station Square"
 				self.NextStation = "First Ave"
-			elif(self.beacon_bin[3:] == "00111"):
-				self.CurrStation = "South Hills"
-				self.NextStation = "Station Square"
 			else:
 				self.CurrStation = " ---- "
 				self.NextStation = " ---- "

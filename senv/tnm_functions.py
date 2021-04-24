@@ -86,11 +86,13 @@ def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, Sp
 				curr_speed = meterToMile(SpeedN1 - ((time_initial + 1)/2)*(curr_accl))			#Calculate Vn = Vn-1 + T/2(an +an-1) and convert to mph
 				if(curr_speed <= meterToMile(CommSpeed)):
 					curr_speed = meterToMile(CommSpeed)
-					print("running at comm speed " + str(meterToMile(CommSpeed)))
+					print("set speed commanded")
 					
 				if(curr_speed < 0.0):
 					curr_speed = 0.0
 					print("Train has stopped, service")
+			elif(SpeedN1 == CommSpeed):
+				curr_speed = meterToMile(CommSpeed)
 		#else if authority is true, calculate speed based on Power and Vn-1 speed, using Max accleration
 		elif(Authority == True and SerBrake == False):
 			#time_initial = 0
