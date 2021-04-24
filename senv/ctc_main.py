@@ -1284,7 +1284,7 @@ class ctc_qtui_test(QObject):
                 #print(order_num[4])
                 #print(order_num[5])
                 #print("Destination Block : " + str(order_num[7]))
-                print(order_num[0] + " will start at t = " + str(order_num[3]))
+                #print(order_num[0] + " will start at t = " + str(order_num[3]))
                 if self.current_time >= order_num[3] and order_num[6] != "skip":
                     #if self.current_time >= 0:
                     if order_num[6] == "g":
