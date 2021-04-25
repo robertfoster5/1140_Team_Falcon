@@ -55,7 +55,7 @@ class tnm_failureTest(QObject):
 		self.train1_green, self.train2_green, self.train3_green, self.train4_green, self.train5_green = "Train 1 Status - Green", "Train 2 Status - Green", "Train 3 Status - Green", "Train 4 Status - Green", "Train 5 Status - Green"
 		self.eBrakeTest = False
 		signals.tnc_emergency_brake.connect(self.SetEBrakeTest)
-		signals.tkm_get_
+		signals.tkm_get_train_num.connect(self.setTrainInfo)
 		
 		#Defining Actions for specific UI Interactions
 		signals.time.connect(self.update_Info)
