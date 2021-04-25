@@ -80,13 +80,13 @@ def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, Sp
 				curr_accl = 0.0		#train_dec_service
 				curr_speed = 0.0
 			elif(SpeedN1 > CommSpeed):
-				print("TNM 1")		
+				#print("TNM 1")		
 				force = 0.0
 				curr_accl = train_dec_service
 				curr_speed = meterToMile(SpeedN1 - ((time_initial + 1)/2)*(curr_accl))			#Calculate Vn = Vn-1 + T/2(an +an-1) and convert to mph
 				if(curr_speed <= meterToMile(CommSpeed)):
 					curr_speed = meterToMile(CommSpeed)
-					print("set speed commanded")
+					#print("set speed commanded")
 					
 				if(curr_speed < 0.0):
 					curr_speed = 0.0
@@ -109,12 +109,12 @@ def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, Sp
 				force = (Power/SpeedN1)
 				curr_accl = (force/curr_mass)
 				curr_speed = meterToMile(SpeedN1 + ((time_initial + 1)/2)*(curr_accl + AcclN1))			#Calculate Vn = Vn-1 + T/2(an +an-1) and convert to mph
-				print("TNM 3")
+				#print("TNM 3")
 			elif(SpeedN1 >= CommSpeed):
 				force = 0.0
 				curr_accl = 0.0
 				curr_speed = meterToMile(CommSpeed)
-				print("TNM 4")
+				#print("TNM 4")
 			
 
 	#Check to make sure speed doesn't exceed Max
