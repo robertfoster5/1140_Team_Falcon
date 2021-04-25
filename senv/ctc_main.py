@@ -1459,9 +1459,9 @@ class ctc_qtui_test(QObject):
         print("Length of global_dispatch_orders: " + str(len(global_dispatch_orders)))
         
         if destroy_train_green:
-			signals.ctc_destroy_train_green.emit(destroy_train_green_num)
-		if destroy_train_red:
-			signals.ctc_destroy_train_green.emit(destroy_train_red_num)
+            signals.ctc_destroy_train_green.emit(destroy_train_green_num)
+        if destroy_train_red:
+            signals.ctc_destroy_train_green.emit(destroy_train_red_num)
         
         
     def update_ctc_displays(self,ui):
