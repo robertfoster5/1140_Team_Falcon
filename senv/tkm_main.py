@@ -280,11 +280,13 @@ class tkm_test(QObject):
 				self.display_t() 
 				
 	def t_dest(self,num):
+		print("COOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOLLLLLLLLLLLLL")
 		j = 0
 		while j < len(self.info):
 			i = 0
 			while i < len(self.info[j].train):
 				if num == self.info[j].train[i].num:
+					print("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEETTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT")
 					self.info[j].train[i].destroy()
 					i = len(self.info[j].train)
 					j = len(self.info)

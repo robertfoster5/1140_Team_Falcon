@@ -297,7 +297,8 @@ class Train:
 		self.block = -1
 		self.speed = 0
 		self.past = 0
-		#signals.tkm_get_destroy.emit(self.num)
+		print("So long gay Bowser")
+		signals.tkm_get_destroy.emit(self.num)
 
 
 class Block:

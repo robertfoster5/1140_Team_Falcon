@@ -49,6 +49,7 @@ class Signal(QObject):
     tkm_get_blength = pyqtSignal(int)
     tkm_get_train_num = pyqtSignal(int,str)
     tkm_get_elev = pyqtSignal(float)
+    tkm_get_destroy = pyqtSignal(int)
 
     #train model signals
     tnm_comm_speed = pyqtSignal(float, int)
