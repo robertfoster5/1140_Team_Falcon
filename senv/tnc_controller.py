@@ -6,14 +6,13 @@ from signals import signals
 
 class TrainController(QObject):
 
-    updated = pyqtSignal()
-
     stations = ["Pioneer","EdgeBrook","Falcon","Whited","South Bank","Central","Inglewood","Overbrook","Glenbury","Dormont","Mt Lebanon","Poplar","Castle Shannon","Shady Side","Herron Ave","Penn Station","Steel Plaza","First Ave","Station Square","South Hills","Swissville"]
 
     doors = [0,0,2,2,0,1,1,1,1,1,2,0,0,2,2,2,2,2,2,2,2]
 
-    def __init__(self):
+    def __init__(self,num):
         super().__init__()
+        self.train_num = num
         self.auto_mode = True
         self.authority = False
         self.at_station = False
@@ -40,15 +39,6 @@ class TrainController(QObject):
         self.count = 0
 
         signals.time.connect(self.run)
-        signals.tnm_comm_speed.connect(self.set_command_speed)
-        signals.tnm_curr_speed.connect(self.set_curr_speed)
-        signals.tnm_authority.connect(self.set_authority)
-        signals.tnm_ebrake.connect(self.set_pass_brake)
-        signals.tnm_curr_station.connect(self.set_station)
-        signals.tnm_beaconID.connect(self.set_tunnels)
-        signals.tnm_TrainDir.connect(self.set_side)
-        signals.tnm_sendyard.connect(self.failure)
-        signals.tnc_emergency_brake.connect(self.announce_emergency)
 
         self.init_periph()
 
@@ -228,10 +218,8 @@ class TrainController(QObject):
 
         signals.tnc_power.emit(self.powsys.power)
 
-        self.updated.emit()
-
 if __name__ == '__main__':
-    a = TrainController()
+    a = TrainController(1)
     a.set_command_speed(10)
     a.set_authority(True)
     a.run()
