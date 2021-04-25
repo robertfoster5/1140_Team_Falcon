@@ -161,7 +161,7 @@ class tkm_test(QObject):
 		signals.ctc_destroy_train_green.connect(self.t_dest)
 		signals.ctc_destroy_train_red.connect(self.t_dest)
 		
-		signals.tnm_train_stop_num(self.t_find)
+		signals.tnm_train_stop_num.connect(self.t_find)
 		
 		signals.time.connect(self.sales)
         
