@@ -59,6 +59,7 @@ class Signal(QObject):
     tnm_block_finished_red = pyqtSignal(int)
     tnm_curr_station = pyqtSignal(str)
     tnm_TrainDir = pyqtSignal(bool)
+    tnm_train_stop_num = pyqtSignal(int)
 
     #train controller signals
     tnc_emergency_brake = pyqtSignal(bool)

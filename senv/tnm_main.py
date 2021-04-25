@@ -453,12 +453,16 @@ class tnm_display(QObject):
 		tnm_block_finished_red = pyqtSignal(int)
 		tnm_curr_station = pyqtSignal(str)
 		tnm_TrainDir = pyqtSignal(bool)
+		tnm_train_stop_num = pyqtSignal(int)
 
 #Define variables to be used in tnm_display
 		self.TrainNum = 0
 		self.TrainName = " -- Information"
 		self.train1, self.train2, self.train3, self.train4, self.train5 = "Train 1 Information", "Train 2 Information", "Train 3 Information", "Train 4 Information", "Train 5 Information"
 		self.timeSeconds = 0
+	#authority connected from tkm
+		self.block_authority = False
+		signals.tkm_get_train_auth.connect(self.SetAuthority)
 	#power connected from tnc
 		self.curr_power = 0
 		signals.tnc_power.connect(self.SetPower)
@@ -469,9 +473,6 @@ class tnm_display(QObject):
 		#train starts at rest v
 		self.SpeedN1 = 0.0					#Used as value for inital speed for curr_speed calculation. Then is set to curr_speed for next calculation
 		self.AcclN1 = 0.0
-	#authority connected from tkm
-		self.block_authority = False
-		signals.tkm_get_train_auth.connect(self.SetAuthority)
 	#Block length connected from tkm
 		self.block_length = 1
 		self.block_num = 0
@@ -496,6 +497,8 @@ class tnm_display(QObject):
 		self.RouteLine = 0		#0 for Red line, 1 for Green line
 		self.RouteName = " --- "
 		self.TrainDirection = 1
+		self.TNMdirectionR = 1				#internal direction for train on the red line
+		self.TNMdirectionG = 1				#internal direction for train on the green line
 		self.CurrStation = "Yard"
 		self.NextStation = " --- "
 		self.DoorStatus = False
@@ -637,8 +640,10 @@ class tnm_display(QObject):
 			
 		if (self.DoorStatus == False):
 			self.ui.lineEdit_11.setText("Closed")
+			self.Brake = False
 		elif(self.DoorStatus == True):
 			self.ui.lineEdit_11.setText("Open")
+			signals.tnm_train_stop_num.emit(self.TrainNum)
 			self.Brake = True
 			
 		#Update Beacon ID Status
@@ -801,107 +806,91 @@ class tnm_display(QObject):
 		
 		#Add beacon specification here (for last 5 bits)
 		#Green Line stations defined here, with the train incrementally (13 Stations)	
-		if(self.RouteName == "Green Line" and self.TrainDirection == 1):
+		if(self.RouteName == "Green Line" and self.TNMdirectionG == 1 and self.TrainDirection == 1):
 			if(self.beacon_bin[3:] == "00000"):
 				self.CurrStation = "Yard"
 				self.NextStation = "Glenbury"
-			elif(self.beacon_bin[3:] == "00001"):
+			elif(self.beacon_bin[3:] == "01001"):
 				self.CurrStation = "Glenbury"
 				self.NextStation = "Dormont"
-			elif(self.beacon_bin[3:] == "00010"):
+			elif(self.beacon_bin[3:] == "01010"):
 				self.CurrStation = "Dormont"
 				self.NextStation = "Mt Lebanon"
-			elif(self.beacon_bin[3:] == "00011"):
+			elif(self.beacon_bin[3:] == "01011"):
 				self.CurrStation = "Mt Lebanon"
 				self.NextStation = "Poplar"
-			elif(self.beacon_bin[3:] == "00100"):
+			elif(self.beacon_bin[3:] == "01100"):
 				self.CurrStation = "Poplar"
 				self.NextStation = "Castle Shannon"
-			elif(self.beacon_bin[3:] == "00101"):
-				self.CurrStation = "Castle Shannon"
-				self.NextStation = "Mt Lebanon"
-			elif(self.beacon_bin[3:] == "00110"):
-				self.CurrStation = "Mt Lebanon"
-				self.NextStation = "Dormont"
-			elif(self.beacon_bin[3:] == "00111"):
-				self.CurrStation = "Dormont"
-				self.NextStation = "Glenbury"
-			elif(self.beacon_bin[3:] == "01000"):
-				self.CurrStation = "Glenbury"
-				self.NextStation = "Overbrook"
-			elif(self.beacon_bin[3:] == "01001"):
-				self.CurrStation = "Overbrook"
-				self.NextStation = "Inglewood"
-			elif(self.beacon_bin[3:] == "01010"):
-				self.CurrStation = "Inglewood"
-				self.NextStation = "Central"
-			elif(self.beacon_bin[3:] == "01011"):
-				self.CurrStation = "Central"
-				self.NextStation = "Whited"
-			elif(self.beacon_bin[3:] == "01100"):
-				self.CurrStation = "Whited"
-				self.NextStation = "Falcon"
 			elif(self.beacon_bin[3:] == "01101"):
+				self.CurrStation = "Castle Shannon"
+				self.TNMdirectionG == 0		#changed direction going back up the left track
+				self.NextStation = "Mt Lebanon"
+				
+			elif(self.beacon_bin[3:] == "00011"):
 				self.CurrStation = "Falcon"
-				#self.TrainDirection = 0 	#"counting down"
-				self.NextStation = "Edgebrook"
+				self.NextStation = "Whited"
+			elif(self.beacon_bin[3:] == "00100"):
+				self.CurrStation = "Whited"
+				self.NextStation = "South Bank"
+			elif(self.beacon_bin[3:] == "00101"):
+				self.CurrStation = "South Bank"
+				self.NextStation = "Central"
+			elif(self.beacon_bin[3:] == "00110"):
+				self.CurrStation = "Central"
+				self.NextStation = "Inglewood"
+			elif(self.beacon_bin[3:] == "00111"):
+				self.CurrStation = "Inglewood"
+				self.NextStation = "Glenbury"
 			else:
 				self.CurrStation = " ---- "
 				self.NextStation = " ---- "
 			signals.tnm_curr_station.emit(self.CurrStation)
 		#Train Going reverse direction on the green line		(13 Stations)
-		if(self.RouteName == "Green Line" and self.TrainDirection == 0):
+		if(self.RouteName == "Green Line" and self.TNMdirectionG == 0 and self.TrainDirection == 1):
 			if(self.beacon_bin[3:] == "00000"):			#Likely won't reach this unless sent to Yard
 				self.CurrStation = "Yard"
 				self.NextStation = " ---- "
-			elif(self.beacon_bin[3:] == "00001"):
-				self.CurrStation = "Pioneer"
-				#self.TrainDirection = 1 	#"counting up"
-				self.NextStation = "EdgeBrook"
-			elif(self.beacon_bin[3:] == "00010"):
-				self.CurrStation = "EdgeBrook"
-				self.NextStation = "Pioneer"
-			elif(self.beacon_bin[3:] == "00011"):
-				self.CurrStation = "Falcon"
-				self.NextStation = "EdgeBrook"
-			elif(self.beacon_bin[3:] == "00100"):
-				self.CurrStation = "Whited"
-				self.NextStation = "Falcon"
-			elif(self.beacon_bin[3:] == "00101"):
-				self.CurrStation = "South Bank"
-				self.NextStation = "Whited"
-			elif(self.beacon_bin[3:] == "00110"):
-				self.CurrStation = "Central"
-				self.NextStation = "South Bank"
-			elif(self.beacon_bin[3:] == "00111"):
-				self.CurrStation = "Inglewood"
-				self.NextStation = "Central"
-			elif(self.beacon_bin[3:] == "01000"):
-				self.CurrStation = "Overbrook"
-				self.NextStation = "Inglewood"
-			elif(self.beacon_bin[3:] == "01001"):
-				self.CurrStation = "Glenbury"
-				self.NextStation = "Overbrook"
-			elif(self.beacon_bin[3:] == "01010"):
-				self.CurrStation = "Dormont"
-				self.NextStation = "Glenbury"
 			elif(self.beacon_bin[3:] == "01011"):
 				self.CurrStation = "Mt Lebanon"
 				self.NextStation = "Dormont"
-			elif(self.beacon_bin[3:] == "01100"):
-				self.CurrStation = "Poplar"
-				self.NextStation = "Mt Lebanon"
-			elif(self.beacon_bin[3:] == "01101"):
-				self.CurrStation = "Castle Shannon"
-				self.NextStation = "Poplar"
+			elif(self.beacon_bin[3:] == "01010"):
+				self.CurrStation = "Dormont"
+				self.NextStation = "Glenbury"
+			elif(self.beacon_bin[3:] == "01001"):
+				self.CurrStation = "Glenbury"
+				self.NextStation = "Overbrook"
+			elif(self.beacon_bin[3:] == "01000"):
+				self.CurrStation = "Overbrook"
+				self.NextStation = "Inglewood"
+			elif(self.beacon_bin[3:] == "00111"):
+				self.CurrStation = "Inglewood"
+				self.NextStation = "Central"
+			elif(self.beacon_bin[3:] == "00110"):
+				self.CurrStation = "Central"
+				self.NextStation = "Whited"
+			elif(self.beacon_bin[3:] == "00100"):
+				self.CurrStation = "Whited"
+				self.NextStation = "Falcon"
+			elif(self.beacon_bin[3:] == "00011"):
+				self.CurrStation = "Falcon"
+				self.NextStation = "Edgebrook"
+			elif(self.beacon_bin[3:] == "00010"):
+				self.CurrStation = "Edgebrook"
+				self.NextStation = "Pioneer"
+			elif(self.beacon_bin[3:] == "00001"):
+				self.CurrStation = "Pioneer"
+				self.TNMdirectionG = 1			#change direction going back down on the right line
+				self.NextStation = "Falcon"
 			else:
 				self.CurrStation = " ---- "
 				self.NextStation = " ---- "
 			signals.tnm_curr_station.emit(self.CurrStation)
 		#Route names for the Red Line going to stations incrementally (7 Stations)
-		elif(self.RouteName == "Red Line" and self.TrainDirection == 1):
+		elif(self.RouteName == "Red Line" and self.TNMdirectionR == 1 and self.TrainDirection == 1):
 			if(self.beacon_bin[3:] == "00000"):
 				self.CurrStation = "Yard"
+				#self.TNMdirectionR = 1 		#counting up
 				self.NextStation = "Shadyside"
 			elif(self.beacon_bin[3:] == "00001"):
 				self.CurrStation = "Shadyside"
@@ -926,20 +915,20 @@ class tnm_display(QObject):
 				self.NextStation = "South Hills J."
 			elif(self.beacon_bin[3:] == "01000"):
 				self.CurrStation = "South Hills J."
-				self.TrainDirection = 0	#"counting down"
+				self.TNMdirectionR = 0	#"counting down"
 				self.NextStation = "Station Square"
 			else:
 				self.CurrStation = " ---- "
 				self.NextStation = " ---- "
 			signals.tnm_curr_station.emit(self.CurrStation)
 		#Route names for the Red Line going to stations decrementally	(7 Stations)
-		elif(self.RouteName == "Red Line" and self.TrainDirection == 0):
+		elif(self.RouteName == "Red Line" and self.TNMdirectionR == 0 and self.TrainDirection == 1):
 			if(self.beacon_bin[3:] == "00000"):					#Likely won't reach this unless sent to yard
 				self.CurrStation = "Yard"
 				self.NextStation = " ---- "
 			elif(self.beacon_bin[3:] == "00001"):
 				self.CurrStation = "Shadyside"
-				self.TrainDirection = 1	#"counting up"
+				self.TNMdirectionR = 1	#"counting up"
 				self.NextStation = "Herron Ave"
 			elif(self.beacon_bin[3:] == "00010"):
 				self.CurrStation = "Herron Ave"
