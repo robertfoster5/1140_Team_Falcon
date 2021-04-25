@@ -283,6 +283,11 @@ class Ui_CTC_Office(object):
         font.setWeight(75)
         self.labelSchedFile_2.setFont(font)
         self.labelSchedFile_2.setObjectName("labelSchedFile_2")
+        self.labelAutoError_2 = QtWidgets.QLabel(self.tab_dispatch_red)
+        self.labelAutoError_2.setGeometry(QtCore.QRect(490, 240, 421, 31))
+        self.labelAutoError_2.setAutoFillBackground(False)
+        self.labelAutoError_2.setText("")
+        self.labelAutoError_2.setObjectName("labelAutoError_2")
         self.tabWidget_2.addTab(self.tab_dispatch_red, "")
         self.tab_maintenance = QtWidgets.QWidget()
         self.tab_maintenance.setObjectName("tab_maintenance")
@@ -507,7 +512,7 @@ class Ui_CTC_Office(object):
 
     def retranslateUi(self, CTC_Office):
         _translate = QtCore.QCoreApplication.translate
-        CTC_Office.setWindowTitle(_translate("CTC_Office", "MainWindow"))
+        CTC_Office.setWindowTitle(_translate("CTC_Office", "CTC_Office"))
         self.label_23.setText(_translate("CTC_Office", "Train 1:"))
         self.label_24.setText(_translate("CTC_Office", "Train 2:"))
         self.label_27.setText(_translate("CTC_Office", "Train 3:"))

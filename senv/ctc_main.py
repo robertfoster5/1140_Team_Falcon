@@ -982,6 +982,9 @@ class ctc_qtui_test(QObject):
 
             temp_start_time = self.find_start_time(authority,suggested_speed,self.military_to_seconds(arrival_time),test_block_info)
             if temp_start_time < min_start_time:
+				
+                print("temp_start_time = " + str(temp_start_time))
+                print("min_start_time = " + str(min_start_time))
                 isValid = False
             
             if isValid:
@@ -1001,7 +1004,6 @@ class ctc_qtui_test(QObject):
                 suggested_speed = self.find_suggested_speed(authority,temp_speed_mod,test_block_info)
                 
                 # print("Train is in Block " + str(self.find_train_position(global_order_path_hold,start_time,suggested_speed,i,test_block_info)))
-                
                 
         return [authority,[-1],temp_start_time]
         
@@ -1177,7 +1179,8 @@ class ctc_qtui_test(QObject):
                         
                         # print(train)
                         train_metrics = self.calculate_train_metrics(test_block_info,test_station_info,test_station_pathway,train,destination_station,arrival_time,current_time)
-            
+                        #print("Authority: " + str(train_metrics[0]))
+                        #print("Suggested Speed: " + str(train_metrics[1]))
             
                         valid_train_metrics = self.validate_dispatch(ui,train_metrics,train,current_time,arrival_time,test_block_info,test_station_info)
             
@@ -1194,6 +1197,7 @@ class ctc_qtui_test(QObject):
                                 global_expected_train_location[int(train_name)] = global_expected_train_location_hold
                             # for i in global_expected_train_location:
                                     # print(i)
+                            print([row[0],row[1],row[2]])
                             global_schedule_display.append([row[0],row[1],row[2]])
                             header = ['Train', 'Destination Station', 'Arrival Time (2400)']
                             ui.model = TableModel(global_schedule_display, header)
@@ -1209,7 +1213,8 @@ class ctc_qtui_test(QObject):
                             else:
                                 fin_dest_block = -1
                             
-                            
+                            #print("Authority: " + str(valid_train_metrics[0]))
+                            #print("Suggested Speed: " + str(valid_train_metrics[1]))
                             global_dispatch_orders.append([row[0],row[1],self.military_to_seconds(str(arrival_time)),valid_train_metrics[2],valid_train_metrics[0],valid_train_metrics[1],"r",fin_dest_block])
                             # [Train Name, Destination Station, Arrival Time(seconds),Start Time(seconds), Authority(meters), Suggested Speed(meters/second)]
                             #print("Train Name: " + global_dispatch_orders[len(global_dispatch_orders)-1][0])
@@ -1224,6 +1229,7 @@ class ctc_qtui_test(QObject):
                             #     order_path_string += str(i) + " "
                             # print("Order Path: [ " + order_path_string + "]")
                         else:
+                            
                             ui.labelAutoError_2.setText("*NOTICE: There Was An Invalid Dispatch.")
                         # print(f'\t{row[0]} works in the {row[1]} department, and was born in {row[2]}.')
                         # line_count += 1
@@ -1411,7 +1417,7 @@ class ctc_qtui_test(QObject):
         i = 0
         while i < len(global_dispatch_orders):
             #print("i = " + str(i))
-            #print(global_dispatch_orders[i])
+            print(global_dispatch_orders[i])
             #print("Dispatch " + str(i) + ": " + str(global_dispatch_orders[i][4]))
             if i != 0 and global_dispatch_orders[i][4] == [-1]:
                 global_dispatch_orders.pop(i)
