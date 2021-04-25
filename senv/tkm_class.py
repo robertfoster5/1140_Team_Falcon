@@ -126,6 +126,12 @@ class Train:
 					self.block = 29
 					self.way = -1
 					print(self.way)
+				else:
+					if blocks[num-1].switch.state == 0:
+						self.block = blocks[num-1].switch.top
+					else:
+						self.block = blocks[num-1].switch.bottom
+						self.way = -1
 			#way = -1
 			else:
 				if blocks[num-1].num != 1 and blocks[num-1].num != 77:
@@ -184,6 +190,7 @@ class Train:
 				elif int(blocks[num-1].num) == 1:
 					self.block = 16
 					self.way = -1
+				
 		
 		
 		
