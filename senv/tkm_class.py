@@ -288,9 +288,16 @@ class Train:
 		if block[yard-2].occ == 0 and block[yard-2].auth == 1:
 			self.way = -1
 		elif block[yard].occ == 0 and block[yard].auth == 1:
-			self.way = 1
-			
+			self.way = 1			
 		#signals.tkm_get_auth.emit(block[yard-1].auth)
+		
+	def destroy(self):
+		self.way = 0
+		self.occ = 0
+		self.block = -1
+		self.speed = 0
+		self.past = 0
+		#signals.tkm_get_destroy.emit(self.num)
 
 
 class Block:

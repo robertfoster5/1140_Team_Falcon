@@ -158,6 +158,10 @@ class tkm_test(QObject):
 		signals.ctc_make_train_green.connect(self.info[0].add_train)
 		signals.ctc_make_train_red.connect(self.info[1].add_train)
 		
+		signals.ctc_destroy_train_green.connect(self.t_dest)
+		signals.ctc_destroy_train_red.connect(self.t_dest)
+		
+		signals.tnm_train_stop_num(self.t_find)
 		
 		signals.time.connect(self.sales)
         
@@ -275,9 +279,27 @@ class tkm_test(QObject):
 			if self.ui.lineEdit_t.text() != "":
 				self.display_t() 
 				
-	
-				
+	def t_dest(self,num):
+		j = 0
+		while j < len(self.info):
+			i = 0
+			while i < len(self.info[j].train):
+				if num == self.info[j].train[i].num:
+					self.info[j].train[i].destroy()
+					i = len(self.info[j].train)
+					j = len(self.info)
+				i = i+1
+			j = j+1				
 			
+	def t_find(self,num):
+		j = 0
+		while j < len(self.info):
+			i = 0
+			while i <len(self.info[j].train):
+				if num == self.info[j].train[i].num:
+					10
+				i = i+1
+			j = j+1
 			
 				
 #end of main
