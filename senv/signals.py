@@ -14,6 +14,9 @@ class Signal(QObject):
     ctc_maintenance = pyqtSignal(list)
     ctc_make_train_red = pyqtSignal(str)
     ctc_make_train_green = pyqtSignal(str)
+    ctc_destroy_train_green = pyqtSignal(int)
+    ctc_destroy_train_red = pyqtSignal(int)
+    
 
     #wayside signals
     #green line

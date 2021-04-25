@@ -1375,6 +1375,13 @@ class ctc_qtui_test(QObject):
         
         
         checked_train = []
+        train_time_altered = []
+        
+        destroy_train_green = False
+        destroy_train_green_num = -1
+        destroy_train_red = False
+        destroy_train_red_num = -1
+        
         
         if int(track_state[0]) == 1: # Green Line
             for order_num in global_dispatch_orders:
@@ -1382,6 +1389,7 @@ class ctc_qtui_test(QObject):
                 if order_num[6] != "skip" and order_num[6] == "g" and order_num[3] < self.current_time:
                     if order_num[0] not in checked_train:
                         checked_train.append(order_num[0])
+                        
                         if len(order_num[4]) == 1:
                             if int(track_state[order_num[4][0] + 1]) == 0 and int(track_state[order_num[7] + 1]):
                                 #print("DELETE THIS DUDE")
@@ -1396,6 +1404,19 @@ class ctc_qtui_test(QObject):
                                 order_num[5].pop(0)
                                 if len(global_train_blocks) > int(order_num[0].rsplit(' ', 1)[1]) - 1:
                                     global_train_blocks[int(order_num[0].rsplit(' ', 1)[1]) - 1] = order_num[4][0]
+                        
+                        if order_num[0] == "Yard":
+                            if order_num[4][0] == 56:
+                                global_train_blocks[int(order_num[0].rsplit(' ', 1)[1]) - 1] = 62
+                                order_num[4] = [-1]
+                                destroy_train_green = True
+                                destroy_train_green_num = int(order_num[0].rsplit(' ', 1)[1])
+                    
+                    else:
+                        if order_num[0] not in train_time_altered:
+                            train_time_altered.append(order_num[0])
+                            order_num[3] = self.current_time + 60
+                                        
                                         
         if int(track_state[0]) == 0: # Red Line
             for order_num in global_dispatch_orders:
@@ -1413,7 +1434,17 @@ class ctc_qtui_test(QObject):
                                 order_num[5].pop(0)
                                 if len(global_train_blocks) > int(order_num[0].rsplit(' ', 1)[1]) - 1:
                                     global_train_blocks[int(order_num[0].rsplit(' ', 1)[1]) - 1] = order_num[4][0]
-        
+                                    
+                        if order_num[0] == "Yard":
+                            if order_num[4][0] == 8:
+                                global_train_blocks[int(order_num[0].rsplit(' ', 1)[1]) - 1] = 8
+                                order_num[4] = [-1]
+                                destroy_train_red = True
+                                destroy_train_red_num = int(order_num[0].rsplit(' ', 1)[1])
+                    else:
+                        if order_num[0] not in train_time_altered:
+                            train_time_altered.append(order_num[0])
+                            order_num[3] = self.current_time + 60
         #print("for loop length" + str(len(global_dispatch_orders) + 1))
         i = 0
         while i < len(global_dispatch_orders):
@@ -1426,6 +1457,11 @@ class ctc_qtui_test(QObject):
                 i = i - 1
             i = i+1
         print("Length of global_dispatch_orders: " + str(len(global_dispatch_orders)))
+        
+        if destroy_train_green:
+			signals.ctc_destroy_train_green.emit(destroy_train_green_num)
+		if destroy_train_red:
+			signals.ctc_destroy_train_green.emit(destroy_train_red_num)
         
         
     def update_ctc_displays(self,ui):
