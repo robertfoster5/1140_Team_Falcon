@@ -299,7 +299,9 @@ class tkm_test(QObject):
 			i = 0
 			while i <len(self.info[j].train):
 				if num == self.info[j].train[i].num:
-					10
+					self.info[j].update_dis(i)
+					i = len(self.info[j].train)
+					j = len(self.info)
 				i = i+1
 			j = j+1
 			

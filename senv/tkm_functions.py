@@ -34,8 +34,8 @@ def make_data_t(train,blocks):
 	
 	if(blocks[int(train.block-1)].station.name != 0):
 		sl = blocks[int(train.block-1)].station.name
-		sb = blocks[int(train.block-1)].station.get_boarding(train)
-		sd = train.disembark()
+		sb = train.dis
+		sd = train.boar
 	else:
 		sl = sb = sd = 'n/a'	
 	
