@@ -192,6 +192,7 @@ class TrainController(QObject):
 
         if(not self.authority):
             self.service_brake = True
+            print("no authority brake")
         #elif(self.powsys.command_speed == 0 and self.authority):
         #    if(self.powsys.current_speed > 5):
         #        self.service_brake = True
@@ -200,8 +201,10 @@ class TrainController(QObject):
         #        self.set_command_speed(5)
         elif(self.station_stop):
             self.service_brake = True
+            print("station stop brake")
         elif(self.driver_serv_brake):
             self.service_brake = True
+            print("driver brake")
         else:
             self.service_brake = False
 
@@ -217,10 +220,9 @@ class TrainController(QObject):
         self.powsys.update_power()
 
         if(self.powsys.power == 0 and (self.powsys.command_speed != self.powsys.current_speed)):
+            print("no power brake")
             self.service_brake = True
 
-        if(self.service_brake):
-            print("service brake on")
 
         signals.tnc_service_brake.emit(self.service_brake)
 
