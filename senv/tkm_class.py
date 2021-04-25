@@ -7,7 +7,6 @@ def kmhr_to_ms(num):
 
 #total num
 train_num = 0
-index = 0
 
 class Station:
 	def __init__(self,name,block,side):
@@ -427,7 +426,6 @@ class Track:
 	
 	def add_train(self,letter):#n,way,block):
 		global train_num
-		global index
 		'''
 		if len(train_num) == 0:
 			n = 1
@@ -437,7 +435,7 @@ class Track:
 			while i < len(train_num):
 				if i+1 != train[i]:
 					n = i+1
-					train_num.append(
+					train_num.append(train_num)
 		'''
 		if self.line == "Red":
 			way = -1
@@ -608,11 +606,11 @@ class Track:
 			while i < len(self.train):
 				if self.blocks[int(self.train[i].block-1)].speed > 0:
 					if self.blocks[int(self.train[i].block-1)].speed < self.blocks[int(self.train[i].block-1)].s_limit:
-						signals.tkm_get_auth.emit(self.blocks[int(self.train[i].block-1)].auth)
+						signals.tkm_get_train_auth.emit(self.blocks[int(self.train[i].block-1)].auth)
 						signals.tkm_get_speed.emit(self.blocks[int(self.train[i].block-1)].speed)
 						#print(str(self.blocks[int(self.train[i].block-1)].speed)+" spppppppppppppppppppppppppppeeeeeeeeeeeeeeeeeeddddd")
 					else:
-						signals.tkm_get_auth.emit(self.blocks[int(self.train[i].block-1)].auth)
+						signals.tkm_get_train_auth.emit(self.blocks[int(self.train[i].block-1)].auth)
 						signals.tkm_get_speed.emit(self.blocks[int(self.train[i].block-1)].s_limit)
 						#print(str(self.blocks[int(self.train[i].block-1)].s_limit)+" spppppppppppppppppppppppppppeeeeeeeeeeeeeeeeeeddddd")
 				i = i+1
