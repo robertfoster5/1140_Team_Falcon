@@ -7,3 +7,9 @@ Train 1,Steel Plaza,0020
 Train 1,First Ave,0023
 Train 1,Station Square,0026
 Train 1,South Hills Junction,0029
+Train 1,Station Square,0032
+Train 1,First Ave,0035
+Train 1,Steel Plaza,0038
+Train 1,Penn Station,0041
+Train 1,Swissville,00044
+Train 1,Herron Ave,0051

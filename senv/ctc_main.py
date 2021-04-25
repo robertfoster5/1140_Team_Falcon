@@ -798,6 +798,7 @@ class ctc_qtui_test(QObject):
             curr_station_path = global_expected_train_location[train]
         # print(curr_block)
         #print ("Current_statiion = " + str(curr_station_path))
+        
         exp_dest_path_hold = curr_station_path
         
         while test_station_pathway[exp_dest_path_hold] != destination_station:
