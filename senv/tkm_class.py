@@ -6,7 +6,7 @@ def kmhr_to_ms(num):
 	return num
 
 #total num
-train_num = []
+train_num = 0
 index = 0
 
 class Station:
@@ -435,8 +435,8 @@ class Track:
 		else:
 			i = 0
 			while i < len(train_num):
-		'''		
 		
+		'''
 		if self.line == "Red":
 			way = -1
 			blo = 9
