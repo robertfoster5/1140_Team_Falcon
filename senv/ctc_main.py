@@ -37,6 +37,8 @@ global_expected_train_location = [0]
 global_train_blocks = []
 global_expected_train_location_hold = 0
 
+global_throughput = 0
+
 def upX(x):
     x = x+62
     return x
@@ -534,18 +536,20 @@ class ctc_qtui_test(QObject):
         # Automatically dispatch train into the system (GREEN LINE)
         self.ui.btnDispatchAuto.clicked.connect(lambda: self.dispatch_automatic(self.ui,green_block_info,green_station_info,green_station_pathway,current_time))        
         
-        # NEED TO IMPLEMENT
         # Manually dispatch train into the system (RED LINE)
         self.ui.btnDispatchMan_2.clicked.connect(lambda: self.dispatch_manual(self.ui,red_block_info,red_station_info,red_station_pathway,current_time))        
-        
-        # NEED TO IMPLEMENT
+
         # Choose file for automatic dispatch (RED LINE)
         self.ui.btnImportSchedFile_2.clicked.connect(lambda: self.import_schedule_file(self.ui))
         
-        # NEED TO IMPLEMENT
         # Automatically dispatch train into the system (RED LINE)
         self.ui.btnDispatchAuto_2.clicked.connect(lambda: self.dispatch_automatic(self.ui,red_block_info,red_station_info,red_station_pathway,current_time))        
         
+        # Toggles the dispatch method (GREEN LINE)
+        self.ui.btnToggleDispatchType.clicked.connect(lambda: self.toggle_dispatch_mode_green(self.ui))
+        
+        # Toggles the dispatch method (RED LINE)
+        self.ui.btnToggleDispatchType_2.clicked.connect(lambda: self.toggle_dispatch_mode_red(self.ui))
         
         # -----------------------------
         # MAINTENANCE ACTIONS
@@ -567,6 +571,10 @@ class ctc_qtui_test(QObject):
         # Send a block maintenance request (Red)
         self.ui.btnToggleBlock_2.clicked.connect(lambda: self.send_maintenance_request_block_red(self.ui))
 
+        # Turn On/Off Maintenance Mode (BOTH LINES)
+        self.ui.btnToggleMaintenance.clicked.connect(lambda: self.toggle_mainenance_mode(self.ui))
+        self.ui.btnToggleMaintenance_2.clicked.connect(lambda: self.toggle_mainenance_mode(self.ui))
+
         # Update display of current switch state
         #self.ui.comboBlock.currentIndexChanged.connect(lambda: self.display_state_switch(self.ui,current_track_occupancy))
         
@@ -583,6 +591,7 @@ class ctc_qtui_test(QObject):
         signals.time.connect(lambda: self.update_ctc_displays(self.ui))
         signals.way_green_occupancy_ctc.connect(self.update_order_authority)
         signals.way_red_occupancy_ctc.connect(self.update_order_authority)
+        signals.tkm_get_sales.connect(self.calculate_throughput)
         
             
     def change_data(self, ui):
@@ -1507,6 +1516,7 @@ class ctc_qtui_test(QObject):
     def update_ctc_displays(self,ui):
         global global_schedule_display
         global global_train_blocks
+        global global_throughput
         
         header = ['Train', 'Destination Station', 'Arrival Time (2400)']
         ui.model = TableModel(global_schedule_display, header)
@@ -1532,7 +1542,133 @@ class ctc_qtui_test(QObject):
             ui.labelTrain_9.setText("Block " + str(global_train_blocks[8] + 1))
         if len(global_train_blocks) == 10:
             ui.labelTrain_10.setText("Block " + str(global_train_blocks[9] + 1))
+        
+        ui.label_19.setText(str(round(global_throughput,1)))
             
+
+    def calculate_throughput(self,ticket_sales):
+        global global_throughput
+        
+        global_throughput = (float(ticket_sales) * 60.0) / (float(self.current_time))
+
+    def toggle_dispatch_mode_green(self,ui):
+        
+        if not ui.label_3.isEnabled():
+            # Enable Manual, Disable Automatic
+            ui.label_3.setEnabled(True)
+            ui.label_20.setEnabled(True)
+            ui.label_4.setEnabled(True)
+            ui.label_5.setEnabled(True)
+            ui.btnDispatchMan.setEnabled(True)
+            ui.lineEditTime.setEnabled(True)
+            ui.comboStation.setEnabled(True)
+            ui.comboTrain.setEnabled(True)
+            
+            ui.label_16.setEnabled(False)
+            ui.label_18.setEnabled(False)
+            ui.label_25.setEnabled(False)
+            ui.labelSchedFile.setEnabled(False)
+            ui.btnImportSchedFile.setEnabled(False)
+            ui.btnDispatchAuto.setEnabled(False)
+            
+        else:
+            # Enable Automatic, Disable Manual
+            ui.label_3.setEnabled(False)
+            ui.label_20.setEnabled(False)
+            ui.label_4.setEnabled(False)
+            ui.label_5.setEnabled(False)
+            ui.btnDispatchMan.setEnabled(False)
+            ui.lineEditTime.setEnabled(False)
+            ui.comboStation.setEnabled(False)
+            ui.comboTrain.setEnabled(False)
+            
+            ui.label_16.setEnabled(True)
+            ui.label_18.setEnabled(True)
+            ui.label_25.setEnabled(True)
+            ui.labelSchedFile.setEnabled(True)
+            ui.btnImportSchedFile.setEnabled(True)
+            ui.btnDispatchAuto.setEnabled(True)
+
+
+    def toggle_dispatch_mode_red(self,ui):
+        
+        if not ui.label_10.isEnabled():
+            # Enable Manual, Disable Automatic
+            ui.label_10.setEnabled(True)
+            ui.label_21.setEnabled(True)
+            ui.label_12.setEnabled(True)
+            ui.label_11.setEnabled(True)
+            ui.btnDispatchMan_2.setEnabled(True)
+            ui.lineEditTime_2.setEnabled(True)
+            ui.comboStation_2.setEnabled(True)
+            ui.comboTrain_2.setEnabled(True)
+            
+            ui.label_17.setEnabled(False)
+            ui.label_22.setEnabled(False)
+            ui.label_26.setEnabled(False)
+            ui.labelSchedFile_2.setEnabled(False)
+            ui.btnImportSchedFile_2.setEnabled(False)
+            ui.btnDispatchAuto_2.setEnabled(False)
+            
+        else:
+            # Enable Automatic, Disable Manual
+            ui.label_10.setEnabled(False)
+            ui.label_21.setEnabled(False)
+            ui.label_12.setEnabled(False)
+            ui.label_11.setEnabled(False)
+            ui.btnDispatchMan_2.setEnabled(False)
+            ui.lineEditTime_2.setEnabled(False)
+            ui.comboStation_2.setEnabled(False)
+            ui.comboTrain_2.setEnabled(False)
+            
+            ui.label_17.setEnabled(True)
+            ui.label_22.setEnabled(True)
+            ui.label_26.setEnabled(True)
+            ui.labelSchedFile_2.setEnabled(True)
+            ui.btnImportSchedFile_2.setEnabled(True)
+            ui.btnDispatchAuto_2.setEnabled(True)
+
+    def toggle_mainenance_mode(self, ui):
+        
+        if not ui.label_6.isEnabled():
+            # Turn ON Mainenance Mode
+            ui.label_6.setEnabled(True)
+            ui.label_8.setEnabled(True)
+            ui.comboSwitch.setEnabled(True)
+            ui.btnToggleSwitch.setEnabled(True)
+            ui.label_7.setEnabled(True)
+            ui.label_9.setEnabled(True)
+            ui.comboBlock.setEnabled(True)
+            ui.btnToggleBlock.setEnabled(True)
+            
+            ui.label_13.setEnabled(True)
+            ui.label_15.setEnabled(True)
+            ui.comboSwitch_2.setEnabled(True)
+            ui.btnToggleSwitch_2.setEnabled(True)
+            ui.label_14.setEnabled(True)
+            ui.label_35.setEnabled(True)
+            ui.comboBlock_2.setEnabled(True)
+            ui.btnToggleBlock_2.setEnabled(True)
+            
+        else:
+            # Turn OFF Mainenance Mode
+            ui.label_6.setEnabled(False)
+            ui.label_8.setEnabled(False)
+            ui.comboSwitch.setEnabled(False)
+            ui.btnToggleSwitch.setEnabled(False)
+            ui.label_7.setEnabled(False)
+            ui.label_9.setEnabled(False)
+            ui.comboBlock.setEnabled(False)
+            ui.btnToggleBlock.setEnabled(False)
+            
+            ui.label_13.setEnabled(False)
+            ui.label_15.setEnabled(False)
+            ui.comboSwitch_2.setEnabled(False)
+            ui.btnToggleSwitch_2.setEnabled(False)
+            ui.label_14.setEnabled(False)
+            ui.label_35.setEnabled(False)
+            ui.comboBlock_2.setEnabled(False)
+            ui.btnToggleBlock_2.setEnabled(False)
 
 class TrainStation:
     def __init__(self,conn_index,connections):
