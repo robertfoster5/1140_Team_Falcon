@@ -79,56 +79,56 @@ class TrainControllerMain(QObject):
         signals.tnm_sendyard.connect(self.failure)
 
     def set_command_speed(self,input,num):
-        self.trains[input-1].set_command_speed(input)
+        self.trains[num-1].set_command_speed(input)
 
     def set_curr_speed(self,input,num):
-        self.trains[input-1].set_curr_speed(input)
+        self.trains[num-1].set_curr_speed(input)
 
     def set_authority(self,input,num):
-        self.trains[input-1].set_authority(input)
+        self.trains[num-1].set_authority(input)
 
     def set_pass_brake(self,input,num):
-        self.trains[input-1].set_pass_brake(input)
+        self.trains[num-1].set_pass_brake(input)
 
     def set_station(self,input,num):
-        self.trains[input-1].set_station(input)
+        self.trains[num-1].set_station(input)
 
     def set_side(self,input,num):
-        self.trains[input-1].set_side(input)
+        self.trains[num-1].set_side(input)
 
     def failure(self,input,num):
-        self.trains[input-1].failure(input)
+        self.trains[num-1].failure(input)
 
     def update_gui(self):
-        self.ui.curr_speed_text.setText(str(int(self.train[self.curr_train-1].powsys.current_speed)) + " mph")
-        self.ui.max_speed_text.setText(str(int(self.train[self.curr_train-1].powsys.command_speed)) + " mph")
-        self.ui.power_text.setText(str(int(self.train[self.curr_train-1].powsys.power/1000.0)) + " kW")
-        if(self.controller.auto_mode):
-            self.ui.set_speed_text.setText(str(self.train[self.curr_train-1].powsys.set_speed) + " mph")
-            self.ui.speed_slider.setValue(int(self.train[self.curr_train-1].powsys.command_speed))
+        self.ui.curr_speed_text.setText(str(int(self.trains[self.curr_train-1].powsys.current_speed)) + " mph")
+        self.ui.max_speed_text.setText(str(int(self.trains[self.curr_train-1].powsys.command_speed)) + " mph")
+        self.ui.power_text.setText(str(int(self.trains[self.curr_train-1].powsys.power/1000.0)) + " kW")
+        if(self.trains[self.curr_train-1].auto_mode):
+            self.ui.set_speed_text.setText(str(self.trains[self.curr_train-1].powsys.set_speed) + " mph")
+            self.ui.speed_slider.setValue(int(self.trains[self.curr_train-1].powsys.command_speed))
 
     def emergency_brake(self):
-        if not self.train[self.curr_train-1].driver_emer_brake:
+        if not self.trains[self.curr_train-1].driver_emer_brake:
             self.ui.brake_button.setText("CANCEL")
             self.ui.brake_button.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
-            self.train[self.curr_train-1].driver_emer_brake = True
+            self.trains[self.curr_train-1].driver_emer_brake = True
             signals.tnc_emergency_brake.emit(True)
         else:
             self.ui.brake_button.setText("EMERGENCY BRAKE")
             self.ui.brake_button.setStyleSheet("background-color: red; color: white;")
-            self.train[self.curr_train-1].driver_emer_brake = False
-            if(not self.train[self.curr_train-1].emergency_brake):
+            self.trains[self.curr_train-1].driver_emer_brake = False
+            if(not self.trains[self.curr_train-1].emergency_brake):
                 signals.tnc_emergency_brake.emit(False)
 
     def service_brake(self):
-        if not self.train[self.curr_train-1].driver_serv_brake:
+        if not self.trains[self.curr_train-1].driver_serv_brake:
             self.ui.brake_button_2.setText("cancel")
             self.ui.brake_button_2.setStyleSheet("background-color: lightgray; color: white;")
-            self.train[self.curr_train-1].driver_serv_brake = True
+            self.trains[self.curr_train-1].driver_serv_brake = True
         else:
             self.ui.brake_button_2.setText("Service Brake")
             self.ui.brake_button_2.setStyleSheet("background-color: gray; color: white;")
-            self.train[self.curr_train-1].driver_serv_brake = False
+            self.trains[self.curr_train-1].driver_serv_brake = False
 
     def display_announcement(self,text):
         self.ui.announce_text.setPlainText(text)
@@ -138,14 +138,14 @@ class TrainControllerMain(QObject):
             self.ui.speed_slider.hide()
             self.ui.listWidget.hide()
             self.ui.auto_check.setText("On")
-            self.train[self.curr_train-1].set_set_speed(self.controller.powsys.command_speed)
-            self.ui.speed_slider.setValue(int(self.controller.powsys.command_speed))
-            self.train[self.curr_train-1].auto_mode = True
+            self.trains[self.curr_train-1].set_set_speed(self.trains[self.curr_train-1].powsys.command_speed)
+            self.ui.speed_slider.setValue(int(self.trains[self.curr_train-1].powsys.command_speed))
+            self.trains[self.curr_train-1].auto_mode = True
         else:
             self.ui.speed_slider.show()
             self.ui.listWidget.show()
             self.ui.auto_check.setText("Off")
-            self.train[self.curr_train-1].auto_mode = False
+            self.trains[self.curr_train-1].auto_mode = False
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
