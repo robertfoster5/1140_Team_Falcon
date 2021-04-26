@@ -80,7 +80,8 @@ def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, Sp
 				curr_accl = 0.0		#train_dec_service
 				curr_speed = 0.0
 			elif(SpeedN1 > CommSpeed):
-				#print("TNM 1")		
+				#print("TNM 1")
+				#print("comm speed " + str(meterToMile(CommSpeed)))
 				force = 0.0
 				curr_accl = train_dec_service
 				curr_speed = meterToMile(SpeedN1 - ((time_initial + 1)/2)*(curr_accl))			#Calculate Vn = Vn-1 + T/2(an +an-1) and convert to mph
@@ -211,4 +212,209 @@ def MiletoMeter(curr_speed):
 	speed_mps = (curr_speed / 2.23694)
 	
 	return speed_mps
+	
+#Function to append the beacon ID with 0's as necessary
+def AppendBeacon(beaconBinary):
+	BeaconId = beaconBinary
+	
+	beacon_bin1 = bin(BeaconId)
+	#Ensure Beacon ID is correct by appending necessary 0's after conversion
+	if(len(beacon_bin1) == 10):
+		#remove first two char: 0b
+		beacon_bin1 = beacon_bin1[2:]
+	elif(len(beacon_bin1) == 9):
+		beacon_bin1 = beacon_bin1[2:]
+		beacon_bin1 = ("0" + beacon_bin1)
+	elif(len(beacon_bin1) == 8):
+		beacon_bin1 = beacon_bin1[2:]
+		beacon_bin1 = ("00" + beacon_bin1)
+	elif(len(beacon_bin1) == 7):
+		beacon_bin1 = beacon_bin1[2:]
+		beacon_bin1 = ("000" + beacon_bin1)
+	elif(len(beacon_bin1) == 6):
+		beacon_bin1 = beacon_bin1[2:]
+		beacon_bin1 = ("0000" + beacon_bin1)
+	elif(len(beacon_bin1) == 5):
+		beacon_bin1 = beacon_bin1[2:]
+		beacon_bin1 = ("00000" + beacon_bin1)
+	elif(len(beacon_bin1) == 4):
+		beacon_bin1 = beacon_bin1[2:]
+		beacon_bin1 = ("000000" + beacon_bin1)
+	elif(len(beacon_bin) == 3):
+		beacon_bin1 = beacon_bin1[2:]
+		beacon_bin1 = ("0000000" + beacon_bin1)
+	elif(len(beacon_bin) == 2):
+		beacon_bin1 = beacon_bin1[2:]
+		beacon_bin1 = ("00000000" + beacon_bin1)
+	
+	return beacon_bin1
+
+#Function to specify stations based on green beacon id
+def GreenBeacon(RouteName,GreenDirection,TrainDirection,beaconBinary):
+	route_name = RouteName
+	TNMdirectionG = GreenDirection
+	trainDirection = TrainDirection
+	CurrStation = ""
+	NextStation = ""
+	beacon_bin = beaconBinary
+	
+	#Add beacon specification here (for last 5 bits)
+	#Green Line stations defined here, with the train incrementally (13 Stations)	
+	if(route_name == "Green Line" and TNMdirectionG == 1 and trainDirection == 1):
+		if(beacon_bin[3:] == "00000"):
+			CurrStation = "Yard"
+			NextStation = "Glenbury"
+		elif(beacon_bin[3:] == "01001"):
+			CurrStation = "Glenbury"
+			NextStation = "Dormont"
+		elif(beacon_bin[3:] == "01010"):
+			CurrStation = "Dormont"
+			NextStation = "Mt Lebanon"
+		elif(beacon_bin[3:] == "01011"):
+			CurrStation = "Mt Lebanon"
+			NextStation = "Poplar"
+		elif(beacon_bin[3:] == "01100"):
+			CurrStation = "Poplar"
+			NextStation = "Castle Shannon"
+		elif(beacon_bin[3:] == "01101"):
+			CurrStation = "Castle Shannon"
+			TNMdirectionG == 0		#changed direction going back up the left track
+			NextStation = "Mt Lebanon"
+			
+		elif(beacon_bin[3:] == "00011"):
+			CurrStation = "Falcon"
+			NextStation = "Whited"
+		elif(beacon_bin[3:] == "00100"):
+			CurrStation = "Whited"
+			NextStation = "South Bank"
+		elif(beacon_bin[3:] == "00101"):
+			CurrStation = "South Bank"
+			NextStation = "Central"
+		elif(beacon_bin[3:] == "00110"):
+			CurrStation = "Central"
+			NextStation = "Inglewood"
+		elif(beacon_bin[3:] == "00111"):
+			CurrStation = "Inglewood"
+			NextStation = "Glenbury"
+		else:
+			CurrStation = " ---- "
+			NextStation = " ---- "
+	#Train Going reverse direction on the green line		(13 Stations)
+	if(route_name == "Green Line" and TNMdirectionG == 0 and trainDirection == 1):
+		if(beacon_bin[3:] == "00000"):			#Likely won't reach this unless sent to Yard
+			CurrStation = "Yard"
+			NextStation = " ---- "
+		elif(beacon_bin[3:] == "01011"):
+			CurrStation = "Mt Lebanon"
+			NextStation = "Dormont"
+		elif(beacon_bin[3:] == "01010"):
+			CurrStation = "Dormont"
+			NextStation = "Glenbury"
+		elif(beacon_bin[3:] == "01001"):
+			CurrStation = "Glenbury"
+			NextStation = "Overbrook"
+		elif(beacon_bin[3:] == "01000"):
+			CurrStation = "Overbrook"
+			NextStation = "Inglewood"
+		elif(beacon_bin[3:] == "00111"):
+			CurrStation = "Inglewood"
+			NextStation = "Central"
+		elif(beacon_bin[3:] == "00110"):
+			CurrStation = "Central"
+			NextStation = "Whited"
+		elif(beacon_bin[3:] == "00100"):
+			CurrStation = "Whited"
+			NextStation = "Falcon"
+		elif(beacon_bin[3:] == "00011"):
+			CurrStation = "Falcon"
+			NextStation = "Edgebrook"
+		elif(beacon_bin[3:] == "00010"):
+			CurrStation = "Edgebrook"
+			NextStation = "Pioneer"
+		elif(beacon_bin[3:] == "00001"):
+			CurrStation = "Pioneer"
+			TNMdirectionG = 1			#change direction going back down on the right line
+			NextStation = "Falcon"
+		else:
+			CurrStation = " ---- "
+			NextStation = " ---- "
+	
+	return CurrStation, NextStation, TNMdirectionG;
+	
+	
+#Function to specify stations based on red beacon id
+def RedBeacon(RouteName, RedDirection, TrainDirection, beaconBinary):
+	route_name = RouteName
+	TNMdirectionR = RedDirection
+	trainDirection = TrainDirection
+	CurrStation = ""
+	NextStation = ""
+	beacon_bin = beaconBinary
+	
+	#Route names for the Red Line going to stations incrementally (7 Stations)
+	if(route_name == "Red Line" and TNMdirectionR == 1 and trainDirection == 1):
+		if(beacon_bin[3:] == "00000"):
+			CurrStation = "Yard"
+			#TNMdirectionR = 1 		#counting up
+			NextStation = "Shadyside"
+		elif(beacon_bin[3:] == "00001"):
+			CurrStation = "Shadyside"
+			NextStation = "Herron Ave"
+		elif(beacon_bin[3:] == "00010"):
+			CurrStation = "Herron Ave"
+			NextStation = "Swissvale"
+		elif(beacon_bin[3:] == "00011"):
+			CurrStation = "Swissvale"
+			NextStation = "Penn Station"
+		elif(beacon_bin[3:] == "00100"):
+			CurrStation = "Penn Station"
+			NextStation = "Steel Plaza"
+		elif(beacon_bin[3:] == "00101"):
+			CurrStation = "Steel Plaza"
+			NextStation = "First Ave"
+		elif(beacon_bin[3:] == "00110"):
+			CurrStation = "First Ave"
+			NextStation = "Station Square"
+		elif(beacon_bin[3:] == "00111"):
+			CurrStation = "Station Square"
+			NextStation = "South Hills J."
+		elif(beacon_bin[3:] == "01000"):
+			CurrStation = "South Hills J."
+			TNMdirectionR = 0	#"counting down"
+			NextStation = "Station Square"
+		else:
+			CurrStation = " ---- "
+			NextStation = " ---- "
+	#Route names for the Red Line going to stations decrementally	(7 Stations)
+	elif(route_line == "Red Line" and TNMdirectionR == 0 and trainDirection == 1):
+		if(beacon_bin[3:] == "00000"):					#Likely won't reach this unless sent to yard
+			CurrStation = "Yard"
+			NextStation = " ---- "
+		elif(beacon_bin[3:] == "00001"):
+			CurrStation = "Shadyside"
+			TNMdirectionR = 1	#"counting up"
+			NextStation = "Herron Ave"
+		elif(beacon_bin[3:] == "00010"):
+			CurrStation = "Herron Ave"
+			NextStation = "Shadyside"
+		elif(beacon_bin[3:] == "00011"):
+			CurrStation = "Swissvale"
+			NextStation = "Herron Ave"
+		elif(beacon_bin[3:] == "00100"):
+			CurrStation = "Penn Station"
+			NextStation = "Swissvale"
+		elif(beacon_bin[3:] == "00101"):
+			CurrStation = "Steel Plaza"
+			NextStation = "Penn Station"
+		elif(beacon_bin[3:] == "00110"):
+			CurrStation = "First Ave"
+			NextStation = "Steel Plaza"
+		elif(beacon_bin[3:] == "00111"):
+			CurrStation = "Station Square"
+			NextStation = "First Ave"
+		else:
+			CurrStation = " ---- "
+			NextStation = " ---- "
+			
+	return CurrStation, NextStation, TNMdirectionR;
 	
