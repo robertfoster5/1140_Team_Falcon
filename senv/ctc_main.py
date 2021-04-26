@@ -555,11 +555,17 @@ class ctc_qtui_test(QObject):
         #self.display_state_switch(self.ui,current_track_occupancy)
         #self.display_state_block(self.ui,current_track_occupancy)
         
-        # Send a switch maintenance request
-        self.ui.btnToggleSwitch.clicked.connect(lambda: self.send_maintenance_request_switch(self.ui,current_track_occupancy))
+        # Send a switch maintenance request (Green)
+        self.ui.btnToggleSwitch.clicked.connect(lambda: self.send_maintenance_request_switch(self.ui))
         
-        # Send a block maintenance request
-        self.ui.btnToggleBlock.clicked.connect(lambda: self.send_maintenance_request_block(self.ui,current_track_occupancy))
+        # Send a block maintenance request (Green)
+        self.ui.btnToggleBlock.clicked.connect(lambda: self.send_maintenance_request_block(self.ui))
+        
+        # Send a switch maintenance request (Red)
+        self.ui.btnToggleSwitch_2.clicked.connect(lambda: self.send_maintenance_request_switch_red(self.ui))
+        
+        # Send a block maintenance request (Red)
+        self.ui.btnToggleBlock_2.clicked.connect(lambda: self.send_maintenance_request_block_red(self.ui))
 
         # Update display of current switch state
         #self.ui.comboBlock.currentIndexChanged.connect(lambda: self.display_state_switch(self.ui,current_track_occupancy))
@@ -607,7 +613,7 @@ class ctc_qtui_test(QObject):
         ui.label_19.setText(str(throughput))
         throughput += 50
         
-    def send_maintenance_request_switch(self, ui, track_occ):
+    def send_maintenance_request_switch(self, ui):
         request_str = ["g","s"]
         toggle_position = ui.comboSwitch.currentIndex()
         for i in range(ui.comboSwitch.count()):
@@ -615,12 +621,13 @@ class ctc_qtui_test(QObject):
                 request_str.append("1")
             else:
                 request_str.append("0")
+        print("Sending To Wayside Controller:")
+        print(request_str)
+        print("")
         signals.ctc_maintenance.emit(request_str)
-        #print("Sending To Wayside Controller:")
-        #print(request_str)
-        #print("")
+        
 
-    def send_maintenance_request_block(self, ui, track_occ):
+    def send_maintenance_request_block(self, ui):
         request_str = ["g","b"]
         toggle_position = ui.comboBlock.currentIndex()
         for i in range(ui.comboBlock.count()):
@@ -628,10 +635,39 @@ class ctc_qtui_test(QObject):
                 request_str.append("1")
             else:
                 request_str.append("0")
+        print("Sending To Wayside Controller:")
+        print(request_str)
+        print("")  
         signals.ctc_maintenance.emit(request_str)
-       # print("Sending To Wayside Controller:")
-        #print(request_str)
-        #print("")
+            
+          
+    def send_maintenance_request_switch_red(self, ui):
+        request_str = ["r","s"]
+        toggle_position = ui.comboSwitch_2.currentIndex()
+        for i in range(ui.comboSwitch_2.count()):
+            if i == toggle_position:
+                request_str.append("1")
+            else:
+                request_str.append("0")
+        print("Sending To Wayside Controller:")
+        print(request_str)
+        print("")
+        signals.ctc_maintenance.emit(request_str)
+        
+
+    def send_maintenance_request_block_red(self, ui):
+        request_str = ["r","b"]
+        toggle_position = ui.comboBlock_2.currentIndex()
+        for i in range(ui.comboBlock_2.count()):
+            if i == toggle_position:
+                request_str.append("1")
+            else:
+                request_str.append("0")
+        print("Sending To Wayside Controller:")
+        print(request_str)
+        print("")
+        signals.ctc_maintenance.emit(request_str)
+        
 
     #def display_state_switch(self,ui,track_occ):
     #    display_curr_str = ""
@@ -1009,7 +1045,7 @@ class ctc_qtui_test(QObject):
         return [authority,[-1],temp_start_time]
         
     def find_train_position(self,block_path,start_time,sugg_speed,curr_time,test_block_info):
-        print(block_path)
+        #print(block_path)
         if start_time >= curr_time:
             return block_path[0]
         dispatch_time = curr_time - start_time
@@ -1352,8 +1388,8 @@ class ctc_qtui_test(QObject):
             #print(sendable_auth_red)
             #print(sendable_sugg_speed_red)
                 
-            #print("Authority for Block 73: " + str(sendable_auth_green[73]))
-            #print("Suggested_Speed for Block 73: " + str(sendable_sugg_speed_green[73]))
+            print("Authority for Block 63: " + str(sendable_auth_green[63]))
+            print("Suggested_Speed for Block 63: " + str(sendable_sugg_speed_green[63]))
             signals.ctc_suggested_speed_green.emit(sendable_sugg_speed_green)
             signals.ctc_authority_green.emit(sendable_auth_green)
             signals.ctc_suggested_speed_red.emit(sendable_sugg_speed_red)
@@ -1410,7 +1446,7 @@ class ctc_qtui_test(QObject):
                         
                         if order_num[1] == "Yard":
                             if order_num[4][0] == 56:
-                                print("SHOULD DESTROY TRAIN @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+                                #print("SHOULD DESTROY TRAIN @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
                                 global_train_blocks[int(order_num[0].rsplit(' ', 1)[1]) - 1] = 62
                                 order_num[4] = [-1]
                                 destroy_train_green = True
