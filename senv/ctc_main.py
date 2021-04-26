@@ -1029,8 +1029,8 @@ class ctc_qtui_test(QObject):
             temp_start_time = self.find_start_time(authority,suggested_speed,self.military_to_seconds(arrival_time),test_block_info)
             if temp_start_time < min_start_time:
 				
-                print("temp_start_time = " + str(temp_start_time))
-                print("min_start_time = " + str(min_start_time))
+                #print("temp_start_time = " + str(temp_start_time))
+                #print("min_start_time = " + str(min_start_time))
                 isValid = False
             
             if isValid:
@@ -1151,7 +1151,7 @@ class ctc_qtui_test(QObject):
                                 global_expected_train_location[int(train_name)] = global_expected_train_location_hold
                             # for i in global_expected_train_location:
                                     # print(i)
-                            print([row[0],row[1],row[2]])
+                            #print([row[0],row[1],row[2]])
                             global_schedule_display.append([row[0],row[1],row[2]])
                             header = ['Train', 'Destination Station', 'Arrival Time (2400)']
                             ui.model = TableModel(global_schedule_display, header)
@@ -1170,6 +1170,7 @@ class ctc_qtui_test(QObject):
                                 
                             #print("Authority: " + str(valid_train_metrics[0]))
                             #print("Suggested Speed: " + str(valid_train_metrics[1]))
+                            print("Start Time For " + str(row[0]) + ": " + str(valid_train_metrics[2]))
                             global_dispatch_orders.append([row[0],row[1],self.military_to_seconds(str(arrival_time)),valid_train_metrics[2],valid_train_metrics[0],valid_train_metrics[1],"g",fin_dest_block])
                             # [Train Name, Destination Station, Arrival Time(seconds),Start Time(seconds), Authority(meters), Suggested Speed(meters/second)]
                             #print("Train Name: " + global_dispatch_orders[len(global_dispatch_orders)-1][0])
@@ -1549,7 +1550,10 @@ class ctc_qtui_test(QObject):
     def calculate_throughput(self,ticket_sales):
         global global_throughput
         
-        global_throughput = (float(ticket_sales) * 60.0) / (float(self.current_time))
+        if self.current_time < 60: 
+            global_throughput = float(ticket_sales)
+        else:
+            global_throughput = (float(ticket_sales) * 60.0) / (float(self.current_time))
 
     def toggle_dispatch_mode_green(self,ui):
         
