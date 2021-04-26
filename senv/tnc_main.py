@@ -87,7 +87,7 @@ class TrainControllerMain(QObject):
         self.trains[num-1].set_curr_speed(input)
 
     def power_calc(self,input,num):
-        self.trains[num-1].self.power_calc()
+        self.trains[num-1].power_calc()
 
     def set_authority(self,input,num):
         self.trains[num-1].set_authority(input)
