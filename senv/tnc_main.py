@@ -71,6 +71,8 @@ class TrainControllerMain(QObject):
 
         signals.tnm_comm_speed.connect(self.set_command_speed)
         signals.tnm_curr_speed.connect(self.set_curr_speed)
+        signals.tnm_comm_speed.connect(self.power_calc)
+        signals.tnm_curr_speed.connect(self.power_calc)
         signals.tnm_authority.connect(self.set_authority)
         signals.tnm_ebrake.connect(self.set_pass_brake)
         signals.tnm_curr_station.connect(self.set_station)
@@ -83,6 +85,9 @@ class TrainControllerMain(QObject):
 
     def set_curr_speed(self,input,num):
         self.trains[num-1].set_curr_speed(input)
+
+    def power_calc(self,input,num):
+        self.trains[num-1].self.power_calc()
 
     def set_authority(self,input,num):
         self.trains[num-1].set_authority(input)
@@ -98,6 +103,7 @@ class TrainControllerMain(QObject):
 
     def failure(self,input,num):
         self.trains[num-1].failure(input)
+
 
     def update_gui(self):
         self.ui.curr_speed_text.setText(str(int(self.trains[self.curr_train-1].powsys.current_speed)) + " mph")

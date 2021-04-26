@@ -169,17 +169,16 @@ class TrainController(QObject):
                     signals.tnc_left_door.emit(True)
                     self.right_door = True
                     signals.tnc_right_door.emit(True)
+            else:
+                if(self.at_station):
+                    self.count = 0
+                    self.station_stop = False
+                    self.left_door = False
+                    signals.tnc_left_door.emit(False)
+                    self.right_door = False
+                    signals.tnc_right_door.emit(False)
 
-        else:
-            if(self.at_station):
-                self.count = 0
-                self.station_stop = False
-                self.left_door = False
-                signals.tnc_left_door.emit(False)
-                self.right_door = False
-                signals.tnc_right_door.emit(False)
-
-
+    def power_calc(self):
         if(not self.authority):
             self.service_brake = True
             print("no authority brake")
@@ -213,16 +212,17 @@ class TrainController(QObject):
             print("no power brake")
             self.service_brake = True
 
-
         signals.tnc_service_brake.emit(self.service_brake)
 
         signals.tnc_power.emit(self.powsys.power)
+
 
 if __name__ == '__main__':
     a = TrainController(1)
     a.set_command_speed(10)
     a.set_authority(True)
     a.run()
+    a.power_calc()
 
 
 
