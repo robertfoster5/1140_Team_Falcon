@@ -37,10 +37,15 @@ class Station:
 #_______________________________________________________________________
 	
 	#number of passengers boarding given train
-	def get_boarding(self,train):
-		board = random.randrange(0,100)
-		train.inc_occ(board)
-		self.occ = self.occ - board
+	def get_boarding(self,occ):
+		max_train = 150
+		board = random.randrange(0,max_train-occ)
+		if board > self.occ:
+			board = self.occ
+			self.occ = 0
+		else:
+			self.occ = self.occ - board
+		
 		return board
 		
 
@@ -105,6 +110,9 @@ class Train:
 		#commanded speed
 		self.speed = 0
 		self.past = 0
+		
+		self.dis = 0
+		self.boar = 0
 	
 #_______________________________________________________________________
 	
@@ -276,10 +284,15 @@ class Train:
 #_______________________________________________________________________
 	
 	#disembarking
-	def disembark(self):
-		les = random.randrange(0,self.occ)
-		self.occ = self.occ - les
-		return les
+	def update_disembark(self):
+		self.dis = random.randrange(0,self.occ)
+		self.occ = self.occ - self.dis
+		
+		
+	def update_board(self, blocks):
+		self.boar = blocks[int(self.block)-1].station.get_boarding(self.occ)
+		self.occ = self.occ + self.boar
+		
 
 #_______________________________________________________________________
 
@@ -297,7 +310,6 @@ class Train:
 		self.block = -1
 		self.speed = 0
 		self.past = 0
-		print("So long gay Bowser")
 		signals.tkm_get_destroy.emit(self.num)
 
 
@@ -438,6 +450,13 @@ class Track:
 		self.check_und()
 	
 #_______________________________________________________________________
+	
+	def update_dis(self,num):
+		self.train[i].update_disembark()
+		self.train[i].update_board()
+		
+#_______________________________________________________________________
+	
 	
 	def add_train(self,letter):#n,way,block):
 		global train_num
