@@ -75,7 +75,7 @@ class TrainControllerMain(QObject):
         signals.tnm_authority.connect(self.set_authority)
         signals.tnm_ebrake.connect(self.set_pass_brake)
         signals.tnm_curr_station.connect(self.set_station)
-        #signals.tnm_beaconID.connect(self.set_tunnels)
+        signals.tnm_beaconID.connect(self.set_tunnels)
         signals.tnm_TrainDir.connect(self.set_side)
         signals.tnm_sendyard.connect(self.failure)
 
@@ -103,6 +103,9 @@ class TrainControllerMain(QObject):
     def failure(self,input,num):
         self.trains[num-1].failure(input)
 
+    def set_tunnels(self,input,num):
+        self.trains[num-1].set_tunnels(input)
+
 
     def update_gui(self):
         self.ui.curr_speed_text.setText(str(int(self.trains[self.curr_train-1].powsys.current_speed)) + " mph")
@@ -117,13 +120,13 @@ class TrainControllerMain(QObject):
             self.ui.brake_button.setText("CANCEL")
             self.ui.brake_button.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
             self.trains[self.curr_train-1].driver_emer_brake = True
-            signals.tnc_emergency_brake.emit(True)
+            signals.tnc_emergency_brake.emit(True,self.curr_train)
         else:
             self.ui.brake_button.setText("EMERGENCY BRAKE")
             self.ui.brake_button.setStyleSheet("background-color: red; color: white;")
             self.trains[self.curr_train-1].driver_emer_brake = False
             if(not self.trains[self.curr_train-1].emergency_brake):
-                signals.tnc_emergency_brake.emit(False)
+                signals.tnc_emergency_brake.emit(False,self.curr_train)
 
     def service_brake(self):
         if not self.trains[self.curr_train-1].driver_serv_brake:

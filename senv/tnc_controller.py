@@ -47,9 +47,9 @@ class TrainController(QObject):
         self.cabin_light = True;
         self.high_beam_light = False;
 
-        signals.tnc_cab_light.emit(True)
-        signals.tnc_tunnel_light.emit(False)
-        signals.tnc_high_beam_light.emit(False)
+        signals.tnc_cab_light.emit(True,self.train_num)
+        signals.tnc_tunnel_light.emit(False,self.train_num)
+        signals.tnc_high_beam_light.emit(False,self.train_num)
 
         self.right_door = False;
         self.left_door = False;
@@ -113,20 +113,20 @@ class TrainController(QObject):
                     self.tunnel_light = True;
                     self.high_beam_light = False;
 
-                    signals.tnc_tunnel_light.emit(True)
-                    signals.tnc_high_beam_light.emit(False)
+                    signals.tnc_tunnel_light.emit(True,self.train_num)
+                    signals.tnc_high_beam_light.emit(False,self.train_num)
                 else:
                     self.tunnel_light = False;
 
-                    signals.tnc_tunnel_light.emit(False)
+                    signals.tnc_tunnel_light.emit(False,self.train_num)
 
     def failure(self,fail):
         if(fail):
             self.emergency_brake = True
-            signals.tnc_emergency_brake.emit(True)
+            signals.tnc_emergency_brake.emit(True,self.train_num)
         elif(not self.driver_emer_brake):
             self.emergency_brake = False
-            signals.tnc_emergency_brake.emit(False)
+            signals.tnc_emergency_brake.emit(False,self.train_num)
         else:
             self.emergency_brake = False
 
@@ -212,9 +212,9 @@ class TrainController(QObject):
             print("no power brake")
             self.service_brake = True
 
-        signals.tnc_service_brake.emit(self.service_brake)
+        signals.tnc_service_brake.emit(self.service_brake,self.train_num)
 
-        signals.tnc_power.emit(self.powsys.power)
+        signals.tnc_power.emit(self.powsys.power,self.train_num)
 
 
 if __name__ == '__main__':
