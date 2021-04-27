@@ -16,7 +16,7 @@ class Signal(QObject):
     ctc_make_train_green = pyqtSignal(str)
     ctc_destroy_train_green = pyqtSignal(int)
     ctc_destroy_train_red = pyqtSignal(int)
-    
+
 
     #wayside signals
     #green line
@@ -66,13 +66,13 @@ class Signal(QObject):
     tnm_train_stop_num = pyqtSignal(int)
 
     #train controller signals
-    tnc_emergency_brake = pyqtSignal(bool)
-    tnc_service_brake = pyqtSignal(bool)
+    tnc_emergency_brake = pyqtSignal(bool,int)
+    tnc_service_brake = pyqtSignal(bool,int)
     tnc_announcement = pyqtSignal(str)
-    tnc_power = pyqtSignal(float)
-    tnc_cab_light = pyqtSignal(bool)
-    tnc_tunnel_light = pyqtSignal(bool)
-    tnc_high_beam_light = pyqtSignal(bool)
+    tnc_power = pyqtSignal(float,int)
+    tnc_cab_light = pyqtSignal(bool,int)
+    tnc_tunnel_light = pyqtSignal(bool,int)
+    tnc_high_beam_light = pyqtSignal(bool,int)
     tnc_left_door = pyqtSignal(bool) #1 for open 0 for closed
     tnc_right_door = pyqtSignal(bool) #1 for open 0 for closed
 
