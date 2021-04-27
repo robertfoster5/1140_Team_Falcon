@@ -5140,28 +5140,6 @@ class tnm_display(QObject):
 		
 		if(self.TrainNum == 1):
 			self.TrainNum1 = 1
-		elif(self.TrainNum == 2):
-			self.TrainNum2 = 1
-		elif(self.TrainNum == 3):
-			self.TrainNum3 = 1
-		elif(self.TrainNum == 4):
-			self.TrainNum4 = 1
-		elif(self.TrainNum == 5):
-			self.TrainNum5 = 1
-		elif(self.TrainNum == 6):
-			self.TrainNum6 = 1
-		elif(self.TrainNum == 7):
-			self.TrainNum7 = 1
-		elif(self.TrainNum == 8):
-			self.TrainNum8 = 1
-		elif(self.TrainNum == 9):
-			self.TrainNum9 = 1
-		elif(self.TrainNum == 10):
-			self.TrainNum10 = 1
-			
-		#Determine which Train Number -> Train Name
-		if(self.TrainNum1 == 1):
-			self.TrainName1 = self.train1
 			#Check which line the train is added to, and specify RouteLine variable
 			if(tkmTrainLine == "Red"):
 				self.RouteName1 = "Red Line"
@@ -5169,8 +5147,8 @@ class tnm_display(QObject):
 			elif(tkmTrainLine == "Green"):
 				self.RouteName1 = "Green Line"
 				self.NextStation1 = "Glenbury"
-		elif(self.TrainNum2 == 1):
-			self.TrainName2 = self.train2
+		elif(self.TrainNum == 2):
+			self.TrainNum2 = 1
 			#Check which line the train is added to, and specify RouteLine variable
 			if(tkmTrainLine == "Red"):
 				self.RouteName2 = "Red Line"
@@ -5178,70 +5156,80 @@ class tnm_display(QObject):
 			elif(tkmTrainLine == "Green"):
 				self.RouteName2 = "Green Line"
 				self.NextStation2 = "Glenbury"
-		elif(self.TrainNum3 == 1):
-			self.TrainName3 = self.train3
+		elif(self.TrainNum == 3):
+			self.TrainNum3 = 1
+			#Check which line the train is added to, and specify RouteLine variable
 			if(tkmTrainLine == "Red"):
 				self.RouteName3 = "Red Line"
 				self.NextStation3 = "Shady Side"
 			elif(tkmTrainLine == "Green"):
 				self.RouteName3 = "Green Line"
 				self.NextStation3 = "Glenbury"
-		elif(self.TrainNum4 == 1):
-			self.TrainName4 = self.train4
+		elif(self.TrainNum == 4):
+			self.TrainNum4 = 1
+			#Check which line the train is added to, and specify RouteLine variable
 			if(tkmTrainLine == "Red"):
 				self.RouteName4 = "Red Line"
 				self.NextStation4 = "Shady Side"
 			elif(tkmTrainLine == "Green"):
 				self.RouteName4 = "Green Line"
 				self.NextStation4 = "Glenbury"
-		elif(self.TrainNum5 == 1):
-			self.TrainName5 = self.train5
+		elif(self.TrainNum == 5):
+			self.TrainNum5 = 1
+			#Check which line the train is added to, and specify RouteLine variable
 			if(tkmTrainLine == "Red"):
 				self.RouteName5 = "Red Line"
 				self.NextStation5 = "Shady Side"
 			elif(tkmTrainLine == "Green"):
 				self.RouteName5 = "Green Line"
 				self.NextStation5 = "Glenbury"
-		elif(self.TrainNum6 == 1):
-			self.TrainName6 = self.train6
+		elif(self.TrainNum == 6):
+			self.TrainNum6 = 1
+			#Check which line the train is added to, and specify RouteLine variable
 			if(tkmTrainLine == "Red"):
 				self.RouteName6 = "Red Line"
 				self.NextStation6 = "Shady Side"
 			elif(tkmTrainLine == "Green"):
 				self.RouteName6 = "Green Line"
 				self.NextStation6 = "Glenbury"
-		elif(self.TrainNum7 == 1):
-			self.TrainName7 = self.train7
+		elif(self.TrainNum == 7):
+			self.TrainNum7 = 1
+			#Check which line the train is added to, and specify RouteLine variable
 			if(tkmTrainLine == "Red"):
 				self.RouteName7 = "Red Line"
 				self.NextStation7 = "Shady Side"
 			elif(tkmTrainLine == "Green"):
 				self.RouteName7 = "Green Line"
 				self.NextStation7 = "Glenbury"
-		elif(self.TrainNum8 == 1):
-			self.TrainName8 = self.train8
+		elif(self.TrainNum == 8):
+			self.TrainNum8 = 1
+			#Check which line the train is added to, and specify RouteLine variable
 			if(tkmTrainLine == "Red"):
 				self.RouteName8 = "Red Line"
 				self.NextStation8 = "Shady Side"
 			elif(tkmTrainLine == "Green"):
 				self.RouteName8 = "Green Line"
-				self.NextStation8 = "Glenbury"	
-		elif(self.TrainNum9 == 1):
-			self.TrainName9 = self.train9
+				self.NextStation8 = "Glenbury"
+		elif(self.TrainNum == 9):
+			self.TrainNum9 = 1
+			#Check which line the train is added to, and specify RouteLine variable
 			if(tkmTrainLine == "Red"):
 				self.RouteName9 = "Red Line"
 				self.NextStation9 = "Shady Side"
 			elif(tkmTrainLine == "Green"):
 				self.RouteName9 = "Green Line"
 				self.NextStation9 = "Glenbury"
-		elif(self.TrainNum10 == 1):
-			self.TrainName10 = self.train10
+		elif(self.TrainNum == 10):
+			self.TrainNum10 = 1
+			#Check which line the train is added to, and specify RouteLine variable
 			if(tkmTrainLine == "Red"):
 				self.RouteName10 = "Red Line"
 				self.NextStation10 = "Shady Side"
 			elif(tkmTrainLine == "Green"):
 				self.RouteName10 = "Green Line"
-				self.NextStation10 = "Glenbury"	
+				self.NextStation10 = "Glenbury"
+			
+
 		
 	#Function to update train status to 0, if destroyed
 	def setDestroyTrain(self, tkmTrainNumDestroyed):
