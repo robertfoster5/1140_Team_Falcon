@@ -305,12 +305,14 @@ class Train:
 		#signals.tkm_get_auth.emit(block[yard-1].auth)
 		
 	def destroy(self):
+		val = self.block
 		self.way = 0
 		self.occ = 0
 		self.block = -1
 		self.speed = 0
 		self.past = 0
 		signals.tkm_get_destroy.emit(self.num)
+		return val
 
 
 class Block:
@@ -454,6 +456,7 @@ class Track:
 	def update_dis(self,num):
 		self.train[i].update_disembark()
 		self.train[i].update_board()
+		self.set_occ(self.get_occ)
 		
 #_______________________________________________________________________
 	
