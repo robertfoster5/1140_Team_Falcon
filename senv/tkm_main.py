@@ -287,9 +287,11 @@ class tkm_test(QObject):
 			while i < len(self.info[j].train):
 				if num == self.info[j].train[i].num:
 					print("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEETTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT")
-					self.info[j].train[i].destroy()
+					val = self.info[j].train[i].destroy()-1
+					self.info[j].blocks[int(val)].occ = 0
+					self.info[j].set_occ(self.info[j].get_occ())
 					i = len(self.info[j].train)
-					j = len(self.info)
+					j = len(self.info)-1
 				i = i+1
 			j = j+1				
 			
