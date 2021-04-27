@@ -35,6 +35,7 @@ global_dispatch_orders = [
 global_dispatch_file = ""
 global_expected_train_location = [0]
 global_train_blocks = []
+global_train_line = []
 global_expected_train_location_hold = 0
 
 global_throughput = 0
@@ -792,7 +793,7 @@ class ctc_qtui_test(QObject):
                 fin_dest_block = -1
             
             #print(valid_train_name + " = " + str(valid_train_metrics[0]))
-            
+            print("Start Time: " + str(valid_train_metrics[2]))
             global_dispatch_orders.append([valid_train_name,fin_destination_station,self.military_to_seconds(str(arrival_time)),valid_train_metrics[2],valid_train_metrics[0],valid_train_metrics[1],lin_spec,fin_dest_block])
             
             
@@ -1079,8 +1080,28 @@ class ctc_qtui_test(QObject):
         ui.labelAutoError.setText("")
         
         if global_dispatch_file == "":
-            ui.labelAutoError.setText("*Please select a file.")
+            
+            if len(test_block_info) == 150:
+                ui.labelAutoError.setText("*Please select a file.")
+            else:
+                ui.labelAutoError_2.setText("*Please select a file.")
+            
             return
+            
+        if len(test_block_info) == 150:
+            if len(global_dispatch_file) < len("ctc_automatic_dispatch_green.txt"):
+                ui.labelAutoError.setText("*Invalid green line file")
+                return
+            if "ctc_automatic_dispatch_green" not in global_dispatch_file:
+                ui.labelAutoError.setText("*Invalid green line file")
+                return
+        else:
+            if len(global_dispatch_file) < len("ctc_automatic_dispatch_red.txt"):
+                ui.labelAutoError_2.setText("*Invalid red line file")
+                return
+            if "ctc_automatic_dispatch_red" not in global_dispatch_file:
+                ui.labelAutoError_2.setText("*Invalid red line file")
+                return
         
         with open(global_dispatch_file) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
@@ -1317,6 +1338,7 @@ class ctc_qtui_test(QObject):
         
     def send_dispatch_order(self):
         global global_dispatch_orders
+        global global_train_line
         
         make_green_train = False
         make_red_train = False
@@ -1343,9 +1365,10 @@ class ctc_qtui_test(QObject):
                     #if self.current_time >= 0:
                     if order_num[6] == "g":
                         if self.current_time == order_num[3] and int(order_num[0].rsplit(' ', 1)[1]) > len(global_train_blocks):
-                            #print("SENDING GREEN TRAIN")
+                            print("SENDING GREEN TRAIN")
                             make_green_train = True
                             global_train_blocks.append(order_num[4][0])
+                            global_train_line.append("g")
                         #print(order_num[4])
                         for i in range(150):
                             if i in order_num[4]:
@@ -1363,9 +1386,10 @@ class ctc_qtui_test(QObject):
                                 sendable_auth_green[i+1] = "0"
                     else:
                         if self.current_time == order_num[3] and int(order_num[0].rsplit(' ', 1)[1]) > len(global_train_blocks):
-                            #print("SENDING RED TRAIN")
+                            print("SENDING RED TRAIN")
                             make_red_train = True
                             global_train_blocks.append(order_num[4][0])
+                            global_train_line.append("r")
                         #print(order_num[4])
                         for i in range(76):
                             if i in order_num[4]:
@@ -1400,6 +1424,9 @@ class ctc_qtui_test(QObject):
                 
             #print("Authority for Block 63: " + str(sendable_auth_green[63]))
             #print("Suggested_Speed for Block 63: " + str(sendable_sugg_speed_green[63]))
+            #for i in range(len(sendable_auth_green)):
+            #    if sendable_auth_green[i] == "1":
+            #        print("Block " + str(i) + " has Authority = 1")
             signals.ctc_suggested_speed_green.emit(sendable_sugg_speed_green)
             signals.ctc_authority_green.emit(sendable_auth_green)
             signals.ctc_suggested_speed_red.emit(sendable_sugg_speed_red)
@@ -1419,6 +1446,7 @@ class ctc_qtui_test(QObject):
         global global_dispatch_orders
         global global_schedule_display
         global global_train_blocks
+        global global_train_line
         
         
         checked_train = []
@@ -1433,18 +1461,24 @@ class ctc_qtui_test(QObject):
         if int(track_state[0]) == 1: # Green Line
             for order_num in global_dispatch_orders:
                 #print("Starting Time = " + str(order_num[3]))
+                #print(order_num)
                 if order_num[6] != "skip" and order_num[6] == "g" and order_num[3] < self.current_time:
                     if order_num[0] not in checked_train:
+                        
                         checked_train.append(order_num[0])
+                        #print("The authority is: " + str(order_num[4]))
+                        #for i in order_num[4]:
+                        #    print("Occ for block " + str(i + 1) + " is: " + str(int(track_state[i + 1])))
                         if len(order_num[4]) == 1:
-                            if int(track_state[order_num[4][0] + 1]) == 0 and int(track_state[order_num[7] + 1]):
+                            if int(track_state[order_num[4][0] + 1]) == 0 and int(track_state[order_num[7] + 1]) == 1:
                                 #print("DELETE THIS DUDE")
-                                print(order_num[0])
-                                print("Searching Element " + str(int(order_num[0].rsplit(' ', 1)[1]) - 1) + " in " + str(global_train_blocks))
+                                #print(order_num[0])
+                                #print("Searching Element " + str(int(order_num[0].rsplit(' ', 1)[1]) - 1) + " in " + str(global_train_blocks))
                                 global_train_blocks[int(order_num[0].rsplit(' ', 1)[1]) - 1] = order_num[7]
                                 order_num[4] = [-1]
                                 
                         else:
+                            
                             if int(track_state[order_num[4][0] + 1]) == 0 and int(track_state[order_num[4][1] + 1]) == 1:
                                 order_num[4].pop(0)
                                 order_num[5].pop(0)
@@ -1452,7 +1486,7 @@ class ctc_qtui_test(QObject):
                                     global_train_blocks[int(order_num[0].rsplit(' ', 1)[1]) - 1] = order_num[4][0]
                         
                         
-                        print(order_num[4])
+                        #print(order_num[4])
                         
                         if order_num[1] == "Yard":
                             if order_num[4][0] == 56:
@@ -1461,11 +1495,13 @@ class ctc_qtui_test(QObject):
                                 order_num[4] = [-1]
                                 destroy_train_green = True
                                 destroy_train_green_num = int(order_num[0].rsplit(' ', 1)[1])
+                                global_train_line[int(order_num[0].rsplit(' ', 1)[1]) - 1] = "Yard"
                     
                     else:
                         if order_num[0] not in train_time_altered:
                             train_time_altered.append(order_num[0])
-                            order_num[3] = self.current_time + 60
+                            if order_num[3] < self.current_time + 60:
+                                order_num[3] = self.current_time + 60
                                         
                                         
         if int(track_state[0]) == 0: # Red Line
@@ -1477,12 +1513,12 @@ class ctc_qtui_test(QObject):
                         #print("Occ for Block 47: " + str(track_state[47]))
                         checked_train.append(order_num[0])
                         if len(order_num[4]) == 1:
-                            if int(track_state[order_num[4][0] + 1]) == 0 and int(track_state[order_num[7] + 1]):
+                            if int(track_state[order_num[4][0] + 1]) == 0 and int(track_state[order_num[7] + 1]) == 1:
                                 #print("DELETE THIS DUDE")
                                 global_train_blocks[int(order_num[0].rsplit(' ', 1)[1]) - 1] = order_num[7]
                                 order_num[4] = [-1]
                         else:
-                            print("The authority is: " + str(order_num[4]))
+                            #print("The authority is: " + str(order_num[4]))
                             #for i in order_num[4]:
                             #    print("Occ for block " + str(i + 1) + " is: " + str(int(track_state[i + 1])))
                             
@@ -1500,6 +1536,7 @@ class ctc_qtui_test(QObject):
                                 order_num[4] = [-1]
                                 destroy_train_red = True
                                 destroy_train_red_num = int(order_num[0].rsplit(' ', 1)[1])
+                                global_train_line[int(order_num[0].rsplit(' ', 1)[1]) - 1] = "Yard"
                     else:
                         if order_num[0] not in train_time_altered:
                             train_time_altered.append(order_num[0])
@@ -1526,6 +1563,7 @@ class ctc_qtui_test(QObject):
     def update_ctc_displays(self,ui):
         global global_schedule_display
         global global_train_blocks
+        global global_train_line
         global global_throughput
         
         header = ['Train', 'Destination Station', 'Arrival Time (2400)']
@@ -1533,25 +1571,25 @@ class ctc_qtui_test(QObject):
         ui.tableView_schedule.setModel(ui.model)
         
         if len(global_train_blocks) == 1:
-            ui.labelTrain_1.setText("Block " + str(global_train_blocks[0] + 1))
+            ui.labelTrain_1.setText("Block " + str(global_train_blocks[0] + 1) + " (" + str(global_train_line[0]) + ")")
         if len(global_train_blocks) == 2:
-            ui.labelTrain_2.setText("Block " + str(global_train_blocks[1] + 1))
+            ui.labelTrain_2.setText("Block " + str(global_train_blocks[1] + 1) + " (" + str(global_train_line[1]) + ")")
         if len(global_train_blocks) == 3:
-            ui.labelTrain_3.setText("Block " + str(global_train_blocks[2] + 1))
+            ui.labelTrain_3.setText("Block " + str(global_train_blocks[2] + 1) + " (" + str(global_train_line[2]) + ")")
         if len(global_train_blocks) == 4:
-            ui.labelTrain_4.setText("Block " + str(global_train_blocks[3] + 1))
+            ui.labelTrain_4.setText("Block " + str(global_train_blocks[3] + 1) + " (" + str(global_train_line[3]) + ")")
         if len(global_train_blocks) == 5:
-            ui.labelTrain_5.setText("Block " + str(global_train_blocks[4] + 1))
+            ui.labelTrain_5.setText("Block " + str(global_train_blocks[4] + 1) + " (" + str(global_train_line[4]) + ")")
         if len(global_train_blocks) == 6:
-            ui.labelTrain_6.setText("Block " + str(global_train_blocks[5] + 1))
+            ui.labelTrain_6.setText("Block " + str(global_train_blocks[5] + 1) + " (" + str(global_train_line[5]) + ")")
         if len(global_train_blocks) == 7:
-            ui.labelTrain_7.setText("Block " + str(global_train_blocks[6] + 1))
+            ui.labelTrain_7.setText("Block " + str(global_train_blocks[6] + 1) + " (" + str(global_train_line[6]) + ")")
         if len(global_train_blocks) == 8:
-            ui.labelTrain_8.setText("Block " + str(global_train_blocks[7] + 1))
+            ui.labelTrain_8.setText("Block " + str(global_train_blocks[7] + 1) + " (" + str(global_train_line[7]) + ")")
         if len(global_train_blocks) == 9:
-            ui.labelTrain_9.setText("Block " + str(global_train_blocks[8] + 1))
+            ui.labelTrain_9.setText("Block " + str(global_train_blocks[8] + 1) + " (" + str(global_train_line[8]) + ")")
         if len(global_train_blocks) == 10:
-            ui.labelTrain_10.setText("Block " + str(global_train_blocks[9] + 1))
+            ui.labelTrain_10.setText("Block " + str(global_train_blocks[9] + 1) + " (" + str(global_train_line[9]) + ")")
         
         ui.label_19.setText(str(round(global_throughput,1)))
             
