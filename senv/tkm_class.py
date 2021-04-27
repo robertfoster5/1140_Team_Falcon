@@ -491,7 +491,7 @@ class Track:
 		self.blocks[blo-1].occ = 1
 		bull = self.get_occ()
 		signals.tkm_get_occ.emit(bull)
-		s = self.train[n-1].set_speed_new(self.blocks[blo-1])
+		s = self.train[len(self.train)-1].set_speed_new(self.blocks[blo-1])
 		print("speeeeeeeeeeeeeeeeed "+str(s))
 		#print(str(s) + " tkm")
 		#signals.tkm_get_speed.emit(s)
