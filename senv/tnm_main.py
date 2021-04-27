@@ -45,18 +45,18 @@ class tnm_failureTest(QObject):
 		tnm_sendyard = pyqtSignal(bool, int)			#Track Model and Track Controller
 		
 		#define variables to be used in the Failure Interface
-		self.car1_status1, self.car1_status2, self.car1_status3,self.car1_status4, self.car1_status5, self.car1_status6, self.car1_status7, self.car1_status8 = True,True,True,True,True,True,True,True
-		self.car2_status1, self.car2_status2, self.car2_status3,self.car2_status4, self.car2_status5, self.car2_status6, self.car2_status7, self.car2_status8 = True,True,True,True,True,True,True,True
-		self.car3_status1, self.car3_status2, self.car3_status3,self.car3_status4, self.car3_status5, self.car3_status6, self.car3_status7, self.car3_status8 = True,True,True,True,True,True,True,True
-		self.car4_status1, self.car4_status2, self.car4_status3,self.car4_status4, self.car4_status5, self.car4_status6, self.car4_status7, self.car4_status8 = True,True,True,True,True,True,True,True
-		self.car5_status1, self.car5_status2, self.car5_status3,self.car5_status4, self.car5_status5, self.car5_status6, self.car5_status7, self.car5_status8 = True,True,True,True,True,True,True,True
-		self.train1_status, self.train2_status, self.train3_status, self.train4_status, self.train5_status, self.train6_status, self.train7_status, self.train8_status = True,True,True,True,True,True,True,True
-		self.sendYard1, self.sendYard2, self.sendYard3, self.sendYard4, self.sendYard5, self.sendYard6, self.sendYard7, self.sendYard8 = False,False,False,False,False,False,False,False
+		self.car1_status1, self.car1_status2, self.car1_status3,self.car1_status4, self.car1_status5, self.car1_status6, self.car1_status7, self.car1_status8, self.car1_status9, self.car1_status10 = True,True,True,True,True,True,True,True,True,True
+		self.car2_status1, self.car2_status2, self.car2_status3,self.car2_status4, self.car2_status5, self.car2_status6, self.car2_status7, self.car2_status8, self.car2_status9, self.car2_status10 = True,True,True,True,True,True,True,True,True,True
+		self.car3_status1, self.car3_status2, self.car3_status3,self.car3_status4, self.car3_status5, self.car3_status6, self.car3_status7, self.car3_status8, self.car3_status9, self.car3_status10 = True,True,True,True,True,True,True,True,True,True
+		self.car4_status1, self.car4_status2, self.car4_status3,self.car4_status4, self.car4_status5, self.car4_status6, self.car4_status7, self.car4_status8, self.car4_status9, self.car4_status10 = True,True,True,True,True,True,True,True,True,True
+		self.car5_status1, self.car5_status2, self.car5_status3,self.car5_status4, self.car5_status5, self.car5_status6, self.car5_status7, self.car5_status8, self.car5_status9, self.car5_status10 = True,True,True,True,True,True,True,True,True,True
+		self.train1_status, self.train2_status, self.train3_status, self.train4_status, self.train5_status, self.train6_status, self.train7_status, self.train8_status, self.train9_status, self.train10_status = True,True,True,True,True,True,True,True,True,True
+		self.sendYard1, self.sendYard2, self.sendYard3, self.sendYard4, self.sendYard5, self.sendYard6, self.sendYard7, self.sendYard8, self.sendYard9, self.sendYard10 = False,False,False,False,False,False,False,False,False,False
 		self.trainNum = 0
 		self.routeLine = 0
-		self.train1, self.train2, self.train3, self.train4, self.train5, self.train6, self.train7, self.train8 = "Train 1 Status", "Train 2 Status", "Train 3 Status", "Train 4 Status", "Train 5 Status", "Train 6 Status", "Train 7 Status","Train 8 Status"
-		self.trainNum1, self.trainNum2, self.trainNum3, self.trainNum4, self.trainNum5, self.trainNum6, self.trainNum7, self.trainNum8 = 0,0,0,0,0,0,0,0
-		self.eBrakeTest1, self.eBrakeTest2, self.eBrakeTest3, self.eBrakeTest4, self.eBrakeTest5, self.eBrakeTest6, self.eBrakeTest7, self.eBrakeTest1 = False,False,False,False,False,False,False,False
+		self.train1, self.train2, self.train3, self.train4, self.train5, self.train6, self.train7, self.train8, self.train9, self.train10 = "Train 1 Status", "Train 2 Status", "Train 3 Status", "Train 4 Status", "Train 5 Status", "Train 6 Status", "Train 7 Status","Train 8 Status","Train 9 Status","Train 10 Status"
+		self.trainNum1, self.trainNum2, self.trainNum3, self.trainNum4, self.trainNum5, self.trainNum6, self.trainNum7, self.trainNum8, self.trainNum9, self.trainNum10 = 0,0,0,0,0,0,0,0,0,0
+		self.eBrakeTest1, self.eBrakeTest2, self.eBrakeTest3, self.eBrakeTest4, self.eBrakeTest5, self.eBrakeTest6, self.eBrakeTest7, self.eBrakeTest8, self.eBrakeTest9, self.eBrakeTest10 = False,False,False,False,False,False,False,False,False,False
 		signals.tnc_emergency_brake.connect(self.SetEBrakeTest)
 		signals.tkm_get_train_num.connect(self.setTrainInfo)
 		
@@ -98,6 +98,10 @@ class tnm_failureTest(QObject):
 			self.ui.label.setText(self.train7)
 		elif(self.trainNum8 == 1):
 			self.ui.label.setText(self.train8)
+		elif(self.trainNum9 == 1):
+			self.ui.label.setText(self.train9)
+		elif(self.trainNum10 == 1):
+			self.ui.label.setText(self.train10)
 		
 		
 		#Don't let Status LineEdits to be edited
@@ -131,7 +135,12 @@ class tnm_failureTest(QObject):
 		elif(self.trainNum7 == 1 and self.eBrakeTest7 == True):
 			signals.tnm_ebrake.emit(self.eBrakeTest7, 7)
 		elif(self.trainNum8 == 1 and self.eBrakeTest8 == True):
-			signals.tnm_ebrake.emit(self.eBrakeTest8, 8)			
+			signals.tnm_ebrake.emit(self.eBrakeTest8, 8)
+		elif(self.trainNum9 == 1 and self.eBrakeTest9 == True):
+			signals.tnm_ebrake.emit(self.eBrakeTest9, 9)
+		elif(self.trainNum10 == 1 and self.eBrakeTest10 == True):
+			signals.tnm_ebrake.emit(self.eBrakeTest10, 10)
+					
 			
 #_______________________________________________________________________
 	#function to set Emergency Brake from tnc
@@ -152,6 +161,10 @@ class tnm_failureTest(QObject):
 			self.eBrakeTest7 = eBrakeTNC
 		elif(self.trainNum8 == 1):
 			self.eBrakeTest8 = eBrakeTNC
+		elif(self.trainNum9 == 1):
+			self.eBrakeTest9 = eBrakeTNC
+		elif(self.trainNum10 == 1):
+			self.eBrakeTest10 = eBrakeTNC
 		
 #_______________________________________________________________________
 	#function to address Brake Failure Status's
@@ -1163,7 +1176,259 @@ class tnm_failureTest(QObject):
 				self.EmergencyBrakingTest()
 				self.sendYard8 = False
 				signals.tnm_sendyard.emit(False,8)
-		
+			#__________________________________________________________________
+		elif(self.trainNum9 == 1):
+			#Car 1 Status Change
+			#True means brake 1 is functional
+			if(self.ui.lineEdit.text() == "Off" or self.ui.lineEdit.text() == "OFF" or self.ui.lineEdit.text() == "off"):	
+				self.car1_status9 = True
+				self.ui.lineEdit_6.setText("Operational")
+				self.eBrakeTest9 = False
+				self.EmergencyBrakingTest()
+				self.sendYard9 = False
+				signals.tnm_sendyard.emit(False ,9)	
+			elif(self.ui.lineEdit.text() == "On" or self.ui.lineEdit.text() == "ON" or self.ui.lineEdit.text() == "on"):
+				self.car1_status9 = False	
+				self.ui.lineEdit_6.setText("Broken")
+				self.eBrakeTest9 = True
+				self.EmergencyBrakingTest()
+				self.sendYard9 = True
+				signals.tnm_sendyard.emit(True,9)
+			else:
+				self.car1_status9 = True
+				self.ui.lineEdit.setText("Off")
+				self.ui.lineEdit_6.setText("Operational")
+				self.eBrakeTest9 = False
+				self.EmergencyBrakingTest()
+				self.sendYard9 = False
+				signals.tnm_sendyard.emit(False,9)
+				
+			#Car 2 Status Change
+			#True means brake 2 is functional
+			if(self.ui.lineEdit_2.text() == "Off" or self.ui.lineEdit_2.text() == "OFF" or self.ui.lineEdit_2.text() == "off"):
+				self.car2_status9 = True	
+				self.ui.lineEdit_11.setText("Operational")
+				self.eBrakeTest9 = False
+				self.EmergencyBrakingTest()
+				self.sendYard9 = False
+				signals.tnm_sendyard.emit(False,9)
+			elif(self.ui.lineEdit_2.text() == "On" or self.ui.lineEdit_2.text() == "ON" or self.ui.lineEdit_2.text() == "on"):
+				self.car2_status9 = False	
+				self.ui.lineEdit_11.setText("Broken")
+				self.eBrakeTest9 = True
+				self.EmergencyBrakingTest()
+				self.sendYard9 = True
+				signals.tnm_sendyard.emit(True,9)				
+			else:
+				self.car2_status9 = True
+				self.ui.lineEdit_2.setText("Off")
+				self.ui.lineEdit_11.setText("Operational")
+				self.eBrakeTest9 = False
+				self.EmergencyBrakingTest()
+				self.sendYard9 = False
+				signals.tnm_sendyard.emit(False,9)
+			
+			#Car 3 Status Change
+			#True means brake 3 is functional
+			if(self.ui.lineEdit_3.text() == "Off" or self.ui.lineEdit_3.text() == "OFF" or self.ui.lineEdit_3.text() == "off"):		
+				self.car3_status9 = True
+				self.ui.lineEdit_8.setText("Operational")
+				self.eBrakeTest9 = False
+				self.EmergencyBrakingTest()
+				self.sendYard9 = False
+				signals.tnm_sendyard.emit(False,9)
+			elif(self.ui.lineEdit_3.text() == "On" or self.ui.lineEdit_3.text() == "ON" or self.ui.lineEdit_3.text() == "on"):
+				self.car3_status9 = False
+				self.ui.lineEdit_8.setText("Broken")
+				self.eBrakeTest9 = True
+				self.EmergencyBrakingTest()
+				self.sendYard9 = True		
+				signals.tnm_sendyard.emit(True,9)			
+			else:
+				self.car3_status9 = True
+				self.ui.lineEdit_3.setText("Off")
+				self.ui.lineEdit_8.setText("Operational")
+				self.eBrakeTest9 = False
+				self.EmergencyBrakingTest()
+				self.sendYard9 = False
+				signals.tnm_sendyard.emit(False,9)
+				
+			#Car 4 Status Change
+			#True means brake 4 is functional
+			if(self.ui.lineEdit_4.text() == "Off" or self.ui.lineEdit_4.text() == "OFF" or self.ui.lineEdit_4.text() == "off"):									
+				self.car4_status9 = True
+				self.ui.lineEdit_9.setText("Operational")
+				self.eBrakeTest9 = False
+				self.EmergencyBrakingTest()
+				self.sendYard9 = False
+				signals.tnm_sendyard.emit(False,9)
+			elif(self.ui.lineEdit_4.text() == "On" or self.ui.lineEdit_4.text() == "ON" or self.ui.lineEdit_4.text() == "on"):
+				self.car4_status9 = False
+				self.ui.lineEdit_9.setText("Broken")
+				self.eBrakeTest9 = True
+				self.EmergencyBrakingTest()
+				self.sendYard9 = True
+				signals.tnm_sendyard.emit(True,9)							
+			else:
+				self.car4_status9 = True
+				self.ui.lineEdit_4.setText("Off")
+				self.ui.lineEdit_9.setText("Operational")
+				self.eBrakeTest9 = False
+				self.EmergencyBrakingTest()
+				self.sendYard9 = False
+				signals.tnm_sendyard.emit(False,9)
+			
+			#Car 5 Status Change
+			#True means brake 5 is functional
+			if(self.ui.lineEdit_5.text() == "Off" or self.ui.lineEdit_5.text() == "OFF" or self.ui.lineEdit_5.text() == "off"):										
+				self.car5_status9 = True
+				self.ui.lineEdit_10.setText("Operational")
+				self.eBrakeTest9 = False
+				self.EmergencyBrakingTest()
+				self.sendYard9 = False
+				signals.tnm_sendyard.emit(False,9)
+			elif(self.ui.lineEdit_5.text() == "On" or self.ui.lineEdit_5.text() == "ON" or self.ui.lineEdit_5.text() == "on"):
+				self.car5_status9 = False
+				self.ui.lineEdit_10.setText("Broken")
+				self.eBrakeTest9 = True
+				self.EmergencyBrakingTest()
+				self.sendYard9 = True
+				signals.tnm_sendyard.emit(True,9)					
+			else:
+				self.car5_status9 = True
+				self.ui.lineEdit_5.setText("Off")
+				self.ui.lineEdit_10.setText("Operational")
+				self.eBrakeTest9 = False
+				self.EmergencyBrakingTest()
+				self.sendYard9 = False
+				signals.tnm_sendyard.emit(False,9)
+			#____________________________________________________________________
+		elif(self.trainNum10 == 1):
+			#Car 1 Status Change
+			#True means brake 1 is functional
+			if(self.ui.lineEdit.text() == "Off" or self.ui.lineEdit.text() == "OFF" or self.ui.lineEdit.text() == "off"):	
+				self.car1_status10 = True
+				self.ui.lineEdit_6.setText("Operational")
+				self.eBrakeTest10 = False
+				self.EmergencyBrakingTest()
+				self.sendYard10 = False
+				signals.tnm_sendyard.emit(False ,10)	
+			elif(self.ui.lineEdit.text() == "On" or self.ui.lineEdit.text() == "ON" or self.ui.lineEdit.text() == "on"):
+				self.car1_status10 = False	
+				self.ui.lineEdit_6.setText("Broken")
+				self.eBrakeTest10 = True
+				self.EmergencyBrakingTest()
+				self.sendYard10 = True
+				signals.tnm_sendyard.emit(True,10)
+			else:
+				self.car1_status10 = True
+				self.ui.lineEdit.setText("Off")
+				self.ui.lineEdit_6.setText("Operational")
+				self.eBrakeTest10 = False
+				self.EmergencyBrakingTest()
+				self.sendYard10 = False
+				signals.tnm_sendyard.emit(False,10)
+				
+			#Car 2 Status Change
+			#True means brake 2 is functional
+			if(self.ui.lineEdit_2.text() == "Off" or self.ui.lineEdit_2.text() == "OFF" or self.ui.lineEdit_2.text() == "off"):
+				self.car2_status10 = True	
+				self.ui.lineEdit_11.setText("Operational")
+				self.eBrakeTest10 = False
+				self.EmergencyBrakingTest()
+				self.sendYard10 = False
+				signals.tnm_sendyard.emit(False,10)
+			elif(self.ui.lineEdit_2.text() == "On" or self.ui.lineEdit_2.text() == "ON" or self.ui.lineEdit_2.text() == "on"):
+				self.car2_status10 = False	
+				self.ui.lineEdit_11.setText("Broken")
+				self.eBrakeTest10 = True
+				self.EmergencyBrakingTest()
+				self.sendYard10 = True
+				signals.tnm_sendyard.emit(True,10)				
+			else:
+				self.car2_status10 = True
+				self.ui.lineEdit_2.setText("Off")
+				self.ui.lineEdit_11.setText("Operational")
+				self.eBrakeTest10 = False
+				self.EmergencyBrakingTest()
+				self.sendYard10 = False
+				signals.tnm_sendyard.emit(False,10)
+			
+			#Car 3 Status Change
+			#True means brake 3 is functional
+			if(self.ui.lineEdit_3.text() == "Off" or self.ui.lineEdit_3.text() == "OFF" or self.ui.lineEdit_3.text() == "off"):		
+				self.car3_status10 = True
+				self.ui.lineEdit_8.setText("Operational")
+				self.eBrakeTest10 = False
+				self.EmergencyBrakingTest()
+				self.sendYard10 = False
+				signals.tnm_sendyard.emit(False,10)
+			elif(self.ui.lineEdit_3.text() == "On" or self.ui.lineEdit_3.text() == "ON" or self.ui.lineEdit_3.text() == "on"):
+				self.car3_status10 = False
+				self.ui.lineEdit_8.setText("Broken")
+				self.eBrakeTest10 = True
+				self.EmergencyBrakingTest()
+				self.sendYard10 = True		
+				signals.tnm_sendyard.emit(True,10)			
+			else:
+				self.car3_status10 = True
+				self.ui.lineEdit_3.setText("Off")
+				self.ui.lineEdit_8.setText("Operational")
+				self.eBrakeTest10 = False
+				self.EmergencyBrakingTest()
+				self.sendYard10 = False
+				signals.tnm_sendyard.emit(False,10)
+				
+			#Car 4 Status Change
+			#True means brake 4 is functional
+			if(self.ui.lineEdit_4.text() == "Off" or self.ui.lineEdit_4.text() == "OFF" or self.ui.lineEdit_4.text() == "off"):									
+				self.car4_status10 = True
+				self.ui.lineEdit_9.setText("Operational")
+				self.eBrakeTest10 = False
+				self.EmergencyBrakingTest()
+				self.sendYard10 = False
+				signals.tnm_sendyard.emit(False,10)
+			elif(self.ui.lineEdit_4.text() == "On" or self.ui.lineEdit_4.text() == "ON" or self.ui.lineEdit_4.text() == "on"):
+				self.car4_status10 = False
+				self.ui.lineEdit_9.setText("Broken")
+				self.eBrakeTest10 = True
+				self.EmergencyBrakingTest()
+				self.sendYard10 = True
+				signals.tnm_sendyard.emit(True,10)							
+			else:
+				self.car4_status10 = True
+				self.ui.lineEdit_4.setText("Off")
+				self.ui.lineEdit_9.setText("Operational")
+				self.eBrakeTest10 = False
+				self.EmergencyBrakingTest()
+				self.sendYard10 = False
+				signals.tnm_sendyard.emit(False,10)
+			
+			#Car 5 Status Change
+			#True means brake 5 is functional
+			if(self.ui.lineEdit_5.text() == "Off" or self.ui.lineEdit_5.text() == "OFF" or self.ui.lineEdit_5.text() == "off"):										
+				self.car5_status10 = True
+				self.ui.lineEdit_10.setText("Operational")
+				self.eBrakeTest10 = False
+				self.EmergencyBrakingTest()
+				self.sendYard10 = False
+				signals.tnm_sendyard.emit(False,10)
+			elif(self.ui.lineEdit_5.text() == "On" or self.ui.lineEdit_5.text() == "ON" or self.ui.lineEdit_5.text() == "on"):
+				self.car5_status10 = False
+				self.ui.lineEdit_10.setText("Broken")
+				self.eBrakeTest10 = True
+				self.EmergencyBrakingTest()
+				self.sendYard10 = True
+				signals.tnm_sendyard.emit(True,10)					
+			else:
+				self.car5_status10 = True
+				self.ui.lineEdit_5.setText("Off")
+				self.ui.lineEdit_10.setText("Operational")
+				self.eBrakeTest10 = False
+				self.EmergencyBrakingTest()
+				self.sendYard10 = False
+				signals.tnm_sendyard.emit(False,10)
+			#____________________________________________________________________
 #_______________________________________________________________________
 	#function to address Engine Failure Status's
 	def engine_fail_act(self):
@@ -2174,7 +2439,259 @@ class tnm_failureTest(QObject):
 				self.EmergencyBrakingTest()
 				self.sendYard8 = False
 				signals.tnm_sendyard.emit(False,8)
-
+			#____________________________________________________________________
+		elif(self.trainNum9 == 1):
+			#Car 1 Status Change
+			#True means engine 1 is functional
+			if(self.ui.lineEdit_7.text() == "Off" or self.ui.lineEdit_7.text() == "OFF" or self.ui.lineEdit_7.text() == "off"):	
+				self.car1_status9 = True
+				self.ui.lineEdit_16.setText("Operational")
+				self.eBrakeTest9 = False
+				self.EmergencyBrakingTest()
+				self.sendYard9 = False
+				signals.tnm_sendyard.emit(False,9)
+			elif(self.ui.lineEdit_7.text() == "On" or self.ui.lineEdit_7.text() == "ON" or self.ui.lineEdit_7.text() == "on"):
+				self.car1_status9 = False	
+				self.ui.lineEdit_16.setText("Broken")
+				self.eBrakeTest9 = True
+				self.EmergencyBrakingTest()
+				self.sendYard9 = True
+				signals.tnm_sendyard.emit(True,9)				
+			else:
+				self.car1_status9 = True
+				self.ui.lineEdit_7.setText("Off")
+				self.ui.lineEdit_16.setText("Operational")
+				self.eBrakeTest9 = False
+				self.EmergencyBrakingTest()
+				self.sendYard9 = False
+				signals.tnm_sendyard.emit(False,9)
+				
+			#Car 2 Status Change
+			#True means engine 2 is functional
+			if(self.ui.lineEdit_12.text() == "Off" or self.ui.lineEdit_12.text() == "OFF" or self.ui.lineEdit_12.text() == "off"):
+				self.car2_status9 = True	
+				self.ui.lineEdit_17.setText("Operational")
+				self.eBrakeTest9 = False
+				self.EmergencyBrakingTest()
+				self.sendYard9 = False
+				signals.tnm_sendyard.emit(False,9)
+			elif(self.ui.lineEdit_12.text() == "On" or self.ui.lineEdit_12.text() == "ON" or self.ui.lineEdit_12.text() == "on"):
+				self.car2_status9 = False	
+				self.ui.lineEdit_17.setText("Broken")
+				self.eBrakeTest9 = True
+				self.EmergencyBrakingTest()
+				self.sendYard9 = True	
+				signals.tnm_sendyard.emit(True,9)				
+			else:
+				self.car2_status9 = True
+				self.ui.lineEdit_12.setText("Off")
+				self.ui.lineEdit_17.setText("Operational")
+				self.eBrakeTest9 = False
+				self.EmergencyBrakingTest()
+				self.sendYard9 = False
+				signals.tnm_sendyard.emit(False,9)
+			
+			#Car 3 Status Change
+			#True means engine 3 is functional
+			if(self.ui.lineEdit_13.text() == "Off" or self.ui.lineEdit_13.text() == "OFF" or self.ui.lineEdit_13.text() == "off"):		
+				self.car3_status9 = True
+				self.ui.lineEdit_18.setText("Operational")
+				self.eBrakeTest9 = False
+				self.EmergencyBrakingTest()
+				self.sendYard9 = False
+				signals.tnm_sendyard.emit(False,9)
+			elif(self.ui.lineEdit_13.text() == "On" or self.ui.lineEdit_13.text() == "ON" or self.ui.lineEdit_13.text() == "on"):
+				self.car3_status9 = False
+				self.ui.lineEdit_18.setText("Broken")
+				self.eBrakeTest9 = True
+				self.EmergencyBrakingTest()
+				self.sendYard9 = True
+				signals.tnm_sendyard.emit(True,9)					
+			else:
+				self.car3_status9 = True
+				self.ui.lineEdit_13.setText("Off")
+				self.ui.lineEdit_18.setText("Operational")
+				self.eBrakeTest9 = False
+				self.EmergencyBrakingTest()
+				self.sendYard9 = False
+				signals.tnm_sendyard.emit(False,9)
+			
+			#Car 4 Status Change
+			#True means engine 4 is functional
+			if(self.ui.lineEdit_14.text() == "Off" or self.ui.lineEdit_14.text() == "OFF" or self.ui.lineEdit_14.text() == "off"):									
+				self.car4_status9 = True
+				self.ui.lineEdit_19.setText("Operational")
+				self.eBrakeTest9 = False
+				self.EmergencyBrakingTest()
+				self.sendYard9 = False
+				signals.tnm_sendyard.emit(False,9)
+			elif(self.ui.lineEdit_14.text() == "On" or self.ui.lineEdit_14.text() == "ON" or self.ui.lineEdit_14.text() == "on"):
+				self.car4_status9 = False
+				self.ui.lineEdit_19.setText("Broken")
+				self.eBrakeTest9 = True
+				self.EmergencyBrakingTest()
+				self.sendYard9 = True
+				signals.tnm_sendyard.emit(True,9)					
+			else:
+				self.car4_status9 = True
+				self.ui.lineEdit_14.setText("Off")
+				self.ui.lineEdit_19.setText("Operational")
+				self.eBrakeTest9 = False
+				self.EmergencyBrakingTest()
+				self.sendYard9 = False
+				signals.tnm_sendyard.emit(False,9)
+			
+			#Car 5 Status Change
+			#True means engine 5 is functional
+			if(self.ui.lineEdit_15.text() == "Off" or self.ui.lineEdit_15.text() == "OFF" or self.ui.lineEdit_15.text() == "off"):										
+				self.car5_status9 = True
+				self.ui.lineEdit_20.setText("Operational")
+				self.eBrakeTest9 = False
+				self.EmergencyBrakingTest()
+				self.sendYard9 = False
+				signals.tnm_sendyard.emit(False,9)
+			elif(self.ui.lineEdit_15.text() == "On" or self.ui.lineEdit_15.text() == "ON" or self.ui.lineEdit_15.text() == "on"):
+				self.car5_status9 = False
+				self.ui.lineEdit_20.setText("Broken")
+				self.eBrakeTest9 = True
+				self.EmergencyBrakingTest()
+				self.sendYard9 = True
+				signals.tnm_sendyard.emit(True,9)					
+			else:
+				self.car5_status9 = True
+				self.ui.lineEdit_15.setText("Off")
+				self.ui.lineEdit_20.setText("Operational")
+				self.eBrakeTest9 = False
+				self.EmergencyBrakingTest()
+				self.sendYard9 = False
+				signals.tnm_sendyard.emit(False,9)
+			#__________________________________________________________________
+		elif(self.trainNum10 == 1):
+			#Car 1 Status Change
+			#True means engine 1 is functional
+			if(self.ui.lineEdit_7.text() == "Off" or self.ui.lineEdit_7.text() == "OFF" or self.ui.lineEdit_7.text() == "off"):	
+				self.car1_status10 = True
+				self.ui.lineEdit_16.setText("Operational")
+				self.eBrakeTest10 = False
+				self.EmergencyBrakingTest()
+				self.sendYard10 = False
+				signals.tnm_sendyard.emit(False,10)
+			elif(self.ui.lineEdit_7.text() == "On" or self.ui.lineEdit_7.text() == "ON" or self.ui.lineEdit_7.text() == "on"):
+				self.car1_status10 = False	
+				self.ui.lineEdit_16.setText("Broken")
+				self.eBrakeTest10 = True
+				self.EmergencyBrakingTest()
+				self.sendYard10 = True
+				signals.tnm_sendyard.emit(True,10)				
+			else:
+				self.car1_status10 = True
+				self.ui.lineEdit_7.setText("Off")
+				self.ui.lineEdit_16.setText("Operational")
+				self.eBrakeTest10 = False
+				self.EmergencyBrakingTest()
+				self.sendYard10 = False
+				signals.tnm_sendyard.emit(False,10)
+				
+			#Car 2 Status Change
+			#True means engine 2 is functional
+			if(self.ui.lineEdit_12.text() == "Off" or self.ui.lineEdit_12.text() == "OFF" or self.ui.lineEdit_12.text() == "off"):
+				self.car2_status10 = True	
+				self.ui.lineEdit_17.setText("Operational")
+				self.eBrakeTest10 = False
+				self.EmergencyBrakingTest()
+				self.sendYard10 = False
+				signals.tnm_sendyard.emit(False,10)
+			elif(self.ui.lineEdit_12.text() == "On" or self.ui.lineEdit_12.text() == "ON" or self.ui.lineEdit_12.text() == "on"):
+				self.car2_status10 = False	
+				self.ui.lineEdit_17.setText("Broken")
+				self.eBrakeTest10 = True
+				self.EmergencyBrakingTest()
+				self.sendYard10 = True	
+				signals.tnm_sendyard.emit(True,10)				
+			else:
+				self.car2_status10 = True
+				self.ui.lineEdit_12.setText("Off")
+				self.ui.lineEdit_17.setText("Operational")
+				self.eBrakeTest10 = False
+				self.EmergencyBrakingTest()
+				self.sendYard10 = False
+				signals.tnm_sendyard.emit(False,10)
+			
+			#Car 3 Status Change
+			#True means engine 3 is functional
+			if(self.ui.lineEdit_13.text() == "Off" or self.ui.lineEdit_13.text() == "OFF" or self.ui.lineEdit_13.text() == "off"):		
+				self.car3_status10 = True
+				self.ui.lineEdit_18.setText("Operational")
+				self.eBrakeTest10 = False
+				self.EmergencyBrakingTest()
+				self.sendYard10 = False
+				signals.tnm_sendyard.emit(False,10)
+			elif(self.ui.lineEdit_13.text() == "On" or self.ui.lineEdit_13.text() == "ON" or self.ui.lineEdit_13.text() == "on"):
+				self.car3_status10 = False
+				self.ui.lineEdit_18.setText("Broken")
+				self.eBrakeTest10 = True
+				self.EmergencyBrakingTest()
+				self.sendYard10 = True
+				signals.tnm_sendyard.emit(True,10)					
+			else:
+				self.car3_status10 = True
+				self.ui.lineEdit_13.setText("Off")
+				self.ui.lineEdit_18.setText("Operational")
+				self.eBrakeTest10 = False
+				self.EmergencyBrakingTest()
+				self.sendYard10 = False
+				signals.tnm_sendyard.emit(False,10)
+			
+			#Car 4 Status Change
+			#True means engine 4 is functional
+			if(self.ui.lineEdit_14.text() == "Off" or self.ui.lineEdit_14.text() == "OFF" or self.ui.lineEdit_14.text() == "off"):									
+				self.car4_status10 = True
+				self.ui.lineEdit_19.setText("Operational")
+				self.eBrakeTest10 = False
+				self.EmergencyBrakingTest()
+				self.sendYard10 = False
+				signals.tnm_sendyard.emit(False,10)
+			elif(self.ui.lineEdit_14.text() == "On" or self.ui.lineEdit_14.text() == "ON" or self.ui.lineEdit_14.text() == "on"):
+				self.car4_status10 = False
+				self.ui.lineEdit_19.setText("Broken")
+				self.eBrakeTest10 = True
+				self.EmergencyBrakingTest()
+				self.sendYard10 = True
+				signals.tnm_sendyard.emit(True,10)					
+			else:
+				self.car4_status10 = True
+				self.ui.lineEdit_14.setText("Off")
+				self.ui.lineEdit_19.setText("Operational")
+				self.eBrakeTest10 = False
+				self.EmergencyBrakingTest()
+				self.sendYard10 = False
+				signals.tnm_sendyard.emit(False,10)
+			
+			#Car 5 Status Change
+			#True means engine 5 is functional
+			if(self.ui.lineEdit_15.text() == "Off" or self.ui.lineEdit_15.text() == "OFF" or self.ui.lineEdit_15.text() == "off"):										
+				self.car5_status10 = True
+				self.ui.lineEdit_20.setText("Operational")
+				self.eBrakeTest10 = False
+				self.EmergencyBrakingTest()
+				self.sendYard10 = False
+				signals.tnm_sendyard.emit(False,10)
+			elif(self.ui.lineEdit_15.text() == "On" or self.ui.lineEdit_15.text() == "ON" or self.ui.lineEdit_15.text() == "on"):
+				self.car5_status10 = False
+				self.ui.lineEdit_20.setText("Broken")
+				self.eBrakeTest10 = True
+				self.EmergencyBrakingTest()
+				self.sendYard10 = True
+				signals.tnm_sendyard.emit(True,10)					
+			else:
+				self.car5_status10 = True
+				self.ui.lineEdit_15.setText("Off")
+				self.ui.lineEdit_20.setText("Operational")
+				self.eBrakeTest10 = False
+				self.EmergencyBrakingTest()
+				self.sendYard10 = False
+				signals.tnm_sendyard.emit(False,10)
+			#__________________________________________________________________
 	
 #_______________________________________________________________________
 	#function to address Signal Pickup Failure Status's
@@ -2386,7 +2903,60 @@ class tnm_failureTest(QObject):
 				self.EmergencyBrakingTest()
 				self.sendYard8 = False
 				signals.tnm_sendyard.emit(False,8)
-	
+			#_________________________________________________________________
+		elif(self.trainNum9 == 1):
+			#train 9 Status Change
+			#True means train 9 is functional
+			if(self.ui.lineEdit_21.text() == "Off" or self.ui.lineEdit_21.text() == "OFF" or self.ui.lineEdit_21.text() == "off"):	
+				self.train9_status = True
+				self.ui.lineEdit_26.setText("Operational")
+				self.eBrakeTest9 = False
+				self.EmergencyBrakingTest()
+				self.sendYard9 = False
+				signals.tnm_sendyard.emit(False,9)
+			elif(self.ui.lineEdit_21.text() == "On" or self.ui.lineEdit_21.text() == "ON" or self.ui.lineEdit_21.text() == "on"):
+				self.train9_status = False	
+				self.ui.lineEdit_26.setText("Broken")	
+				self.eBrakeTest9 = True
+				self.EmergencyBrakingTest()
+				self.sendYard9 = True
+				signals.tnm_sendyard.emit(True,9)			
+			else:
+				self.train9_status = True
+				self.ui.lineEdit_21.setText("Off")
+				self.ui.lineEdit_26.setText("Operational")
+				self.eBrakeTest9 = False
+				self.EmergencyBrakingTest()
+				self.sendYard9 = False
+				signals.tnm_sendyard.emit(False,9)
+			#_________________________________________________________________
+		elif(self.trainNum10 == 1):
+			#train 10 Status Change
+			#True means train 10 is functional
+			if(self.ui.lineEdit_21.text() == "Off" or self.ui.lineEdit_21.text() == "OFF" or self.ui.lineEdit_21.text() == "off"):	
+				self.train10_status = True
+				self.ui.lineEdit_26.setText("Operational")
+				self.eBrakeTest10 = False
+				self.EmergencyBrakingTest()
+				self.sendYard10 = False
+				signals.tnm_sendyard.emit(False,10)
+			elif(self.ui.lineEdit_21.text() == "On" or self.ui.lineEdit_21.text() == "ON" or self.ui.lineEdit_21.text() == "on"):
+				self.train10_status = False	
+				self.ui.lineEdit_26.setText("Broken")	
+				self.eBrakeTest10 = True
+				self.EmergencyBrakingTest()
+				self.sendYard10 = True
+				signals.tnm_sendyard.emit(True,10)			
+			else:
+				self.train10_status = True
+				self.ui.lineEdit_21.setText("Off")
+				self.ui.lineEdit_26.setText("Operational")
+				self.eBrakeTest10 = False
+				self.EmergencyBrakingTest()
+				self.sendYard10 = False
+				signals.tnm_sendyard.emit(False,10)
+			#_________________________________________________________________
+			
 
 	#Function to check which line the train is on
 	def setTrainInfo(self, tkmTrainNum, tkmTrainLine):
@@ -2408,6 +2978,10 @@ class tnm_failureTest(QObject):
 			self.trainNum7 = 1
 		elif(self.trainNum == 8):
 			self.trainNum8 = 1
+		elif(self.trainNum == 9):
+			self.trainNum9 = 1
+		elif(self.trainNum == 10):
+			self.trainNum10 = 1
 		
 		#Set route line
 		if(tkmTrainLine == "Red"):
@@ -2446,79 +3020,79 @@ class tnm_display(QObject):
 
 #Define variables to be used in tnm_display
 		self.TrainNum = 0
-		self.TrainName1, self.TrainName2, self.TrainName3, self.TrainName4, self.TrainName5, self.TrainName6, self.TrainName7, self.TrainName8 = " -- Information"," -- Information"," -- Information"," -- Information"," -- Information"," -- Information"," -- Information"," -- Information"
-		self.train1, self.train2, self.train3, self.train4, self.train5, self.train6, self.train7, self.train8 = "Train 1 Information", "Train 2 Information", "Train 3 Information", "Train 4 Information", "Train 5 Information", "Train 6 Information", "Train 7 Information", "Train 8 Information"
-		#Train Number x - 0 if not added, 1 if on the track
-		self.TrainNum1, self.TrainNum2, self.TrainNum3, self.TrainNum4, self.TrainNum5, self.TrainNum6, self.TrainNum7, self.TrainNum8 = 0,0,0,0,0,0,0,0	
+		self.TrainName1, self.TrainName2, self.TrainName3, self.TrainName4, self.TrainName5, self.TrainName6, self.TrainName7, self.TrainName8, self.TrainName9, self.TrainName10 = " -- Information"," -- Information"," -- Information"," -- Information"," -- Information"," -- Information"," -- Information"," -- Information", " -- Information", " -- Information"
+		self.train1, self.train2, self.train3, self.train4, self.train5, self.train6, self.train7, self.train8, self.train9, self.train10 = "Train 1 Information", "Train 2 Information", "Train 3 Information", "Train 4 Information", "Train 5 Information", "Train 6 Information", "Train 7 Information", "Train 8 Information", "Train 9 Information", "Train 10 Information"
+		#Train Number x - 0 if not added (or destroyed), 1 if on the track
+		self.TrainNum1, self.TrainNum2, self.TrainNum3, self.TrainNum4, self.TrainNum5, self.TrainNum6, self.TrainNum7, self.TrainNum8, self.TrainNum9, self.TrainNum10 = 0,0,0,0,0,0,0,0,0,0	
 		self.timeSeconds = 0
 		signals.tkm_get_train_num.connect(self.setTrainStart)
 	#authority connected from tkm
-		self.block_authority1, self.block_authority2, self.block_authority3, self.block_authority4, self.block_authority5, self.block_authority6, self.block_authority7, self.block_authority8 = False,False,False,False,False,False,False,False
+		self.block_authority1, self.block_authority2, self.block_authority3, self.block_authority4, self.block_authority5, self.block_authority6, self.block_authority7, self.block_authority8, self.block_authority9, self.block_authority10 = False,False,False,False,False,False,False,False,False,False
 		signals.tkm_get_train_auth.connect(self.SetAuthority)
 	#power connected from tnc
-		self.curr_power1, self.curr_power2, self.curr_power3, self.curr_power4, self.curr_power5, self.curr_power6, self.curr_power7, self.curr_power8 = 0,0,0,0,0,0,0,0
+		self.curr_power1, self.curr_power2, self.curr_power3, self.curr_power4, self.curr_power5, self.curr_power6, self.curr_power7, self.curr_power8, self.curr_power9, self.curr_power10 = 0,0,0,0,0,0,0,0,0,0
 		signals.tnc_power.connect(self.SetPower)
-		self.curr_speed1, self.curr_speed2, self.curr_speed3, self.curr_speed4, self.curr_speed5, self.curr_speed6, self.curr_speed7, self.curr_speed8 = 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-		self.curr_accl1, self.curr_accl2, self.curr_accl3, self.curr_accl4, self.curr_accl5, self.curr_accl6, self.curr_accl7, self.curr_accl8 = 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-		self.comm_speed1, self.comm_speed2, self.comm_speed3, self.comm_speed4, self.comm_speed5, self.comm_speed6, self.comm_speed7, self.comm_speed8 = 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+		self.curr_speed1, self.curr_speed2, self.curr_speed3, self.curr_speed4, self.curr_speed5, self.curr_speed6, self.curr_speed7, self.curr_speed8, self.curr_speed9, self.curr_speed10 = 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+		self.curr_accl1, self.curr_accl2, self.curr_accl3, self.curr_accl4, self.curr_accl5, self.curr_accl6, self.curr_accl7, self.curr_accl8, self.curr_accl9, self.curr_accl10 = 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+		self.comm_speed1, self.comm_speed2, self.comm_speed3, self.comm_speed4, self.comm_speed5, self.comm_speed6, self.comm_speed7, self.comm_speed8, self.comm_speed9, self.comm_speed10 = 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 		signals.tkm_get_speed.connect(self.SetCommSpeed)
 		#train starts at rest v		-> #Used as value for inital speed for curr_speed calculation. Then is set to curr_speed for next calculation
-		self.SpeedN11, self.SpeedN12, self.SpeedN13, self.SpeedN14, self.SpeedN15, self.SpeedN16, self.SpeedN17, self.SpeedN18 = 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0				
-		self.AcclN11, self.AcclN12, self.AcclN13, self.AcclN14, self.AcclN15, self.AcclN16, self.AcclN17, self.AcclN18 = 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+		self.SpeedN11, self.SpeedN12, self.SpeedN13, self.SpeedN14, self.SpeedN15, self.SpeedN16, self.SpeedN17, self.SpeedN18, self.SpeedN19, self.SpeedN110 = 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0			
+		self.AcclN11, self.AcclN12, self.AcclN13, self.AcclN14, self.AcclN15, self.AcclN16, self.AcclN17, self.AcclN18, self.AcclN19, self.AcclN110 = 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 	#Block length connected from tkm
-		self.block_length1, self.block_length2, self.block_length3, self.block_length4, self.block_length5, self.block_length6, self.block_length7, self.block_length8 = 1,1,1,1,1,1,1,1
-		self.block_num1, self.block_num2, self.block_num3, self.block_num4, self.block_num5, self.block_num6, self.block_num7, self.block_num8 = 0,0,0,0,0,0,0,0
-		self.block_finished1, self.block_finished2, self.block_finished3, self.block_finished4, self.block_finished5, self.block_finished6, self.block_finished7, self.block_finished8 = False,False,False,False,False,False,False,False
+		self.block_length1, self.block_length2, self.block_length3, self.block_length4, self.block_length5, self.block_length6, self.block_length7, self.block_length8, self.block_length9, self.block_length10 = 1,1,1,1,1,1,1,1,1,1
+		self.block_num1, self.block_num2, self.block_num3, self.block_num4, self.block_num5, self.block_num6, self.block_num7, self.block_num8, self.block_num9, self.block_num10 = 0,0,0,0,0,0,0,0,0,0
+		self.block_finished1, self.block_finished2, self.block_finished3, self.block_finished4, self.block_finished5, self.block_finished6, self.block_finished7, self.block_finished8, self.block_finished9, self.block_finished10 = False,False,False,False,False,False,False,False,False,False
 		self.timeBlock = 0
-		self.dist_traveled1, self.dist_traveled2, self.dist_traveled3, self.dist_traveled4, self.dist_traveled5, self.dist_traveled6, self.dist_traveled7, self.dist_traveled8  = 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+		self.dist_traveled1, self.dist_traveled2, self.dist_traveled3, self.dist_traveled4, self.dist_traveled5, self.dist_traveled6, self.dist_traveled7, self.dist_traveled8, self.dist_traveled9, self.dist_traveled10  = 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 		signals.tkm_get_blength.connect(self.blockLen)
 		signals.tkm_get_block.connect(self.blockNum)
 	#brake states
-		self.Brake1, self.Brake2, self.Brake3, self.Brake4, self.Brake5, self.Brake6, self.Brake7, self.Brake8  = False,False,False,False,False,False,False,False
-		self.eBrake1, self.eBrake2, self.eBrake3, self.eBrake4, self.eBrake5, self.eBrake6, self.eBrake7, self.eBrake8 = False,False,False,False,False,False,False,False
+		self.Brake1, self.Brake2, self.Brake3, self.Brake4, self.Brake5, self.Brake6, self.Brake7, self.Brake8, self.Brake9, self.Brake10  = False,False,False,False,False,False,False,False,False,False
+		self.eBrake1, self.eBrake2, self.eBrake3, self.eBrake4, self.eBrake5, self.eBrake6, self.eBrake7, self.eBrake8, self.eBrake9, self.eBrake10 = False,False,False,False,False,False,False,False,False,False
 		signals.tnc_emergency_brake.connect(self.SetEBrake)
 		signals.tnc_service_brake.connect(self.SetServiceBrake)
 	#Occupancy 
-		self.pass_count1, self.pass_count2, self.pass_count3, self.pass_count4, self.pass_count5, self.pass_count6, self.pass_count7, self.pass_count8 = 0,0,0,0,0,0,0,0
+		self.pass_count1, self.pass_count2, self.pass_count3, self.pass_count4, self.pass_count5, self.pass_count6, self.pass_count7, self.pass_count8, self.pass_count9, self.pass_count10 = 0,0,0,0,0,0,0,0,0,0
 		signals.tkm_get_pass_count.connect(self.SetOccupancy)
 		self.crew_count = 3
 	#Route Information
 		self.Mass_Empty = (5*40.9)								#Tons with no passengers/crew
-		self.Occupancy1, self.Occupancy2, self.Occupancy3, self.Occupancy4, self.Occupancy5, self.Occupancy6, self.Occupancy7, self.Occupancy8 = 3,3,3,3,3,3,3,3
-		self.RouteName1, self.RouteName2, self.RouteName3, self.RouteName4, self.RouteName5, self.RouteName6, self.RouteName7, self.RouteName8, = " --- "," --- "," --- "," --- "," --- "," --- "," --- "," --- "
-		self.TrainDirection1, self.TrainDirection2, self.TrainDirection3, self.TrainDirection4, self.TrainDirection5, self.TrainDirection6, self.TrainDirection7, self.TrainDirection8 = 1,1,1,1,1,1,1,1
+		self.Occupancy1, self.Occupancy2, self.Occupancy3, self.Occupancy4, self.Occupancy5, self.Occupancy6, self.Occupancy7, self.Occupancy8, self.Occupancy9, self.Occupancy10 = 3,3,3,3,3,3,3,3,3,3
+		self.RouteName1, self.RouteName2, self.RouteName3, self.RouteName4, self.RouteName5, self.RouteName6, self.RouteName7, self.RouteName8, self.RouteName9, self.RouteName10 = " --- "," --- "," --- "," --- "," --- "," --- "," --- "," --- "," --- "," --- "
+		self.TrainDirection1, self.TrainDirection2, self.TrainDirection3, self.TrainDirection4, self.TrainDirection5, self.TrainDirection6, self.TrainDirection7, self.TrainDirection8, self.TrainDirection9, self.TrainDirection10 = 1,1,1,1,1,1,1,1,1,1
 		#internal direction for train on the red line
-		self.TNMdirectionR1, self.TNMdirectionR2, self.TNMdirectionR3, self.TNMdirectionR4, self.TNMdirectionR5, self.TNMdirectionR6, self.TNMdirectionR7, self.TNMdirectionR8 = 1,1,1,1,1,1,1,1
+		self.TNMdirectionR1, self.TNMdirectionR2, self.TNMdirectionR3, self.TNMdirectionR4, self.TNMdirectionR5, self.TNMdirectionR6, self.TNMdirectionR7, self.TNMdirectionR8, self.TNMdirectionR9, self.TNMdirectionR10 = 1,1,1,1,1,1,1,1,1,1
 		#internal direction for train on the green line
-		self.TNMdirectionG1, self.TNMdirectionG2, self.TNMdirectionG3, self.TNMdirectionG4, self.TNMdirectionG5, self.TNMdirectionG6, self.TNMdirectionG7, self.TNMdirectionG8 = 1,1,1,1,1,1,1,1
-		self.CurrStation1, self.CurrStation2, self.CurrStation3, self.CurrStation4, self.CurrStation5, self.CurrStation6, self.CurrStation7, self.CurrStation8 = "Yard","Yard","Yard","Yard","Yard","Yard","Yard","Yard"
-		self.NextStation1, self.NextStation2, self.NextStation3, self.NextStation4, self.NextStation5, self.NextStation6, self.NextStation7, self.NextStation8 = " --- "," --- "," --- "," --- "," --- "," --- "," --- "," --- "
-		self.DoorStatus1, self.DoorStatus2, self.DoorStatus3, self.DoorStatus4, self.DoorStatus5, self.DoorStatus6, self.DoorStatus7, self.DoorStatus8 = False,False,False,False,False,False,False,False
-		self.LeftDoor1, self.LeftDoor2, self.LeftDoor3, self.LeftDoor4, self.LeftDoor5, self.LeftDoor6, self.LeftDoor7, self.LeftDoor8 = False,False,False,False,False,False,False,False
-		self.RightDoor1, self.RightDoor2, self.RightDoor3, self.RightDoor4, self.RightDoor5, self.RightDoor6, self.RightDoor7, self.RightDoor8 = False,False,False,False,False,False,False,False
+		self.TNMdirectionG1, self.TNMdirectionG2, self.TNMdirectionG3, self.TNMdirectionG4, self.TNMdirectionG5, self.TNMdirectionG6, self.TNMdirectionG7, self.TNMdirectionG8, self.TNMdirectionG9, self.TNMdiretionG10 = 1,1,1,1,1,1,1,1,1,1
+		self.CurrStation1, self.CurrStation2, self.CurrStation3, self.CurrStation4, self.CurrStation5, self.CurrStation6, self.CurrStation7, self.CurrStation8, self.CurrStation9, self.CurrStation10 = "Yard","Yard","Yard","Yard","Yard","Yard","Yard","Yard","Yard","Yard"
+		self.NextStation1, self.NextStation2, self.NextStation3, self.NextStation4, self.NextStation5, self.NextStation6, self.NextStation7, self.NextStation8, self.NextStation9, self.NextStation10 = " --- "," --- "," --- "," --- "," --- "," --- "," --- "," --- "," --- "," --- "
+		self.DoorStatus1, self.DoorStatus2, self.DoorStatus3, self.DoorStatus4, self.DoorStatus5, self.DoorStatus6, self.DoorStatus7, self.DoorStatus8, self.DoorStatus9, self.DoorStatus10 = False,False,False,False,False,False,False,False,False,False
+		self.LeftDoor1, self.LeftDoor2, self.LeftDoor3, self.LeftDoor4, self.LeftDoor5, self.LeftDoor6, self.LeftDoor7, self.LeftDoor8, self.LeftDoor9, self.LeftDoor10 = False,False,False,False,False,False,False,False,False,False
+		self.RightDoor1, self.RightDoor2, self.RightDoor3, self.RightDoor4, self.RightDoor5, self.RightDoor6, self.RightDoor7, self.RightDoor8, self.RightDoor9, self.RightDoor10 = False,False,False,False,False,False,False,False,False,False
 		signals.tnc_left_door.connect(self.setRightDoor)
 		signals.tnc_right_door.connect(self.setLeftDoor)
 	#Beacon ID connected from tkm
-		self.beacon_bin1, self.beacon_bin1, self.beacon_bin1, self.beacon_bin1, self.beacon_bin1, self.beacon_bin1, self.beacon_bin1, self.beacon_bin1  = 0b00000000,0b00000000,0b00000000,0b00000000,0b00000000,0b00000000,0b00000000,0b00000000
+		self.beacon_bin1, self.beacon_bin2, self.beacon_bin3, self.beacon_bin4, self.beacon_bin5, self.beacon_bin6, self.beacon_bin7, self.beacon_bin8, self.beacon_bin9, self.beacon_bin10 = 0b00000000,0b00000000,0b00000000,0b00000000,0b00000000,0b00000000,0b00000000,0b00000000,0b00000000,0b00000000
 		#self.BeaconID = 00000000								#bit1 (red vs green) bit2 (UG vs Station) bit3 (Left side (62->63) vs Right side(63->64))
 		signals.tkm_get_beacon.connect(self.SetBeaconID)
 		self.BeaconIDStatus = True
 	#Internal control status's
-		self.lights_Cab1, self.lights_Cab2, self.lights_Cab3, self.lights_Cab4, self.lights_Cab5, self.lights_Cab6, self.lights_Cab7, self.lights_Cab8 = True,True,True,True,True,True,True,True
-		self.lights_High1, self.lights_High2, self.lights_High3, self.lights_High4, self.lights_High5, self.lights_High6, self.lights_High7, self.lights_High8 = False,False,False,False,False,False,False,False
-		self.lights_Tun1, self.lights_Tun2, self.lights_Tun3, self.lights_Tun4, self.lights_Tun5, self.lights_Tun6, self.lights_Tun7, self.lights_Tun8  = False,False,False,False,False,False,False,False
+		self.lights_Cab1, self.lights_Cab2, self.lights_Cab3, self.lights_Cab4, self.lights_Cab5, self.lights_Cab6, self.lights_Cab7, self.lights_Cab8, self.lights_Cab9, self.lights_Cab10 = True,True,True,True,True,True,True,True,True,True
+		self.lights_High1, self.lights_High2, self.lights_High3, self.lights_High4, self.lights_High5, self.lights_High6, self.lights_High7, self.lights_High8, self.lights_High9, self.lights_High10 = False,False,False,False,False,False,False,False,False,False
+		self.lights_Tun1, self.lights_Tun2, self.lights_Tun3, self.lights_Tun4, self.lights_Tun5, self.lights_Tun6, self.lights_Tun7, self.lights_Tun8, self.lights_Tun9, self.lights_Tun10 = False,False,False,False,False,False,False,False,False,False
 		signals.tnc_cab_light.connect(self.setCabLight)
 		signals.tnc_tunnel_light.connect(self.setTunLight)
 		signals.tnc_high_beam_light.connect(self.setHighLight)
 		#degrees Fahrenheit
-		self.set_temp1, self.set_temp2, self.set_temp3, self.set_temp4, self.set_temp5, self.set_temp6, self.set_temp7, self.set_temp8 = 68,68,68,68,68,68,68,68
-		self.curr_temp1, self.curr_temp2, self.curr_temp3, self.curr_temp4, self.curr_temp5, self.curr_temp6, self.curr_temp7, self.curr_temp8 = 68,68,68,68,68,68,68,68	
-		self.announce1, self.announce2, self.announce3, self.announce4, self.announce5, self.announce6, self.announce7, self.announce8  = "Watch your step. Have a great day!","Watch your step. Have a great day!","Watch your step. Have a great day!","Watch your step. Have a great day!","Watch your step. Have a great day!","Watch your step. Have a great day!","Watch your step. Have a great day!","Watch your step. Have a great day!"
+		self.set_temp1, self.set_temp2, self.set_temp3, self.set_temp4, self.set_temp5, self.set_temp6, self.set_temp7, self.set_temp8, self.set_temp9, self.set_temp10 = 68,68,68,68,68,68,68,68,68,68
+		self.curr_temp1, self.curr_temp2, self.curr_temp3, self.curr_temp4, self.curr_temp5, self.curr_temp6, self.curr_temp7, self.curr_temp8, self.curr_temp9, self.curr_temp10 = 68,68,68,68,68,68,68,68,68,68
+		self.announce1, self.announce2, self.announce3, self.announce4, self.announce5, self.announce6, self.announce7, self.announce8, self.announce9, self.announce10 = "Watch your step. Have a great day!","Watch your step. Have a great day!","Watch your step. Have a great day!","Watch your step. Have a great day!","Watch your step. Have a great day!","Watch your step. Have a great day!","Watch your step. Have a great day!","Watch your step. Have a great day!","Watch your step. Have a great day!","Watch your step. Have a great day!"
 		signals.tnc_announcement.connect(self.SetAnnounce)
 
 
 		#Defining Actions for specific UI Interactions
-		signals.time.connect(self.SetCommSpeed)
+		
 		signals.time.connect(self.update_MoveStat)						#Update Movement Statistics
 		
 		signals.time.connect(self.update_TrainStat)						#Update Train Statistics
@@ -2581,6 +3155,7 @@ class tnm_display(QObject):
 					elif(self.RouteName1 == "Green Line"):
 						signals.tnm_block_finished_green.emit(1)
 					signals.tkm_get_blength.connect(self.blockLen)
+					self.SetCommSpeed()
 				
 			#Update brake status
 			if (self.Brake1 == True or self.eBrake1 == True):
@@ -2623,6 +3198,7 @@ class tnm_display(QObject):
 					elif(self.RouteName2 == "Green Line"):
 						signals.tnm_block_finished_green.emit(2)
 					signals.tkm_get_blength.connect(self.blockLen)
+					self.SetCommSpeed()
 				
 			#Update brake status
 			if (self.Brake2 == True or self.eBrake2 == True):
@@ -2882,6 +3458,90 @@ class tnm_display(QObject):
 			else:
 				self.ui.lineEdit_2.setText("Off")
 		#___________________________________________________________________________
+		elif(self.TrainNum9 == 1):
+			#Address Authority Here
+			signals.tnm_authority.emit(self.block_authority9,9)
+			#Address Commanded Speed
+			signals.tnm_comm_speed.emit(self.comm_speed9,9)
+			signals.tnc_service_brake.connect(self.SetServiceBrake)
+			#Calculate current speed
+			self.curr_speed9, self.current_accl9 = set_curr_speed(self.timeSeconds, self.eBrake9, self.Brake9, self.block_authority9, self.curr_power9, self.Occupancy9, self.SpeedN19, self.AcclN19, self.comm_speed9)
+
+			#Set At - 1 variables for use in next sec. speed calculation
+			self.SpeedN19 = self.curr_speed9
+			self.AcclN19 = self.current_accl9
+			
+			#Update current speed given power value
+			self.ui.lineEdit.setText(str(self.curr_speed9) + " mph")
+			#Send the new calculated current speed to Train Controller
+			signals.tnm_curr_speed.emit(self.curr_speed9,9)
+			
+			#Variable to check speed, then calculate when block changes based on speed
+			curr_speed_mps = 0.0
+			#calculations of current distance
+			curr_speed_mps = MiletoMeter(self.curr_speed9)					#MPH to mps
+			self.dist_traveled9 = (self.dist_traveled9 + curr_speed_mps*(1))		#distance in meters m/s *s = m
+			#If distance > length, change blocks and emit signal
+			if(curr_speed_mps > 0.0):
+				if(self.dist_traveled9 >= self.block_length9):
+					self.block_finished9 = True
+					print(str(self.block_finished9) + " 9 change blocks")
+					
+					self.dist_traveled9 = 0
+					if(self.RouteName9 == "Red Line"):
+						signals.tnm_block_finished_red.emit(9)
+					elif(self.RouteName9 == "Green Line"):
+						signals.tnm_block_finished_green.emit(9)
+					signals.tkm_get_blength.connect(self.blockLen)
+				
+			#Update brake status
+			if (self.Brake9 == True or self.eBrake9 == True):
+				self.ui.lineEdit_2.setText("On")
+			else:
+				self.ui.lineEdit_2.setText("Off")
+		#___________________________________________________________________________
+		elif(self.TrainNum10 == 1):
+			#Address Authority Here
+			signals.tnm_authority.emit(self.block_authority10,10)
+			#Address Commanded Speed
+			signals.tnm_comm_speed.emit(self.comm_speed10,10)
+			signals.tnc_service_brake.connect(self.SetServiceBrake)
+			#Calculate current speed
+			self.curr_speed10, self.current_accl10 = set_curr_speed(self.timeSeconds, self.eBrake10, self.Brake10, self.block_authority10, self.curr_power10, self.Occupancy10, self.SpeedN110, self.AcclN110, self.comm_speed10)
+
+			#Set At - 1 variables for use in next sec. speed calculation
+			self.SpeedN110 = self.curr_speed10
+			self.AcclN110 = self.current_accl10
+			
+			#Update current speed given power value
+			self.ui.lineEdit.setText(str(self.curr_speed10) + " mph")
+			#Send the new calculated current speed to Train Controller
+			signals.tnm_curr_speed.emit(self.curr_speed10,10)
+			
+			#Variable to check speed, then calculate when block changes based on speed
+			curr_speed_mps = 0.0
+			#calculations of current distance
+			curr_speed_mps = MiletoMeter(self.curr_speed10)					#MPH to mps
+			self.dist_traveled10 = (self.dist_traveled10 + curr_speed_mps*(1))		#distance in meters m/s *s = m
+			#If distance > length, change blocks and emit signal
+			if(curr_speed_mps > 0.0):
+				if(self.dist_traveled10 >= self.block_length10):
+					self.block_finished10 = True
+					print(str(self.block_finished10) + " 10 change blocks")
+					
+					self.dist_traveled10 = 0
+					if(self.RouteName10 == "Red Line"):
+						signals.tnm_block_finished_red.emit(10)
+					elif(self.RouteName10 == "Green Line"):
+						signals.tnm_block_finished_green.emit(10)
+					signals.tkm_get_blength.connect(self.blockLen)
+				
+			#Update brake status
+			if (self.Brake10 == True or self.eBrake10 == True):
+				self.ui.lineEdit_2.setText("On")
+			else:
+				self.ui.lineEdit_2.setText("Off")
+		#___________________________________________________________________________
 		
 		
 		#Don't allow changes to lineEdits
@@ -2973,6 +3633,26 @@ class tnm_display(QObject):
 			#Update current Mass of Train
 			self.Occupancy8 = pass_crew_count(self.pass_count8, self.crew_count)
 			self.total_mass = ((self.Occupancy8*56.699)/2000) + self.Mass_Empty
+			self.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
+		#____________________________________
+		elif(self.TrainNum9 == 1):
+			#Update pass_count
+			self.ui.lineEdit_6.setText(str(self.pass_count9))
+			#Update crew_count
+			self.ui.lineEdit_7.setText(str(self.crew_count))
+			#Update current Mass of Train
+			self.Occupancy9 = pass_crew_count(self.pass_count9, self.crew_count)
+			self.total_mass = ((self.Occupancy9*56.699)/2000) + self.Mass_Empty
+			self.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
+		#____________________________________
+		elif(self.TrainNum10 == 1):
+			#Update pass_count
+			self.ui.lineEdit_6.setText(str(self.pass_count10))
+			#Update crew_count
+			self.ui.lineEdit_7.setText(str(self.crew_count))
+			#Update current Mass of Train
+			self.Occupancy10 = pass_crew_count(self.pass_count10, self.crew_count)
+			self.total_mass = ((self.Occupancy10*56.699)/2000) + self.Mass_Empty
 			self.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
 		#____________________________________
 		
@@ -3330,6 +4010,92 @@ class tnm_display(QObject):
 			else:
 				self.ui.lineEdit_15.setText("On")
 			#____________________________________________________________________
+		elif(self.TrainNum9 == 1):
+			#Update Train Numbering Header
+			self.ui.label_23.setText(self.TrainName9)
+			#Update Route Line
+			self.ui.lineEdit_9.setText(self.RouteName9)
+			#Update Current and Next Station based on Line and direction
+			self.ui.lineEdit_19.setText(self.CurrStation9)
+			self.ui.lineEdit_10.setText(self.NextStation9)
+			
+			#Update Doors Status		#Doors will be held open for one minute
+			if(self.LeftDoor9 == True or self.RightDoor9 == True):
+				self.DoorStatus9 = True
+			if (self.DoorStatus9 == False):
+				self.ui.lineEdit_11.setText("Closed")
+				self.Brake9 = False
+			elif(self.DoorStatus9 == True):
+				self.ui.lineEdit_11.setText("Open")
+				signals.tnm_train_stop_num.emit(9)
+				self.Brake9 = True
+				
+			#Update Beacon ID Status
+			if (self.BeaconIDStatus == False):
+				self.ui.lineEdit_12.setText("Waiting")
+			else:
+				self.ui.lineEdit_12.setText("Recieved")
+				signals.tnm_beaconID.emit(self.beacon_bin9,9)
+			
+			#update Cabin Lights status
+			if (self.lights_Cab9 == False):
+				self.ui.lineEdit_13.setText("Off")
+			else:
+				self.ui.lineEdit_13.setText("On")
+			#update High Beam Lights status
+			if (self.lights_High9 == False):
+				self.ui.lineEdit_14.setText("Off")
+			else:
+				self.ui.lineEdit_14.setText("On")
+			#update Tunnel Lights status
+			if (self.lights_Tun9 == False):
+				self.ui.lineEdit_15.setText("Off")
+			else:
+				self.ui.lineEdit_15.setText("On")
+			#____________________________________________________________________
+		elif(self.TrainNum10 == 1):
+			#Update Train Numbering Header
+			self.ui.label_23.setText(self.TrainName10)
+			#Update Route Line
+			self.ui.lineEdit_9.setText(self.RouteName10)
+			#Update Current and Next Station based on Line and direction
+			self.ui.lineEdit_19.setText(self.CurrStation10)
+			self.ui.lineEdit_10.setText(self.NextStation10)
+			
+			#Update Doors Status		#Doors will be held open for one minute
+			if(self.LeftDoor10 == True or self.RightDoor10 == True):
+				self.DoorStatus10 = True
+			if (self.DoorStatus10 == False):
+				self.ui.lineEdit_11.setText("Closed")
+				self.Brake10 = False
+			elif(self.DoorStatus10 == True):
+				self.ui.lineEdit_11.setText("Open")
+				signals.tnm_train_stop_num.emit(10)
+				self.Brake10 = True
+				
+			#Update Beacon ID Status
+			if (self.BeaconIDStatus == False):
+				self.ui.lineEdit_12.setText("Waiting")
+			else:
+				self.ui.lineEdit_12.setText("Recieved")
+				signals.tnm_beaconID.emit(self.beacon_bin10,10)
+			
+			#update Cabin Lights status
+			if (self.lights_Cab10 == False):
+				self.ui.lineEdit_13.setText("Off")
+			else:
+				self.ui.lineEdit_13.setText("On")
+			#update High Beam Lights status
+			if (self.lights_High10 == False):
+				self.ui.lineEdit_14.setText("Off")
+			else:
+				self.ui.lineEdit_14.setText("On")
+			#update Tunnel Lights status
+			if (self.lights_Tun10 == False):
+				self.ui.lineEdit_15.setText("Off")
+			else:
+				self.ui.lineEdit_15.setText("On")
+			#____________________________________________________________________
 		
 		#Don't allow changes to lineEdits
 		self.ui.lineEdit_9.setReadOnly(True)
@@ -3446,6 +4212,32 @@ class tnm_display(QObject):
 				self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: black;")
 				self.eBrake8 = False
 				signals.tnm_ebrake.emit(self.eBrake8,8)
+		#_____________________________________
+		elif(self.TrainNum9 == 1):
+			if not self.eBrake9:
+				self.ui.pushButton.setText("CANCEL")
+				self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
+				self.eBrake9 = True
+				signals.tnm_ebrake.emit(self.eBrake9,9)
+				print("eBrake is " + str(self.eBrake9))
+			else:
+				self.ui.pushButton.setText("Emergency Brake")
+				self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: black;")
+				self.eBrake9 = False
+				signals.tnm_ebrake.emit(self.eBrake9,9)
+		#_____________________________________
+		elif(self.TrainNum10 == 1):
+			if not self.eBrake10:
+				self.ui.pushButton.setText("CANCEL")
+				self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
+				self.eBrake10 = True
+				signals.tnm_ebrake.emit(self.eBrake10,10)
+				print("eBrake is " + str(self.eBrake10))
+			else:
+				self.ui.pushButton.setText("Emergency Brake")
+				self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: black;")
+				self.eBrake10 = False
+				signals.tnm_ebrake.emit(self.eBrake10,10)
 		#_____________________________________
 		
 #_______________________________________________________________________
@@ -3588,6 +4380,40 @@ class tnm_display(QObject):
 			self.ui.lineEdit_16.setText(str(temp_control(self.set_temp8, self.curr_temp8)) + " F")
 			#signals.tnm_cab_temp.emit(self.curr_temp8)
 			#_______________________________________________________________
+		elif(self.TrainNum9 == 1):
+			AlphaFlag9 = False
+			#Error checking to make sure input is only an INT
+			for i in self.ui.lineEdit_17.text():
+				if(i.isalpha() == True):
+					AlphaFlag9 = True
+			if(AlphaFlag9 == True):
+				self.ui.lineEdit_17.setText(str(self.curr_temp9))
+				self.set_temp9 = self.curr_temp9
+			elif(self.ui.lineEdit_17.text().isdigit() == True):
+				AlphaFlag9 = False
+				self.set_temp9 = int(self.ui.lineEdit_17.text())
+			
+			#Use temp_control function to set the current temperature
+			self.ui.lineEdit_16.setText(str(temp_control(self.set_temp9, self.curr_temp9)) + " F")
+			#signals.tnm_cab_temp.emit(self.curr_temp9)
+			#_______________________________________________________________
+		elif(self.TrainNum10 == 1):
+			AlphaFlag10 = False
+			#Error checking to make sure input is only an INT
+			for i in self.ui.lineEdit_17.text():
+				if(i.isalpha() == True):
+					AlphaFlag10 = True
+			if(AlphaFlag10 == True):
+				self.ui.lineEdit_17.setText(str(self.curr_temp10))
+				self.set_temp10 = self.curr_temp10
+			elif(self.ui.lineEdit_17.text().isdigit() == True):
+				AlphaFlag10 = False
+				self.set_temp10 = int(self.ui.lineEdit_17.text())
+			
+			#Use temp_control function to set the current temperature
+			self.ui.lineEdit_16.setText(str(temp_control(self.set_temp10, self.curr_temp10)) + " F")
+			#signals.tnm_cab_temp.emit(self.curr_temp10)
+			#_______________________________________________________________
 		
 		#Don't allow time module to be edited
 		self.ui.lineEdit_16.setReadOnly(True)
@@ -3619,6 +4445,10 @@ class tnm_display(QObject):
 			self.ui.lineEdit_18.setText(self.announce7)
 		elif(self.TrainNum8 == 1):
 			self.ui.lineEdit_18.setText(self.announce8)
+		elif(self.TrainNum9 == 1):
+			self.ui.lineEdit_18.setText(self.announce9)
+		elif(self.TrainNum10 == 1):
+			self.ui.lineEdit_18.setText(self.announce10)
 	
 		#Don't allow announcements text to be edited
 		self.ui.lineEdit_18.setReadOnly(True)
@@ -3642,6 +4472,10 @@ class tnm_display(QObject):
 			self.curr_power7 = tnc_power
 		elif(self.TrainNum8 == 1):
 			self.curr_power8 = tnc_power
+		elif(self.TrainNum9 == 1):
+			self.curr_power9 = tnc_power
+		elif(self.TrainNum10 == 1):
+			self.curr_power10 = tnc_power
 	
 	#Function to set Beacon ID from track model signal
 	def SetBeaconID(self,tkm_beacon):
@@ -3920,7 +4754,74 @@ class tnm_display(QObject):
 				self.CurrStation8, self.NextStation8, self.TNMdirectionR8 = GreenBeacon(self.RouteName8, self.TNMdirectionR8, self.TrainDirection8, self.beacon_bin8)
 			signals.tnm_curr_station.emit(self.CurrStation8,8)
 			#______________________________________________________________________
-			
+		elif(self.TrainNum9 == 1):
+			#Call function to append beacon
+			self.beacon_bin9 = AppendBeacon(self.BeaconId)
+		
+			#check if first value is: 1 = green line/0 = red line #Was 2, 3, 4, 5:
+			if(self.beacon_bin9[0] == 0):
+				self.RouteName9 = "Red Line"
+				self.CurrStation9 = "Yard"
+				self.NextStation9 = "Shady Side"
+			elif(self.beacon_bin9[0] == 1):
+				self.RouteName9 = "Green Line"
+				self.CurrStation9 = "Yard"
+				self.NextStation9 = "Glenbury"
+			#check if second value is: 0 = station/1 = underground
+			if(self.beacon_bin9[1] == 0):
+				self.lights_Tun9 == False
+			elif(self.beacon_bin9[1] == 1):
+				self.lights_Tun9 == True
+			#3rd bit - 0 Left(decrement)/1 Right(increment) directionality
+			#0 means left doors open, 1 means right doors open
+			if(self.beacon_bin9[2] == 0):
+				self.TrainDirection9 = 0
+				self.tnm_TrainDir.emit(self.TrainDirection9,9)
+			elif(self.beacon_bin9[2] == 1):
+				self.TrainDirection9 = 1
+				self.tnm_TrainDir.emit(self.TrainDirection9,9)
+				
+			#Call Beacon function to specify station
+			if(self.RouteName9 == "Green Line"):
+				self.CurrStation9, self.NextStation9, self.TNMdirectionG9 = GreenBeacon(self.RouteName9, self.TNMdirectionG9, self.TrainDirection9, self.beacon_bin9)
+			elif(self.RouteName9 == "Red Line"):
+				self.CurrStation9, self.NextStation9, self.TNMdirectionR9 = GreenBeacon(self.RouteName9, self.TNMdirectionR9, self.TrainDirection9, self.beacon_bin9)
+			signals.tnm_curr_station.emit(self.CurrStation9,9)
+			#______________________________________________________________________
+		elif(self.TrainNum10 == 1):
+			#Call function to append beacon
+			self.beacon_bin10 = AppendBeacon(self.BeaconId)
+		
+			#check if first value is: 1 = green line/0 = red line #Was 2, 3, 4, 5:
+			if(self.beacon_bin10[0] == 0):
+				self.RouteName10 = "Red Line"
+				self.CurrStation10 = "Yard"
+				self.NextStation10 = "Shady Side"
+			elif(self.beacon_bin10[0] == 1):
+				self.RouteName10 = "Green Line"
+				self.CurrStation10 = "Yard"
+				self.NextStation10 = "Glenbury"
+			#check if second value is: 0 = station/1 = underground
+			if(self.beacon_bin10[1] == 0):
+				self.lights_Tun10 == False
+			elif(self.beacon_bin10[1] == 1):
+				self.lights_Tun10 == True
+			#3rd bit - 0 Left(decrement)/1 Right(increment) directionality
+			#0 means left doors open, 1 means right doors open
+			if(self.beacon_bin10[2] == 0):
+				self.TrainDirection10 = 0
+				self.tnm_TrainDir.emit(self.TrainDirection10,10)
+			elif(self.beacon_bin10[2] == 1):
+				self.TrainDirection10 = 1
+				self.tnm_TrainDir.emit(self.TrainDirection10,10)
+				
+			#Call Beacon function to specify station
+			if(self.RouteName10 == "Green Line"):
+				self.CurrStation10, self.NextStation10, self.TNMdirectionG10 = GreenBeacon(self.RouteName10, self.TNMdirectionG10, self.TrainDirection10, self.beacon_bin10)
+			elif(self.RouteName10 == "Red Line"):
+				self.CurrStation10, self.NextStation10, self.TNMdirectionR10 = GreenBeacon(self.RouteName10, self.TNMdirectionR10, self.TrainDirection10, self.beacon_bin10)
+			signals.tnm_curr_station.emit(self.CurrStation10,10)
+			#______________________________________________________________________
 	
 	#Function to specify block number for each line
 	def blockNum(self,BlockNum):
@@ -3940,6 +4841,10 @@ class tnm_display(QObject):
 			self.block_num7 = BlockNum
 		elif(self.TrainNum8 == 1):
 			self.block_num8 = BlockNum
+		elif(self.TrainNum9 == 1):
+			self.block_num9 = BlockNum
+		elif(self.TrainNum10 == 1):
+			self.block_num10 = BlockNum
 			
 		
 	#Function to take in block length and calculate when train reaches next block
@@ -3961,6 +4866,10 @@ class tnm_display(QObject):
 			self.block_length7 = BlockLen
 		elif(self.TrainNum8 == 1):
 			self.block_length8 = BlockLen
+		elif(self.TrainNum9 == 1):
+			self.block_length9 = BlockLen
+		elif(self.TrainNum10 == 1):
+			self.block_length10 = BlockLen
 			
 	
 	#Function to set Authority from track model signal
@@ -3981,13 +4890,19 @@ class tnm_display(QObject):
 			self.block_authority7 = tkm_authority
 		elif(self.TrainNum8 == 1):
 			self.block_authority8 = tkm_authority
+		elif(self.TrainNum9 == 1):
+			self.block_authority9 = tkm_authority
+		elif(self.TrainNum10 == 1):
+			self.block_authority10 = tkm_authority
 		
 	#Function to set Commanded Speed from track model signal
 	def SetCommSpeed(self,commSpeed):
 		if(self.TrainNum1 == 1):
 			self.comm_speed1 = meterToMile(commSpeed)			#convert mps to MPH
+			print(str(self.comm_speed1) + "TNM comm speed 1..")
 		elif(self.TrainNum2 == 1):
 			self.comm_speed2 = meterToMile(commSpeed)
+			print(str(self.comm_speed1) + "TNM comm speed 2..")
 		elif(self.TrainNum3 == 1):
 			self.comm_speed3 = meterToMile(commSpeed)
 		elif(self.TrainNum4 == 1):
@@ -4000,6 +4915,10 @@ class tnm_display(QObject):
 			self.comm_speed7 = meterToMile(commSpeed)
 		elif(self.TrainNum8 == 1):
 			self.comm_speed8 = meterToMile(commSpeed)
+		elif(self.TrainNum9 == 1):
+			self.comm_speed9 = meterToMile(commSpeed)
+		elif(self.TrainNum10 == 1):
+			self.comm_speed10 = meterToMile(commSpeed)
 	
 	#Function to set Passenger count from track model signal
 	def SetOccupancy(self,tkm_pass_count):
@@ -4019,6 +4938,10 @@ class tnm_display(QObject):
 			self.pass_count7 = tkm_pass_count
 		elif(self.TrainNum8 == 1):
 			self.pass_count8 = tkm_pass_count
+		elif(self.TrainNum9 == 1):
+			self.pass_count9 = tkm_pass_count
+		elif(self.TrainNum10 == 1):
+			self.pass_count10 = tkm_pass_count
 	
 	#Function to read the emergency brake state from tnc
 	def SetEBrake(self, EmerBrake):
@@ -4038,6 +4961,10 @@ class tnm_display(QObject):
 			self.eBrake7 = EmerBrake
 		elif(self.TrainNum8 == 1):
 			self.eBrake8 = EmerBrake
+		elif(self.TrainNum9 == 1):
+			self.eBrake9 = EmerBrake
+		elif(self.TrainNum10 == 1):
+			self.eBrake10 = EmerBrake
 		
 	#Function to read the service brake state from tnc
 	def SetServiceBrake(self, ServiceBrake):
@@ -4057,6 +4984,10 @@ class tnm_display(QObject):
 			self.Brake7 = ServiceBrake
 		elif(self.TrainNum8 == 1):
 			self.Brake8 = ServiceBrake
+		elif(self.TrainNum9 == 1):
+			self.Brake9 = ServiceBrake
+		elif(self.TrainNum10 == 1):
+			self.Brake10 = ServiceBrake
 		
 	#Function to read in announcement from tnc
 	def SetAnnounce(self, CurrentAnnouncement):
@@ -4076,6 +5007,10 @@ class tnm_display(QObject):
 			self.announce7 = CurrentAnnouncement
 		elif(self.TrainNum8 == 1):
 			self.announce8 = CurrentAnnouncement
+		elif(self.TrainNum9 == 1):
+			self.announce9 = CurrentAnnouncement
+		elif(self.TrainNum10 == 1):
+			self.announce10 = CurrentAnnouncement
 		
 	#Function to update status of Train Left Door
 	def setLeftDoor(self, tncLeftDoor):
@@ -4095,6 +5030,10 @@ class tnm_display(QObject):
 			self.LeftDoor7 = tncLeftDoor
 		elif(self.TrainNum8 == 1):
 			self.LeftDoor8 = tncLeftDoor
+		elif(self.TrainNum9 == 1):
+			self.LeftDoor9 = tncLeftDoor
+		elif(self.TrainNum10 == 1):
+			self.LeftDoor10 = tncLeftDoor
 		
 	#Function to update status of Train Right Door
 	def setRightDoor(self, tncRightDoor):
@@ -4114,6 +5053,10 @@ class tnm_display(QObject):
 			self.RightDoor7 = tncRightDoor
 		elif(self.TrainNum8 == 1):
 			self.RightDoor8 = tncRightDoor
+		elif(self.TrainNum9 == 1):
+			self.RightDoor9 = tncRightDoor
+		elif(self.TrainNum10 == 1):
+			self.RightDoor10 = tncRightDoor
 		
 	#Function to update Cab Light status
 	def setCabLight(self, tncCabLight):
@@ -4133,6 +5076,10 @@ class tnm_display(QObject):
 			self.light_Cab7 = tncCabLight
 		elif(self.TrainNum8 == 1):
 			self.light_Cab8 = tncCabLight
+		elif(self.TrainNum9 == 1):
+			self.light_Cab9 = tncCabLight
+		elif(self.TrainNum10 == 1):
+			self.light_Cab10 = tncCabLight
 			
 	#Function to update Tun Light status
 	def setTunLight(self, tncTunLight):
@@ -4152,6 +5099,10 @@ class tnm_display(QObject):
 			self.light_Tun7 = tncTunLight
 		elif(self.TrainNum8 == 1):
 			self.light_Tun8 = tncTunLight
+		elif(self.TrainNum9 == 1):
+			self.light_Tun9 = tncTunLight
+		elif(self.TrainNum10 == 1):
+			self.light_Tun10 = tncTunLight
 			
 	#Function to update High Beam Light status
 	def setHighLight(self, tncHighLight):
@@ -4171,6 +5122,10 @@ class tnm_display(QObject):
 			self.light_High7 = tncHighLight
 		elif(self.TrainNum8 == 1):
 			self.light_High8 = tncHighLight
+		elif(self.TrainNum9 == 1):
+			self.light_High9 = tncHighLight
+		elif(self.TrainNum10 == 1):
+			self.light_High10 = tncHighLight
 		
 	#Function to set the train number, and specify the line name
 	def setTrainStart(self, tkmTrainNum, tkmTrainLine):			#int, str
@@ -4192,6 +5147,10 @@ class tnm_display(QObject):
 			self.TrainNum7 = 1
 		elif(self.TrainNum == 8):
 			self.TrainNum8 = 1
+		elif(self.TrainNum == 9):
+			self.TrainNum9 = 1
+		elif(self.TrainNum == 10):
+			self.TrainNum10 = 1
 			
 		#Determine which Train Number -> Train Name
 		if(self.TrainNum1 == 1):
@@ -4259,7 +5218,23 @@ class tnm_display(QObject):
 				self.NextStation8 = "Shady Side"
 			elif(tkmTrainLine == "Green"):
 				self.RouteName8 = "Green Line"
-				self.NextStation8 = "Glenbury"		
+				self.NextStation8 = "Glenbury"	
+		elif(self.TrainNum9 == 1):
+			self.TrainName9 = self.train9
+			if(tkmTrainLine == "Red"):
+				self.RouteName9 = "Red Line"
+				self.NextStation9 = "Shady Side"
+			elif(tkmTrainLine == "Green"):
+				self.RouteName9 = "Green Line"
+				self.NextStation9 = "Glenbury"
+		elif(self.TrainNum10 == 1):
+			self.TrainName10 = self.train10
+			if(tkmTrainLine == "Red"):
+				self.RouteName10 = "Red Line"
+				self.NextStation10 = "Shady Side"
+			elif(tkmTrainLine == "Green"):
+				self.RouteName10 = "Green Line"
+				self.NextStation10 = "Glenbury"	
 		
 	#Function to update train status to 0, if destroyed
 	def setDestroyTrain(self, tkmTrainNumDestroyed):
@@ -4281,6 +5256,10 @@ class tnm_display(QObject):
 			self.TrainNum7 = 0
 		elif(trainNumber == 8):
 			self.TrainNum8 = 0
+		elif(trainNumber == 9):
+			self.TrainNum9 = 0
+		elif(trainNumber == 10):
+			self.TrainNum10 = 0
 			
 	
 	#Function for TIME
