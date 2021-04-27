@@ -24,7 +24,7 @@ class Station:
 		
 	#number of ticket sales
 	def get_sales(self):
-		now = random.randrange(0,50)
+		now = random.randrange(0,10)
 		if self.sales+now > 300:
 			hol = self.sales+now -300
 			now = now - hol
@@ -216,18 +216,18 @@ class Train:
 		if blocks[int(self.block-1)].beacon1 == 0 and blocks[int(self.block-1)].beacon2 == 0:
 			pass
 		elif blocks[int(self.block-1)].beacon1 == 0 and blocks[int(self.block-1)].beacon2 != 0:
-			signals.tkm_get_beacon.emit(blocks[int(self.block-1)].beacon2)
+			signals.tkm_get_beacon.emit(blocks[int(self.block-1)].beacon2,self.num)
 		elif blocks[int(self.block-1)].beacon1 != 0 and blocks[int(self.block-1)].beacon2 == 0:
-			signals.tkm_get_beacon.emit(blocks[int(self.block-1)].beacon1)
+			signals.tkm_get_beacon.emit(blocks[int(self.block-1)].beacon1,self.num)
 		elif blocks[int(self.past-1)].beacon2 != 0 and self.way == 1:
-			signals.tkm_get_beacon.emit(blocks[int(self.past-1)].beacon2)
+			signals.tkm_get_beacon.emit(blocks[int(self.past-1)].beacon2,self.num)
 		elif blocks[int(self.past-1)].beacon1 != 0 and self.way == -1:
-			signals.tkm_get_beacon.emit(blocks[int(self.block-1)].beacon1)
+			signals.tkm_get_beacon.emit(blocks[int(self.block-1)].beacon1,self.num)
 		else:
 			if self.way == 1:
-				signals.tkm_get_beacon.emit(blocks[int(self.block-1)].beacon1)
+				signals.tkm_get_beacon.emit(blocks[int(self.block-1)].beacon1,self.num)
 			else:
-				signals.tkm_get_beacon.emit(blocks[int(self.block-1)].beacon2)
+				signals.tkm_get_beacon.emit(blocks[int(self.block-1)].beacon2,self.num)
 			
 		return blocks[int(self.block - 1)].auth
 #_______________________________________________________________________
@@ -257,9 +257,9 @@ class Train:
 #_______________________________________________________________________
 	
 	def set_speed(self,block):
-		print(block[int(self.block-1)].s_limit)
-		print(block[int(self.block-1)].speed)
-		print(block[int(self.block-1)].num)
+		#print(block[int(self.block-1)].s_limit)
+		#print(block[int(self.block-1)].speed)
+		#print(block[int(self.block-1)].num)
 		if block[int(self.block-1)].s_limit > block[int(self.block-1)].speed:
 			self.speed = block[int(self.block-1)].speed
 		else:
@@ -270,7 +270,7 @@ class Train:
 			
 		else:
 			self.speed = block[int(self.block-1)].s_limit
-			print(block[int(self.block-1)].speed)
+			#print(block[int(self.block-1)].speed)
 		print(str(round(self.speed,1)) + " mps tkm ")
 		#signals.tkm_get_speed.emit(self.speed)
 		return self.speed
@@ -657,30 +657,40 @@ class Track:
 	def set_train_block(self,num):
 		s = 0
 		f = 0
-		way = self.train[num-1].way
+		
+		i = 0
+		while i < len(self.train):
+			print(self.train[i].num)
+			print(num)
+			if num == self.train[i].num:
+				break
+			i = i+1
+		
+		
+		way = self.train[i].way
 		
 		if self.line == "Green":
-			if self.train[num-1].block == 150:
+			if self.train[i].block == 150:
 				q = 28
 				f = 1
 			else:
-				q = int(self.train[num-1].block)
+				q = int(self.train[i].block)
 		elif self.line == "Red":
-			if self.train[num-1].block == 76:
+			if self.train[i].block == 76:
 				q = 26
 				f = 1
 			else:
-				q = int(self.train[num-1].block)
+				q = int(self.train[i].block)
 		
 		
 		print(str(q)+" this is q") 
 			
-		a = self.train[num-1].set_block(self.blocks,q,self.line,f)
+		a = self.train[i].set_block(self.blocks,q,self.line,f)
 		#pas = a[0]
 		#self.blocks[a[0]-1].occ == 0
 		#self.blocks[int(self.train[num-1].block)-1].occ = 1
 		
-		s = self.train[num-1].set_speed(self.blocks)
+		s = self.train[i].set_speed(self.blocks)
 		
 				
 		bull = self.get_occ()

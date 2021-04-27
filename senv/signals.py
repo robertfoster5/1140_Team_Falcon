@@ -41,7 +41,7 @@ class Signal(QObject):
     tkm_get_speed = pyqtSignal(int)
     tkm_get_auth = pyqtSignal(list)
     tkm_get_train_auth = pyqtSignal(int)
-    tkm_get_beacon = pyqtSignal(int)
+    tkm_get_beacon = pyqtSignal(int,int)
     tkm_get_envi_temp = pyqtSignal(int)
     tkm_get_sales = pyqtSignal(int)
     tkm_get_pass_count = pyqtSignal(int)

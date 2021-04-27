@@ -280,13 +280,13 @@ class tkm_test(QObject):
 				self.display_t() 
 				
 	def t_dest(self,num):
-		print("COOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOLLLLLLLLLLLLL")
+		#print("COOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOLLLLLLLLLLLLL")
 		j = 0
 		while j < len(self.info):
 			i = 0
 			while i < len(self.info[j].train):
 				if num == self.info[j].train[i].num:
-					print("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEETTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT")
+					#print("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEETTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT")
 					val = self.info[j].train[i].destroy()-1
 					self.info[j].blocks[int(val)].occ = 0
 					self.info[j].set_occ(self.info[j].get_occ())
@@ -301,6 +301,7 @@ class tkm_test(QObject):
 			i = 0
 			while i <len(self.info[j].train):
 				if num == self.info[j].train[i].num:
+					print("Stop at station "+str(self.info[j].train[i].num))
 					self.info[j].update_dis(i)
 					i = len(self.info[j].train)
 					j = len(self.info)
