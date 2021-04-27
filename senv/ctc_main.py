@@ -415,7 +415,7 @@ class ctc_qtui_test(QObject):
          TrainStation([4,6],[[34,33,32,31,71,72,73,74,75,26,25],[34,35,36,37,38,39,40,41,42,43]]), # Steel Plaza
          TrainStation([5,7],[[44,43,42,66,67,68,69,70,37,36,35],[44,45,46]]), # First Ave
          #
-         TrainStation([6,8],[[47,46,45],[47,49,50,51,52,53,54,55,56,57,58]]), # Station Square
+         TrainStation([6,8],[[47,46,45],[47,48,49,50,51,52,53,54,55,56,57,58]]), # Station Square
          TrainStation([7],[[59,60,61,62,63,64,65,51,50,49,48]]), # South Hills Junction
          
         ] # Station-index Block-index position
@@ -1398,8 +1398,8 @@ class ctc_qtui_test(QObject):
             #print(sendable_auth_red)
             #print(sendable_sugg_speed_red)
                 
-            print("Authority for Block 63: " + str(sendable_auth_green[63]))
-            print("Suggested_Speed for Block 63: " + str(sendable_sugg_speed_green[63]))
+            #print("Authority for Block 63: " + str(sendable_auth_green[63]))
+            #print("Suggested_Speed for Block 63: " + str(sendable_sugg_speed_green[63]))
             signals.ctc_suggested_speed_green.emit(sendable_sugg_speed_green)
             signals.ctc_authority_green.emit(sendable_auth_green)
             signals.ctc_suggested_speed_red.emit(sendable_sugg_speed_red)
@@ -1472,6 +1472,9 @@ class ctc_qtui_test(QObject):
             for order_num in global_dispatch_orders:
                 if order_num[6] != "skip" and order_num[6] == "r" and order_num[3] < self.current_time:
                     if order_num[0] not in checked_train:
+                        #print("Occ for Block 45: " + str(track_state[45]))
+                        #print("Occ for Block 46: " + str(track_state[46]))
+                        #print("Occ for Block 47: " + str(track_state[47]))
                         checked_train.append(order_num[0])
                         if len(order_num[4]) == 1:
                             if int(track_state[order_num[4][0] + 1]) == 0 and int(track_state[order_num[7] + 1]):
@@ -1479,6 +1482,12 @@ class ctc_qtui_test(QObject):
                                 global_train_blocks[int(order_num[0].rsplit(' ', 1)[1]) - 1] = order_num[7]
                                 order_num[4] = [-1]
                         else:
+                            print("The authority is: " + str(order_num[4]))
+                            #for i in order_num[4]:
+                            #    print("Occ for block " + str(i + 1) + " is: " + str(int(track_state[i + 1])))
+                            
+                            #print("First Element: " + str(int(track_state[order_num[4][0] + 1])))
+                            #print("Second Element: " + str(int(track_state[order_num[4][1] + 1])))
                             if int(track_state[order_num[4][0] + 1]) == 0 and int(track_state[order_num[4][1] + 1]) == 1:
                                 order_num[4].pop(0)
                                 order_num[5].pop(0)
