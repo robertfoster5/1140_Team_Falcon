@@ -166,8 +166,8 @@ class Train:
 		else:
 			# way = 1
 			if self.way == 1:
-				if blocks[num-1].switch.top == 0 and int(blocks[num-1].num) != 66 and int(blocks[num-1].num) != 71 and flag != 1:
-					self.block = blocks[num-1].num
+				if '''blocks[num-1].switch.top == 0''' and int(blocks[num-1].num) != 66 and int(blocks[num-1].num) != 71 and flag != 1:
+					self.block = blocks[num].num
 				elif int(blocks[num-1].num) == 66 :
 					if blocks[53].switch.state == 1:
 						self.block = 52
@@ -197,7 +197,7 @@ class Train:
 					self.way = 1
 				elif int(blocks[num-1].num) == 1:
 					self.block = 16
-					self.way = -1
+					self.way = 1
 				
 		
 		
@@ -693,7 +693,7 @@ class Track:
 			
 #_______________________________________________________________________
 	#set authority
-	def set_auth(self,auth):
+	def set_auth(self,auth):		
 		r = 1
 		q = 0
 		check = 0
