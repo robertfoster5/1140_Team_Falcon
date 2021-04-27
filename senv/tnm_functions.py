@@ -187,7 +187,6 @@ def stopping_dist(curr_speed):
 	eBrake_stop_distance = ((curr_speed_mps/2)*eBrake_stop_time)
 	#print(str(round(eBrake_stop_distance, 0)) + " eBrake stop dist")
 	
-
 #Function to convert between KPH and MPH
 def KilotoMile(comm_speed):
 	
@@ -212,6 +211,7 @@ def MiletoMeter(curr_speed):
 	speed_mps = (curr_speed / 2.23694)
 	
 	return speed_mps
+
 	
 #Function to append the beacon ID with 0's as necessary
 def AppendBeacon(beaconBinary):
