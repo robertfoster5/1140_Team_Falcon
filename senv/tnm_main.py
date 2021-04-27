@@ -3155,7 +3155,7 @@ class tnm_display(QObject):
 					elif(self.RouteName1 == "Green Line"):
 						signals.tnm_block_finished_green.emit(1)
 					signals.tkm_get_blength.connect(self.blockLen)
-					self.SetCommSpeed()
+					signals.tkm_get_speed.connect(self.SetCommSpeed)
 				
 			#Update brake status
 			if (self.Brake1 == True or self.eBrake1 == True):
@@ -3198,7 +3198,7 @@ class tnm_display(QObject):
 					elif(self.RouteName2 == "Green Line"):
 						signals.tnm_block_finished_green.emit(2)
 					signals.tkm_get_blength.connect(self.blockLen)
-					self.SetCommSpeed()
+					signals.tkm_get_speed.connect(self.SetCommSpeed)
 				
 			#Update brake status
 			if (self.Brake2 == True or self.eBrake2 == True):
@@ -3241,6 +3241,7 @@ class tnm_display(QObject):
 					elif(self.RouteName3 == "Green Line"):
 						signals.tnm_block_finished_green.emit(3)
 					signals.tkm_get_blength.connect(self.blockLen)
+					signals.tkm_get_speed.connect(self.SetCommSpeed)
 				
 			#Update brake status
 			if (self.Brake3 == True or self.eBrake3 == True):
@@ -3283,6 +3284,7 @@ class tnm_display(QObject):
 					elif(self.RouteName4 == "Green Line"):
 						signals.tnm_block_finished_green.emit(4)
 					signals.tkm_get_blength.connect(self.blockLen)
+					signals.tkm_get_speed.connect(self.SetCommSpeed)
 				
 			#Update brake status
 			if (self.Brake4 == True or self.eBrake4 == True):
@@ -3325,6 +3327,7 @@ class tnm_display(QObject):
 					elif(self.RouteName5 == "Green Line"):
 						signals.tnm_block_finished_green.emit(5)
 					signals.tkm_get_blength.connect(self.blockLen)
+					signals.tkm_get_speed.connect(self.SetCommSpeed)
 				
 			#Update brake status
 			if (self.Brake5 == True or self.eBrake5 == True):
@@ -3367,6 +3370,7 @@ class tnm_display(QObject):
 					elif(self.RouteName6 == "Green Line"):
 						signals.tnm_block_finished_green.emit(6)
 					signals.tkm_get_blength.connect(self.blockLen)
+					signals.tkm_get_speed.connect(self.SetCommSpeed)
 				
 			#Update brake status
 			if (self.Brake6 == True or self.eBrake6 == True):
@@ -3409,6 +3413,7 @@ class tnm_display(QObject):
 					elif(self.RouteName7 == "Green Line"):
 						signals.tnm_block_finished_green.emit(7)
 					signals.tkm_get_blength.connect(self.blockLen)
+					signals.tkm_get_speed.connect(self.SetCommSpeed)
 				
 			#Update brake status
 			if (self.Brake7 == True or self.eBrake7 == True):
@@ -3451,6 +3456,7 @@ class tnm_display(QObject):
 					elif(self.RouteName8 == "Green Line"):
 						signals.tnm_block_finished_green.emit(8)
 					signals.tkm_get_blength.connect(self.blockLen)
+					signals.tkm_get_speed.connect(self.SetCommSpeed)
 				
 			#Update brake status
 			if (self.Brake8 == True or self.eBrake8 == True):
@@ -3493,6 +3499,7 @@ class tnm_display(QObject):
 					elif(self.RouteName9 == "Green Line"):
 						signals.tnm_block_finished_green.emit(9)
 					signals.tkm_get_blength.connect(self.blockLen)
+					signals.tkm_get_speed.connect(self.SetCommSpeed)
 				
 			#Update brake status
 			if (self.Brake9 == True or self.eBrake9 == True):
@@ -3535,6 +3542,7 @@ class tnm_display(QObject):
 					elif(self.RouteName10 == "Green Line"):
 						signals.tnm_block_finished_green.emit(10)
 					signals.tkm_get_blength.connect(self.blockLen)
+					signals.tkm_get_speed.connect(self.SetCommSpeed)
 				
 			#Update brake status
 			if (self.Brake10 == True or self.eBrake10 == True):
@@ -4899,10 +4907,9 @@ class tnm_display(QObject):
 	def SetCommSpeed(self,commSpeed):
 		if(self.TrainNum1 == 1):
 			self.comm_speed1 = meterToMile(commSpeed)			#convert mps to MPH
-			print(str(self.comm_speed1) + "TNM comm speed 1..")
 		elif(self.TrainNum2 == 1):
 			self.comm_speed2 = meterToMile(commSpeed)
-			print(str(self.comm_speed1) + "TNM comm speed 2..")
+			#print(str(self.comm_speed1) + "TNM comm speed 2..")
 		elif(self.TrainNum3 == 1):
 			self.comm_speed3 = meterToMile(commSpeed)
 		elif(self.TrainNum4 == 1):
