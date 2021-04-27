@@ -71,7 +71,6 @@ class TrainControllerMain(QObject):
 
         signals.tnm_comm_speed.connect(self.set_command_speed)
         signals.tnm_curr_speed.connect(self.set_curr_speed)
-        signals.tnm_comm_speed.connect(self.power_calc)
         signals.tnm_curr_speed.connect(self.power_calc)
         signals.tnm_authority.connect(self.set_authority)
         signals.tnm_ebrake.connect(self.set_pass_brake)
