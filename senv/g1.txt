@@ -24,10 +24,10 @@ bl20
 st6
 end var
 sw1
+13
 12
 13
 1
-13
 cr1
 19
 end proc

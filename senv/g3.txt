@@ -47,8 +47,8 @@ sw3
 57
 yard
 sw4
+63
 62
 63
 yard
-63
 end proc

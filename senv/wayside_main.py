@@ -54,6 +54,7 @@ class wayside_qtui_test(QObject):
 		self.r1 = Wayside("r1.txt", "Red")
 		self.r2 = Wayside("r2.txt", "Red")
 		self.r3 = Wayside("r3.txt", "Red")
+
 		"""self.g1_thread = QThread()
         self.g1 = Wayside("g1.txt", "Green")
         self.g1.moveToThread(self.g1_thread)
@@ -245,9 +246,14 @@ class wayside_qtui_test(QObject):
 				
 	def update_occupancy(self, occupancy):
 		temp = []
+		temp1 = []
+		temp2 = []
 		if occupancy[0] == "0":
-			self.r1.occ_change(occupancy[1:24])
-			temp = occupancy[24:46]
+			for i in range(1,24):
+				temp1.append(occupancy[i])
+			self.r1.occ_change(temp1)
+			for i in range(24,46):
+				temp.append(occupancy[i])
 			temp.append(occupancy[67])
 			temp.append(occupancy[68])
 			temp.append(occupancy[69])
@@ -259,7 +265,9 @@ class wayside_qtui_test(QObject):
 			temp.append(occupancy[75])
 			temp.append(occupancy[76])
 			self.r2.occ_change(temp)
-			self.r3.occ_change(occupancy[46:67])
+			for i in range(46,67):
+				temp2.append(occupancy[i])
+			self.r3.occ_change(temp2)
 			self.r1.update_ws()
 			self.r2.update_ws()
 			self.r3.update_ws()
@@ -348,11 +356,11 @@ class wayside_qtui_test(QObject):
 		temp_h.append("0")
 		for i in range(23):
 			temp_h.append(self.r1.block_health[i])
-		for i in range(23):
+		for i in range(22):
 			temp_h.append(self.r2.block_health[i])
 		for i in range(21):
 			temp_h.append(self.r3.block_health[i])
-		for i in range(23,32):
+		for i in range(22,32):
 			temp_h.append(self.r2.block_health[i])
 		signals.way_red_health.emit(temp_h)
 					
@@ -380,11 +388,11 @@ class wayside_qtui_test(QObject):
 		temp.append("0")
 		for i in range(23):
 			temp.append(self.r1.block_occ[i])
-		for i in range(23):
+		for i in range(22):
 			temp.append(self.r2.block_occ[i])
 		for i in range(21):
 			temp.append(self.r3.block_occ[i])
-		for i in range(23,32):
+		for i in range(22,32):
 			temp.append(self.r2.block_occ[i])
 		signals.way_red_occupancy.emit(temp)
 		
@@ -393,11 +401,11 @@ class wayside_qtui_test(QObject):
 		temp.append("0")
 		for i in range(23):
 			temp.append(self.r1.block_occ[i])
-		for i in range(23):
+		for i in range(22):
 			temp.append(self.r2.block_occ[i])
 		for i in range(21):
 			temp.append(self.r3.block_occ[i])
-		for i in range(23,32):
+		for i in range(22,32):
 			temp.append(self.r2.block_occ[i])
 		signals.way_red_occupancy_ctc.emit(temp)
 		
@@ -449,7 +457,7 @@ class wayside_qtui_test(QObject):
 			else:
 				temp.append(self.red_speed[j+1])
 			j=j+1
-		for i in range(23):
+		for i in range(22):
 			if(self.r2.b_speed[i] == 0):
 				temp.append(self.r2.b_speed[i])
 			else:
@@ -461,7 +469,7 @@ class wayside_qtui_test(QObject):
 			else:
 				temp.append(self.red_speed[j+1])
 			j=j+1
-		for i in range(23,32):
+		for i in range(22,32):
 			if(self.r2.b_speed[i] == 0):
 				temp.append(self.r2.b_speed[i])
 			else:
@@ -514,24 +522,41 @@ class wayside_qtui_test(QObject):
 	def compile_switch_red(self):
 		temp_sw = []
 		temp_sw.append("0")
-		temp_sw.append(self.r1.switch_state[0])
-		temp_sw.append(self.r1.switch_state[1])
-		temp_sw.append(self.r2.switch_state[0])
-		temp_sw.append(self.r2.switch_state[1])
-		temp_sw.append(self.r2.switch_state[2])
-		temp_sw.append(self.r2.switch_state[3])
-		temp_sw.append(self.r3.switch_state[0])
+		if self.r1.mode == 1 or self.r2.mode == 1 or self.r3.mode == 1:
+			temp_sw.append(self.r1.m_switch_state[0])
+			temp_sw.append(self.r1.m_switch_state[1])
+			temp_sw.append(self.r2.m_switch_state[0])
+			temp_sw.append(self.r2.m_switch_state[1])
+			temp_sw.append(self.r2.m_switch_state[2])
+			temp_sw.append(self.r2.m_switch_state[3])
+			temp_sw.append(self.r3.m_switch_state[0])
+		else:
+			temp_sw.append(self.r1.switch_state[0])
+			temp_sw.append(self.r1.switch_state[1])
+			temp_sw.append(self.r2.switch_state[0])
+			temp_sw.append(self.r2.switch_state[1])
+			temp_sw.append(self.r2.switch_state[2])
+			temp_sw.append(self.r2.switch_state[3])
+			temp_sw.append(self.r3.switch_state[0])
 		signals.way_red_switch_state.emit(temp_sw)
 	
 	def compile_switch_green(self):
 		temp_sw = []
 		temp_sw.append("1")
-		temp_sw.append(self.g1.switch_state[0])
-		temp_sw.append(self.g2.switch_state[0])
-		temp_sw.append(self.g3.switch_state[0])
-		temp_sw.append(self.g3.switch_state[1])
-		temp_sw.append(self.g4.switch_state[0])
-		temp_sw.append(self.g4.switch_state[1])
+		if self.g1.mode == 1 or self.g2.mode == 1 or self.g3.mode == 1 or self.g4.mode == 1:
+			temp_sw.append(self.g1.m_switch_state[0])
+			temp_sw.append(self.g2.m_switch_state[0])
+			temp_sw.append(self.g3.m_switch_state[0])
+			temp_sw.append(self.g3.m_switch_state[1])
+			temp_sw.append(self.g4.m_switch_state[0])
+			temp_sw.append(self.g4.m_switch_state[1])			
+		else:
+			temp_sw.append(self.g1.switch_state[0])
+			temp_sw.append(self.g2.switch_state[0])
+			temp_sw.append(self.g3.switch_state[0])
+			temp_sw.append(self.g3.switch_state[1])
+			temp_sw.append(self.g4.switch_state[0])
+			temp_sw.append(self.g4.switch_state[1])
 		signals.way_green_switch_state.emit(temp_sw)
 		
 	def compile_cross_red(self):
@@ -556,7 +581,7 @@ class wayside_qtui_test(QObject):
 			else:
 				temp.append(self.red_authority[j+1])
 			j=j+1
-		for i in range(23):
+		for i in range(22):
 			if(self.r2.authority[i] == 0):
 				temp.append(self.r2.authority[i])
 			else:
@@ -568,7 +593,7 @@ class wayside_qtui_test(QObject):
 			else:
 				temp.append(self.red_authority[j+1])
 			j=j+1
-		for i in range(23,32):
+		for i in range(22,32):
 			if(self.r2.authority[i] == 0):
 				temp.append(self.r2.authority[i])
 			else:
