@@ -227,7 +227,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "TrackModel"))
         self.enterF.setText(_translate("MainWindow", "Enter"))
         self.enterV.setText(_translate("MainWindow", "Enter"))
         self.label_3.setText(_translate("MainWindow", "Select Line to View"))

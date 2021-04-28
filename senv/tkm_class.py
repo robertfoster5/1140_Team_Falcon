@@ -641,17 +641,19 @@ class Track:
 		if len(self.train) > 0:
 			i = 0
 			while i < len(self.train):
-				if self.blocks[int(self.train[i].block-1)].speed > 0:
+				if self.blocks[int(self.train[i].block-1)].speed > 0 and self.train[i].speed == 0:
 					if self.blocks[int(self.train[i].block-1)].speed < self.blocks[int(self.train[i].block-1)].s_limit:
 						signals.tkm_get_train_auth.emit(self.blocks[int(self.train[i].block-1)].auth,self.train[i].num)
 						signals.tkm_get_speed.emit(self.blocks[int(self.train[i].block-1)].speed,self.train[i].num)
 						print(str(self.blocks[int(self.train[i].block-1)].speed)+" spppppppppppppppppppppppppppeeeeeeeeeeeeeeeeeeddddd")
 						print(str(self.blocks[int(self.train[i].block-1)].auth) + " aaaaaaaaaaaauuuuuuuuuuuuuuttttttttttttttthhhhhhhhh")
+						print(str(self.train[i].num)+ " train num")
 					else:
 						signals.tkm_get_train_auth.emit(self.blocks[int(self.train[i].block-1)].auth,self.train[i].num)
 						signals.tkm_get_speed.emit(self.blocks[int(self.train[i].block-1)].s_limit,self.train[i].num)
 						print(str(self.blocks[int(self.train[i].block-1)].s_limit)+" spppppppppppppppppppppppppppeeeeeeeeeeeeeeeeeeddddd")
 						print(str(self.blocks[int(self.train[i].block-1)].auth) + " aaaaaaaaaaaauuuuuuuuuuuuuuttttttttttttttthhhhhhhhh")
+						print(str(self.train[i].num)+ " train num")
 				i = i+1
 	
 #_______________________________________________________________________
