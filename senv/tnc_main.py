@@ -138,8 +138,9 @@ class TrainControllerMain(QObject):
             self.ui.brake_button_2.setStyleSheet("background-color: gray; color: white;")
             self.trains[self.curr_train-1].driver_serv_brake = False
 
-    def display_announcement(self,text):
-        self.ui.announce_text.setPlainText(text)
+    def display_announcement(self,text,num):
+        if(num == self.curr_train):
+            self.ui.announce_text.setPlainText(text)
 
     def automatic_mode(self):
         if(self.ui.auto_check.isChecked()):

@@ -133,17 +133,17 @@ class TrainController(QObject):
     def announce_emergency(self,on):
         if(on):
             self.announcement = "EMERGENCY BRAKING!\nPLEASE STAY SEATED"
-            signals.tnc_announcement.emit(self.announcement)
+            signals.tnc_announcement.emit(self.announcement,self.train_num)
         else:
             self.announcement = ""
-            signals.tnc_announcement.emit(self.announcement)
+            signals.tnc_announcement.emit(self.announcement,self.train_num)
 
 
     def run(self):
         if(self.auto_mode):
             if(self.count >= 60):
                 self.announcement = ""
-                signals.tnc_announcement.emit(self.announcement)
+                signals.tnc_announcement.emit(self.announcement,self.train_num)
                 self.count = 0
                 self.station_stop = False
                 self.left_door = False
@@ -155,7 +155,7 @@ class TrainController(QObject):
 
             if (self.at_station and (not self.authority) and self.powsys.current_speed == 0 and self.count == 0):
                 self.announcement = "Now Arriving at:\n" + self.station + " Station"
-                signals.tnc_announcement.emit(self.announcement)
+                signals.tnc_announcement.emit(self.announcement,self.train_num)
                 self.count+=1
                 self.station_stop = True
                 if(self.station_side == 0):
