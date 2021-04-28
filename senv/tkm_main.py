@@ -159,6 +159,9 @@ class tkm_test(QObject):
 		signals.way_green_authority.connect(self.info[0].set_auth)
 		signals.way_red_authority.connect(self.info[1].set_auth)
         
+		signals.way_green_health.connect(self.info[0].set_health)
+		signals.way_red_health.connect(self.info[1].set_health)
+        
 		signals.tnm_block_finished_green.connect(self.info[0].set_train_block)
 		signals.tnm_block_finished_red.connect(self.info[1].set_train_block)
 		
@@ -273,12 +276,13 @@ class tkm_test(QObject):
 				
 	def error_select(self):
 		if self.ui.checkBox.isChecked() == 1 or self.ui.checkBox_2.isChecked() == 1 or self.ui.checkBox_3.isChecked() == 1:
-			self.info[self.version].blocks[int(self.ui.selectE.text())-1].health = 1
+			#self.info[self.version].blocks[int(self.ui.selectE.text())-1].health = 1
 			self.info[self.version].blocks[int(self.ui.selectE.text())-1].occ = 1
 			self.ui.checkBox.setChecked(False)
 			self.ui.checkBox_2.setChecked(False)
 			self.ui.checkBox_3.setChecked(False)
 			self.ui.selectE.clear()
+			signals.tkm_get_occ.emit(self.info[self.version].get_occ())
 			
 	def ref(self):
 		if self.ui.lineEdit.text() != "":

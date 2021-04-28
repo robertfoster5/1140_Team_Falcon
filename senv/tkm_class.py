@@ -737,6 +737,15 @@ class Track:
 				if self.blocks[self.yards[0]-1].auth == 1:
 					self.add_train(len(self.train)+1,-1,self.blocks[self.yards[0]-1])
 		'''
+		
+	def set_health(self,health):
+		i = 1
+		d = 0
+		while d < len(self.blocks):
+			self.blocks[d].health = health[i]
+			i = i+1
+			d = d+1
+			
 
 from tkm_functions import f_to_c
 
