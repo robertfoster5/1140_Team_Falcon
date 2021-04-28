@@ -26,6 +26,16 @@ from tnm_failureTest import Ui_Test
 from signals import signals
 from t_time import timing
 
+#HELPER CLASS - for dealing with multiple UI instances
+class tnm_threadSupport(QObject):
+	def __init__(self):
+		super().__init__()
+		self.MainWindow = QtWidgets.QMainWindow()
+		self.ui = Ui_MainWindow()
+		self.ui.setupUi(self.MainWindow)
+		self.MainWindow.show()
+		
+		
 
 #_______________________________________________________________________
 #Failure Test State for Train Model Interface
@@ -3026,12 +3036,57 @@ class tnm_display(QObject):
 		#Ui_MainWindow.__init__(self)
 		print("running train model")
 		super().__init__()
-		self.MainWindow = QtWidgets.QMainWindow()
-		self.ui = Ui_MainWindow()
+		#Main Window Thread 1
+		self.ui1 = tnm_threadSupport()
+		self.threadMain1 = QThread()
+		self.ui1.moveToThread(self.threadMain1)
+		self.threadMain1.start()
+		#Main Window Thread 2
+		self.ui2 = tnm_threadSupport()
+		self.threadMain2 = QThread()
+		self.ui2.moveToThread(self.threadMain2)
+		self.threadMain2.start()
+		#Main Window Thread 3
+		self.ui3 = tnm_threadSupport()
+		self.threadMain3 = QThread()
+		self.ui3.moveToThread(self.threadMain3)
+		self.threadMain3.start()
+		#Main Window Thread 4
+		self.ui4 = tnm_threadSupport()
+		self.threadMain4 = QThread()
+		self.ui4.moveToThread(self.threadMain4)
+		self.threadMain4.start()
+		#Main Window Thread 5
+		self.ui5 = tnm_threadSupport()
+		self.threadMain5 = QThread()
+		self.ui5.moveToThread(self.threadMain5)
+		self.threadMain5.start()
+		#Main Window Thread 6
+		self.ui6 = tnm_threadSupport()
+		self.threadMain6 = QThread()
+		self.ui6.moveToThread(self.threadMain6)
+		self.threadMain6.start()
+		#Main Window Thread 7
+		self.ui7 = tnm_threadSupport()
+		self.threadMain7 = QThread()
+		self.ui7.moveToThread(self.threadMain7)
+		self.threadMain7.start()
+		#Main Window Thread 8
+		self.ui8 = tnm_threadSupport()
+		self.threadMain8 = QThread()
+		self.ui8.moveToThread(self.threadMain8)
+		self.threadMain8.start()
+		#Main Window Thread 9
+		self.ui9 = tnm_threadSupport()
+		self.threadMain9 = QThread()
+		self.ui9.moveToThread(self.threadMain9)
+		self.threadMain9.start()
+		#Main Window Thread 10
+		self.ui10 = tnm_threadSupport()
+		self.threadMain10 = QThread()
+		self.ui10.moveToThread(self.threadMain10)
+		self.threadMain10.start()
 		
-		#display main program
-		self.ui.setupUi(self.MainWindow)
-		self.MainWindow.show()
 		
 		#Signals defined here
 		tnm_comm_speed = pyqtSignal(float, int)		#All signals for Track Controller
@@ -3132,15 +3187,57 @@ class tnm_display(QObject):
 		
 		signals.time.connect(self.getTime)
 		
-		if(signals.time.connect(self.GetDatetime)):							#Display running time
-			self.ui.dateTimeEdit.setDateTime(QtCore.QDateTime.currentDateTime())
-			self.ui.dateTimeEdit.setDisplayFormat("MM/dd/yyyy hh:mm:ss")
+		if(signals.time.connect(self.GetDatetime) and self.TrainNum1 == 1):							#Display running time
+			self.ui1.ui.dateTimeEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+			self.ui1.ui.dateTimeEdit.setDisplayFormat("MM/dd/yyyy hh:mm:ss")
+			self.ui1.ui.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
+			self.ui1.ui.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
+		elif(signals.time.connect(self.GetDatetime) and self.TrainNum2 == 1):	
+			self.ui2.ui.dateTimeEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+			self.ui2.ui.dateTimeEdit.setDisplayFormat("MM/dd/yyyy hh:mm:ss")
+			self.ui2.ui.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
+			self.ui2.ui.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
+		elif(signals.time.connect(self.GetDatetime) and self.TrainNum3 == 1):	
+			self.ui3.ui.dateTimeEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+			self.ui3.ui.dateTimeEdit.setDisplayFormat("MM/dd/yyyy hh:mm:ss")
+			self.ui3.ui.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
+			self.ui3.ui.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
+		elif(signals.time.connect(self.GetDatetime) and self.TrainNum4 == 1):	
+			self.ui4.ui.dateTimeEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+			self.ui4.ui.dateTimeEdit.setDisplayFormat("MM/dd/yyyy hh:mm:ss")
+			self.ui4.ui.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
+			self.ui4.ui.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
+		elif(signals.time.connect(self.GetDatetime) and self.TrainNum5 == 1):	
+			self.ui5.ui.dateTimeEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+			self.ui5.ui.dateTimeEdit.setDisplayFormat("MM/dd/yyyy hh:mm:ss")
+			self.ui5.ui.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
+			self.ui5.ui.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
+		elif(signals.time.connect(self.GetDatetime) and self.TrainNum6 == 1):	
+			self.ui6.ui.dateTimeEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+			self.ui6.ui.dateTimeEdit.setDisplayFormat("MM/dd/yyyy hh:mm:ss")
+			self.ui6.ui.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
+			self.ui6.ui.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
+		elif(signals.time.connect(self.GetDatetime) and self.TrainNum7 == 1):	
+			self.ui7.ui.dateTimeEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+			self.ui7.ui.dateTimeEdit.setDisplayFormat("MM/dd/yyyy hh:mm:ss")
+			self.ui7.ui.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
+			self.ui7.ui.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
+		elif(signals.time.connect(self.GetDatetime) and self.TrainNum8 == 1):	
+			self.ui8.ui.dateTimeEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+			self.ui8.ui.dateTimeEdit.setDisplayFormat("MM/dd/yyyy hh:mm:ss")
+			self.ui8.ui.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
+			self.ui8.ui.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
+		elif(signals.time.connect(self.GetDatetime) and self.TrainNum9 == 1):	
+			self.ui9.ui.dateTimeEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+			self.ui9.ui.dateTimeEdit.setDisplayFormat("MM/dd/yyyy hh:mm:ss")
+			self.ui9.ui.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
+			self.ui9.ui.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
+		elif(signals.time.connect(self.GetDatetime) and self.TrainNum10 == 1):	
+			self.ui10.ui.dateTimeEdit.setDateTime(QtCore.QDateTime.currentDateTime())
+			self.ui10.ui.dateTimeEdit.setDisplayFormat("MM/dd/yyyy hh:mm:ss")
+			self.ui10.ui.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
+			self.ui10.ui.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
 		
-		self.ui.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
-		
-		self.ui.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
-		
-	
 #_______________________________________________________________________
 	#function to update Movement Statistics
 	def update_MoveStat(self):
@@ -3156,14 +3253,14 @@ class tnm_display(QObject):
 			signals.tnc_power.connect(self.SetPower)
 			signals.tnc_service_brake.connect(self.SetServiceBrake)
 			#Calculate current speed
-			self.curr_speed1, self.current_accl1 = set_curr_speed(self.timeSeconds, self.eBrake1, self.Brake1, self.block_authority1, self.curr_power1, self.Occupancy1, self.SpeedN11, self.AcclN11, self.comm_speed1)
+			self.curr_speed1, self.current_accl1 = set_curr_speed(self.timeSeconds, self.eBrake1, self.Brake1, self.block_authority1, self.curr_power1, self.Occupancy1, self.SpeedN11, self.AcclN11, self.comm_speed1,1)
 
 			#Set At - 1 variables for use in next sec. speed calculation
 			self.SpeedN11 = self.curr_speed1
 			self.AcclN11 = self.current_accl1
 			
 			#Update current speed given power value
-			self.ui.lineEdit.setText(str(self.curr_speed1) + " mph")
+			self.ui1.ui.lineEdit.setText(str(self.curr_speed1) + " mph")
 			#Send the new calculated current speed to Train Controller
 			signals.tnm_curr_speed.emit(self.curr_speed1,1)
 			
@@ -3190,9 +3287,9 @@ class tnm_display(QObject):
 				
 			#Update brake status
 			if (self.Brake1 == True or self.eBrake1 == True):
-				self.ui.lineEdit_2.setText("On")
+				self.ui1.ui.lineEdit_2.setText("On")
 			else:
-				self.ui.lineEdit_2.setText("Off")
+				self.ui1.ui.lineEdit_2.setText("Off")
 		#___________________________________________________________________________
 		elif(self.TrainNum2 == 1):
 			#Address Authority Here
@@ -3202,14 +3299,14 @@ class tnm_display(QObject):
 			signals.tnc_power.connect(self.SetPower)
 			signals.tnc_service_brake.connect(self.SetServiceBrake)
 			#Calculate current speed
-			self.curr_speed2, self.current_accl2 = set_curr_speed(self.timeSeconds, self.eBrake2, self.Brake2, self.block_authority2, self.curr_power2, self.Occupancy2, self.SpeedN12, self.AcclN12, self.comm_speed2)
+			self.curr_speed2, self.current_accl2 = set_curr_speed(self.timeSeconds, self.eBrake2, self.Brake2, self.block_authority2, self.curr_power2, self.Occupancy2, self.SpeedN12, self.AcclN12, self.comm_speed2,2)
 
 			#Set At - 1 variables for use in next sec. speed calculation
 			self.SpeedN12 = self.curr_speed2
 			self.AcclN12 = self.current_accl2
 			
 			#Update current speed given power value
-			self.ui.lineEdit.setText(str(self.curr_speed2) + " mph")
+			self.ui2.ui.lineEdit.setText(str(self.curr_speed2) + " mph")
 			#Send the new calculated current speed to Train Controller
 			signals.tnm_curr_speed.emit(self.curr_speed2,2)
 			
@@ -3233,12 +3330,12 @@ class tnm_display(QObject):
 					signals.tkm_get_speed.connect(self.SetCommSpeed)
 					signals.tkm_get_block.connect(self.blockNum)
 					signals.tkm_get_train_auth.connect(self.SetAuthority)
-				
+					
 			#Update brake status
 			if (self.Brake2 == True or self.eBrake2 == True):
-				self.ui.lineEdit_2.setText("On")
+				self.ui2.ui.lineEdit_2.setText("On")
 			else:
-				self.ui.lineEdit_2.setText("Off")
+				self.ui2.ui.lineEdit_2.setText("Off")
 		#___________________________________________________________________________
 		elif(self.TrainNum3 == 1):
 			#Address Authority Here
@@ -3248,14 +3345,14 @@ class tnm_display(QObject):
 			signals.tnc_power.connect(self.SetPower)
 			signals.tnc_service_brake.connect(self.SetServiceBrake)
 			#Calculate current speed
-			self.curr_speed3, self.current_accl3 = set_curr_speed(self.timeSeconds, self.eBrake3, self.Brake3, self.block_authority3, self.curr_power3, self.Occupancy3, self.SpeedN13, self.AcclN13, self.comm_speed3)
+			self.curr_speed3, self.current_accl3 = set_curr_speed(self.timeSeconds, self.eBrake3, self.Brake3, self.block_authority3, self.curr_power3, self.Occupancy3, self.SpeedN13, self.AcclN13, self.comm_speed3,3)
 
 			#Set At - 1 variables for use in next sec. speed calculation
 			self.SpeedN13 = self.curr_speed3
 			self.AcclN13 = self.current_accl3
 			
 			#Update current speed given power value
-			self.ui.lineEdit.setText(str(self.curr_speed3) + " mph")
+			self.ui3.ui.lineEdit.setText(str(self.curr_speed3) + " mph")
 			#Send the new calculated current speed to Train Controller
 			signals.tnm_curr_speed.emit(self.curr_speed3,3)
 			
@@ -3282,9 +3379,9 @@ class tnm_display(QObject):
 				
 			#Update brake status
 			if (self.Brake3 == True or self.eBrake3 == True):
-				self.ui.lineEdit_2.setText("On")
+				self.ui3.ui.lineEdit_2.setText("On")
 			else:
-				self.ui.lineEdit_2.setText("Off")
+				self.ui3.ui.lineEdit_2.setText("Off")
 		#___________________________________________________________________________
 		elif(self.TrainNum4 == 1):
 			#Address Authority Here
@@ -3294,14 +3391,14 @@ class tnm_display(QObject):
 			signals.tnc_power.connect(self.SetPower)
 			signals.tnc_service_brake.connect(self.SetServiceBrake)
 			#Calculate current speed
-			self.curr_speed4, self.current_accl4 = set_curr_speed(self.timeSeconds, self.eBrake4, self.Brake4, self.block_authority4, self.curr_power4, self.Occupancy4, self.SpeedN14, self.AcclN14, self.comm_speed4)
+			self.curr_speed4, self.current_accl4 = set_curr_speed(self.timeSeconds, self.eBrake4, self.Brake4, self.block_authority4, self.curr_power4, self.Occupancy4, self.SpeedN14, self.AcclN14, self.comm_speed4,4)
 
 			#Set At - 1 variables for use in next sec. speed calculation
 			self.SpeedN14 = self.curr_speed4
 			self.AcclN14 = self.current_accl4
 			
 			#Update current speed given power value
-			self.ui.lineEdit.setText(str(self.curr_speed4) + " mph")
+			self.ui4.ui.lineEdit.setText(str(self.curr_speed4) + " mph")
 			#Send the new calculated current speed to Train Controller
 			signals.tnm_curr_speed.emit(self.curr_speed4,4)
 			
@@ -3328,9 +3425,9 @@ class tnm_display(QObject):
 				
 			#Update brake status
 			if (self.Brake4 == True or self.eBrake4 == True):
-				self.ui.lineEdit_2.setText("On")
+				self.ui4.ui.lineEdit_2.setText("On")
 			else:
-				self.ui.lineEdit_2.setText("Off")
+				self.ui4.ui.lineEdit_2.setText("Off")
 		#___________________________________________________________________________
 		elif(self.TrainNum5 == 1):
 			#Address Authority Here
@@ -3340,14 +3437,14 @@ class tnm_display(QObject):
 			signals.tnc_power.connect(self.SetPower)
 			signals.tnc_service_brake.connect(self.SetServiceBrake)
 			#Calculate current speed
-			self.curr_speed5, self.current_accl5 = set_curr_speed(self.timeSeconds, self.eBrake5, self.Brake5, self.block_authority5, self.curr_power5, self.Occupancy5, self.SpeedN15, self.AcclN15, self.comm_speed5)
+			self.curr_speed5, self.current_accl5 = set_curr_speed(self.timeSeconds, self.eBrake5, self.Brake5, self.block_authority5, self.curr_power5, self.Occupancy5, self.SpeedN15, self.AcclN15, self.comm_speed5,5)
 
 			#Set At - 1 variables for use in next sec. speed calculation
 			self.SpeedN15 = self.curr_speed5
 			self.AcclN15 = self.current_accl5
 			
 			#Update current speed given power value
-			self.ui.lineEdit.setText(str(self.curr_speed5) + " mph")
+			self.ui5.ui.lineEdit.setText(str(self.curr_speed5) + " mph")
 			#Send the new calculated current speed to Train Controller
 			signals.tnm_curr_speed.emit(self.curr_speed5,5)
 			
@@ -3374,9 +3471,9 @@ class tnm_display(QObject):
 				
 			#Update brake status
 			if (self.Brake5 == True or self.eBrake5 == True):
-				self.ui.lineEdit_2.setText("On")
+				self.ui5.ui.lineEdit_2.setText("On")
 			else:
-				self.ui.lineEdit_2.setText("Off")
+				self.ui5.ui.lineEdit_2.setText("Off")
 		#___________________________________________________________________________
 		elif(self.TrainNum6 == 1):
 			#Address Authority Here
@@ -3386,14 +3483,14 @@ class tnm_display(QObject):
 			signals.tnc_power.connect(self.SetPower)
 			signals.tnc_service_brake.connect(self.SetServiceBrake)
 			#Calculate current speed
-			self.curr_speed6, self.current_accl6 = set_curr_speed(self.timeSeconds, self.eBrake6, self.Brake6, self.block_authority6, self.curr_power6, self.Occupancy6, self.SpeedN16, self.AcclN16, self.comm_speed6)
+			self.curr_speed6, self.current_accl6 = set_curr_speed(self.timeSeconds, self.eBrake6, self.Brake6, self.block_authority6, self.curr_power6, self.Occupancy6, self.SpeedN16, self.AcclN16, self.comm_speed6,6)
 
 			#Set At - 1 variables for use in next sec. speed calculation
 			self.SpeedN16 = self.curr_speed6
 			self.AcclN16 = self.current_accl6
 			
 			#Update current speed given power value
-			self.ui.lineEdit.setText(str(self.curr_speed6) + " mph")
+			self.ui6.ui.lineEdit.setText(str(self.curr_speed6) + " mph")
 			#Send the new calculated current speed to Train Controller
 			signals.tnm_curr_speed.emit(self.curr_speed6,6)
 			
@@ -3420,9 +3517,9 @@ class tnm_display(QObject):
 				
 			#Update brake status
 			if (self.Brake6 == True or self.eBrake6 == True):
-				self.ui.lineEdit_2.setText("On")
+				self.ui6.ui.lineEdit_2.setText("On")
 			else:
-				self.ui.lineEdit_2.setText("Off")
+				self.ui6.ui.lineEdit_2.setText("Off")
 		#___________________________________________________________________________
 		elif(self.TrainNum7 == 1):
 			#Address Authority Here
@@ -3432,14 +3529,14 @@ class tnm_display(QObject):
 			signals.tnc_power.connect(self.SetPower)
 			signals.tnc_service_brake.connect(self.SetServiceBrake)
 			#Calculate current speed
-			self.curr_speed7, self.current_accl7 = set_curr_speed(self.timeSeconds, self.eBrake7, self.Brake7, self.block_authority7, self.curr_power7, self.Occupancy7, self.SpeedN17, self.AcclN17, self.comm_speed7)
+			self.curr_speed7, self.current_accl7 = set_curr_speed(self.timeSeconds, self.eBrake7, self.Brake7, self.block_authority7, self.curr_power7, self.Occupancy7, self.SpeedN17, self.AcclN17, self.comm_speed7,7)
 
 			#Set At - 1 variables for use in next sec. speed calculation
 			self.SpeedN17 = self.curr_speed7
 			self.AcclN17 = self.current_accl17
 						
 			#Update current speed given power value
-			self.ui.lineEdit.setText(str(self.curr_speed7) + " mph")
+			self.ui7.ui.lineEdit.setText(str(self.curr_speed7) + " mph")
 			#Send the new calculated current speed to Train Controller
 			signals.tnm_curr_speed.emit(self.curr_speed7,7)
 			
@@ -3466,9 +3563,9 @@ class tnm_display(QObject):
 				
 			#Update brake status
 			if (self.Brake7 == True or self.eBrake7 == True):
-				self.ui.lineEdit_2.setText("On")
+				self.ui7.ui.lineEdit_2.setText("On")
 			else:
-				self.ui.lineEdit_2.setText("Off")
+				self.ui7.ui.lineEdit_2.setText("Off")
 		#___________________________________________________________________________
 		elif(self.TrainNum8 == 1):
 			#Address Authority Here
@@ -3478,14 +3575,14 @@ class tnm_display(QObject):
 			signals.tnc_power.connect(self.SetPower)
 			signals.tnc_service_brake.connect(self.SetServiceBrake)
 			#Calculate current speed
-			self.curr_speed8, self.current_accl8 = set_curr_speed(self.timeSeconds, self.eBrake8, self.Brake8, self.block_authority8, self.curr_power8, self.Occupancy8, self.SpeedN18, self.AcclN18, self.comm_speed8)
+			self.curr_speed8, self.current_accl8 = set_curr_speed(self.timeSeconds, self.eBrake8, self.Brake8, self.block_authority8, self.curr_power8, self.Occupancy8, self.SpeedN18, self.AcclN18, self.comm_speed8,8)
 
 			#Set At - 1 variables for use in next sec. speed calculation
 			self.SpeedN18 = self.curr_speed8
 			self.AcclN18 = self.current_accl8
 			
 			#Update current speed given power value
-			self.ui.lineEdit.setText(str(self.curr_speed8) + " mph")
+			self.ui8.ui.lineEdit.setText(str(self.curr_speed8) + " mph")
 			#Send the new calculated current speed to Train Controller
 			signals.tnm_curr_speed.emit(self.curr_speed8,8)
 			
@@ -3512,9 +3609,9 @@ class tnm_display(QObject):
 				
 			#Update brake status
 			if (self.Brake8 == True or self.eBrake8 == True):
-				self.ui.lineEdit_2.setText("On")
+				self.ui8.ui.lineEdit_2.setText("On")
 			else:
-				self.ui.lineEdit_2.setText("Off")
+				self.ui8.ui.lineEdit_2.setText("Off")
 		#___________________________________________________________________________
 		elif(self.TrainNum9 == 1):
 			#Address Authority Here
@@ -3524,14 +3621,14 @@ class tnm_display(QObject):
 			signals.tnc_power.connect(self.SetPower)
 			signals.tnc_service_brake.connect(self.SetServiceBrake)
 			#Calculate current speed
-			self.curr_speed9, self.current_accl9 = set_curr_speed(self.timeSeconds, self.eBrake9, self.Brake9, self.block_authority9, self.curr_power9, self.Occupancy9, self.SpeedN19, self.AcclN19, self.comm_speed9)
+			self.curr_speed9, self.current_accl9 = set_curr_speed(self.timeSeconds, self.eBrake9, self.Brake9, self.block_authority9, self.curr_power9, self.Occupancy9, self.SpeedN19, self.AcclN19, self.comm_speed9,9)
 
 			#Set At - 1 variables for use in next sec. speed calculation
 			self.SpeedN19 = self.curr_speed9
 			self.AcclN19 = self.current_accl9
 			
 			#Update current speed given power value
-			self.ui.lineEdit.setText(str(self.curr_speed9) + " mph")
+			self.ui9.ui.lineEdit.setText(str(self.curr_speed9) + " mph")
 			#Send the new calculated current speed to Train Controller
 			signals.tnm_curr_speed.emit(self.curr_speed9,9)
 			
@@ -3558,9 +3655,9 @@ class tnm_display(QObject):
 				
 			#Update brake status
 			if (self.Brake9 == True or self.eBrake9 == True):
-				self.ui.lineEdit_2.setText("On")
+				self.ui9.ui.lineEdit_2.setText("On")
 			else:
-				self.ui.lineEdit_2.setText("Off")
+				self.ui9.ui.lineEdit_2.setText("Off")
 		#___________________________________________________________________________
 		elif(self.TrainNum10 == 1):
 			#Address Authority Here
@@ -3570,14 +3667,14 @@ class tnm_display(QObject):
 			signals.tnc_power.connect(self.SetPower)
 			signals.tnc_service_brake.connect(self.SetServiceBrake)
 			#Calculate current speed
-			self.curr_speed10, self.current_accl10 = set_curr_speed(self.timeSeconds, self.eBrake10, self.Brake10, self.block_authority10, self.curr_power10, self.Occupancy10, self.SpeedN110, self.AcclN110, self.comm_speed10)
+			self.curr_speed10, self.current_accl10 = set_curr_speed(self.timeSeconds, self.eBrake10, self.Brake10, self.block_authority10, self.curr_power10, self.Occupancy10, self.SpeedN110, self.AcclN110, self.comm_speed10,10)
 
 			#Set At - 1 variables for use in next sec. speed calculation
 			self.SpeedN110 = self.curr_speed10
 			self.AcclN110 = self.current_accl10
 			
 			#Update current speed given power value
-			self.ui.lineEdit.setText(str(self.curr_speed10) + " mph")
+			self.ui10.ui.lineEdit.setText(str(self.curr_speed10) + " mph")
 			#Send the new calculated current speed to Train Controller
 			signals.tnm_curr_speed.emit(self.curr_speed10,10)
 			
@@ -3604,18 +3701,72 @@ class tnm_display(QObject):
 				
 			#Update brake status
 			if (self.Brake10 == True or self.eBrake10 == True):
-				self.ui.lineEdit_2.setText("On")
+				self.ui10.ui.lineEdit_2.setText("On")
 			else:
-				self.ui.lineEdit_2.setText("Off")
+				self.ui10.ui.lineEdit_2.setText("Off")
 		#___________________________________________________________________________
 		
 		
 		#Don't allow changes to lineEdits
-		self.ui.lineEdit.setReadOnly(True)
-		self.ui.lineEdit_2.setReadOnly(True)
-		self.ui.lineEdit_3.setReadOnly(True)
-		self.ui.lineEdit_4.setReadOnly(True)
-		self.ui.lineEdit_5.setReadOnly(True)
+		self.ui1.ui.lineEdit.setReadOnly(True)
+		self.ui1.ui.lineEdit_2.setReadOnly(True)
+		self.ui1.ui.lineEdit_3.setReadOnly(True)
+		self.ui1.ui.lineEdit_4.setReadOnly(True)
+		self.ui1.ui.lineEdit_5.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui2.ui.lineEdit.setReadOnly(True)
+		self.ui2.ui.lineEdit_2.setReadOnly(True)
+		self.ui2.ui.lineEdit_3.setReadOnly(True)
+		self.ui2.ui.lineEdit_4.setReadOnly(True)
+		self.ui2.ui.lineEdit_5.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui3.ui.lineEdit.setReadOnly(True)
+		self.ui3.ui.lineEdit_2.setReadOnly(True)
+		self.ui3.ui.lineEdit_3.setReadOnly(True)
+		self.ui3.ui.lineEdit_4.setReadOnly(True)
+		self.ui3.ui.lineEdit_5.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui4.ui.lineEdit.setReadOnly(True)
+		self.ui4.ui.lineEdit_2.setReadOnly(True)
+		self.ui4.ui.lineEdit_3.setReadOnly(True)
+		self.ui4.ui.lineEdit_4.setReadOnly(True)
+		self.ui4.ui.lineEdit_5.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui5.ui.lineEdit.setReadOnly(True)
+		self.ui5.ui.lineEdit_2.setReadOnly(True)
+		self.ui5.ui.lineEdit_3.setReadOnly(True)
+		self.ui5.ui.lineEdit_4.setReadOnly(True)
+		self.ui5.ui.lineEdit_5.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui6.ui.lineEdit.setReadOnly(True)
+		self.ui6.ui.lineEdit_2.setReadOnly(True)
+		self.ui6.ui.lineEdit_3.setReadOnly(True)
+		self.ui6.ui.lineEdit_4.setReadOnly(True)
+		self.ui6.ui.lineEdit_5.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui7.ui.lineEdit.setReadOnly(True)
+		self.ui7.ui.lineEdit_2.setReadOnly(True)
+		self.ui7.ui.lineEdit_3.setReadOnly(True)
+		self.ui7.ui.lineEdit_4.setReadOnly(True)
+		self.ui7.ui.lineEdit_5.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui8.ui.lineEdit.setReadOnly(True)
+		self.ui8.ui.lineEdit_2.setReadOnly(True)
+		self.ui8.ui.lineEdit_3.setReadOnly(True)
+		self.ui8.ui.lineEdit_4.setReadOnly(True)
+		self.ui8.ui.lineEdit_5.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui9.ui.lineEdit.setReadOnly(True)
+		self.ui9.ui.lineEdit_2.setReadOnly(True)
+		self.ui9.ui.lineEdit_3.setReadOnly(True)
+		self.ui9.ui.lineEdit_4.setReadOnly(True)
+		self.ui9.ui.lineEdit_5.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui10.ui.lineEdit.setReadOnly(True)
+		self.ui10.ui.lineEdit_2.setReadOnly(True)
+		self.ui10.ui.lineEdit_3.setReadOnly(True)
+		self.ui10.ui.lineEdit_4.setReadOnly(True)
+		self.ui10.ui.lineEdit_5.setReadOnly(True)
 		
 #_______________________________________________________________________	
 	#function to update Train Statistics (Mass, Pass & Crew count)
@@ -3623,110 +3774,145 @@ class tnm_display(QObject):
 		#Check which train to update
 		if(self.TrainNum1 == 1):
 			#Update pass_count
-			self.ui.lineEdit_6.setText(str(self.pass_count1))
+			self.ui1.ui.lineEdit_6.setText(str(self.pass_count1))
 			#Update crew_count
-			self.ui.lineEdit_7.setText(str(self.crew_count))
+			self.ui1.ui.lineEdit_7.setText(str(self.crew_count))
 			#Update current Mass of Train
 			self.Occupancy1 = pass_crew_count(self.pass_count1, self.crew_count)
 			self.total_mass = ((self.Occupancy1*56.699)/2000) + self.Mass_Empty
-			self.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
+			self.ui1.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
 		#____________________________________
 		elif(self.TrainNum2 == 1):
 			#Update pass_count
-			self.ui.lineEdit_6.setText(str(self.pass_count2))
+			self.ui2.ui.lineEdit_6.setText(str(self.pass_count2))
 			#Update crew_count
-			self.ui.lineEdit_7.setText(str(self.crew_count))
+			self.ui2.ui.lineEdit_7.setText(str(self.crew_count))
 			#Update current Mass of Train
 			self.Occupancy2 = pass_crew_count(self.pass_count2, self.crew_count)
 			self.total_mass = ((self.Occupancy2*56.699)/2000) + self.Mass_Empty
-			self.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
+			self.ui2.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
 		#____________________________________
 		elif(self.TrainNum3 == 1):
 			#Update pass_count
-			self.ui.lineEdit_6.setText(str(self.pass_count3))
+			self.ui3.ui.lineEdit_6.setText(str(self.pass_count3))
 			#Update crew_count
-			self.ui.lineEdit_7.setText(str(self.crew_count))
+			self.ui3.ui.lineEdit_7.setText(str(self.crew_count))
 			#Update current Mass of Train
 			self.Occupancy3 = pass_crew_count(self.pass_count3, self.crew_count)
 			self.total_mass = ((self.Occupancy3*56.699)/2000) + self.Mass_Empty
-			self.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
+			self.ui3.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
 		#____________________________________
 		elif(self.TrainNum4 == 1):
 			#Update pass_count
-			self.ui.lineEdit_6.setText(str(self.pass_count4))
+			self.ui4.ui.lineEdit_6.setText(str(self.pass_count4))
 			#Update crew_count
-			self.ui.lineEdit_7.setText(str(self.crew_count))
+			self.ui4.ui.lineEdit_7.setText(str(self.crew_count))
 			#Update current Mass of Train
 			self.Occupancy4 = pass_crew_count(self.pass_count4, self.crew_count)
 			self.total_mass = ((self.Occupancy4*56.699)/2000) + self.Mass_Empty
-			self.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
+			self.ui4.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
 		#____________________________________
 		elif(self.TrainNum5 == 1):
 			#Update pass_count
-			self.ui.lineEdit_6.setText(str(self.pass_count5))
+			self.ui5.ui.lineEdit_6.setText(str(self.pass_count5))
 			#Update crew_count
-			self.ui.lineEdit_7.setText(str(self.crew_count))
+			self.ui5.ui.lineEdit_7.setText(str(self.crew_count))
 			#Update current Mass of Train
 			self.Occupancy5 = pass_crew_count(self.pass_count5, self.crew_count)
 			self.total_mass = ((self.Occupancy5*56.699)/2000) + self.Mass_Empty
-			self.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
+			self.ui5.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
 		#____________________________________
 		elif(self.TrainNum6 == 1):
 			#Update pass_count
-			self.ui.lineEdit_6.setText(str(self.pass_count6))
+			self.ui6.ui.lineEdit_6.setText(str(self.pass_count6))
 			#Update crew_count
-			self.ui.lineEdit_7.setText(str(self.crew_count))
+			self.ui6.ui.lineEdit_7.setText(str(self.crew_count))
 			#Update current Mass of Train
 			self.Occupancy6 = pass_crew_count(self.pass_count6, self.crew_count)
 			self.total_mass = ((self.Occupancy6*56.699)/2000) + self.Mass_Empty
-			self.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
+			self.ui6.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
 		#____________________________________
 		elif(self.TrainNum7 == 1):
 			#Update pass_count
-			self.ui.lineEdit_6.setText(str(self.pass_count7))
+			self.ui7.ui.lineEdit_6.setText(str(self.pass_count7))
 			#Update crew_count
-			self.ui.lineEdit_7.setText(str(self.crew_count))
+			self.ui7.ui.lineEdit_7.setText(str(self.crew_count))
 			#Update current Mass of Train
 			self.Occupancy7 = pass_crew_count(self.pass_count7, self.crew_count)
 			self.total_mass = ((self.Occupancy7*56.699)/2000) + self.Mass_Empty
-			self.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
+			self.ui7.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
 		#____________________________________
 		elif(self.TrainNum8 == 1):
 			#Update pass_count
-			self.ui.lineEdit_6.setText(str(self.pass_count8))
+			self.ui8.ui.lineEdit_6.setText(str(self.pass_count8))
 			#Update crew_count
-			self.ui.lineEdit_7.setText(str(self.crew_count))
+			self.ui8.ui.lineEdit_7.setText(str(self.crew_count))
 			#Update current Mass of Train
 			self.Occupancy8 = pass_crew_count(self.pass_count8, self.crew_count)
 			self.total_mass = ((self.Occupancy8*56.699)/2000) + self.Mass_Empty
-			self.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
+			self.ui8.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
 		#____________________________________
 		elif(self.TrainNum9 == 1):
 			#Update pass_count
-			self.ui.lineEdit_6.setText(str(self.pass_count9))
+			self.ui9.ui.lineEdit_6.setText(str(self.pass_count9))
 			#Update crew_count
-			self.ui.lineEdit_7.setText(str(self.crew_count))
+			self.ui9.ui.lineEdit_7.setText(str(self.crew_count))
 			#Update current Mass of Train
 			self.Occupancy9 = pass_crew_count(self.pass_count9, self.crew_count)
 			self.total_mass = ((self.Occupancy9*56.699)/2000) + self.Mass_Empty
-			self.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
+			self.ui9.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
 		#____________________________________
 		elif(self.TrainNum10 == 1):
 			#Update pass_count
-			self.ui.lineEdit_6.setText(str(self.pass_count10))
+			self.ui10.ui.lineEdit_6.setText(str(self.pass_count10))
 			#Update crew_count
-			self.ui.lineEdit_7.setText(str(self.crew_count))
+			self.ui10.ui.lineEdit_7.setText(str(self.crew_count))
 			#Update current Mass of Train
 			self.Occupancy10 = pass_crew_count(self.pass_count10, self.crew_count)
 			self.total_mass = ((self.Occupancy10*56.699)/2000) + self.Mass_Empty
-			self.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
+			self.ui10.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
 		#____________________________________
 		
-		
 		#Don't allow changes to lineEdits
-		self.ui.lineEdit_6.setReadOnly(True)
-		self.ui.lineEdit_7.setReadOnly(True)
-		self.ui.lineEdit_8.setReadOnly(True)
+		self.ui1.ui.lineEdit_6.setReadOnly(True)
+		self.ui1.ui.lineEdit_7.setReadOnly(True)
+		self.ui1.ui.lineEdit_8.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui2.ui.lineEdit_6.setReadOnly(True)
+		self.ui2.ui.lineEdit_7.setReadOnly(True)
+		self.ui2.ui.lineEdit_8.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui3.ui.lineEdit_6.setReadOnly(True)
+		self.ui3.ui.lineEdit_7.setReadOnly(True)
+		self.ui3.ui.lineEdit_8.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui4.ui.lineEdit_6.setReadOnly(True)
+		self.ui4.ui.lineEdit_7.setReadOnly(True)
+		self.ui4.ui.lineEdit_8.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui5.ui.lineEdit_6.setReadOnly(True)
+		self.ui5.ui.lineEdit_7.setReadOnly(True)
+		self.ui5.ui.lineEdit_8.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui6.ui.lineEdit_6.setReadOnly(True)
+		self.ui6.ui.lineEdit_7.setReadOnly(True)
+		self.ui6.ui.lineEdit_8.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui7.ui.lineEdit_6.setReadOnly(True)
+		self.ui7.ui.lineEdit_7.setReadOnly(True)
+		self.ui7.ui.lineEdit_8.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui8.ui.lineEdit_6.setReadOnly(True)
+		self.ui8.ui.lineEdit_7.setReadOnly(True)
+		self.ui8.ui.lineEdit_8.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui9.ui.lineEdit_6.setReadOnly(True)
+		self.ui9.ui.lineEdit_7.setReadOnly(True)
+		self.ui9.ui.lineEdit_8.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui10.ui.lineEdit_6.setReadOnly(True)
+		self.ui10.ui.lineEdit_7.setReadOnly(True)
+		self.ui10.ui.lineEdit_8.setReadOnly(True)
 		
 #_______________________________________________________________________
 	#function to update Route Information and Train Internal Controls
@@ -3736,602 +3922,674 @@ class tnm_display(QObject):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
 			#Update Train Numbering Header
-			self.ui.label_23.setText(self.train1)
+			self.ui1.ui.label_23.setText(self.train1)
 			#Update Route Line
-			self.ui.lineEdit_9.setText(self.RouteName1)
+			self.ui1.ui.lineEdit_9.setText(self.RouteName1)
 			#Update Current and Next Station based on Line and direction
-			self.ui.lineEdit_19.setText(self.CurrStation1)
-			self.ui.lineEdit_10.setText(self.NextStation1)
+			self.ui1.ui.lineEdit_19.setText(self.CurrStation1)
+			self.ui1.ui.lineEdit_10.setText(self.NextStation1)
 			
 			#Update Doors Status		#Doors will be held open for one minute
 			if(self.LeftDoor1 == True or self.RightDoor1 == True):
 				self.DoorStatus1 = True
 				signals.tkm_get_pass_count.connect(self.SetOccupancy)
 			if(self.DoorStatus1 == False):
-				self.ui.lineEdit_11.setText("Closed")
+				self.ui1.ui.lineEdit_11.setText("Closed")
 				self.Brake1 = False
 			elif(self.DoorStatus1 == True):
-				self.ui.lineEdit_11.setText("Open")
+				self.ui1.ui.lineEdit_11.setText("Open")
 				signals.tnm_train_stop_num.emit(1)
 				self.Brake1 = True
 				
 			#Update Beacon ID Status
 			if (self.BeaconIDStatus == False):
-				self.ui.lineEdit_12.setText("Waiting")
+				self.ui1.ui.lineEdit_12.setText("Waiting")
 			else:
-				self.ui.lineEdit_12.setText("Recieved")
+				self.ui1.ui.lineEdit_12.setText("Recieved")
 				signals.tnm_beaconID.emit(self.beacon_bin1,1)
 			
 			#update Cabin Lights status
 			if (self.lights_Cab1 == False):
-				self.ui.lineEdit_13.setText("Off")
+				self.ui1.ui.lineEdit_13.setText("Off")
 			else:
-				self.ui.lineEdit_13.setText("On")
+				self.ui1.ui.lineEdit_13.setText("On")
 			#update High Beam Lights status
 			if (self.lights_High1 == False):
-				self.ui.lineEdit_14.setText("Off")
+				self.ui1.ui.lineEdit_14.setText("Off")
 			else:
-				self.ui.lineEdit_14.setText("On")
+				self.ui1.ui.lineEdit_14.setText("On")
 			#update Tunnel Lights status
 			if (self.lights_Tun1 == False):
-				self.ui.lineEdit_15.setText("Off")
+				self.ui1.ui.lineEdit_15.setText("Off")
 			else:
-				self.ui.lineEdit_15.setText("On")
+				self.ui1.ui.lineEdit_15.setText("On")
 			#____________________________________________________________________
 		elif(self.TrainNum2 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
 			#Update Train Numbering Header
-			self.ui.label_23.setText(self.train2)
+			self.ui2.ui.label_23.setText(self.train2)
 			#Update Route Line
-			self.ui.lineEdit_9.setText(self.RouteName2)
+			self.ui2.ui.lineEdit_9.setText(self.RouteName2)
 			#Update Current and Next Station based on Line and direction
-			self.ui.lineEdit_19.setText(self.CurrStation2)
-			self.ui.lineEdit_10.setText(self.NextStation2)
+			self.ui2.ui.lineEdit_19.setText(self.CurrStation2)
+			self.ui2.ui.lineEdit_10.setText(self.NextStation2)
 			
 			#Update Doors Status		#Doors will be held open for one minute
 			if(self.LeftDoor2 == True or self.RightDoor2 == True):
 				self.DoorStatus2 = True
 				signals.tkm_get_pass_count.connect(self.SetOccupancy)
 			if (self.DoorStatus2 == False):
-				self.ui.lineEdit_11.setText("Closed")
+				self.ui2.ui.lineEdit_11.setText("Closed")
 				self.Brake2 = False
 			elif(self.DoorStatus2 == True):
-				self.ui.lineEdit_11.setText("Open")
+				self.ui2.ui.lineEdit_11.setText("Open")
 				signals.tnm_train_stop_num.emit(2)
 				self.Brake2 = True
 				
 			#Update Beacon ID Status
 			if (self.BeaconIDStatus == False):
-				self.ui.lineEdit_12.setText("Waiting")
+				self.ui2.ui.lineEdit_12.setText("Waiting")
 			else:
-				self.ui.lineEdit_12.setText("Recieved")
+				self.ui2.ui.lineEdit_12.setText("Recieved")
 				signals.tnm_beaconID.emit(self.beacon_bin2,2)
 			
 			#update Cabin Lights status
 			if (self.lights_Cab2 == False):
-				self.ui.lineEdit_13.setText("Off")
+				self.ui2.ui.lineEdit_13.setText("Off")
 			else:
-				self.ui.lineEdit_13.setText("On")
+				self.ui2.ui.lineEdit_13.setText("On")
 			#update High Beam Lights status
 			if (self.lights_High2 == False):
-				self.ui.lineEdit_14.setText("Off")
+				self.ui2.ui.lineEdit_14.setText("Off")
 			else:
-				self.ui.lineEdit_14.setText("On")
+				self.ui2.ui.lineEdit_14.setText("On")
 			#update Tunnel Lights status
 			if (self.lights_Tun2 == False):
-				self.ui.lineEdit_15.setText("Off")
+				self.ui2.ui.lineEdit_15.setText("Off")
 			else:
-				self.ui.lineEdit_15.setText("On")
+				self.ui2.ui.lineEdit_15.setText("On")
 			#____________________________________________________________________
 		elif(self.TrainNum3 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
 			#Update Train Numbering Header
-			self.ui.label_23.setText(self.train3)
+			self.ui3.ui.label_23.setText(self.train3)
 			#Update Route Line
-			self.ui.lineEdit_9.setText(self.RouteName3)
+			self.ui3.ui.lineEdit_9.setText(self.RouteName3)
 			#Update Current and Next Station based on Line and direction
-			self.ui.lineEdit_19.setText(self.CurrStation3)
-			self.ui.lineEdit_10.setText(self.NextStation3)
+			self.ui3.ui.lineEdit_19.setText(self.CurrStation3)
+			self.ui3.ui.lineEdit_10.setText(self.NextStation3)
 			
 			#Update Doors Status		#Doors will be held open for one minute
 			if(self.LeftDoor3 == True or self.RightDoor3 == True):
 				self.DoorStatus3 = True
 				signals.tkm_get_pass_count.connect(self.SetOccupancy)
 			if (self.DoorStatus3 == False):
-				self.ui.lineEdit_11.setText("Closed")
+				self.ui3.ui.lineEdit_11.setText("Closed")
 				self.Brake3 = False
 			elif(self.DoorStatus3 == True):
-				self.ui.lineEdit_11.setText("Open")
+				self.ui3.ui.lineEdit_11.setText("Open")
 				signals.tnm_train_stop_num.emit(3)
 				self.Brake3 = True
 				
 			#Update Beacon ID Status
 			if (self.BeaconIDStatus == False):
-				self.ui.lineEdit_12.setText("Waiting")
+				self.ui3.ui.lineEdit_12.setText("Waiting")
 			else:
-				self.ui.lineEdit_12.setText("Recieved")
+				self.ui3.ui.lineEdit_12.setText("Recieved")
 				signals.tnm_beaconID.emit(self.beacon_bin3,3)
 			
 			#update Cabin Lights status
 			if (self.lights_Cab3 == False):
-				self.ui.lineEdit_13.setText("Off")
+				self.ui3.ui.lineEdit_13.setText("Off")
 			else:
-				self.ui.lineEdit_13.setText("On")
+				self.ui3.ui.lineEdit_13.setText("On")
 			#update High Beam Lights status
 			if (self.lights_High3 == False):
-				self.ui.lineEdit_14.setText("Off")
+				self.ui3.ui.lineEdit_14.setText("Off")
 			else:
-				self.ui.lineEdit_14.setText("On")
+				self.ui3.ui.lineEdit_14.setText("On")
 			#update Tunnel Lights status
 			if (self.lights_Tun3 == False):
-				self.ui.lineEdit_15.setText("Off")
+				self.ui3.ui.lineEdit_15.setText("Off")
 			else:
-				self.ui.lineEdit_15.setText("On")
+				self.ui3.ui.lineEdit_15.setText("On")
 			#____________________________________________________________________
 		elif(self.TrainNum4 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
 			#Update Train Numbering Header
-			self.ui.label_23.setText(self.train4)
+			self.ui4.ui.label_23.setText(self.train4)
 			#Update Route Line
-			self.ui.lineEdit_9.setText(self.RouteName4)
+			self.ui4.ui.lineEdit_9.setText(self.RouteName4)
 			#Update Current and Next Station based on Line and direction
-			self.ui.lineEdit_19.setText(self.CurrStation4)
-			self.ui.lineEdit_10.setText(self.NextStation4)
+			self.ui4.ui.lineEdit_19.setText(self.CurrStation4)
+			self.ui4.ui.lineEdit_10.setText(self.NextStation4)
 			
 			#Update Doors Status		#Doors will be held open for one minute
 			if(self.LeftDoor4 == True or self.RightDoor4 == True):
 				self.DoorStatus4 = True
 				signals.tkm_get_pass_count.connect(self.SetOccupancy)
 			if (self.DoorStatus4 == False):
-				self.ui.lineEdit_11.setText("Closed")
+				self.ui4.ui.lineEdit_11.setText("Closed")
 				self.Brake4 = False
 			elif(self.DoorStatus4 == True):
-				self.ui.lineEdit_11.setText("Open")
+				self.ui4.ui.lineEdit_11.setText("Open")
 				signals.tnm_train_stop_num.emit(4)
 				self.Brake4 = True
 				
 			#Update Beacon ID Status
 			if (self.BeaconIDStatus == False):
-				self.ui.lineEdit_12.setText("Waiting")
+				self.ui4.ui.lineEdit_12.setText("Waiting")
 			else:
-				self.ui.lineEdit_12.setText("Recieved")
+				self.ui4.ui.lineEdit_12.setText("Recieved")
 				signals.tnm_beaconID.emit(self.beacon_bin4,4)
 			
 			#update Cabin Lights status
 			if (self.lights_Cab4 == False):
-				self.ui.lineEdit_13.setText("Off")
+				self.ui4.ui.lineEdit_13.setText("Off")
 			else:
-				self.ui.lineEdit_13.setText("On")
+				self.ui4.ui.lineEdit_13.setText("On")
 			#update High Beam Lights status
 			if (self.lights_High4 == False):
-				self.ui.lineEdit_14.setText("Off")
+				self.ui4.ui.lineEdit_14.setText("Off")
 			else:
-				self.ui.lineEdit_14.setText("On")
+				self.ui4.ui.lineEdit_14.setText("On")
 			#update Tunnel Lights status
 			if (self.lights_Tun4 == False):
-				self.ui.lineEdit_15.setText("Off")
+				self.ui4.ui.lineEdit_15.setText("Off")
 			else:
-				self.ui.lineEdit_15.setText("On")
+				self.ui4.ui.lineEdit_15.setText("On")
 			#____________________________________________________________________
 		elif(self.TrainNum5 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
 			#Update Train Numbering Header
-			self.ui.label_23.setText(self.train5)
+			self.ui5.ui.label_23.setText(self.train5)
 			#Update Route Line
-			self.ui.lineEdit_9.setText(self.RouteName5)
+			self.ui5.ui.lineEdit_9.setText(self.RouteName5)
 			#Update Current and Next Station based on Line and direction
-			self.ui.lineEdit_19.setText(self.CurrStation5)
-			self.ui.lineEdit_10.setText(self.NextStation5)
+			self.ui5.ui.lineEdit_19.setText(self.CurrStation5)
+			self.ui5.ui.lineEdit_10.setText(self.NextStation5)
 			
 			#Update Doors Status		#Doors will be held open for one minute
 			if(self.LeftDoor5 == True or self.RightDoor5 == True):
 				self.DoorStatus5 = True
 				signals.tkm_get_pass_count.connect(self.SetOccupancy)
 			if (self.DoorStatus5 == False):
-				self.ui.lineEdit_11.setText("Closed")
+				self.ui5.ui.lineEdit_11.setText("Closed")
 				self.Brake5 = False
 			elif(self.DoorStatus5 == True):
-				self.ui.lineEdit_11.setText("Open")
+				self.ui5.ui.lineEdit_11.setText("Open")
 				signals.tnm_train_stop_num.emit(5)
 				self.Brake5 = True
 				
 			#Update Beacon ID Status
 			if (self.BeaconIDStatus == False):
-				self.ui.lineEdit_12.setText("Waiting")
+				self.ui5.ui.lineEdit_12.setText("Waiting")
 			else:
-				self.ui.lineEdit_12.setText("Recieved")
+				self.ui5.ui.lineEdit_12.setText("Recieved")
 				signals.tnm_beaconID.emit(self.beacon_bin5,5)
 			
 			#update Cabin Lights status
 			if (self.lights_Cab5 == False):
-				self.ui.lineEdit_13.setText("Off")
+				self.ui5.ui.lineEdit_13.setText("Off")
 			else:
-				self.ui.lineEdit_13.setText("On")
+				self.ui5.ui.lineEdit_13.setText("On")
 			#update High Beam Lights status
 			if (self.lights_High5 == False):
-				self.ui.lineEdit_14.setText("Off")
+				self.ui5.ui.lineEdit_14.setText("Off")
 			else:
-				self.ui.lineEdit_14.setText("On")
+				self.ui5.ui.lineEdit_14.setText("On")
 			#update Tunnel Lights status
 			if (self.lights_Tun5 == False):
-				self.ui.lineEdit_15.setText("Off")
+				self.ui5.ui.lineEdit_15.setText("Off")
 			else:
-				self.ui.lineEdit_15.setText("On")
+				self.ui5.ui.lineEdit_15.setText("On")
 			#____________________________________________________________________
 		elif(self.TrainNum6 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
 			#Update Train Numbering Header
-			self.ui.label_23.setText(self.train6)
+			self.ui6.ui.label_23.setText(self.train6)
 			#Update Route Line
-			self.ui.lineEdit_9.setText(self.RouteName6)
+			self.ui6.ui.lineEdit_9.setText(self.RouteName6)
 			#Update Current and Next Station based on Line and direction
-			self.ui.lineEdit_19.setText(self.CurrStation6)
-			self.ui.lineEdit_10.setText(self.NextStation6)
+			self.ui6.ui.lineEdit_19.setText(self.CurrStation6)
+			self.ui6.ui.lineEdit_10.setText(self.NextStation6)
 			
 			#Update Doors Status		#Doors will be held open for one minute
 			if(self.LeftDoor6 == True or self.RightDoor6 == True):
 				self.DoorStatus6 = True
 				signals.tkm_get_pass_count.connect(self.SetOccupancy)
 			if (self.DoorStatus6 == False):
-				self.ui.lineEdit_11.setText("Closed")
+				self.ui6.ui.lineEdit_11.setText("Closed")
 				self.Brake6 = False
 			elif(self.DoorStatus6 == True):
-				self.ui.lineEdit_11.setText("Open")
+				self.ui6.ui.lineEdit_11.setText("Open")
 				signals.tnm_train_stop_num.emit(6)
 				self.Brake6 = True
 				
 			#Update Beacon ID Status
 			if (self.BeaconIDStatus == False):
-				self.ui.lineEdit_12.setText("Waiting")
+				self.ui6.ui.lineEdit_12.setText("Waiting")
 			else:
-				self.ui.lineEdit_12.setText("Recieved")
+				self.ui6.ui.lineEdit_12.setText("Recieved")
 				signals.tnm_beaconID.emit(self.beacon_bin6,6)
 			
 			#update Cabin Lights status
 			if (self.lights_Cab6 == False):
-				self.ui.lineEdit_13.setText("Off")
+				self.ui6.ui.lineEdit_13.setText("Off")
 			else:
-				self.ui.lineEdit_13.setText("On")
+				self.ui6.ui.lineEdit_13.setText("On")
 			#update High Beam Lights status
 			if (self.lights_High6 == False):
-				self.ui.lineEdit_14.setText("Off")
+				self.ui6.ui.lineEdit_14.setText("Off")
 			else:
-				self.ui.lineEdit_14.setText("On")
+				self.ui6.ui.lineEdit_14.setText("On")
 			#update Tunnel Lights status
 			if (self.lights_Tun6 == False):
-				self.ui.lineEdit_15.setText("Off")
+				self.ui6.ui.lineEdit_15.setText("Off")
 			else:
-				self.ui.lineEdit_15.setText("On")
+				self.ui6.ui.lineEdit_15.setText("On")
 			#____________________________________________________________________
 		elif(self.TrainNum7 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
 			#Update Train Numbering Header
-			self.ui.label_23.setText(self.train7)
+			self.ui7.ui.label_23.setText(self.train7)
 			#Update Route Line
-			self.ui.lineEdit_9.setText(self.RouteName7)
+			self.ui7.ui.lineEdit_9.setText(self.RouteName7)
 			#Update Current and Next Station based on Line and direction
-			self.ui.lineEdit_19.setText(self.CurrStation7)
-			self.ui.lineEdit_10.setText(self.NextStation7)
+			self.ui7.ui.lineEdit_19.setText(self.CurrStation7)
+			self.ui7.ui.lineEdit_10.setText(self.NextStation7)
 			
 			#Update Doors Status		#Doors will be held open for one minute
 			if(self.LeftDoor7 == True or self.RightDoor7 == True):
 				self.DoorStatus7 = True
 				signals.tkm_get_pass_count.connect(self.SetOccupancy)
 			if (self.DoorStatus7 == False):
-				self.ui.lineEdit_11.setText("Closed")
+				self.ui7.ui.lineEdit_11.setText("Closed")
 				self.Brake7 = False
 			elif(self.DoorStatus7 == True):
-				self.ui.lineEdit_11.setText("Open")
+				self.ui7.ui.lineEdit_11.setText("Open")
 				signals.tnm_train_stop_num.emit(7)
 				self.Brake7 = True
 				
 			#Update Beacon ID Status
 			if (self.BeaconIDStatus == False):
-				self.ui.lineEdit_12.setText("Waiting")
+				self.ui7.ui.lineEdit_12.setText("Waiting")
 			else:
-				self.ui.lineEdit_12.setText("Recieved")
+				self.ui7.ui.lineEdit_12.setText("Recieved")
 				signals.tnm_beaconID.emit(self.beacon_bin7,7)
 			
 			#update Cabin Lights status
 			if (self.lights_Cab7 == False):
-				self.ui.lineEdit_13.setText("Off")
+				self.ui7.ui.lineEdit_13.setText("Off")
 			else:
-				self.ui.lineEdit_13.setText("On")
+				self.ui7.ui.lineEdit_13.setText("On")
 			#update High Beam Lights status
 			if (self.lights_High7 == False):
-				self.ui.lineEdit_14.setText("Off")
+				self.ui7.ui.lineEdit_14.setText("Off")
 			else:
-				self.ui.lineEdit_14.setText("On")
+				self.ui7.ui.lineEdit_14.setText("On")
 			#update Tunnel Lights status
 			if (self.lights_Tun7 == False):
-				self.ui.lineEdit_15.setText("Off")
+				self.ui7.ui.lineEdit_15.setText("Off")
 			else:
-				self.ui.lineEdit_15.setText("On")
+				self.ui7.ui.lineEdit_15.setText("On")
 			#____________________________________________________________________
 		elif(self.TrainNum8 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
 			#Update Train Numbering Header
-			self.ui.label_23.setText(self.train8)
+			self.ui8.ui.label_23.setText(self.train8)
 			#Update Route Line
-			self.ui.lineEdit_9.setText(self.RouteName8)
+			self.ui8.ui.lineEdit_9.setText(self.RouteName8)
 			#Update Current and Next Station based on Line and direction
-			self.ui.lineEdit_19.setText(self.CurrStation8)
-			self.ui.lineEdit_10.setText(self.NextStation8)
+			self.ui8.ui.lineEdit_19.setText(self.CurrStation8)
+			self.ui8.ui.lineEdit_10.setText(self.NextStation8)
 			
 			#Update Doors Status		#Doors will be held open for one minute
 			if(self.LeftDoor8 == True or self.RightDoor8 == True):
 				self.DoorStatus8 = True
 				signals.tkm_get_pass_count.connect(self.SetOccupancy)
 			if (self.DoorStatus8 == False):
-				self.ui.lineEdit_11.setText("Closed")
+				self.ui8.ui.lineEdit_11.setText("Closed")
 				self.Brake8 = False
 			elif(self.DoorStatus8 == True):
-				self.ui.lineEdit_11.setText("Open")
+				self.ui8.ui.lineEdit_11.setText("Open")
 				signals.tnm_train_stop_num.emit(8)
 				self.Brake8 = True
 				
 			#Update Beacon ID Status
 			if (self.BeaconIDStatus == False):
-				self.ui.lineEdit_12.setText("Waiting")
+				self.ui8.ui.lineEdit_12.setText("Waiting")
 			else:
-				self.ui.lineEdit_12.setText("Recieved")
+				self.ui8.ui.lineEdit_12.setText("Recieved")
 				signals.tnm_beaconID.emit(self.beacon_bin8,8)
 			
 			#update Cabin Lights status
 			if (self.lights_Cab8 == False):
-				self.ui.lineEdit_13.setText("Off")
+				self.ui8.ui.lineEdit_13.setText("Off")
 			else:
-				self.ui.lineEdit_13.setText("On")
+				self.ui8.ui.lineEdit_13.setText("On")
 			#update High Beam Lights status
 			if (self.lights_High8 == False):
-				self.ui.lineEdit_14.setText("Off")
+				self.ui8.ui.lineEdit_14.setText("Off")
 			else:
-				self.ui.lineEdit_14.setText("On")
+				self.ui8.ui.lineEdit_14.setText("On")
 			#update Tunnel Lights status
 			if (self.lights_Tun8 == False):
-				self.ui.lineEdit_15.setText("Off")
+				self.ui8.ui.lineEdit_15.setText("Off")
 			else:
-				self.ui.lineEdit_15.setText("On")
+				self.ui8.ui.lineEdit_15.setText("On")
 			#____________________________________________________________________
 		elif(self.TrainNum9 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
 			#Update Train Numbering Header
-			self.ui.label_23.setText(self.train9)
+			self.ui9.ui.label_23.setText(self.train9)
 			#Update Route Line
-			self.ui.lineEdit_9.setText(self.RouteName9)
+			self.ui9.ui.lineEdit_9.setText(self.RouteName9)
 			#Update Current and Next Station based on Line and direction
-			self.ui.lineEdit_19.setText(self.CurrStation9)
-			self.ui.lineEdit_10.setText(self.NextStation9)
+			self.ui9.ui.lineEdit_19.setText(self.CurrStation9)
+			self.ui9.ui.lineEdit_10.setText(self.NextStation9)
 			
 			#Update Doors Status		#Doors will be held open for one minute
 			if(self.LeftDoor9 == True or self.RightDoor9 == True):
 				self.DoorStatus9 = True
 				signals.tkm_get_pass_count.connect(self.SetOccupancy)
 			if (self.DoorStatus9 == False):
-				self.ui.lineEdit_11.setText("Closed")
+				self.ui9.ui.lineEdit_11.setText("Closed")
 				self.Brake9 = False
 			elif(self.DoorStatus9 == True):
-				self.ui.lineEdit_11.setText("Open")
+				self.ui9.ui.lineEdit_11.setText("Open")
 				signals.tnm_train_stop_num.emit(9)
 				self.Brake9 = True
 				
 			#Update Beacon ID Status
 			if (self.BeaconIDStatus == False):
-				self.ui.lineEdit_12.setText("Waiting")
+				self.ui9.ui.lineEdit_12.setText("Waiting")
 			else:
-				self.ui.lineEdit_12.setText("Recieved")
+				self.ui9.ui.lineEdit_12.setText("Recieved")
 				signals.tnm_beaconID.emit(self.beacon_bin9,9)
 			
 			#update Cabin Lights status
 			if (self.lights_Cab9 == False):
-				self.ui.lineEdit_13.setText("Off")
+				self.ui9.ui.lineEdit_13.setText("Off")
 			else:
-				self.ui.lineEdit_13.setText("On")
+				self.ui9.ui.lineEdit_13.setText("On")
 			#update High Beam Lights status
 			if (self.lights_High9 == False):
-				self.ui.lineEdit_14.setText("Off")
+				self.ui9.ui.lineEdit_14.setText("Off")
 			else:
-				self.ui.lineEdit_14.setText("On")
+				self.ui9.ui.lineEdit_14.setText("On")
 			#update Tunnel Lights status
 			if (self.lights_Tun9 == False):
-				self.ui.lineEdit_15.setText("Off")
+				self.ui9.ui.lineEdit_15.setText("Off")
 			else:
-				self.ui.lineEdit_15.setText("On")
+				self.ui9.ui.lineEdit_15.setText("On")
 			#____________________________________________________________________
 		elif(self.TrainNum10 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
 			#Update Train Numbering Header
-			self.ui.label_23.setText(self.train10)
+			self.ui10.ui.label_23.setText(self.train10)
 			#Update Route Line
-			self.ui.lineEdit_9.setText(self.RouteName10)
+			self.ui10.ui.lineEdit_9.setText(self.RouteName10)
 			#Update Current and Next Station based on Line and direction
-			self.ui.lineEdit_19.setText(self.CurrStation10)
-			self.ui.lineEdit_10.setText(self.NextStation10)
+			self.ui10.ui.lineEdit_19.setText(self.CurrStation10)
+			self.ui10.ui.lineEdit_10.setText(self.NextStation10)
 			
 			#Update Doors Status		#Doors will be held open for one minute
 			if(self.LeftDoor10 == True or self.RightDoor10 == True):
 				self.DoorStatus10 = True
 				signals.tkm_get_pass_count.connect(self.SetOccupancy)
 			if (self.DoorStatus10 == False):
-				self.ui.lineEdit_11.setText("Closed")
+				self.ui10.ui.lineEdit_11.setText("Closed")
 				self.Brake10 = False
 			elif(self.DoorStatus10 == True):
-				self.ui.lineEdit_11.setText("Open")
+				self.ui10.ui.lineEdit_11.setText("Open")
 				signals.tnm_train_stop_num.emit(10)
 				self.Brake10 = True
 				
 			#Update Beacon ID Status
 			if (self.BeaconIDStatus == False):
-				self.ui.lineEdit_12.setText("Waiting")
+				self.ui10.ui.lineEdit_12.setText("Waiting")
 			else:
-				self.ui.lineEdit_12.setText("Recieved")
+				self.ui10.ui.lineEdit_12.setText("Recieved")
 				signals.tnm_beaconID.emit(self.beacon_bin10,10)
 			
 			#update Cabin Lights status
 			if (self.lights_Cab10 == False):
-				self.ui.lineEdit_13.setText("Off")
+				self.ui10.ui.lineEdit_13.setText("Off")
 			else:
-				self.ui.lineEdit_13.setText("On")
+				self.ui10.ui.lineEdit_13.setText("On")
 			#update High Beam Lights status
 			if (self.lights_High10 == False):
-				self.ui.lineEdit_14.setText("Off")
+				self.ui10.ui.lineEdit_14.setText("Off")
 			else:
-				self.ui.lineEdit_14.setText("On")
+				self.ui10.ui.lineEdit_14.setText("On")
 			#update Tunnel Lights status
 			if (self.lights_Tun10 == False):
-				self.ui.lineEdit_15.setText("Off")
+				self.ui10.ui.lineEdit_15.setText("Off")
 			else:
-				self.ui.lineEdit_15.setText("On")
+				self.ui10.ui.lineEdit_15.setText("On")
 			#____________________________________________________________________
 		
 		#Don't allow changes to lineEdits
-		self.ui.lineEdit_9.setReadOnly(True)
-		self.ui.lineEdit_10.setReadOnly(True)
-		self.ui.lineEdit_11.setReadOnly(True)
-		self.ui.lineEdit_12.setReadOnly(True)
-		self.ui.lineEdit_13.setReadOnly(True)
-		self.ui.lineEdit_14.setReadOnly(True)
-		self.ui.lineEdit_15.setReadOnly(True)
+		self.ui1.ui.lineEdit_9.setReadOnly(True)
+		self.ui1.ui.lineEdit_10.setReadOnly(True)
+		self.ui1.ui.lineEdit_11.setReadOnly(True)
+		self.ui1.ui.lineEdit_12.setReadOnly(True)
+		self.ui1.ui.lineEdit_13.setReadOnly(True)
+		self.ui1.ui.lineEdit_14.setReadOnly(True)
+		self.ui1.ui.lineEdit_15.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui2.ui.lineEdit_9.setReadOnly(True)
+		self.ui2.ui.lineEdit_10.setReadOnly(True)
+		self.ui2.ui.lineEdit_11.setReadOnly(True)
+		self.ui2.ui.lineEdit_12.setReadOnly(True)
+		self.ui2.ui.lineEdit_13.setReadOnly(True)
+		self.ui2.ui.lineEdit_14.setReadOnly(True)
+		self.ui2.ui.lineEdit_15.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui3.ui.lineEdit_9.setReadOnly(True)
+		self.ui3.ui.lineEdit_10.setReadOnly(True)
+		self.ui3.ui.lineEdit_11.setReadOnly(True)
+		self.ui3.ui.lineEdit_12.setReadOnly(True)
+		self.ui3.ui.lineEdit_13.setReadOnly(True)
+		self.ui3.ui.lineEdit_14.setReadOnly(True)
+		self.ui3.ui.lineEdit_15.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui4.ui.lineEdit_9.setReadOnly(True)
+		self.ui4.ui.lineEdit_10.setReadOnly(True)
+		self.ui4.ui.lineEdit_11.setReadOnly(True)
+		self.ui4.ui.lineEdit_12.setReadOnly(True)
+		self.ui4.ui.lineEdit_13.setReadOnly(True)
+		self.ui4.ui.lineEdit_14.setReadOnly(True)
+		self.ui4.ui.lineEdit_15.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui5.ui.lineEdit_9.setReadOnly(True)
+		self.ui5.ui.lineEdit_10.setReadOnly(True)
+		self.ui5.ui.lineEdit_11.setReadOnly(True)
+		self.ui5.ui.lineEdit_12.setReadOnly(True)
+		self.ui5.ui.lineEdit_13.setReadOnly(True)
+		self.ui5.ui.lineEdit_14.setReadOnly(True)
+		self.ui5.ui.lineEdit_15.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui6.ui.lineEdit_9.setReadOnly(True)
+		self.ui6.ui.lineEdit_10.setReadOnly(True)
+		self.ui6.ui.lineEdit_11.setReadOnly(True)
+		self.ui6.ui.lineEdit_12.setReadOnly(True)
+		self.ui6.ui.lineEdit_13.setReadOnly(True)
+		self.ui6.ui.lineEdit_14.setReadOnly(True)
+		self.ui6.ui.lineEdit_15.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui7.ui.lineEdit_9.setReadOnly(True)
+		self.ui7.ui.lineEdit_10.setReadOnly(True)
+		self.ui7.ui.lineEdit_11.setReadOnly(True)
+		self.ui7.ui.lineEdit_12.setReadOnly(True)
+		self.ui7.ui.lineEdit_13.setReadOnly(True)
+		self.ui7.ui.lineEdit_14.setReadOnly(True)
+		self.ui7.ui.lineEdit_15.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui8.ui.lineEdit_9.setReadOnly(True)
+		self.ui8.ui.lineEdit_10.setReadOnly(True)
+		self.ui8.ui.lineEdit_11.setReadOnly(True)
+		self.ui8.ui.lineEdit_12.setReadOnly(True)
+		self.ui8.ui.lineEdit_13.setReadOnly(True)
+		self.ui8.ui.lineEdit_14.setReadOnly(True)
+		self.ui8.ui.lineEdit_15.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui9.ui.lineEdit_9.setReadOnly(True)
+		self.ui9.ui.lineEdit_10.setReadOnly(True)
+		self.ui9.ui.lineEdit_11.setReadOnly(True)
+		self.ui9.ui.lineEdit_12.setReadOnly(True)
+		self.ui9.ui.lineEdit_13.setReadOnly(True)
+		self.ui9.ui.lineEdit_14.setReadOnly(True)
+		self.ui9.ui.lineEdit_15.setReadOnly(True)
+		#Don't allow changes to lineEdits
+		self.ui10.ui.lineEdit_9.setReadOnly(True)
+		self.ui10.ui.lineEdit_10.setReadOnly(True)
+		self.ui10.ui.lineEdit_11.setReadOnly(True)
+		self.ui10.ui.lineEdit_12.setReadOnly(True)
+		self.ui10.ui.lineEdit_13.setReadOnly(True)
+		self.ui10.ui.lineEdit_14.setReadOnly(True)
+		self.ui10.ui.lineEdit_15.setReadOnly(True)
 			
 #_______________________________________________________________________			
 	#function to delegate variables when Emergency Brake triggered
 	def EmergencyBraking(self):
 		if(self.TrainNum1 == 1):
 			if not self.eBrake1:
-				self.ui.pushButton.setText("CANCEL")
-				self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
+				self.ui1.ui.pushButton.setText("CANCEL")
+				self.ui1.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
 				self.eBrake1 = True
 				signals.tnm_ebrake.emit(self.eBrake1,1)
 				print("eBrake is " + str(self.eBrake1))
 			else:
-				self.ui.pushButton.setText("Emergency Brake")
-				self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: black;")
+				self.ui1.ui.pushButton.setText("Emergency Brake")
+				self.ui1.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: black;")
 				self.eBrake1 = False
 				signals.tnm_ebrake.emit(self.eBrake1,1)
 		#______________________________________
 		elif(self.TrainNum2 == 1):
 			if not self.eBrake2:
-				self.ui.pushButton.setText("CANCEL")
-				self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
+				self.ui2.ui.pushButton.setText("CANCEL")
+				self.ui2.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
 				self.eBrake2 = True
 				signals.tnm_ebrake.emit(self.eBrake2,2)
 				print("eBrake is " + str(self.eBrake2))
 			else:
-				self.ui.pushButton.setText("Emergency Brake")
-				self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: black;")
+				self.ui2.ui.pushButton.setText("Emergency Brake")
+				self.ui2.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: black;")
 				self.eBrake2 = False
 				signals.tnm_ebrake.emit(self.eBrake2,2)
 		#______________________________________
 		elif(self.TrainNum3 == 1):
 			if not self.eBrake3:
-				self.ui.pushButton.setText("CANCEL")
-				self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
+				self.ui3.ui.pushButton.setText("CANCEL")
+				self.ui3.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
 				self.eBrake3 = True
 				signals.tnm_ebrake.emit(self.eBrake3,3)
 				print("eBrake is " + str(self.eBrake3))
 			else:
-				self.ui.pushButton.setText("Emergency Brake")
-				self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: black;")
+				self.ui3.ui.pushButton.setText("Emergency Brake")
+				self.ui3.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: black;")
 				self.eBrake3 = False
 				signals.tnm_ebrake.emit(self.eBrake3,3)
 		#______________________________________
 		elif(self.TrainNum4 == 1):
 			if not self.eBrake4:
-				self.ui.pushButton.setText("CANCEL")
-				self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
+				self.ui4.ui.pushButton.setText("CANCEL")
+				self.ui4.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
 				self.eBrake4 = True
 				signals.tnm_ebrake.emit(self.eBrake4,4)
 				print("eBrake is " + str(self.eBrake4))
 			else:
-				self.ui.pushButton.setText("Emergency Brake")
-				self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: black;")
+				self.ui4.ui.pushButton.setText("Emergency Brake")
+				self.ui4.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: black;")
 				self.eBrake4 = False
 				signals.tnm_ebrake.emit(self.eBrake4,4)
 		#______________________________________
 		elif(self.TrainNum5 == 1):
 			if not self.eBrake5:
-				self.ui.pushButton.setText("CANCEL")
-				self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
+				self.ui5.ui.pushButton.setText("CANCEL")
+				self.ui5.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
 				self.eBrake5 = True
 				signals.tnm_ebrake.emit(self.eBrake5,5)
 				print("eBrake is " + str(self.eBrake5))
 			else:
-				self.ui.pushButton.setText("Emergency Brake")
-				self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: black;")
+				self.ui5.ui.pushButton.setText("Emergency Brake")
+				self.ui5.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: black;")
 				self.eBrake5 = False
 				signals.tnm_ebrake.emit(self.eBrake5,5)
 		#______________________________________
 		elif(self.TrainNum6 == 1):
 			if not self.eBrake6:
-				self.ui.pushButton.setText("CANCEL")
-				self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
+				self.ui6.ui.pushButton.setText("CANCEL")
+				self.ui6.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
 				self.eBrake6 = True
 				signals.tnm_ebrake.emit(self.eBrake6,6)
 				print("eBrake is " + str(self.eBrake6))
 			else:
-				self.ui.pushButton.setText("Emergency Brake")
-				self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: black;")
+				self.ui6.ui.pushButton.setText("Emergency Brake")
+				self.ui6.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: black;")
 				self.eBrake6 = False
 				signals.tnm_ebrake.emit(self.eBrake6,6)
 		#______________________________________
 		elif(self.TrainNum7 == 1):
 			if not self.eBrake7:
-				self.ui.pushButton.setText("CANCEL")
-				self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
+				self.ui7.ui.pushButton.setText("CANCEL")
+				self.ui7.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
 				self.eBrake7 = True
 				signals.tnm_ebrake.emit(self.eBrake7,7)
 				print("eBrake is " + str(self.eBrake7))
 			else:
-				self.ui.pushButton.setText("Emergency Brake")
-				self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: black;")
+				self.ui7.ui.pushButton.setText("Emergency Brake")
+				self.ui7.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: black;")
 				self.eBrake7 = False
 				signals.tnm_ebrake.emit(self.eBrake7,7)
 		#______________________________________
 		elif(self.TrainNum8 == 1):
 			if not self.eBrake8:
-				self.ui.pushButton.setText("CANCEL")
-				self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
+				self.ui8.ui.pushButton.setText("CANCEL")
+				self.ui8.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
 				self.eBrake8 = True
 				signals.tnm_ebrake.emit(self.eBrake8,8)
 				print("eBrake is " + str(self.eBrake8))
 			else:
-				self.ui.pushButton.setText("Emergency Brake")
-				self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: black;")
+				self.ui8.ui.pushButton.setText("Emergency Brake")
+				self.ui8.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: black;")
 				self.eBrake8 = False
 				signals.tnm_ebrake.emit(self.eBrake8,8)
 		#_____________________________________
 		elif(self.TrainNum9 == 1):
 			if not self.eBrake9:
-				self.ui.pushButton.setText("CANCEL")
-				self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
+				self.ui9.ui.pushButton.setText("CANCEL")
+				self.ui9.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
 				self.eBrake9 = True
 				signals.tnm_ebrake.emit(self.eBrake9,9)
 				print("eBrake is " + str(self.eBrake9))
 			else:
-				self.ui.pushButton.setText("Emergency Brake")
-				self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: black;")
+				self.ui9.ui.pushButton.setText("Emergency Brake")
+				self.ui9.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: black;")
 				self.eBrake9 = False
 				signals.tnm_ebrake.emit(self.eBrake9,9)
 		#_____________________________________
 		elif(self.TrainNum10 == 1):
 			if not self.eBrake10:
-				self.ui.pushButton.setText("CANCEL")
-				self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
+				self.ui10.ui.pushButton.setText("CANCEL")
+				self.ui10.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
 				self.eBrake10 = True
 				signals.tnm_ebrake.emit(self.eBrake10,10)
 				print("eBrake is " + str(self.eBrake10))
 			else:
-				self.ui.pushButton.setText("Emergency Brake")
-				self.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: black;")
+				self.ui10.ui.pushButton.setText("Emergency Brake")
+				self.ui10.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: black;")
 				self.eBrake10 = False
 				signals.tnm_ebrake.emit(self.eBrake10,10)
 		#_____________________________________
@@ -4343,211 +4601,301 @@ class tnm_display(QObject):
 		if(self.TrainNum1 == 1):
 			AlphaFlag1 = False
 			#Error checking to make sure input is only an INT
-			for i in self.ui.lineEdit_17.text():
+			for i in self.ui1.ui.lineEdit_17.text():
 				if(i.isalpha() == True):
 					AlphaFlag1 = True
 			if(AlphaFlag1 == True):
-				self.ui.lineEdit_17.setText(str(self.curr_temp1))
+				self.ui1.ui.lineEdit_17.setText(str(self.curr_temp1))
 				self.set_temp1 = self.curr_temp1
-			elif(self.ui.lineEdit_17.text().isdigit() == True):
+			elif(self.ui1.ui.lineEdit_17.text().isdigit() == True):
 				AlphaFlag1 = False
-				self.set_temp1 = int(self.ui.lineEdit_17.text())
+				self.set_temp1 = int(self.ui1.ui.lineEdit_17.text())
 			
 			#Use temp_control function to set the current temperature
-			self.ui.lineEdit_16.setText(str(temp_control(self.set_temp1, self.curr_temp1)) + " F")
+			self.ui1.ui.lineEdit_16.setText(str(temp_control(self.set_temp1, self.curr_temp1)) + " F")
 			#signals.tnm_cab_temp.emit(self.curr_temp1)
 			#_______________________________________________________________
 		elif(self.TrainNum2 == 1):
 			AlphaFlag2 = False
 			#Error checking to make sure input is only an INT
-			for i in self.ui.lineEdit_17.text():
+			for i in self.ui2.ui.lineEdit_17.text():
 				if(i.isalpha() == True):
 					AlphaFlag2 = True
 			if(AlphaFlag2 == True):
-				self.ui.lineEdit_17.setText(str(self.curr_temp2))
+				self.ui2.ui.lineEdit_17.setText(str(self.curr_temp2))
 				self.set_temp2 = self.curr_temp2
-			elif(self.ui.lineEdit_17.text().isdigit() == True):
+			elif(self.ui2.ui.lineEdit_17.text().isdigit() == True):
 				AlphaFlag2 = False
-				self.set_temp2 = int(self.ui.lineEdit_17.text())
+				self.set_temp2 = int(self.ui2.ui.lineEdit_17.text())
 			
 			#Use temp_control function to set the current temperature
-			self.ui.lineEdit_16.setText(str(temp_control(self.set_temp2, self.curr_temp2)) + " F")
+			self.ui2.ui.lineEdit_16.setText(str(temp_control(self.set_temp2, self.curr_temp2)) + " F")
 			#signals.tnm_cab_temp.emit(self.curr_temp2)
 			#_______________________________________________________________
 		elif(self.TrainNum3 == 1):
 			AlphaFlag3 = False
 			#Error checking to make sure input is only an INT
-			for i in self.ui.lineEdit_17.text():
+			for i in self.ui3.ui.lineEdit_17.text():
 				if(i.isalpha() == True):
 					AlphaFlag3 = True
 			if(AlphaFlag3 == True):
-				self.ui.lineEdit_17.setText(str(self.curr_temp3))
+				self.ui3.ui.lineEdit_17.setText(str(self.curr_temp3))
 				self.set_temp3 = self.curr_temp3
-			elif(self.ui.lineEdit_17.text().isdigit() == True):
+			elif(self.ui3.ui.lineEdit_17.text().isdigit() == True):
 				AlphaFlag3 = False
-				self.set_temp3 = int(self.ui.lineEdit_17.text())
+				self.set_temp3 = int(self.ui3.ui.lineEdit_17.text())
 			
 			#Use temp_control function to set the current temperature
-			self.ui.lineEdit_16.setText(str(temp_control(self.set_temp3, self.curr_temp3)) + " F")
+			self.ui3.ui.lineEdit_16.setText(str(temp_control(self.set_temp3, self.curr_temp3)) + " F")
 			#signals.tnm_cab_temp.emit(self.curr_temp3)
 			#_______________________________________________________________
 		elif(self.TrainNum4 == 1):
 			AlphaFlag4 = False
 			#Error checking to make sure input is only an INT
-			for i in self.ui.lineEdit_17.text():
+			for i in self.ui4.ui.lineEdit_17.text():
 				if(i.isalpha() == True):
 					AlphaFlag4 = True
 			if(AlphaFlag4 == True):
-				self.ui.lineEdit_17.setText(str(self.curr_temp4))
+				self.ui4.ui.lineEdit_17.setText(str(self.curr_temp4))
 				self.set_temp4 = self.curr_temp4
-			elif(self.ui.lineEdit_17.text().isdigit() == True):
+			elif(self.ui4.ui.lineEdit_17.text().isdigit() == True):
 				AlphaFlag4 = False
-				self.set_temp4 = int(self.ui.lineEdit_17.text())
+				self.set_temp4 = int(self.ui4.ui.lineEdit_17.text())
 			
 			#Use temp_control function to set the current temperature
-			self.ui.lineEdit_16.setText(str(temp_control(self.set_temp4, self.curr_temp4)) + " F")
+			self.ui4.ui.lineEdit_16.setText(str(temp_control(self.set_temp4, self.curr_temp4)) + " F")
 			#signals.tnm_cab_temp.emit(self.curr_temp4)
 			#_______________________________________________________________
 		elif(self.TrainNum5 == 1):
 			AlphaFlag5 = False
 			#Error checking to make sure input is only an INT
-			for i in self.ui.lineEdit_17.text():
+			for i in self.ui5.ui.lineEdit_17.text():
 				if(i.isalpha() == True):
 					AlphaFlag5 = True
 			if(AlphaFlag5 == True):
-				self.ui.lineEdit_17.setText(str(self.curr_temp5))
+				self.ui5.ui.lineEdit_17.setText(str(self.curr_temp5))
 				self.set_temp5 = self.curr_temp5
-			elif(self.ui.lineEdit_17.text().isdigit() == True):
+			elif(self.ui5.ui.lineEdit_17.text().isdigit() == True):
 				AlphaFlag5 = False
-				self.set_temp5 = int(self.ui.lineEdit_17.text())
+				self.set_temp5 = int(self.ui5.ui.lineEdit_17.text())
 			
 			#Use temp_control function to set the current temperature
-			self.ui.lineEdit_16.setText(str(temp_control(self.set_temp5, self.curr_temp5)) + " F")
+			self.ui5.ui.lineEdit_16.setText(str(temp_control(self.set_temp5, self.curr_temp5)) + " F")
 			#signals.tnm_cab_temp.emit(self.curr_temp5)
 			#_______________________________________________________________
 		elif(self.TrainNum6 == 1):
 			AlphaFlag6 = False
 			#Error checking to make sure input is only an INT
-			for i in self.ui.lineEdit_17.text():
+			for i in self.ui6.ui.lineEdit_17.text():
 				if(i.isalpha() == True):
 					AlphaFlag6 = True
 			if(AlphaFlag6 == True):
-				self.ui.lineEdit_17.setText(str(self.curr_temp6))
+				self.ui6.ui.lineEdit_17.setText(str(self.curr_temp6))
 				self.set_temp6 = self.curr_temp6
-			elif(self.ui.lineEdit_17.text().isdigit() == True):
+			elif(self.ui6.ui.lineEdit_17.text().isdigit() == True):
 				AlphaFlag6 = False
-				self.set_temp6 = int(self.ui.lineEdit_17.text())
+				self.set_temp6 = int(self.ui6.ui.lineEdit_17.text())
 			
 			#Use temp_control function to set the current temperature
-			self.ui.lineEdit_16.setText(str(temp_control(self.set_temp6, self.curr_temp6)) + " F")
+			self.ui6.ui.lineEdit_16.setText(str(temp_control(self.set_temp6, self.curr_temp6)) + " F")
 			#signals.tnm_cab_temp.emit(self.curr_temp6)
 			#_______________________________________________________________
 		elif(self.TrainNum7 == 1):
 			AlphaFlag7 = False
 			#Error checking to make sure input is only an INT
-			for i in self.ui.lineEdit_17.text():
+			for i in self.ui7.ui.lineEdit_17.text():
 				if(i.isalpha() == True):
 					AlphaFlag7 = True
 			if(AlphaFlag7 == True):
-				self.ui.lineEdit_17.setText(str(self.curr_temp7))
+				self.ui7.ui.lineEdit_17.setText(str(self.curr_temp7))
 				self.set_temp7 = self.curr_temp7
-			elif(self.ui.lineEdit_17.text().isdigit() == True):
+			elif(self.ui7.ui.lineEdit_17.text().isdigit() == True):
 				AlphaFlag7 = False
-				self.set_temp7 = int(self.ui.lineEdit_17.text())
+				self.set_temp7 = int(self.ui7.ui.lineEdit_17.text())
 			
 			#Use temp_control function to set the current temperature
-			self.ui.lineEdit_16.setText(str(temp_control(self.set_temp7, self.curr_temp7)) + " F")
+			self.ui7.ui.lineEdit_16.setText(str(temp_control(self.set_temp7, self.curr_temp7)) + " F")
 			#signals.tnm_cab_temp.emit(self.curr_temp7)
 			#_______________________________________________________________
 		elif(self.TrainNum8 == 1):
 			AlphaFlag8 = False
 			#Error checking to make sure input is only an INT
-			for i in self.ui.lineEdit_17.text():
+			for i in self.ui8.ui.lineEdit_17.text():
 				if(i.isalpha() == True):
 					AlphaFlag8 = True
 			if(AlphaFlag8 == True):
-				self.ui.lineEdit_17.setText(str(self.curr_temp8))
+				self.ui8.ui.lineEdit_17.setText(str(self.curr_temp8))
 				self.set_temp8 = self.curr_temp8
-			elif(self.ui.lineEdit_17.text().isdigit() == True):
+			elif(self.ui8.ui.lineEdit_17.text().isdigit() == True):
 				AlphaFlag8 = False
-				self.set_temp8 = int(self.ui.lineEdit_17.text())
+				self.set_temp8 = int(self.ui8.ui.lineEdit_17.text())
 			
 			#Use temp_control function to set the current temperature
-			self.ui.lineEdit_16.setText(str(temp_control(self.set_temp8, self.curr_temp8)) + " F")
+			self.ui8.ui.lineEdit_16.setText(str(temp_control(self.set_temp8, self.curr_temp8)) + " F")
 			#signals.tnm_cab_temp.emit(self.curr_temp8)
 			#_______________________________________________________________
 		elif(self.TrainNum9 == 1):
 			AlphaFlag9 = False
 			#Error checking to make sure input is only an INT
-			for i in self.ui.lineEdit_17.text():
+			for i in self.ui9.ui.lineEdit_17.text():
 				if(i.isalpha() == True):
 					AlphaFlag9 = True
 			if(AlphaFlag9 == True):
-				self.ui.lineEdit_17.setText(str(self.curr_temp9))
+				self.ui9.ui.lineEdit_17.setText(str(self.curr_temp9))
 				self.set_temp9 = self.curr_temp9
-			elif(self.ui.lineEdit_17.text().isdigit() == True):
+			elif(self.ui9.ui.lineEdit_17.text().isdigit() == True):
 				AlphaFlag9 = False
-				self.set_temp9 = int(self.ui.lineEdit_17.text())
+				self.set_temp9 = int(self.ui9.ui.lineEdit_17.text())
 			
 			#Use temp_control function to set the current temperature
-			self.ui.lineEdit_16.setText(str(temp_control(self.set_temp9, self.curr_temp9)) + " F")
+			self.ui9.ui.lineEdit_16.setText(str(temp_control(self.set_temp9, self.curr_temp9)) + " F")
 			#signals.tnm_cab_temp.emit(self.curr_temp9)
 			#_______________________________________________________________
 		elif(self.TrainNum10 == 1):
 			AlphaFlag10 = False
 			#Error checking to make sure input is only an INT
-			for i in self.ui.lineEdit_17.text():
+			for i in self.ui10.ui.lineEdit_17.text():
 				if(i.isalpha() == True):
 					AlphaFlag10 = True
 			if(AlphaFlag10 == True):
-				self.ui.lineEdit_17.setText(str(self.curr_temp10))
+				self.ui10.ui.lineEdit_17.setText(str(self.curr_temp10))
 				self.set_temp10 = self.curr_temp10
-			elif(self.ui.lineEdit_17.text().isdigit() == True):
+			elif(self.ui10.ui.lineEdit_17.text().isdigit() == True):
 				AlphaFlag10 = False
-				self.set_temp10 = int(self.ui.lineEdit_17.text())
+				self.set_temp10 = int(self.ui10.ui.lineEdit_17.text())
 			
 			#Use temp_control function to set the current temperature
-			self.ui.lineEdit_16.setText(str(temp_control(self.set_temp10, self.curr_temp10)) + " F")
+			self.ui10.ui.lineEdit_16.setText(str(temp_control(self.set_temp10, self.curr_temp10)) + " F")
 			#signals.tnm_cab_temp.emit(self.curr_temp10)
 			#_______________________________________________________________
 		
 		#Don't allow time module to be edited
-		self.ui.lineEdit_16.setReadOnly(True)
+		self.ui1.ui.lineEdit_16.setReadOnly(True)
+		#Don't allow time module to be edited
+		self.ui2.ui.lineEdit_16.setReadOnly(True)
+		#Don't allow time module to be edited
+		self.ui3.ui.lineEdit_16.setReadOnly(True)
+		#Don't allow time module to be edited
+		self.ui4.ui.lineEdit_16.setReadOnly(True)
+		#Don't allow time module to be edited
+		self.ui5.ui.lineEdit_16.setReadOnly(True)
+		#Don't allow time module to be edited
+		self.ui6.ui.lineEdit_16.setReadOnly(True)
+		#Don't allow time module to be edited
+		self.ui7.ui.lineEdit_16.setReadOnly(True)
+		#Don't allow time module to be edited
+		self.ui8.ui.lineEdit_16.setReadOnly(True)
+		#Don't allow time module to be edited
+		self.ui9.ui.lineEdit_16.setReadOnly(True)
+		#Don't allow time module to be edited
+		self.ui10.ui.lineEdit_16.setReadOnly(True)
 	
 	#function for updating the current date and time widget
 	def GetDatetime(self):
-		dateTime = self.ui.dateTimeEdit.dateTime()
-		dateTime_string = dateTime.toString(self.ui.dateTimeEdit.displayFormat())
-		self.ui.dateTimeEdit.dateTimeFromText(dateTime_string)
-		
-		#Don't allow time module to be edited
-		self.ui.dateTimeEdit.setReadOnly(True)
+		if(self.TrainNum1 == 1):
+			dateTime = self.ui1.ui.dateTimeEdit.dateTime()
+			dateTime_string = dateTime.toString(self.ui1.ui.dateTimeEdit.displayFormat())
+			self.ui1.ui.dateTimeEdit.dateTimeFromText(dateTime_string)
+			#Don't allow time module to be edited
+			self.ui1.ui.dateTimeEdit.setReadOnly(True)
+		elif(self.TrainNum2 == 1):
+			dateTime = self.ui2.ui.dateTimeEdit.dateTime()
+			dateTime_string = dateTime.toString(self.ui2.ui.dateTimeEdit.displayFormat())
+			self.ui2.ui.dateTimeEdit.dateTimeFromText(dateTime_string)
+			#Don't allow time module to be edited
+			self.ui2.ui.dateTimeEdit.setReadOnly(True)
+		elif(self.TrainNum3 == 1):
+			dateTime = self.ui3.ui.dateTimeEdit.dateTime()
+			dateTime_string = dateTime.toString(self.ui3.ui.dateTimeEdit.displayFormat())
+			self.ui3.ui.dateTimeEdit.dateTimeFromText(dateTime_string)
+			#Don't allow time module to be edited
+			self.ui3.ui.dateTimeEdit.setReadOnly(True)
+		elif(self.TrainNum4 == 1):
+			dateTime = self.ui4.ui.dateTimeEdit.dateTime()
+			dateTime_string = dateTime.toString(self.ui4.ui.dateTimeEdit.displayFormat())
+			self.ui4.ui.dateTimeEdit.dateTimeFromText(dateTime_string)
+			#Don't allow time module to be edited
+			self.ui4.ui.dateTimeEdit.setReadOnly(True)
+		elif(self.TrainNum5 == 1):
+			dateTime = self.ui5.ui.dateTimeEdit.dateTime()
+			dateTime_string = dateTime.toString(self.ui5.ui.dateTimeEdit.displayFormat())
+			self.ui5.ui.dateTimeEdit.dateTimeFromText(dateTime_string)
+			#Don't allow time module to be edited
+			self.ui5.ui.dateTimeEdit.setReadOnly(True)
+		elif(self.TrainNum6 == 1):
+			dateTime = self.ui6.ui.dateTimeEdit.dateTime()
+			dateTime_string = dateTime.toString(self.ui6.ui.dateTimeEdit.displayFormat())
+			self.ui6.ui.dateTimeEdit.dateTimeFromText(dateTime_string)
+			#Don't allow time module to be edited
+			self.ui6.ui.dateTimeEdit.setReadOnly(True)
+		elif(self.TrainNum7 == 1):
+			dateTime = self.ui7.ui.dateTimeEdit.dateTime()
+			dateTime_string = dateTime.toString(self.ui7.ui.dateTimeEdit.displayFormat())
+			self.ui7.ui.dateTimeEdit.dateTimeFromText(dateTime_string)
+			#Don't allow time module to be edited
+			self.ui7.ui.dateTimeEdit.setReadOnly(True)
+		elif(self.TrainNum8 == 1):
+			dateTime = self.ui8.ui.dateTimeEdit.dateTime()
+			dateTime_string = dateTime.toString(self.ui8.ui.dateTimeEdit.displayFormat())
+			self.ui8.ui.dateTimeEdit.dateTimeFromText(dateTime_string)
+			#Don't allow time module to be edited
+			self.ui8.ui.dateTimeEdit.setReadOnly(True)
+		elif(self.TrainNum9 == 1):
+			dateTime = self.ui9.ui.dateTimeEdit.dateTime()
+			dateTime_string = dateTime.toString(self.ui9.ui.dateTimeEdit.displayFormat())
+			self.ui9.ui.dateTimeEdit.dateTimeFromText(dateTime_string)
+			#Don't allow time module to be edited
+			self.ui9.ui.dateTimeEdit.setReadOnly(True)
+		elif(self.TrainNum10 == 1):
+			dateTime = self.ui10.ui.dateTimeEdit.dateTime()
+			dateTime_string = dateTime.toString(self.ui10.ui.dateTimeEdit.displayFormat())
+			self.ui10.ui.dateTimeEdit.dateTimeFromText(dateTime_string)
+			#Don't allow time module to be edited
+			self.ui10.ui.dateTimeEdit.setReadOnly(True)
 
 	#function for updating the internal train announcements
 	def DispAnnounce(self):
 		if(self.TrainNum1 == 1):
-			self.ui.lineEdit_18.setText(self.announce1)
+			self.ui1.ui.lineEdit_18.setText(self.announce1)
 		elif(self.TrainNum2 == 1):
-			self.ui.lineEdit_18.setText(self.announce2)
+			self.ui2.ui.lineEdit_18.setText(self.announce2)
 		elif(self.TrainNum3 == 1):
-			self.ui.lineEdit_18.setText(self.announce3)
+			self.ui3.ui.lineEdit_18.setText(self.announce3)
 		elif(self.TrainNum4 == 1):
-			self.ui.lineEdit_18.setText(self.announce4)
+			self.ui4.ui.lineEdit_18.setText(self.announce4)
 		elif(self.TrainNum5 == 1):
-			self.ui.lineEdit_18.setText(self.announce5)
+			self.ui5.ui.lineEdit_18.setText(self.announce5)
 		elif(self.TrainNum6 == 1):
-			self.ui.lineEdit_18.setText(self.announce6)
+			self.ui6.ui.lineEdit_18.setText(self.announce6)
 		elif(self.TrainNum7 == 1):
-			self.ui.lineEdit_18.setText(self.announce7)
+			self.ui7.ui.lineEdit_18.setText(self.announce7)
 		elif(self.TrainNum8 == 1):
-			self.ui.lineEdit_18.setText(self.announce8)
+			self.ui8.ui.lineEdit_18.setText(self.announce8)
 		elif(self.TrainNum9 == 1):
-			self.ui.lineEdit_18.setText(self.announce9)
+			self.ui9.ui.lineEdit_18.setText(self.announce9)
 		elif(self.TrainNum10 == 1):
-			self.ui.lineEdit_18.setText(self.announce10)
+			self.ui10.ui.lineEdit_18.setText(self.announce10)
 	
 		#Don't allow announcements text to be edited
-		self.ui.lineEdit_18.setReadOnly(True)
+		self.ui1.ui.lineEdit_18.setReadOnly(True)
+		#Don't allow announcements text to be edited
+		self.ui2.ui.lineEdit_18.setReadOnly(True)
+		#Don't allow announcements text to be edited
+		self.ui3.ui.lineEdit_18.setReadOnly(True)
+		#Don't allow announcements text to be edited
+		self.ui4.ui.lineEdit_18.setReadOnly(True)
+		#Don't allow announcements text to be edited
+		self.ui5.ui.lineEdit_18.setReadOnly(True)
+		#Don't allow announcements text to be edited
+		self.ui6.ui.lineEdit_18.setReadOnly(True)
+		#Don't allow announcements text to be edited
+		self.ui7.ui.lineEdit_18.setReadOnly(True)
+		#Don't allow announcements text to be edited
+		self.ui8.ui.lineEdit_18.setReadOnly(True)
+		#Don't allow announcements text to be edited
+		self.ui9.ui.lineEdit_18.setReadOnly(True)
+		#Don't allow announcements text to be edited
+		self.ui10.ui.lineEdit_18.setReadOnly(True)
 		
 #_______________________________________________________________________
 	#Function to set power from tnc signal

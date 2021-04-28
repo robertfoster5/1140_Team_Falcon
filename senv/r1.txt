@@ -32,8 +32,8 @@ sw1
 9
 yard
 sw2
+16
 15
 16
 1
-16
 end proc

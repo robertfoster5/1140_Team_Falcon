@@ -5,12 +5,15 @@ class Wayside:
 		self.authority = []
 		self.switch_name = []
 		self.switch_state = []
+		self.m_switch_state = []
+		self.mode = 0
 		self.cross_name = []
 		self.cross_state = []
 		self.block_name = []
 		self.block_health = []
 		self.block_occ = []
 		self.sw_connect = []
+		self.sw_safety_connect = []
 		self.cr_connect = []
 		self.b_speed = []
 		self.num_switch = 0
@@ -19,12 +22,46 @@ class Wayside:
 		self.load_plc()
 	
 	def update_ws(self):
+		#self.switch_safety()
 		#self.safety_change()
 		self.cross_change()
 		self.switch_state_change()
 	
-	"""def safety_change(self):
-		for i in range(self.num_block):"""
+	"""def switch_safety():
+		for i in range(num_switch):
+			swname = self.switch_name[i]
+			if self.line == "Red":
+				if swname == "1":
+					
+				elif swname == "2":
+					
+				elif swname == "3":
+					
+				elif swname == "4":
+					
+				elif swname == "5":
+					
+				elif swname == "6":
+						
+			elif self.line == "Green":
+				if swname == "1":
+					
+				elif swname == "2":
+					
+				elif swname == "3":
+					
+				elif swname == "4":
+					
+				elif swname == "5":
+					
+				elif swname == "6":
+					
+				elif swname == "7":
+			
+	def safety_change(self):
+		for i in range(self.num_block):
+			if self.block_occ[i] == "1":
+				if i < 3 """
 						
 	def m_order_block(self, order):
 		temp_block = []
@@ -33,8 +70,10 @@ class Wayside:
 			if order[i] == "1" and self.block_health[i] == "1":
 				temp_block.append("0")
 			if order[i] == "1" and self.block_health[i] == "0":
+				self.mode = 1
 				temp_block.append("1")
 			if order[i] == "0" and self.block_health[i] == "1":
+				self.mode = 1
 				temp_block.append("0")
 			if order[i] == "0" and self.block_health[i] == "0":
 				temp_block.append("0")
@@ -46,8 +85,10 @@ class Wayside:
 			if order[i] == "0" and self.block_occ[i] == "1":
 				temp_occ.append("1")
 			if order[i] == "1" and self.block_occ[i] == "0":
+				self.mode = 1
 				temp_occ.append("1")
 			if order[i] == "1" and self.block_occ[i] == "1":
+				self.mode = 1
 				temp_occ.append("1")
 		self.block_occ = []
 		self.block_occ = temp_occ
@@ -55,16 +96,18 @@ class Wayside:
 	def m_order_switch(self, order):
 		temp_switch = []
 		temp = self.switch_state
-		self.switch_state = []
+		self.m_switch_state = []
 		for i in range(len(order)):
 			if temp[i] == "0" and temp_switch[i] == "0":
-				self.switch_state.append("0")
+				self.m_switch_state.append("0")
 			if temp[i] == "0" and temp_switch[i] == "1":
-				self.switch_state.append("1")
+				self.m_switch_state.append("1")
 			if temp[i] == "1" and temp_switch[i] == "0":
-				self.switch_state.append("1")
+				self.mode = 1
+				self.m_switch_state.append("1")
 			if temp[i] == "1" and temp_switch[i] == "1":
-				self.switch_state.append("0")
+				self.mode = 1
+				self.m_switch_state.append("0")
 	
 	def occ_change(self, occupancy):
 		temp = []
@@ -98,19 +141,20 @@ class Wayside:
 				sw4 = self.sw_connect[temp_count+1][1]
 				index1 = self.block_name.index(sw1)
 				index2 = self.block_name.index(sw2)
-				if sw3 != "yard":
-					index3 = self.block_name.index(sw3)
+				index3 = self.block_name.index(sw3)
 				if sw4 != "yard":
 					index4 = self.block_name.index(sw4)
-				if sw3 != "yard":
-					if self.block_occ[int(index3)] == "1":
-						self.switch_state.append("1")
-						fork = 0
-				elif self.block_occ[int(index1)] == "1":
+					
+				if self.block_occ[int(index2)] == "1":
 					self.switch_state.append("0")
 					fork = 0
+				elif sw4 != "yard":
+					if self.block_occ[int(index4)] == "1":
+						self.switch_state.append("1")
+						fork = 0
 				else:
 					fork = 1
+					
 				if self.line == "Green" and fork == 1:
 					if swname == "1" or swname == "2" or swname == "6":
 						self.switch_state.append("0")
