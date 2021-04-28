@@ -3040,61 +3040,61 @@ class tnm_display(QObject):
 		self.ui1 = tnm_threadSupport()
 		self.threadMain1 = QThread()
 		self.ui1.moveToThread(self.threadMain1)
-		self.ui1.MainWindow.setWindowTitle("MainWindow 1")
+		self.ui1.MainWindow.setWindowTitle("Train Model 1")
 		self.threadMain1.start()
 		#Main Window Thread 2
 		self.ui2 = tnm_threadSupport()
 		self.threadMain2 = QThread()
 		self.ui2.moveToThread(self.threadMain2)
-		self.ui2.MainWindow.setWindowTitle("MainWindow 2")
+		self.ui2.MainWindow.setWindowTitle("Train Model 2")
 		self.threadMain2.start()
 		#Main Window Thread 3
 		self.ui3 = tnm_threadSupport()
 		self.threadMain3 = QThread()
 		self.ui3.moveToThread(self.threadMain3)
-		self.ui3.MainWindow.setWindowTitle("MainWindow 3")
+		self.ui3.MainWindow.setWindowTitle("Train Model 3")
 		self.threadMain3.start()
 		#Main Window Thread 4
 		self.ui4 = tnm_threadSupport()
 		self.threadMain4 = QThread()
 		self.ui4.moveToThread(self.threadMain4)
-		self.ui4.MainWindow.setWindowTitle("MainWindow 4")
+		self.ui4.MainWindow.setWindowTitle("Train Model 4")
 		self.threadMain4.start()
 		#Main Window Thread 5
 		self.ui5 = tnm_threadSupport()
 		self.threadMain5 = QThread()
 		self.ui5.moveToThread(self.threadMain5)
-		self.ui5.MainWindow.setWindowTitle("MainWindow 5")
+		self.ui5.MainWindow.setWindowTitle("Train Model 5")
 		self.threadMain5.start()
 		#Main Window Thread 6
 		self.ui6 = tnm_threadSupport()
 		self.threadMain6 = QThread()
 		self.ui6.moveToThread(self.threadMain6)
-		self.ui6.MainWindow.setWindowTitle("MainWindow 6")
+		self.ui6.MainWindow.setWindowTitle("Train Model 6")
 		self.threadMain6.start()
 		#Main Window Thread 7
 		self.ui7 = tnm_threadSupport()
 		self.threadMain7 = QThread()
 		self.ui7.moveToThread(self.threadMain7)
-		self.ui7.MainWindow.setWindowTitle("MainWindow 7")
+		self.ui7.MainWindow.setWindowTitle("Train Model 7")
 		self.threadMain7.start()
 		#Main Window Thread 8
 		self.ui8 = tnm_threadSupport()
 		self.threadMain8 = QThread()
 		self.ui8.moveToThread(self.threadMain8)
-		self.ui8.MainWindow.setWindowTitle("MainWindow 8")
+		self.ui8.MainWindow.setWindowTitle("Train Model 8")
 		self.threadMain8.start()
 		#Main Window Thread 9
 		self.ui9 = tnm_threadSupport()
 		self.threadMain9 = QThread()
 		self.ui9.moveToThread(self.threadMain9)
-		self.ui9.MainWindow.setWindowTitle("MainWindow 9")
+		self.ui9.MainWindow.setWindowTitle("Train Model 9")
 		self.threadMain9.start()
 		#Main Window Thread 10
 		self.ui10 = tnm_threadSupport()
 		self.threadMain10 = QThread()
 		self.ui10.moveToThread(self.threadMain10)
-		self.ui10.MainWindow.setWindowTitle("MainWindow 10")
+		self.ui10.MainWindow.setWindowTitle("Train Model 10")
 		self.threadMain10.start()
 		
 		
@@ -3265,7 +3265,7 @@ class tnm_display(QObject):
 			signals.tnc_service_brake.connect(self.SetServiceBrake)
 			#Calculate current speed
 			self.curr_speed1, self.current_accl1 = set_curr_speed(self.timeSeconds, self.eBrake1, self.Brake1, self.block_authority1, self.curr_power1, self.Occupancy1, self.SpeedN11, self.AcclN11, self.comm_speed1,1)
-			print(str(self.curr_speed1) + " mph train 1")
+			#print(str(self.curr_speed1) + " mph train 1")
 			#Set At - 1 variables for use in next sec. speed calculation
 			self.SpeedN11 = self.curr_speed1
 			self.AcclN11 = self.current_accl1
@@ -3302,8 +3302,7 @@ class tnm_display(QObject):
 			else:
 				self.ui1.ui.lineEdit_2.setText("Off")
 		#___________________________________________________________________________
-		elif(self.TrainNum2 == 1):
-			print("MOVEMENT 22222")
+		if(self.TrainNum2 == 1):
 			#Address Authority Here
 			signals.tnm_authority.emit(self.block_authority2,2)
 			#Address Commanded Speed
@@ -3313,7 +3312,7 @@ class tnm_display(QObject):
 			signals.tnc_service_brake.connect(self.SetServiceBrake)
 			#Calculate current speed
 			self.curr_speed2, self.current_accl2 = set_curr_speed(self.timeSeconds, self.eBrake2, self.Brake2, self.block_authority2, self.curr_power2, self.Occupancy2, self.SpeedN12, self.AcclN12, self.comm_speed2,2)
-			print(str(self.curr_speed2) + " mph train 2")
+			#print(str(self.curr_speed2) + " mph train 2")
 			#Set At - 1 variables for use in next sec. speed calculation
 			self.SpeedN12 = self.curr_speed2
 			self.AcclN12 = self.current_accl2
@@ -3350,7 +3349,7 @@ class tnm_display(QObject):
 			else:
 				self.ui2.ui.lineEdit_2.setText("Off")
 		#___________________________________________________________________________
-		elif(self.TrainNum3 == 1):
+		if(self.TrainNum3 == 1):
 			#Address Authority Here
 			signals.tnm_authority.emit(self.block_authority3,3)
 			#Address Commanded Speed
@@ -3397,7 +3396,7 @@ class tnm_display(QObject):
 			else:
 				self.ui3.ui.lineEdit_2.setText("Off")
 		#___________________________________________________________________________
-		elif(self.TrainNum4 == 1):
+		if(self.TrainNum4 == 1):
 			#Address Authority Here
 			signals.tnm_authority.emit(self.block_authority4,4)
 			#Address Commanded Speed
@@ -3444,7 +3443,7 @@ class tnm_display(QObject):
 			else:
 				self.ui4.ui.lineEdit_2.setText("Off")
 		#___________________________________________________________________________
-		elif(self.TrainNum5 == 1):
+		if(self.TrainNum5 == 1):
 			#Address Authority Here
 			signals.tnm_authority.emit(self.block_authority5,5)
 			#Address Commanded Speed
@@ -3491,7 +3490,7 @@ class tnm_display(QObject):
 			else:
 				self.ui5.ui.lineEdit_2.setText("Off")
 		#___________________________________________________________________________
-		elif(self.TrainNum6 == 1):
+		if(self.TrainNum6 == 1):
 			#Address Authority Here
 			signals.tnm_authority.emit(self.block_authority6,6)
 			#Address Commanded Speed
@@ -3538,7 +3537,7 @@ class tnm_display(QObject):
 			else:
 				self.ui6.ui.lineEdit_2.setText("Off")
 		#___________________________________________________________________________
-		elif(self.TrainNum7 == 1):
+		if(self.TrainNum7 == 1):
 			#Address Authority Here
 			signals.tnm_authority.emit(self.block_authority7,7)
 			#Address Commanded Speed
@@ -3585,7 +3584,7 @@ class tnm_display(QObject):
 			else:
 				self.ui7.ui.lineEdit_2.setText("Off")
 		#___________________________________________________________________________
-		elif(self.TrainNum8 == 1):
+		if(self.TrainNum8 == 1):
 			#Address Authority Here
 			signals.tnm_authority.emit(self.block_authority8,8)
 			#Address Commanded 
@@ -3632,7 +3631,7 @@ class tnm_display(QObject):
 			else:
 				self.ui8.ui.lineEdit_2.setText("Off")
 		#___________________________________________________________________________
-		elif(self.TrainNum9 == 1):
+		if(self.TrainNum9 == 1):
 			#Address Authority Here
 			signals.tnm_authority.emit(self.block_authority9,9)
 			#Address Commanded Speed
@@ -3679,7 +3678,7 @@ class tnm_display(QObject):
 			else:
 				self.ui9.ui.lineEdit_2.setText("Off")
 		#___________________________________________________________________________
-		elif(self.TrainNum10 == 1):
+		if(self.TrainNum10 == 1):
 			#Address Authority Here
 			signals.tnm_authority.emit(self.block_authority10,10)
 			#Address Commanded Speed
@@ -3803,7 +3802,7 @@ class tnm_display(QObject):
 			self.total_mass = ((self.Occupancy1*56.699)/2000) + self.Mass_Empty
 			self.ui1.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
 		#____________________________________
-		elif(self.TrainNum2 == 1):
+		if(self.TrainNum2 == 1):
 			#Update pass_count
 			self.ui2.ui.lineEdit_6.setText(str(self.pass_count2))
 			#Update crew_count
@@ -3813,7 +3812,7 @@ class tnm_display(QObject):
 			self.total_mass = ((self.Occupancy2*56.699)/2000) + self.Mass_Empty
 			self.ui2.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
 		#____________________________________
-		elif(self.TrainNum3 == 1):
+		if(self.TrainNum3 == 1):
 			#Update pass_count
 			self.ui3.ui.lineEdit_6.setText(str(self.pass_count3))
 			#Update crew_count
@@ -3823,7 +3822,7 @@ class tnm_display(QObject):
 			self.total_mass = ((self.Occupancy3*56.699)/2000) + self.Mass_Empty
 			self.ui3.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
 		#____________________________________
-		elif(self.TrainNum4 == 1):
+		if(self.TrainNum4 == 1):
 			#Update pass_count
 			self.ui4.ui.lineEdit_6.setText(str(self.pass_count4))
 			#Update crew_count
@@ -3833,7 +3832,7 @@ class tnm_display(QObject):
 			self.total_mass = ((self.Occupancy4*56.699)/2000) + self.Mass_Empty
 			self.ui4.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
 		#____________________________________
-		elif(self.TrainNum5 == 1):
+		if(self.TrainNum5 == 1):
 			#Update pass_count
 			self.ui5.ui.lineEdit_6.setText(str(self.pass_count5))
 			#Update crew_count
@@ -3843,7 +3842,7 @@ class tnm_display(QObject):
 			self.total_mass = ((self.Occupancy5*56.699)/2000) + self.Mass_Empty
 			self.ui5.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
 		#____________________________________
-		elif(self.TrainNum6 == 1):
+		if(self.TrainNum6 == 1):
 			#Update pass_count
 			self.ui6.ui.lineEdit_6.setText(str(self.pass_count6))
 			#Update crew_count
@@ -3853,7 +3852,7 @@ class tnm_display(QObject):
 			self.total_mass = ((self.Occupancy6*56.699)/2000) + self.Mass_Empty
 			self.ui6.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
 		#____________________________________
-		elif(self.TrainNum7 == 1):
+		if(self.TrainNum7 == 1):
 			#Update pass_count
 			self.ui7.ui.lineEdit_6.setText(str(self.pass_count7))
 			#Update crew_count
@@ -3863,7 +3862,7 @@ class tnm_display(QObject):
 			self.total_mass = ((self.Occupancy7*56.699)/2000) + self.Mass_Empty
 			self.ui7.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
 		#____________________________________
-		elif(self.TrainNum8 == 1):
+		if(self.TrainNum8 == 1):
 			#Update pass_count
 			self.ui8.ui.lineEdit_6.setText(str(self.pass_count8))
 			#Update crew_count
@@ -3873,7 +3872,7 @@ class tnm_display(QObject):
 			self.total_mass = ((self.Occupancy8*56.699)/2000) + self.Mass_Empty
 			self.ui8.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
 		#____________________________________
-		elif(self.TrainNum9 == 1):
+		if(self.TrainNum9 == 1):
 			#Update pass_count
 			self.ui9.ui.lineEdit_6.setText(str(self.pass_count9))
 			#Update crew_count
@@ -3883,7 +3882,7 @@ class tnm_display(QObject):
 			self.total_mass = ((self.Occupancy9*56.699)/2000) + self.Mass_Empty
 			self.ui9.ui.lineEdit_8.setText(str(round(self.total_mass)) + " tons")
 		#____________________________________
-		elif(self.TrainNum10 == 1):
+		if(self.TrainNum10 == 1):
 			#Update pass_count
 			self.ui10.ui.lineEdit_6.setText(str(self.pass_count10))
 			#Update crew_count
@@ -3985,7 +3984,7 @@ class tnm_display(QObject):
 			else:
 				self.ui1.ui.lineEdit_15.setText("On")
 			#____________________________________________________________________
-		elif(self.TrainNum2 == 1):
+		if(self.TrainNum2 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
 			#Update Train Numbering Header
@@ -4031,7 +4030,7 @@ class tnm_display(QObject):
 			else:
 				self.ui2.ui.lineEdit_15.setText("On")
 			#____________________________________________________________________
-		elif(self.TrainNum3 == 1):
+		if(self.TrainNum3 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
 			#Update Train Numbering Header
@@ -4077,7 +4076,7 @@ class tnm_display(QObject):
 			else:
 				self.ui3.ui.lineEdit_15.setText("On")
 			#____________________________________________________________________
-		elif(self.TrainNum4 == 1):
+		if(self.TrainNum4 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
 			#Update Train Numbering Header
@@ -4123,7 +4122,7 @@ class tnm_display(QObject):
 			else:
 				self.ui4.ui.lineEdit_15.setText("On")
 			#____________________________________________________________________
-		elif(self.TrainNum5 == 1):
+		if(self.TrainNum5 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
 			#Update Train Numbering Header
@@ -4169,7 +4168,7 @@ class tnm_display(QObject):
 			else:
 				self.ui5.ui.lineEdit_15.setText("On")
 			#____________________________________________________________________
-		elif(self.TrainNum6 == 1):
+		if(self.TrainNum6 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
 			#Update Train Numbering Header
@@ -4215,7 +4214,7 @@ class tnm_display(QObject):
 			else:
 				self.ui6.ui.lineEdit_15.setText("On")
 			#____________________________________________________________________
-		elif(self.TrainNum7 == 1):
+		if(self.TrainNum7 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
 			#Update Train Numbering Header
@@ -4261,7 +4260,7 @@ class tnm_display(QObject):
 			else:
 				self.ui7.ui.lineEdit_15.setText("On")
 			#____________________________________________________________________
-		elif(self.TrainNum8 == 1):
+		if(self.TrainNum8 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
 			#Update Train Numbering Header
@@ -4307,7 +4306,7 @@ class tnm_display(QObject):
 			else:
 				self.ui8.ui.lineEdit_15.setText("On")
 			#____________________________________________________________________
-		elif(self.TrainNum9 == 1):
+		if(self.TrainNum9 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
 			#Update Train Numbering Header
@@ -4353,7 +4352,7 @@ class tnm_display(QObject):
 			else:
 				self.ui9.ui.lineEdit_15.setText("On")
 			#____________________________________________________________________
-		elif(self.TrainNum10 == 1):
+		if(self.TrainNum10 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
 			#Update Train Numbering Header
@@ -4497,7 +4496,7 @@ class tnm_display(QObject):
 				self.eBrake1 = False
 				signals.tnm_ebrake.emit(self.eBrake1,1)
 		#______________________________________
-		elif(self.TrainNum2 == 1):
+		if(self.TrainNum2 == 1):
 			if not self.eBrake2:
 				self.ui2.ui.pushButton.setText("CANCEL")
 				self.ui2.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
@@ -4510,7 +4509,7 @@ class tnm_display(QObject):
 				self.eBrake2 = False
 				signals.tnm_ebrake.emit(self.eBrake2,2)
 		#______________________________________
-		elif(self.TrainNum3 == 1):
+		if(self.TrainNum3 == 1):
 			if not self.eBrake3:
 				self.ui3.ui.pushButton.setText("CANCEL")
 				self.ui3.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
@@ -4523,7 +4522,7 @@ class tnm_display(QObject):
 				self.eBrake3 = False
 				signals.tnm_ebrake.emit(self.eBrake3,3)
 		#______________________________________
-		elif(self.TrainNum4 == 1):
+		if(self.TrainNum4 == 1):
 			if not self.eBrake4:
 				self.ui4.ui.pushButton.setText("CANCEL")
 				self.ui4.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
@@ -4536,7 +4535,7 @@ class tnm_display(QObject):
 				self.eBrake4 = False
 				signals.tnm_ebrake.emit(self.eBrake4,4)
 		#______________________________________
-		elif(self.TrainNum5 == 1):
+		if(self.TrainNum5 == 1):
 			if not self.eBrake5:
 				self.ui5.ui.pushButton.setText("CANCEL")
 				self.ui5.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
@@ -4549,7 +4548,7 @@ class tnm_display(QObject):
 				self.eBrake5 = False
 				signals.tnm_ebrake.emit(self.eBrake5,5)
 		#______________________________________
-		elif(self.TrainNum6 == 1):
+		if(self.TrainNum6 == 1):
 			if not self.eBrake6:
 				self.ui6.ui.pushButton.setText("CANCEL")
 				self.ui6.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
@@ -4562,7 +4561,7 @@ class tnm_display(QObject):
 				self.eBrake6 = False
 				signals.tnm_ebrake.emit(self.eBrake6,6)
 		#______________________________________
-		elif(self.TrainNum7 == 1):
+		if(self.TrainNum7 == 1):
 			if not self.eBrake7:
 				self.ui7.ui.pushButton.setText("CANCEL")
 				self.ui7.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
@@ -4575,7 +4574,7 @@ class tnm_display(QObject):
 				self.eBrake7 = False
 				signals.tnm_ebrake.emit(self.eBrake7,7)
 		#______________________________________
-		elif(self.TrainNum8 == 1):
+		if(self.TrainNum8 == 1):
 			if not self.eBrake8:
 				self.ui8.ui.pushButton.setText("CANCEL")
 				self.ui8.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
@@ -4588,7 +4587,7 @@ class tnm_display(QObject):
 				self.eBrake8 = False
 				signals.tnm_ebrake.emit(self.eBrake8,8)
 		#_____________________________________
-		elif(self.TrainNum9 == 1):
+		if(self.TrainNum9 == 1):
 			if not self.eBrake9:
 				self.ui9.ui.pushButton.setText("CANCEL")
 				self.ui9.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
@@ -4601,7 +4600,7 @@ class tnm_display(QObject):
 				self.eBrake9 = False
 				signals.tnm_ebrake.emit(self.eBrake9,9)
 		#_____________________________________
-		elif(self.TrainNum10 == 1):
+		if(self.TrainNum10 == 1):
 			if not self.eBrake10:
 				self.ui10.ui.pushButton.setText("CANCEL")
 				self.ui10.ui.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
@@ -4636,7 +4635,7 @@ class tnm_display(QObject):
 			self.ui1.ui.lineEdit_16.setText(str(temp_control(self.set_temp1, self.curr_temp1)) + " F")
 			#signals.tnm_cab_temp.emit(self.curr_temp1)
 			#_______________________________________________________________
-		elif(self.TrainNum2 == 1):
+		if(self.TrainNum2 == 1):
 			AlphaFlag2 = False
 			#Error checking to make sure input is only an INT
 			for i in self.ui2.ui.lineEdit_17.text():
@@ -4653,7 +4652,7 @@ class tnm_display(QObject):
 			self.ui2.ui.lineEdit_16.setText(str(temp_control(self.set_temp2, self.curr_temp2)) + " F")
 			#signals.tnm_cab_temp.emit(self.curr_temp2)
 			#_______________________________________________________________
-		elif(self.TrainNum3 == 1):
+		if(self.TrainNum3 == 1):
 			AlphaFlag3 = False
 			#Error checking to make sure input is only an INT
 			for i in self.ui3.ui.lineEdit_17.text():
@@ -4670,7 +4669,7 @@ class tnm_display(QObject):
 			self.ui3.ui.lineEdit_16.setText(str(temp_control(self.set_temp3, self.curr_temp3)) + " F")
 			#signals.tnm_cab_temp.emit(self.curr_temp3)
 			#_______________________________________________________________
-		elif(self.TrainNum4 == 1):
+		if(self.TrainNum4 == 1):
 			AlphaFlag4 = False
 			#Error checking to make sure input is only an INT
 			for i in self.ui4.ui.lineEdit_17.text():
@@ -4687,7 +4686,7 @@ class tnm_display(QObject):
 			self.ui4.ui.lineEdit_16.setText(str(temp_control(self.set_temp4, self.curr_temp4)) + " F")
 			#signals.tnm_cab_temp.emit(self.curr_temp4)
 			#_______________________________________________________________
-		elif(self.TrainNum5 == 1):
+		if(self.TrainNum5 == 1):
 			AlphaFlag5 = False
 			#Error checking to make sure input is only an INT
 			for i in self.ui5.ui.lineEdit_17.text():
@@ -4704,7 +4703,7 @@ class tnm_display(QObject):
 			self.ui5.ui.lineEdit_16.setText(str(temp_control(self.set_temp5, self.curr_temp5)) + " F")
 			#signals.tnm_cab_temp.emit(self.curr_temp5)
 			#_______________________________________________________________
-		elif(self.TrainNum6 == 1):
+		if(self.TrainNum6 == 1):
 			AlphaFlag6 = False
 			#Error checking to make sure input is only an INT
 			for i in self.ui6.ui.lineEdit_17.text():
@@ -4721,7 +4720,7 @@ class tnm_display(QObject):
 			self.ui6.ui.lineEdit_16.setText(str(temp_control(self.set_temp6, self.curr_temp6)) + " F")
 			#signals.tnm_cab_temp.emit(self.curr_temp6)
 			#_______________________________________________________________
-		elif(self.TrainNum7 == 1):
+		if(self.TrainNum7 == 1):
 			AlphaFlag7 = False
 			#Error checking to make sure input is only an INT
 			for i in self.ui7.ui.lineEdit_17.text():
@@ -4738,7 +4737,7 @@ class tnm_display(QObject):
 			self.ui7.ui.lineEdit_16.setText(str(temp_control(self.set_temp7, self.curr_temp7)) + " F")
 			#signals.tnm_cab_temp.emit(self.curr_temp7)
 			#_______________________________________________________________
-		elif(self.TrainNum8 == 1):
+		if(self.TrainNum8 == 1):
 			AlphaFlag8 = False
 			#Error checking to make sure input is only an INT
 			for i in self.ui8.ui.lineEdit_17.text():
@@ -4755,7 +4754,7 @@ class tnm_display(QObject):
 			self.ui8.ui.lineEdit_16.setText(str(temp_control(self.set_temp8, self.curr_temp8)) + " F")
 			#signals.tnm_cab_temp.emit(self.curr_temp8)
 			#_______________________________________________________________
-		elif(self.TrainNum9 == 1):
+		if(self.TrainNum9 == 1):
 			AlphaFlag9 = False
 			#Error checking to make sure input is only an INT
 			for i in self.ui9.ui.lineEdit_17.text():
@@ -4772,7 +4771,7 @@ class tnm_display(QObject):
 			self.ui9.ui.lineEdit_16.setText(str(temp_control(self.set_temp9, self.curr_temp9)) + " F")
 			#signals.tnm_cab_temp.emit(self.curr_temp9)
 			#_______________________________________________________________
-		elif(self.TrainNum10 == 1):
+		if(self.TrainNum10 == 1):
 			AlphaFlag10 = False
 			#Error checking to make sure input is only an INT
 			for i in self.ui10.ui.lineEdit_17.text():
@@ -4819,55 +4818,55 @@ class tnm_display(QObject):
 			self.ui1.ui.dateTimeEdit.dateTimeFromText(dateTime_string)
 			#Don't allow time module to be edited
 			self.ui1.ui.dateTimeEdit.setReadOnly(True)
-		elif(self.TrainNum2 == 1):
+		if(self.TrainNum2 == 1):
 			dateTime = self.ui2.ui.dateTimeEdit.dateTime()
 			dateTime_string = dateTime.toString(self.ui2.ui.dateTimeEdit.displayFormat())
 			self.ui2.ui.dateTimeEdit.dateTimeFromText(dateTime_string)
 			#Don't allow time module to be edited
 			self.ui2.ui.dateTimeEdit.setReadOnly(True)
-		elif(self.TrainNum3 == 1):
+		if(self.TrainNum3 == 1):
 			dateTime = self.ui3.ui.dateTimeEdit.dateTime()
 			dateTime_string = dateTime.toString(self.ui3.ui.dateTimeEdit.displayFormat())
 			self.ui3.ui.dateTimeEdit.dateTimeFromText(dateTime_string)
 			#Don't allow time module to be edited
 			self.ui3.ui.dateTimeEdit.setReadOnly(True)
-		elif(self.TrainNum4 == 1):
+		if(self.TrainNum4 == 1):
 			dateTime = self.ui4.ui.dateTimeEdit.dateTime()
 			dateTime_string = dateTime.toString(self.ui4.ui.dateTimeEdit.displayFormat())
 			self.ui4.ui.dateTimeEdit.dateTimeFromText(dateTime_string)
 			#Don't allow time module to be edited
 			self.ui4.ui.dateTimeEdit.setReadOnly(True)
-		elif(self.TrainNum5 == 1):
+		if(self.TrainNum5 == 1):
 			dateTime = self.ui5.ui.dateTimeEdit.dateTime()
 			dateTime_string = dateTime.toString(self.ui5.ui.dateTimeEdit.displayFormat())
 			self.ui5.ui.dateTimeEdit.dateTimeFromText(dateTime_string)
 			#Don't allow time module to be edited
 			self.ui5.ui.dateTimeEdit.setReadOnly(True)
-		elif(self.TrainNum6 == 1):
+		if(self.TrainNum6 == 1):
 			dateTime = self.ui6.ui.dateTimeEdit.dateTime()
 			dateTime_string = dateTime.toString(self.ui6.ui.dateTimeEdit.displayFormat())
 			self.ui6.ui.dateTimeEdit.dateTimeFromText(dateTime_string)
 			#Don't allow time module to be edited
 			self.ui6.ui.dateTimeEdit.setReadOnly(True)
-		elif(self.TrainNum7 == 1):
+		if(self.TrainNum7 == 1):
 			dateTime = self.ui7.ui.dateTimeEdit.dateTime()
 			dateTime_string = dateTime.toString(self.ui7.ui.dateTimeEdit.displayFormat())
 			self.ui7.ui.dateTimeEdit.dateTimeFromText(dateTime_string)
 			#Don't allow time module to be edited
 			self.ui7.ui.dateTimeEdit.setReadOnly(True)
-		elif(self.TrainNum8 == 1):
+		if(self.TrainNum8 == 1):
 			dateTime = self.ui8.ui.dateTimeEdit.dateTime()
 			dateTime_string = dateTime.toString(self.ui8.ui.dateTimeEdit.displayFormat())
 			self.ui8.ui.dateTimeEdit.dateTimeFromText(dateTime_string)
 			#Don't allow time module to be edited
 			self.ui8.ui.dateTimeEdit.setReadOnly(True)
-		elif(self.TrainNum9 == 1):
+		if(self.TrainNum9 == 1):
 			dateTime = self.ui9.ui.dateTimeEdit.dateTime()
 			dateTime_string = dateTime.toString(self.ui9.ui.dateTimeEdit.displayFormat())
 			self.ui9.ui.dateTimeEdit.dateTimeFromText(dateTime_string)
 			#Don't allow time module to be edited
 			self.ui9.ui.dateTimeEdit.setReadOnly(True)
-		elif(self.TrainNum10 == 1):
+		if(self.TrainNum10 == 1):
 			dateTime = self.ui10.ui.dateTimeEdit.dateTime()
 			dateTime_string = dateTime.toString(self.ui10.ui.dateTimeEdit.displayFormat())
 			self.ui10.ui.dateTimeEdit.dateTimeFromText(dateTime_string)
@@ -4878,23 +4877,23 @@ class tnm_display(QObject):
 	def DispAnnounce(self):
 		if(self.TrainNum1 == 1):
 			self.ui1.ui.lineEdit_18.setText(self.announce1)
-		elif(self.TrainNum2 == 1):
+		if(self.TrainNum2 == 1):
 			self.ui2.ui.lineEdit_18.setText(self.announce2)
-		elif(self.TrainNum3 == 1):
+		if(self.TrainNum3 == 1):
 			self.ui3.ui.lineEdit_18.setText(self.announce3)
-		elif(self.TrainNum4 == 1):
+		if(self.TrainNum4 == 1):
 			self.ui4.ui.lineEdit_18.setText(self.announce4)
-		elif(self.TrainNum5 == 1):
+		if(self.TrainNum5 == 1):
 			self.ui5.ui.lineEdit_18.setText(self.announce5)
-		elif(self.TrainNum6 == 1):
+		if(self.TrainNum6 == 1):
 			self.ui6.ui.lineEdit_18.setText(self.announce6)
-		elif(self.TrainNum7 == 1):
+		if(self.TrainNum7 == 1):
 			self.ui7.ui.lineEdit_18.setText(self.announce7)
-		elif(self.TrainNum8 == 1):
+		if(self.TrainNum8 == 1):
 			self.ui8.ui.lineEdit_18.setText(self.announce8)
-		elif(self.TrainNum9 == 1):
+		if(self.TrainNum9 == 1):
 			self.ui9.ui.lineEdit_18.setText(self.announce9)
-		elif(self.TrainNum10 == 1):
+		if(self.TrainNum10 == 1):
 			self.ui10.ui.lineEdit_18.setText(self.announce10)
 	
 		#Don't allow announcements text to be edited
@@ -5339,11 +5338,9 @@ class tnm_display(QObject):
 	
 	#Function to set Authority from track model signal
 	def SetAuthority(self,tkm_authority,tkmTrainNum):
-		print(str(tkmTrainNum) + " train num with auth")
 		if(self.TrainNum1 == 1 and tkmTrainNum == 1):
 			self.block_authority1 = tkm_authority
 		elif(self.TrainNum2 == 1 and tkmTrainNum == 2):
-			print("Authority")
 			self.block_authority2 = tkm_authority
 		elif(self.TrainNum3 == 1 and tkmTrainNum == 3):
 			self.block_authority3 = tkm_authority
