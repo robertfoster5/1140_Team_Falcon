@@ -40,15 +40,15 @@ class SystemEnvironment(QObject):
 		self.tkm.moveToThread(self.tkm_thread)
 		self.tkm_thread.start()
 
-		self.tnm_thread = QThread()
-		self.tnm = tnm_display()
-		self.tnm.moveToThread(self.tnm_thread)
-		self.tnm_thread.start()
+		self.tnm_thread_t1 = QThread()
+		self.tnm1 = tnm_display()
+		self.tnm1.moveToThread(self.tnm_thread_t1)
+		self.tnm_thread_t1.start()
 
-		self.tnm_thread_two = QThread()
-		self.tnm1 = tnm_failureTest()
-		self.tnm1.moveToThread(self.tnm_thread_two)
-		self.tnm_thread_two.start()
+		self.tnm_thread_fail = QThread()
+		self.tnm2 = tnm_failureTest()
+		self.tnm2.moveToThread(self.tnm_thread_fail)
+		self.tnm_thread_fail.start()
 
 		self.tnc_thread = QThread()
 		self.tnc = TrainControllerMain()
