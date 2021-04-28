@@ -660,6 +660,23 @@ class Ui_CTC_Office(object):
         self.label_19.setScaledContents(False)
         self.label_19.setAlignment(QtCore.Qt.AlignCenter)
         self.label_19.setObjectName("label_19")
+        self.label_36 = QtWidgets.QLabel(self.centralwidget)
+        self.label_36.setGeometry(QtCore.QRect(850, 190, 161, 21))
+        self.label_36.setObjectName("label_36")
+        self.label_37 = QtWidgets.QLabel(self.centralwidget)
+        self.label_37.setGeometry(QtCore.QRect(860, 210, 161, 21))
+        self.label_37.setObjectName("label_37")
+        self.label_38 = QtWidgets.QLabel(self.centralwidget)
+        self.label_38.setEnabled(True)
+        self.label_38.setGeometry(QtCore.QRect(820, 230, 191, 31))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_38.setFont(font)
+        self.label_38.setFrameShape(QtWidgets.QFrame.WinPanel)
+        self.label_38.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.label_38.setScaledContents(False)
+        self.label_38.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_38.setObjectName("label_38")
         CTC_Office.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(CTC_Office)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1048, 22))
@@ -671,7 +688,7 @@ class Ui_CTC_Office(object):
 
         self.retranslateUi(CTC_Office)
         self.tabWidget.setCurrentIndex(0)
-        self.tabWidget_2.setCurrentIndex(2)
+        self.tabWidget_2.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(CTC_Office)
 
     def retranslateUi(self, CTC_Office):
@@ -1010,6 +1027,9 @@ class Ui_CTC_Office(object):
         self.label.setText(_translate("CTC_Office", "Passengers/Hour"))
         self.label_2.setText(_translate("CTC_Office", "Throughput:"))
         self.label_19.setText(_translate("CTC_Office", "0"))
+        self.label_36.setText(_translate("CTC_Office", "Track Errors"))
+        self.label_37.setText(_translate("CTC_Office", "Detected:"))
+        self.label_38.setText(_translate("CTC_Office", "None."))
 
 
 if __name__ == "__main__":
