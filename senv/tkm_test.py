@@ -206,6 +206,12 @@ class Ui_MainWindow(object):
         self.enterSect.setFont(font)
         self.enterSect.setObjectName("enterSect")
         self.tabWidget.addTab(self.tab_2, "")
+        self.tab = QtWidgets.QWidget()
+        self.tab.setObjectName("tab")
+        self.tableView_Sall = QtWidgets.QTableView(self.tab)
+        self.tableView_Sall.setGeometry(QtCore.QRect(0, 0, 1121, 791))
+        self.tableView_Sall.setObjectName("tableView_Sall")
+        self.tabWidget.addTab(self.tab, "")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1307, 18))
@@ -221,7 +227,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Track Model"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.enterF.setText(_translate("MainWindow", "Enter"))
         self.enterV.setText(_translate("MainWindow", "Enter"))
         self.label_3.setText(_translate("MainWindow", "Select Line to View"))
@@ -245,6 +251,7 @@ class Ui_MainWindow(object):
         self.label_8.setText(_translate("MainWindow", "Select Section"))
         self.enterSect.setText(_translate("MainWindow", "Enter"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Section View"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "All Stations"))
 
 
 if __name__ == "__main__":

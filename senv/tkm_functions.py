@@ -51,14 +51,27 @@ def make_data_t(train,blocks):
 	return data
 
 #return station data
-def make_data_s(station):	
+def make_data_s(stat):	
 	data = [
-		['Station Name', station.name],
-		['Station Side', station.side],
-		['Ticket Sales', station.sales],
-		['# People at Station', station.occ]
+		['Station Name', stat.station.name],
+		['Station Side', stat.station.side],
+		['Ticket Sales', stat.station.sales],
+		['# People at Station', stat.station.occ],
+		['Station Block Number', stat.num]
 	]
 	return data
+
+#return all station data
+def make_data_sall(blocks):
+	i = 0
+	data = []
+	while i < len(blocks):
+		if blocks[i].station.name != 0:
+			data.append([blocks[i].station.name,blocks[i].station.side,blocks[i].station.sales,blocks[i].station.occ,blocks[i].num])
+		i = i+1
+		
+	return data
+
 
 #return Block data
 def make_data(blocks,j):	

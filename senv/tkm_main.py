@@ -30,6 +30,7 @@ from tkm_functions import make_data_s
 from tkm_functions import make_data_t
 from tkm_functions import load_track
 from tkm_functions import make_data_sect
+from tkm_functions import make_data_sall
 
 from signals import signals
 
@@ -79,6 +80,7 @@ class tkm_test(QObject):
 		self.ui.heat_stat.setText("Off")
 		self.ui.spinBox.setValue(40)
 		self.temp = Envi_Temp(self.ui.spinBox.value())
+		signals.tkm_get_envi_temp.emit(self.temp.temp)
 		
 		#create tracks
 		self.info = []
@@ -99,6 +101,7 @@ class tkm_test(QObject):
 		self.header_s = ['Station', 'Info']
 		self.header_t = ['Train', 'Info']
 		self.header_sect = ["Num","Length","Grade","Speed Limit","Station","Switch","Switch State","Crossing","Elevation","Cumulative","Underground","Beacon ID","Occupancy","Block Error"] 
+		self.header_sall = ["Station Name","Station Side","Sales","# of People","Station Block"]
 		
 		#set default block data
 		self.data_b = make_data(self.info[self.version].blocks,0)
@@ -111,22 +114,26 @@ class tkm_test(QObject):
 			i = i+1
 			 
 		#set station info
-		self.data_s = make_data_s(self.info[self.version].blocks[i].station)
+		self.data_s = make_data_s(self.info[self.version].blocks[i])
 		self.data_t = [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]]
 		
 		#default section info
 		self.data_sect = make_data_sect(self.info[self.version].blocks,"A")
+		
+		self.data_sall = make_data_sall(self.info[self.version].blocks)
 		
         #final set up of data tables
 		self.ui.model_b = TableModel(self.data_b, self.header_b)
 		self.ui.model_s = TableModel(self.data_s, self.header_s)
 		self.ui.model_t = TableModel(self.data_t, self.header_t)
 		self.ui.model_sect = TableModel(self.data_sect, self.header_sect)
+		self.ui.model_Sall = TableModel(self.data_sall, self.header_sall)
 		
 		self.ui.tableView.setModel(self.ui.model_b)
 		self.ui.tableView_S.setModel(self.ui.model_s)
 		self.ui.tableView_T.setModel(self.ui.model_t)
 		self.ui.tableView_Sect.setModel(self.ui.model_sect)
+		self.ui.tableView_Sall.setModel(self.ui.model_Sall)
 		
 		#check if block change is entered
 		self.ui.enterB.clicked.connect(lambda: self.display_b())
@@ -164,6 +171,7 @@ class tkm_test(QObject):
 		signals.tnm_train_stop_num.connect(self.t_find)
 		
 		signals.time.connect(self.sales)
+		signals.time.connect(self.ref)
         
         		
 	#for changing block info
@@ -201,7 +209,7 @@ class tkm_test(QObject):
 			if i == len(self.info[self.version].blocks):
 				return 0
 			else:
-				self.data_s = make_data_s(self.info[self.version].blocks[i].station)
+				self.data_s = make_data_s(self.info[self.version].blocks[i])
 				self.ui.model_s = TableModel(self.data_s, self.header_s)
 				self.ui.tableView_S.setModel(self.ui.model_s)
 	
@@ -226,16 +234,18 @@ class tkm_test(QObject):
 				if self.ui.lineEdit_v.text() == self.info[i].line or self.ui.lineEdit_v.text() == self.info[i].line.upper() or self.ui.lineEdit_v.text() == self.info[i].line.lower():
 					break
 				i = i+1
-			if i < len(self.info):
-				self.display_b()
-				self.display_s()
-				self.version = i
-				self.ui.curLin.setText(self.info[self.version].line)
+			
+			#self.display_b()
+			#self.display_s()
+			self.version = i
+			self.ui.curLin.setText(self.info[self.version].line)
+			self.ref()
 			
 	def display_temp(self):
 		self.temp.set_temp(self.ui.spinBox.value())
 		if self.temp.th.state == 1 and self.ui.heat_stat.text() != "On":
 			self.ui.heat_stat.setText("On")
+		signals.tkm_get_envi_temp.emit(self.temp.temp)
 				
 	def track_heat(self):
 		if self.ui.heat_stat.text() == "Off":
@@ -277,16 +287,20 @@ class tkm_test(QObject):
 			self.display_s()
 		if len(self.info[self.version].train) > 0:
 			if self.ui.lineEdit_t.text() != "":
-				self.display_t() 
+				self.display_t()
+		if self.ui.select_sect.text() != "":
+			self.display_sect()
+			
+		self.data_sall = make_data_sall(self.info[self.version].blocks)
+		self.ui.model_Sall = TableModel(self.data_sall, self.header_sall)
+		self.ui.tableView_Sall.setModel(self.ui.model_Sall)
 				
 	def t_dest(self,num):
-		#print("COOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOLLLLLLLLLLLLL")
 		j = 0
 		while j < len(self.info):
 			i = 0
 			while i < len(self.info[j].train):
 				if num == self.info[j].train[i].num:
-					#print("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEETTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT")
 					val = self.info[j].train[i].destroy()-1
 					self.info[j].blocks[int(val)].occ = 0
 					self.info[j].set_occ(self.info[j].get_occ())
