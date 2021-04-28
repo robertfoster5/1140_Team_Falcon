@@ -641,7 +641,7 @@ class Track:
 		if len(self.train) > 0:
 			i = 0
 			while i < len(self.train):
-				if self.blocks[int(self.train[i].block-1)].speed > 0 and self.train[i].speed == 0 and self.blocks[self.train[i].block-1].auth == 1:
+				if self.blocks[int(self.train[i].block-1)].speed > 0 and self.train[i].speed == 0 and self.blocks[int(self.train[i].block-1)].auth == 1:
 					if self.blocks[int(self.train[i].block-1)].speed < self.blocks[int(self.train[i].block-1)].s_limit:
 						signals.tkm_get_train_auth.emit(self.blocks[int(self.train[i].block-1)].auth,self.train[i].num)
 						signals.tkm_get_speed.emit(self.blocks[int(self.train[i].block-1)].speed,self.train[i].num)
