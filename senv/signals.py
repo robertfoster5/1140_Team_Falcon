@@ -68,7 +68,7 @@ class Signal(QObject):
     #train controller signals
     tnc_emergency_brake = pyqtSignal(bool,int)
     tnc_service_brake = pyqtSignal(bool,int)
-    tnc_announcement = pyqtSignal(str)
+    tnc_announcement = pyqtSignal(str,int)
     tnc_power = pyqtSignal(float,int)
     tnc_cab_light = pyqtSignal(bool,int)
     tnc_tunnel_light = pyqtSignal(bool,int)
