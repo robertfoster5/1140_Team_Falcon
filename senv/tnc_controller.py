@@ -203,7 +203,7 @@ class TrainController(QObject):
             self.powsys.braking = False
 
         #print(str(round(self.powsys.command_speed,1)) + " comm speed in m/s")
-        print(str(round(self.powsys.command_speed,2)) + " comm speed in mph")
+        print(str(round(self.powsys.command_speed,2)) + " comm speed train " + str(self.train_num) + " in mph")
         #print(round(self.powsys.set_speed,1))
 
         self.powsys.update_power()
