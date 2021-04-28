@@ -3040,51 +3040,61 @@ class tnm_display(QObject):
 		self.ui1 = tnm_threadSupport()
 		self.threadMain1 = QThread()
 		self.ui1.moveToThread(self.threadMain1)
+		self.ui1.MainWindow.setWindowTitle("MainWindow 1")
 		self.threadMain1.start()
 		#Main Window Thread 2
 		self.ui2 = tnm_threadSupport()
 		self.threadMain2 = QThread()
 		self.ui2.moveToThread(self.threadMain2)
+		self.ui2.MainWindow.setWindowTitle("MainWindow 2")
 		self.threadMain2.start()
 		#Main Window Thread 3
 		self.ui3 = tnm_threadSupport()
 		self.threadMain3 = QThread()
 		self.ui3.moveToThread(self.threadMain3)
+		self.ui3.MainWindow.setWindowTitle("MainWindow 3")
 		self.threadMain3.start()
 		#Main Window Thread 4
 		self.ui4 = tnm_threadSupport()
 		self.threadMain4 = QThread()
 		self.ui4.moveToThread(self.threadMain4)
+		self.ui4.MainWindow.setWindowTitle("MainWindow 4")
 		self.threadMain4.start()
 		#Main Window Thread 5
 		self.ui5 = tnm_threadSupport()
 		self.threadMain5 = QThread()
 		self.ui5.moveToThread(self.threadMain5)
+		self.ui5.MainWindow.setWindowTitle("MainWindow 5")
 		self.threadMain5.start()
 		#Main Window Thread 6
 		self.ui6 = tnm_threadSupport()
 		self.threadMain6 = QThread()
 		self.ui6.moveToThread(self.threadMain6)
+		self.ui6.MainWindow.setWindowTitle("MainWindow 6")
 		self.threadMain6.start()
 		#Main Window Thread 7
 		self.ui7 = tnm_threadSupport()
 		self.threadMain7 = QThread()
 		self.ui7.moveToThread(self.threadMain7)
+		self.ui7.MainWindow.setWindowTitle("MainWindow 7")
 		self.threadMain7.start()
 		#Main Window Thread 8
 		self.ui8 = tnm_threadSupport()
 		self.threadMain8 = QThread()
 		self.ui8.moveToThread(self.threadMain8)
+		self.ui8.MainWindow.setWindowTitle("MainWindow 8")
 		self.threadMain8.start()
 		#Main Window Thread 9
 		self.ui9 = tnm_threadSupport()
 		self.threadMain9 = QThread()
 		self.ui9.moveToThread(self.threadMain9)
+		self.ui9.MainWindow.setWindowTitle("MainWindow 9")
 		self.threadMain9.start()
 		#Main Window Thread 10
 		self.ui10 = tnm_threadSupport()
 		self.threadMain10 = QThread()
 		self.ui10.moveToThread(self.threadMain10)
+		self.ui10.MainWindow.setWindowTitle("MainWindow 10")
 		self.threadMain10.start()
 		
 		
@@ -3249,12 +3259,13 @@ class tnm_display(QObject):
 			#Address Authority Here
 			signals.tnm_authority.emit(self.block_authority1,1)
 			#Address Commanded Speed
+			signals.tkm_get_speed.connect(self.SetCommSpeed)
 			signals.tnm_comm_speed.emit(self.comm_speed1,1)
 			signals.tnc_power.connect(self.SetPower)
 			signals.tnc_service_brake.connect(self.SetServiceBrake)
 			#Calculate current speed
 			self.curr_speed1, self.current_accl1 = set_curr_speed(self.timeSeconds, self.eBrake1, self.Brake1, self.block_authority1, self.curr_power1, self.Occupancy1, self.SpeedN11, self.AcclN11, self.comm_speed1,1)
-
+			print(str(self.curr_speed1) + " mph train 1")
 			#Set At - 1 variables for use in next sec. speed calculation
 			self.SpeedN11 = self.curr_speed1
 			self.AcclN11 = self.current_accl1
@@ -3292,15 +3303,17 @@ class tnm_display(QObject):
 				self.ui1.ui.lineEdit_2.setText("Off")
 		#___________________________________________________________________________
 		elif(self.TrainNum2 == 1):
+			print("MOVEMENT 22222")
 			#Address Authority Here
 			signals.tnm_authority.emit(self.block_authority2,2)
 			#Address Commanded Speed
+			signals.tkm_get_speed.connect(self.SetCommSpeed)
 			signals.tnm_comm_speed.emit(self.comm_speed2,2)
 			signals.tnc_power.connect(self.SetPower)
 			signals.tnc_service_brake.connect(self.SetServiceBrake)
 			#Calculate current speed
 			self.curr_speed2, self.current_accl2 = set_curr_speed(self.timeSeconds, self.eBrake2, self.Brake2, self.block_authority2, self.curr_power2, self.Occupancy2, self.SpeedN12, self.AcclN12, self.comm_speed2,2)
-
+			print(str(self.curr_speed2) + " mph train 2")
 			#Set At - 1 variables for use in next sec. speed calculation
 			self.SpeedN12 = self.curr_speed2
 			self.AcclN12 = self.current_accl2
@@ -3341,6 +3354,7 @@ class tnm_display(QObject):
 			#Address Authority Here
 			signals.tnm_authority.emit(self.block_authority3,3)
 			#Address Commanded Speed
+			signals.tkm_get_speed.connect(self.SetCommSpeed)
 			signals.tnm_comm_speed.emit(self.comm_speed3,3)
 			signals.tnc_power.connect(self.SetPower)
 			signals.tnc_service_brake.connect(self.SetServiceBrake)
@@ -3387,6 +3401,7 @@ class tnm_display(QObject):
 			#Address Authority Here
 			signals.tnm_authority.emit(self.block_authority4,4)
 			#Address Commanded Speed
+			signals.tkm_get_speed.connect(self.SetCommSpeed)
 			signals.tnm_comm_speed.emit(self.comm_speed4,4)
 			signals.tnc_power.connect(self.SetPower)
 			signals.tnc_service_brake.connect(self.SetServiceBrake)
@@ -3433,6 +3448,7 @@ class tnm_display(QObject):
 			#Address Authority Here
 			signals.tnm_authority.emit(self.block_authority5,5)
 			#Address Commanded Speed
+			signals.tkm_get_speed.connect(self.SetCommSpeed)
 			signals.tnm_comm_speed.emit(self.comm_speed5,5)
 			signals.tnc_power.connect(self.SetPower)
 			signals.tnc_service_brake.connect(self.SetServiceBrake)
@@ -3479,6 +3495,7 @@ class tnm_display(QObject):
 			#Address Authority Here
 			signals.tnm_authority.emit(self.block_authority6,6)
 			#Address Commanded Speed
+			signals.tkm_get_speed.connect(self.SetCommSpeed)
 			signals.tnm_comm_speed.emit(self.comm_speed6,6)
 			signals.tnc_power.connect(self.SetPower)
 			signals.tnc_service_brake.connect(self.SetServiceBrake)
@@ -3525,6 +3542,7 @@ class tnm_display(QObject):
 			#Address Authority Here
 			signals.tnm_authority.emit(self.block_authority7,7)
 			#Address Commanded Speed
+			signals.tkm_get_speed.connect(self.SetCommSpeed)
 			signals.tnm_comm_speed.emit(self.comm_speed7,7)
 			signals.tnc_power.connect(self.SetPower)
 			signals.tnc_service_brake.connect(self.SetServiceBrake)
@@ -3570,7 +3588,8 @@ class tnm_display(QObject):
 		elif(self.TrainNum8 == 1):
 			#Address Authority Here
 			signals.tnm_authority.emit(self.block_authority8,8)
-			#Address Commanded Speed
+			#Address Commanded 
+			signals.tkm_get_speed.connect(self.SetCommSpeed)
 			signals.tnm_comm_speed.emit(self.comm_speed8,8)
 			signals.tnc_power.connect(self.SetPower)
 			signals.tnc_service_brake.connect(self.SetServiceBrake)
@@ -3617,6 +3636,7 @@ class tnm_display(QObject):
 			#Address Authority Here
 			signals.tnm_authority.emit(self.block_authority9,9)
 			#Address Commanded Speed
+			signals.tkm_get_speed.connect(self.SetCommSpeed)
 			signals.tnm_comm_speed.emit(self.comm_speed9,9)
 			signals.tnc_power.connect(self.SetPower)
 			signals.tnc_service_brake.connect(self.SetServiceBrake)
@@ -3663,6 +3683,7 @@ class tnm_display(QObject):
 			#Address Authority Here
 			signals.tnm_authority.emit(self.block_authority10,10)
 			#Address Commanded Speed
+			signals.tkm_get_speed.connect(self.SetCommSpeed)
 			signals.tnm_comm_speed.emit(self.comm_speed10,10)
 			signals.tnc_power.connect(self.SetPower)
 			signals.tnc_service_brake.connect(self.SetServiceBrake)
@@ -4948,10 +4969,10 @@ class tnm_display(QObject):
 			#0 means left doors open, 1 means right doors open
 			if(self.beacon_bin1[2] == 0):
 				self.TrainDirection1 = 0
-				self.tnm_TrainDir.emit(self.TrainDirection1,1)
+				signals.tnm_TrainDir.emit(self.TrainDirection1,1)
 			elif(self.beacon_bin1[2] == 1):
 				self.TrainDirection1 = 1
-				self.tnm_TrainDir.emit(self.TrainDirection1,1)
+				signals.tnm_TrainDir.emit(self.TrainDirection1,1)
 				
 			#Call Beacon function to specify station
 			if(self.RouteName1 == "Green Line"):
@@ -4982,16 +5003,16 @@ class tnm_display(QObject):
 			#0 means left doors open, 1 means right doors open
 			if(self.beacon_bin2[2] == 0):
 				self.TrainDirection2 = 0
-				self.tnm_TrainDir.emit(self.TrainDirection2,2)
+				signals.tnm_TrainDir.emit(self.TrainDirection2,2)
 			elif(self.beacon_bin2[2] == 1):
 				self.TrainDirection2 = 1
-				self.tnm_TrainDir.emit(self.TrainDirection2,2)
+				signals.tnm_TrainDir.emit(self.TrainDirection2,2)
 				
 			#Call Beacon function to specify station
 			if(self.RouteName2 == "Green Line"):
 				self.CurrStation2, self.NextStation2, self.TNMdirectionG2 = GreenBeacon(self.RouteName2, self.TNMdirectionG2, self.TrainDirection2, self.beacon_bin2)
 			elif(self.RouteName2 == "Red Line"):
-				self.CurrStation2, self.NextStation2, self.TNMdirectionR2 = RedBeacon(self.RouteName2, self.TNMdirectionR2, self.TrainDirection2, self.beacon_bin2)
+				self.CurrStation2, self.NextStation2, self.TNMdirectionR2 = RedBeacon(self.RouteName2, self.TNMdirectionR2, self.TrainDirection2, self.beacon_bin2)		
 			signals.tnm_curr_station.emit(self.CurrStation2,2)
 			#______________________________________________________________________
 		elif(self.TrainNum3 == 1 and tncTrainNum == 3):
@@ -5016,10 +5037,10 @@ class tnm_display(QObject):
 			#0 means left doors open, 1 means right doors open
 			if(self.beacon_bin3[2] == 0):
 				self.TrainDirection3 = 0
-				self.tnm_TrainDir.emit(self.TrainDirection3,3)
+				signals.tnm_TrainDir.emit(self.TrainDirection3,3)
 			elif(self.beacon_bin3[2] == 1):
 				self.TrainDirection3 = 1
-				self.tnm_TrainDir.emit(self.TrainDirection3,3)
+				signals.tnm_TrainDir.emit(self.TrainDirection3,3)
 				
 			#Call Beacon function to specify station
 			if(self.RouteName3 == "Green Line"):
@@ -5050,10 +5071,10 @@ class tnm_display(QObject):
 			#0 means left doors open, 1 means right doors open
 			if(self.beacon_bin4[2] == 0):
 				self.TrainDirection4 = 0
-				self.tnm_TrainDir.emit(self.TrainDirection4,4)
+				signals.tnm_TrainDir.emit(self.TrainDirection4,4)
 			elif(self.beacon_bin4[2] == 1):
 				self.TrainDirection4 = 1
-				self.tnm_TrainDir.emit(self.TrainDirection4,4)
+				signals.tnm_TrainDir.emit(self.TrainDirection4,4)
 				
 			#Call Beacon function to specify station
 			if(self.RouteName4 == "Green Line"):
@@ -5084,10 +5105,10 @@ class tnm_display(QObject):
 			#0 means left doors open, 1 means right doors open
 			if(self.beacon_bin5[2] == 0):
 				self.TrainDirection5 = 0
-				self.tnm_TrainDir.emit(self.TrainDirection5,5)
+				signals.tnm_TrainDir.emit(self.TrainDirection5,5)
 			elif(self.beacon_bin5[2] == 1):
 				self.TrainDirection5 = 1
-				self.tnm_TrainDir.emit(self.TrainDirection5,5)
+				signals.tnm_TrainDir.emit(self.TrainDirection5,5)
 				
 			#Call Beacon function to specify station
 			if(self.RouteName5 == "Green Line"):
@@ -5118,10 +5139,10 @@ class tnm_display(QObject):
 			#0 means left doors open, 1 means right doors open
 			if(self.beacon_bin6[2] == 0):
 				self.TrainDirection6 = 0
-				self.tnm_TrainDir.emit(self.TrainDirection6,6)
+				signals.tnm_TrainDir.emit(self.TrainDirection6,6)
 			elif(self.beacon_bin6[2] == 1):
 				self.TrainDirection6 = 1
-				self.tnm_TrainDir.emit(self.TrainDirection6,6)
+				signals.tnm_TrainDir.emit(self.TrainDirection6,6)
 				
 			#Call Beacon function to specify station
 			if(self.RouteName6 == "Green Line"):
@@ -5152,10 +5173,10 @@ class tnm_display(QObject):
 			#0 means left doors open, 1 means right doors open
 			if(self.beacon_bin7[2] == 0):
 				self.TrainDirection7 = 0
-				self.tnm_TrainDir.emit(self.TrainDirection7,7)
+				signals.tnm_TrainDir.emit(self.TrainDirection7,7)
 			elif(self.beacon_bin7[2] == 1):
 				self.TrainDirection7 = 1
-				self.tnm_TrainDir.emit(self.TrainDirection7,7)
+				signals.tnm_TrainDir.emit(self.TrainDirection7,7)
 				
 			#Call Beacon function to specify station
 			if(self.RouteName7 == "Green Line"):
@@ -5186,10 +5207,10 @@ class tnm_display(QObject):
 			#0 means left doors open, 1 means right doors open
 			if(self.beacon_bin8[2] == 0):
 				self.TrainDirection8 = 0
-				self.tnm_TrainDir.emit(self.TrainDirection8,8)
+				signals.tnm_TrainDir.emit(self.TrainDirection8,8)
 			elif(self.beacon_bin8[2] == 1):
 				self.TrainDirection8 = 1
-				self.tnm_TrainDir.emit(self.TrainDirection8,8)
+				signals.tnm_TrainDir.emit(self.TrainDirection8,8)
 				
 			#Call Beacon function to specify station
 			if(self.RouteName8 == "Green Line"):
@@ -5220,10 +5241,10 @@ class tnm_display(QObject):
 			#0 means left doors open, 1 means right doors open
 			if(self.beacon_bin9[2] == 0):
 				self.TrainDirection9 = 0
-				self.tnm_TrainDir.emit(self.TrainDirection9,9)
+				signals.tnm_TrainDir.emit(self.TrainDirection9,9)
 			elif(self.beacon_bin9[2] == 1):
 				self.TrainDirection9 = 1
-				self.tnm_TrainDir.emit(self.TrainDirection9,9)
+				signals.tnm_TrainDir.emit(self.TrainDirection9,9)
 				
 			#Call Beacon function to specify station
 			if(self.RouteName9 == "Green Line"):
@@ -5254,10 +5275,10 @@ class tnm_display(QObject):
 			#0 means left doors open, 1 means right doors open
 			if(self.beacon_bin10[2] == 0):
 				self.TrainDirection10 = 0
-				self.tnm_TrainDir.emit(self.TrainDirection10,10)
+				signals.tnm_TrainDir.emit(self.TrainDirection10,10)
 			elif(self.beacon_bin10[2] == 1):
 				self.TrainDirection10 = 1
-				self.tnm_TrainDir.emit(self.TrainDirection10,10)
+				signals.tnm_TrainDir.emit(self.TrainDirection10,10)
 				
 			#Call Beacon function to specify station
 			if(self.RouteName10 == "Green Line"):
@@ -5268,122 +5289,124 @@ class tnm_display(QObject):
 			#______________________________________________________________________
 	
 	#Function to specify block number for each line
-	def blockNum(self,BlockNum):
-		if(self.TrainNum1 == 1 and self.dist_traveled1 == 0):
+	def blockNum(self,BlockNum,tkmTrainNum):
+		if(self.TrainNum1 == 1  and tkmTrainNum == 1):
 			self.block_num1 = BlockNum
-		elif(self.TrainNum2 == 1 and self.dist_traveled2 == 0):
+		elif(self.TrainNum2 == 1 and tkmTrainNum == 2):
 			self.block_num2 = BlockNum
-		elif(self.TrainNum3 == 1 and self.dist_traveled3 == 0):
+		elif(self.TrainNum3 == 1 and tkmTrainNum == 3):
 			self.block_num3 = BlockNum
-		elif(self.TrainNum4 == 1 and self.dist_traveled4 == 0):
+		elif(self.TrainNum4 == 1 and tkmTrainNum == 4):
 			self.block_num4 = BlockNum
-		elif(self.TrainNum5 == 1 and self.dist_traveled5 == 0):
+		elif(self.TrainNum5 == 1 and tkmTrainNum == 5):
 			self.block_num5 = BlockNum
-		elif(self.TrainNum6 == 1 and self.dist_traveled6 == 0):
+		elif(self.TrainNum6 == 1 and tkmTrainNum == 6):
 			self.block_num6 = BlockNum
-		elif(self.TrainNum7 == 1 and self.dist_traveled7 == 0):
+		elif(self.TrainNum7 == 1 and tkmTrainNum == 7):
 			self.block_num7 = BlockNum
-		elif(self.TrainNum8 == 1 and self.dist_traveled8 == 0):
+		elif(self.TrainNum8 == 1 and tkmTrainNum == 8):
 			self.block_num8 = BlockNum
-		elif(self.TrainNum9 == 1 and self.dist_traveled9 == 0):
+		elif(self.TrainNum9 == 1 and tkmTrainNum == 9):
 			self.block_num9 = BlockNum
-		elif(self.TrainNum10 == 1 and self.dist_traveled10 == 0):
+		elif(self.TrainNum10 == 1 and tkmTrainNum == 10):
 			self.block_num10 = BlockNum
 			
 		
 	#Function to take in block length and calculate when train reaches next block
-	def blockLen(self, BlockLen):
+	def blockLen(self, BlockLen,tkmTrainNum):
 		#set variables based on Train Number
-		if(self.TrainNum1 == 1 and self.dist_traveled1 == 0):
+		if(self.TrainNum1 == 1 and tkmTrainNum == 1):
 			self.block_length1 = BlockLen
-		elif(self.TrainNum2 == 1 and self.dist_traveled2 == 0):
+		elif(self.TrainNum2 == 1 and tkmTrainNum == 2):
 			self.block_length2 = BlockLen
-		elif(self.TrainNum3 == 1 and self.dist_traveled3 == 0):
+		elif(self.TrainNum3 == 1 and tkmTrainNum == 3):
 			self.block_length3 = BlockLen
-		elif(self.TrainNum4 == 1 and self.dist_traveled4 == 0):
+		elif(self.TrainNum4 == 1 and tkmTrainNum == 4):
 			self.block_length4 = BlockLen
-		elif(self.TrainNum5 == 1 and self.dist_traveled5 == 0):
+		elif(self.TrainNum5 == 1 and tkmTrainNum == 5):
 			self.block_length5 = BlockLen
-		elif(self.TrainNum6 == 1 and self.dist_traveled6 == 0):
+		elif(self.TrainNum6 == 1 and tkmTrainNum == 6):
 			self.block_length6 = BlockLen
-		elif(self.TrainNum7 == 1 and self.dist_traveled7 == 0):
+		elif(self.TrainNum7 == 1 and tkmTrainNum == 7):
 			self.block_length7 = BlockLen
-		elif(self.TrainNum8 == 1 and self.dist_traveled8 == 0):
+		elif(self.TrainNum8 == 1 and tkmTrainNum == 8):
 			self.block_length8 = BlockLen
-		elif(self.TrainNum9 == 1 and self.dist_traveled9 == 0):
+		elif(self.TrainNum9 == 1 and tkmTrainNum == 9):
 			self.block_length9 = BlockLen
-		elif(self.TrainNum10 == 1 and self.dist_traveled10 == 0):
+		elif(self.TrainNum10 == 1 and tkmTrainNum == 10):
 			self.block_length10 = BlockLen
 			
 	
 	#Function to set Authority from track model signal
-	def SetAuthority(self,tkm_authority):
-		if(self.TrainNum1 == 1 and self.dist_traveled1 == 0):
+	def SetAuthority(self,tkm_authority,tkmTrainNum):
+		print(str(tkmTrainNum) + " train num with auth")
+		if(self.TrainNum1 == 1 and tkmTrainNum == 1):
 			self.block_authority1 = tkm_authority
-		elif(self.TrainNum2 == 1 and self.dist_traveled2 == 0):
+		elif(self.TrainNum2 == 1 and tkmTrainNum == 2):
+			print("Authority")
 			self.block_authority2 = tkm_authority
-		elif(self.TrainNum3 == 1 and self.dist_traveled3 == 0):
+		elif(self.TrainNum3 == 1 and tkmTrainNum == 3):
 			self.block_authority3 = tkm_authority
-		elif(self.TrainNum4 == 1 and self.dist_traveled4 == 0):
+		elif(self.TrainNum4 == 1 and tkmTrainNum == 4):
 			self.block_authority4 = tkm_authority
-		elif(self.TrainNum5 == 1 and self.dist_traveled5 == 0):
+		elif(self.TrainNum5 == 1 and tkmTrainNum == 5):
 			self.block_authority5 = tkm_authority
-		elif(self.TrainNum6 == 1 and self.dist_traveled6 == 0):
+		elif(self.TrainNum6 == 1 and tkmTrainNum == 6):
 			self.block_authority6 = tkm_authority
-		elif(self.TrainNum7 == 1 and self.dist_traveled7 == 0):
+		elif(self.TrainNum7 == 1 and tkmTrainNum == 7):
 			self.block_authority7 = tkm_authority
-		elif(self.TrainNum8 == 1 and self.dist_traveled8 == 0):
+		elif(self.TrainNum8 == 1 and tkmTrainNum == 8):
 			self.block_authority8 = tkm_authority
-		elif(self.TrainNum9 == 1 and self.dist_traveled9 == 0):
+		elif(self.TrainNum9 == 1 and tkmTrainNum == 9):
 			self.block_authority9 = tkm_authority
-		elif(self.TrainNum10 == 1 and self.dist_traveled10 == 0):
+		elif(self.TrainNum10 == 1 and tkmTrainNum == 10):
 			self.block_authority10 = tkm_authority
 		
 	#Function to set Commanded Speed from track model signal
-	def SetCommSpeed(self,commSpeed):
-		if(self.TrainNum1 == 1 and self.dist_traveled1 == 0):
+	def SetCommSpeed(self,commSpeed, tkmTrainNum):
+		if(self.TrainNum1 == 1 and tkmTrainNum == 1):
 			self.comm_speed1 = meterToMile(commSpeed)			#convert mps to MPH
-		elif(self.TrainNum2 == 1 and self.dist_traveled2 == 0):
+		elif(self.TrainNum2 == 1 and tkmTrainNum == 2):
 			self.comm_speed2 = meterToMile(commSpeed)
 			#print(str(self.comm_speed1) + "TNM comm speed 2..")
-		elif(self.TrainNum3 == 1 and self.dist_traveled3 == 0):
+		elif(self.TrainNum3 == 1 and tkmTrainNum == 3):
 			self.comm_speed3 = meterToMile(commSpeed)
-		elif(self.TrainNum4 == 1 and self.dist_traveled4 == 0):
+		elif(self.TrainNum4 == 1 and tkmTrainNum == 4):
 			self.comm_speed4 = meterToMile(commSpeed)
-		elif(self.TrainNum5 == 1 and self.dist_traveled5 == 0):
+		elif(self.TrainNum5 == 1 and tkmTrainNum == 5):
 			self.comm_speed5 = meterToMile(commSpeed)
-		elif(self.TrainNum6 == 1 and self.dist_traveled6 == 0):
+		elif(self.TrainNum6 == 1 and tkmTrainNum == 6):
 			self.comm_speed6 = meterToMile(commSpeed)
-		elif(self.TrainNum7 == 1 and self.dist_traveled7 == 0):
+		elif(self.TrainNum7 == 1 and tkmTrainNum == 7):
 			self.comm_speed7 = meterToMile(commSpeed)
-		elif(self.TrainNum8 == 1 and self.dist_traveled8 == 0):
+		elif(self.TrainNum8 == 1 and tkmTrainNum == 8):
 			self.comm_speed8 = meterToMile(commSpeed)
-		elif(self.TrainNum9 == 1 and self.dist_traveled9 == 0):
+		elif(self.TrainNum9 == 1 and tkmTrainNum == 9):
 			self.comm_speed9 = meterToMile(commSpeed)
-		elif(self.TrainNum10 == 1 and self.dist_traveled10 == 0):
+		elif(self.TrainNum10 == 1 and tkmTrainNum == 10):
 			self.comm_speed10 = meterToMile(commSpeed)
 	
 	#Function to set Passenger count from track model signal
-	def SetOccupancy(self,tkm_pass_count):
-		if(self.TrainNum1 == 1 and self.DoorStatus1 == True):
+	def SetOccupancy(self,tkm_pass_count, tkmTrainNum):
+		if(self.TrainNum1 == 1 and self.DoorStatus1 == True and tkmTrainNum == 1):
 			self.pass_count1 = tkm_pass_count
-		elif(self.TrainNum2 == 1 and self.DoorStatus2 == True):
+		elif(self.TrainNum2 == 1 and self.DoorStatus2 == True and tkmTrainNum == 2):
 			self.pass_count2 = tkm_pass_count
-		elif(self.TrainNum3 == 1 and self.DoorStatus3 == True):
+		elif(self.TrainNum3 == 1 and self.DoorStatus3 == True and tkmTrainNum == 3):
 			self.pass_count3 = tkm_pass_count
-		elif(self.TrainNum4 == 1 and self.DoorStatus4 == True):
+		elif(self.TrainNum4 == 1 and self.DoorStatus4 == True and tkmTrainNum == 4):
 			self.pass_count4 = tkm_pass_count
-		elif(self.TrainNum5 == 1 and self.DoorStatus5 == True):
+		elif(self.TrainNum5 == 1 and self.DoorStatus5 == True and tkmTrainNum == 5):
 			self.pass_count5 = tkm_pass_count
-		elif(self.TrainNum6 == 1 and self.DoorStatus6 == True):
+		elif(self.TrainNum6 == 1 and self.DoorStatus6 == True and tkmTrainNum == 6):
 			self.pass_count6 = tkm_pass_count
-		elif(self.TrainNum7 == 1 and self.DoorStatus7 == True):
+		elif(self.TrainNum7 == 1 and self.DoorStatus7 == True and tkmTrainNum == 7):
 			self.pass_count7 = tkm_pass_count
-		elif(self.TrainNum8 == 1 and self.DoorStatus8 == True):
+		elif(self.TrainNum8 == 1 and self.DoorStatus8 == True and tkmTrainNum == 8):
 			self.pass_count8 = tkm_pass_count
-		elif(self.TrainNum9 == 1 and self.DoorStatus9 == True):
+		elif(self.TrainNum9 == 1 and self.DoorStatus9 == True and tkmTrainNum == 9):
 			self.pass_count9 = tkm_pass_count
-		elif(self.TrainNum10 == 1 and self.DoorStatus10 == True):
+		elif(self.TrainNum10 == 1 and self.DoorStatus10 == True and tkmTrainNum == 10):
 			self.pass_count10 = tkm_pass_count
 	
 	#Function to read the emergency brake state from tnc

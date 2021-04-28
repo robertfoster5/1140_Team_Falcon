@@ -123,7 +123,7 @@ def set_curr_speed(timeSec, EmerBrake, SerBrake, Authority, Power, Occupancy, Sp
 		curr_speed = max_speed
 		
 	#round the speed to a integer
-	print(str(round(curr_speed, 2)) + " mph train " + str(trainNumber) + " at " + str(timeSec))
+	#print(str(round(curr_speed, 2)) + " mph train " + str(trainNumber) + " at " + str(timeSec))
 	curr_speed = round(curr_speed, 2)
 	curr_accl = meterToMile(curr_accl)
 	
