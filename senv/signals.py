@@ -38,17 +38,17 @@ class Signal(QObject):
 
     #track model signals
     tkm_get_occ = pyqtSignal(list)
-    tkm_get_speed = pyqtSignal(int)
+    tkm_get_speed = pyqtSignal(int,int)
     tkm_get_auth = pyqtSignal(list)
-    tkm_get_train_auth = pyqtSignal(int)
+    tkm_get_train_auth = pyqtSignal(int,int)
     tkm_get_beacon = pyqtSignal(int,int)
     tkm_get_envi_temp = pyqtSignal(float)
     tkm_get_sales = pyqtSignal(int)
-    tkm_get_pass_count = pyqtSignal(int)
-    tkm_get_block = pyqtSignal(int)
-    tkm_get_blength = pyqtSignal(int)
+    tkm_get_pass_count = pyqtSignal(int,int)
+    tkm_get_block = pyqtSignal(int,int)
+    tkm_get_blength = pyqtSignal(int,int)
     tkm_get_train_num = pyqtSignal(int,str)
-    tkm_get_elev = pyqtSignal(float)
+    tkm_get_elev = pyqtSignal(float,int)
     tkm_get_destroy = pyqtSignal(int)
 
     #train model signals

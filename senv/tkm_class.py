@@ -204,13 +204,13 @@ class Train:
 		
 		blocks[int(self.past)-1].occ = 0
 		blocks[int(self.block)-1].occ = 1
-		signals.tkm_get_block.emit(self.block)
+		signals.tkm_get_block.emit(self.block,self.num)
 		print(str(self.block) + " block tkm")
 		print("/////////////////////////////////////////////////////////////////////////////////////")
 		#print(str(blocks[int(self.block)-1].length)+" this is block length")
-		signals.tkm_get_blength.emit(blocks[int(self.block)-1].length)
-		signals.tkm_get_train_auth.emit(blocks[int(self.block-1)].auth)
-		signals.tkm_get_elev.emit(blocks[int(self.block-1)].elev)
+		signals.tkm_get_blength.emit(blocks[int(self.block)-1].length,self.num)
+		signals.tkm_get_train_auth.emit(blocks[int(self.block-1)].auth,self.num)
+		signals.tkm_get_elev.emit(blocks[int(self.block-1)].elev,self.num)
 		print(str(blocks[int(self.block-1)].auth) + " tkm auth")
 		
 		if blocks[int(self.block-1)].beacon1 == 0 and blocks[int(self.block-1)].beacon2 == 0:
@@ -482,12 +482,12 @@ class Track:
 			way = 1
 			blo = 63
 			n = train_num+1
-			
+		
 		train_num = train_num+1
 		self.train.append(Train(n,way,blo))
 		signals.tkm_get_train_num.emit(n,self.line)
-		signals.tkm_get_block.emit(self.blocks[blo-1].num)
-		signals.tkm_get_blength.emit(self.blocks[blo-1].length)
+		signals.tkm_get_block.emit(self.blocks[blo-1].num,self.train[-1].num)
+		signals.tkm_get_blength.emit(self.blocks[blo-1].length,self.train[-1].num)
 		self.blocks[blo-1].occ = 1
 		bull = self.get_occ()
 		signals.tkm_get_occ.emit(bull)
@@ -495,12 +495,12 @@ class Track:
 		print("speeeeeeeeeeeeeeeeed "+str(s))
 		#print(str(s) + " tkm")
 		#signals.tkm_get_speed.emit(s)
-		signals.tkm_get_train_auth.emit(bool(self.blocks[blo-1].auth))
+		signals.tkm_get_train_auth.emit(bool(self.blocks[blo-1].auth),self.train[-1].num)
 		print("tkm auth " + str(self.blocks[blo-1].auth))
 		#print(block.s_limit)
 		
 		print(str(s) + " tkm - add train")
-		signals.tkm_get_speed.emit(s)
+		signals.tkm_get_speed.emit(s,self.train[-1].num)
 		#signals.tkm_get_auth.emit(block.auth)
 		
 #_______________________________________________________________________
@@ -643,13 +643,15 @@ class Track:
 			while i < len(self.train):
 				if self.blocks[int(self.train[i].block-1)].speed > 0:
 					if self.blocks[int(self.train[i].block-1)].speed < self.blocks[int(self.train[i].block-1)].s_limit:
-						signals.tkm_get_train_auth.emit(self.blocks[int(self.train[i].block-1)].auth)
-						signals.tkm_get_speed.emit(self.blocks[int(self.train[i].block-1)].speed)
-						#print(str(self.blocks[int(self.train[i].block-1)].speed)+" spppppppppppppppppppppppppppeeeeeeeeeeeeeeeeeeddddd")
+						signals.tkm_get_train_auth.emit(self.blocks[int(self.train[i].block-1)].auth,self.train[i].num)
+						signals.tkm_get_speed.emit(self.blocks[int(self.train[i].block-1)].speed,self.train[i].num)
+						print(str(self.blocks[int(self.train[i].block-1)].speed)+" spppppppppppppppppppppppppppeeeeeeeeeeeeeeeeeeddddd")
+						print(str(self.blocks[int(self.train[i].block-1)].auth) + " aaaaaaaaaaaauuuuuuuuuuuuuuttttttttttttttthhhhhhhhh")
 					else:
-						signals.tkm_get_train_auth.emit(self.blocks[int(self.train[i].block-1)].auth)
-						signals.tkm_get_speed.emit(self.blocks[int(self.train[i].block-1)].s_limit)
-						#print(str(self.blocks[int(self.train[i].block-1)].s_limit)+" spppppppppppppppppppppppppppeeeeeeeeeeeeeeeeeeddddd")
+						signals.tkm_get_train_auth.emit(self.blocks[int(self.train[i].block-1)].auth,self.train[i].num)
+						signals.tkm_get_speed.emit(self.blocks[int(self.train[i].block-1)].s_limit,self.train[i].num)
+						print(str(self.blocks[int(self.train[i].block-1)].s_limit)+" spppppppppppppppppppppppppppeeeeeeeeeeeeeeeeeeddddd")
+						print(str(self.blocks[int(self.train[i].block-1)].auth) + " aaaaaaaaaaaauuuuuuuuuuuuuuttttttttttttttthhhhhhhhh")
 				i = i+1
 	
 #_______________________________________________________________________
@@ -697,7 +699,7 @@ class Track:
 		self.set_occ(bull)
 		#print(str(s) + "tkm")
 		print(str(s)+" track model speed")
-		signals.tkm_get_speed.emit(s)
+		signals.tkm_get_speed.emit(s,self.train[i].num)
 		#signals.tkm_get_auth.emit(a)
 			
 			
