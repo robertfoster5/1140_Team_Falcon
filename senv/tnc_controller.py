@@ -121,8 +121,8 @@ class TrainController(QObject):
 
     def set_station(self,name):
         self.station = name
-        if(stations.count(self.station) > 0):
-            side = doors[stations.index(self.station)]
+        if(self.stations.count(self.station) > 0):
+            side = doors[self.stations.index(self.station)]
             if((not self.direction) or (side == 2)):
                 self.station_side = side
             elif(side == 1):

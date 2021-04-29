@@ -68,6 +68,7 @@ class TrainControllerMain(QObject):
         self.ui.brake_button_2.clicked.connect(self.service_brake)
         signals.tnc_announcement.connect(self.display_announcement)
         self.ui.auto_check.stateChanged.connect(self.automatic_mode)
+        self.ui.speed_slider.valueChanged.connect(self.change_set_speed)
 
         signals.tnm_comm_speed.connect(self.set_command_speed)
         signals.tnm_curr_speed.connect(self.set_curr_speed)
@@ -106,14 +107,15 @@ class TrainControllerMain(QObject):
     def set_tunnels(self,input,num):
         self.trains[num-1].set_tunnels(input)
 
+    def change_set_speed(self):
+        self.trains[self.curr_train-1].set_set_speed(self.ui.speed_slider.value())
+
 
     def update_gui(self):
         self.ui.curr_speed_text.setText(str(int(self.trains[self.curr_train-1].powsys.current_speed)) + " mph")
         self.ui.max_speed_text.setText(str(int(self.trains[self.curr_train-1].powsys.command_speed)) + " mph")
         self.ui.power_text.setText(str(int(self.trains[self.curr_train-1].powsys.power/1000.0)) + " kW")
-        if(self.trains[self.curr_train-1].auto_mode):
-            self.ui.set_speed_text.setText(str(self.trains[self.curr_train-1].powsys.set_speed) + " mph")
-            self.ui.speed_slider.setValue(int(self.trains[self.curr_train-1].powsys.command_speed))
+        self.ui.set_speed_text.setText(str(int(self.trains[self.curr_train-1].powsys.set_speed)) + " mph")
 
     def emergency_brake(self):
         if not self.trains[self.curr_train-1].driver_emer_brake:
