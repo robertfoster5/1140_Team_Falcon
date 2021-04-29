@@ -6,6 +6,8 @@ from tnc_controller import TrainController
 from signals import signals
 
 
+#this is a top level wrapper to contain all of the instances of train controllers (for each train)
+#this will also build and manage the Main UI window for the driver
 class TrainControllerMain(QObject):
 
     def __init__(self):
@@ -192,11 +194,12 @@ class TrainControllerMain(QObject):
             self.ui.brake_button_2.setStyleSheet("background-color: gray; color: white;")
             self.trains[self.curr_train-1].driver_serv_brake = False
 
-
+    #displays announcements for the selected train
     def display_announcement(self,text,num):
         if(num == self.curr_train):
             self.ui.announce_text.setPlainText(text)
 
+    #turns on or off the automatic mode, updates Ui to reflect mode
     def automatic_mode(self):
         if(self.ui.auto_check.isChecked()):
             self.ui.speed_slider.hide()
@@ -211,6 +214,7 @@ class TrainControllerMain(QObject):
             self.ui.auto_check.setText("Off")
             self.trains[self.curr_train-1].auto_mode = False
 
+    #toggles the lights based on if the selected checkbox is checked or unchecked
     def toggle_in_light(self):
         if(self.ui.in_light_check.isChecked()):
             self.trains[self.curr_train-1].cabin_light = True
@@ -235,6 +239,7 @@ class TrainControllerMain(QObject):
             self.trains[self.curr_train-1].high_beam_light = False
             signals.tnc_high_beam_light.emit(False,self.curr_train)
 
+    #updates ui to reflect light status
     def set_in_light(self):
         if(self.trains[self.curr_train-1].cabin_light):
             self.ui.in_light_check.setText("On")
@@ -259,6 +264,7 @@ class TrainControllerMain(QObject):
             self.ui.beam_light_check.setText("Off")
             self.ui.beam_light_check.setChecked(False)
 
+    #toggles the doors based on if the selected checkbox is checked or unchecked
     def toggle_left_door(self):
         if(self.ui.left_door_check.isChecked()):
             self.trains[self.curr_train-1].left_door = True
@@ -275,6 +281,7 @@ class TrainControllerMain(QObject):
             self.trains[self.curr_train-1].right_door = False
             signals.tnc_right_door.emit(False,self.curr_train)
 
+    #updates ui to reflect door status
     def set_left_door(self):
         if(self.trains[self.curr_train-1].left_door):
             self.ui.left_door_check.setText("Open")
@@ -291,12 +298,14 @@ class TrainControllerMain(QObject):
             self.ui.right_door_check.setText("Closed")
             self.ui.right_door_check.setChecked(False)
 
+    #"lights" up LED if there is a failure in the train module (brake fail, signal fail, engine fail)
     def set_fail_light(self):
         if(self.trains[self.curr_train-1].fail_state):
             self.ui.brake_fail_led.setStyleSheet("border: 2px solid #555;border-radius: 15px;border-style: outset;background: qradialgradient(cx: 0.3, cy: -0.4, fx: 0.3, fy: -0.4,radius: 1.35, stop: 0 #fff, stop: 1 #888);padding: 5px; background-color: red;")
         else:
             self.ui.brake_fail_led.setStyleSheet("border: 2px solid #555;border-radius: 15px;border-style: outset;background: qradialgradient(cx: 0.3, cy: -0.4, fx: 0.3, fy: -0.4,radius: 1.35, stop: 0 #fff, stop: 1 #888);padding: 5px; background-color: rgb(122, 0, 0);")
 
+    #"lights" up LED if there is a passenger-initiated emergency brake
     def set_brake_light(self):
         if(self.trains[self.curr_train-1].pass_brake):
             self.ui.pass_brake_led.setStyleSheet("border: 2px solid #555;border-radius: 15px;border-style: outset;background: qradialgradient(cx: 0.3, cy: -0.4, fx: 0.3, fy: -0.4,radius: 1.35, stop: 0 #fff, stop: 1 #888);padding: 5px; background-color: red;")

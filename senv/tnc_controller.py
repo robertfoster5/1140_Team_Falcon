@@ -5,15 +5,19 @@ from power_ui import Ui_PowerUi
 from signals import signals
 
 
+#this is the Train Controller for a singular train
 class TrainController(QObject):
 
+    #this is a look up table for each beacon ID
     stations = ["Pioneer","EdgeBrook","Falcon","Whited","South Bank","Central","Inglewood","Overbrook","Glenbury","Dormont","Mt Lebanon","Poplar","Castle Shannon","Shady Side","Herron Ave","Penn Station","Steel Plaza","First Ave","Station Square","South Hills","Swissville"]
 
+    #this describes which doors open for each station (left, right, or both)
     doors = [0,0,2,2,0,1,1,1,1,1,2,0,0,2,2,2,2,2,2,2,2]
 
     def __init__(self,num):
         super().__init__()
 
+        #variables to keep track of the controller
         self.train_num = num
         self.start = False
         self.auto_mode = True
@@ -43,17 +47,22 @@ class TrainController(QObject):
         self.count = 0
         self.fail_state = False
 
+        #this is the UI Window for the Engineer to set KP and KI
         self.Window = QtWidgets.QWidget()
         self.powui = Ui_PowerUi()
         self.powui.setupUi(self.Window)
         self.powui.label.setText("KP and KI for Train " + str(self.train_num) + ":")
 
+        #every second the logic is run
         signals.time.connect(self.run)
+        #everytime a new current speed is recieved, a new power is generated
         self.powui.pushButton.clicked.connect(self.set_coeff)
 
+        #this initializes the doors and lights
         self.init_periph()
 
 
+    #peripheral controls initialization
     def init_periph(self):
         self.tunnel_light = False;
         self.cabin_light = True;
@@ -69,6 +78,7 @@ class TrainController(QObject):
         signals.tnc_left_door.emit(False,self.train_num)
         signals.tnc_right_door.emit(False,self.train_num)
 
+    #uses the Engineer UI to set kp and ki
     def set_coeff(self):
         kp = 5000
         ki = 0
@@ -87,7 +97,7 @@ class TrainController(QObject):
 
         self.Window.hide()
 
-
+    #updates command speed (as well as set speed if it exceeds the new command speed)
     def set_command_speed(self,num):
         self.powsys.command_speed = num
         if(self.powsys.set_speed > num):
@@ -95,9 +105,12 @@ class TrainController(QObject):
         if(self.auto_mode):
             self.powsys.set_speed = num
 
+    #sets current speed
     def set_curr_speed(self,num):
         self.powsys.current_speed = num
 
+    #sets authority
+    #shows Engineer Window when a new train is sent authority for the first time
     def set_authority(self,on):
         self.authority = on
         if(self.start == False and on == True):
@@ -105,15 +118,18 @@ class TrainController(QObject):
             self.Window.show()
             signals.pause.emit()
 
+    #sets passenger-initiated emergency brake
     def set_pass_brake(self,on):
         self.pass_brake = on
 
+    #sets the set speed (max value can be the command speed)
     def set_set_speed(self,num):
         if(self.auto_mode or (num > self.powsys.command_speed)):
             self.powsys.set_speed = self.powsys.command_speed
         else:
             self.powsys.set_speed = num
 
+    #toggles manual/automatic mode
     def toggle_mode(self):
         self.powsys.set_speed = self.powsys.command_speed
         if(self.auto_mode):
@@ -121,6 +137,7 @@ class TrainController(QObject):
         else:
             self.auto_mode = True
 
+    #sets the station name and the side for embarkment
     def set_station(self,name):
         self.station = name
         if(self.stations.count(self.station) > 0):
@@ -131,12 +148,13 @@ class TrainController(QObject):
                 self.station_side = 0
             else:
                 self.station_side = 1
-
         self.at_station = True
 
+    #sets the train direction of travel (used for which doors open)
     def set_side(self,direction):
         self.direction = direction
 
+    #turns on and off tunnel lights based of beacon ID
     def set_tunnels(self,beaconID):
         beacon = bin(beaconID)
         beacon = beacon[2:]
@@ -154,6 +172,7 @@ class TrainController(QObject):
 
                     signals.tnc_tunnel_light.emit(False,self.train_num)
 
+    #turns on emergency brake when there is a train failure
     def failure(self,fail):
         self.fail_state = fail
         if(fail):
@@ -165,6 +184,7 @@ class TrainController(QObject):
         else:
             self.emergency_brake = False
 
+    #sends announcement in case of emergency brake
     def announce_emergency(self,on):
         if(on):
             self.announcement = "EMERGENCY BRAKING!\nPLEASE STAY SEATED"
@@ -173,7 +193,7 @@ class TrainController(QObject):
             self.announcement = ""
             signals.tnc_announcement.emit(self.announcement,self.train_num)
 
-
+    #runs logic for automatic mode
     def run(self):
         if(self.auto_mode):
             if(self.count >= 60):
@@ -206,7 +226,9 @@ class TrainController(QObject):
                     self.right_door = True
                     signals.tnc_right_door.emit(True,self.train_num)
 
+    #power calculation
     def power_calc(self):
+        #determines if a brake should be on
         if(not self.authority):
             self.service_brake = True
             print("no authority brake for train " + str(self.train_num))
@@ -231,9 +253,10 @@ class TrainController(QObject):
             self.powsys.braking = False
 
         #print(str(round(self.powsys.command_speed,1)) + " comm speed in m/s")
-        print(str(round(self.powsys.command_speed,2)) + " comm speed train " + str(self.train_num) + " in mph")
+        #print(str(round(self.powsys.command_speed,2)) + " comm speed train " + str(self.train_num) + " in mph")
         #print(round(self.powsys.set_speed,1))
 
+        #calculates power
         self.powsys.update_power()
 
         if(self.powsys.power == 0 and (self.powsys.command_speed != self.powsys.current_speed)):

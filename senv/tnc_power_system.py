@@ -3,7 +3,7 @@ from PyQt5.QtCore import QObject, QThread, pyqtSignal
 
 from signals import signals
 
-
+#the system in each train controller to calculate power
 class PowerSystem():
 
     def __init__(self):
