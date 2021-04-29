@@ -7,6 +7,8 @@ class Wayside:
 		self.switch_state = []
 		self.m_switch_state = []
 		self.mode = 0
+		self.sw_order = []
+		self.bl_order = []
 		self.cross_name = []
 		self.cross_state = []
 		self.block_name = []
@@ -66,6 +68,8 @@ class Wayside:
 	def m_order_block(self, order):
 		temp_block = []
 		temp_occ = []
+		self.bl_order = []
+		self.bl_order = order
 		for i in range(len(order)):
 			if order[i] == "1" and self.block_health[i] == "1":
 				temp_block.append("0")
@@ -94,6 +98,8 @@ class Wayside:
 		self.block_occ = temp_occ
 					
 	def m_order_switch(self, order):
+		self.sw_order = []
+		self.sw_order = order
 		temp_switch = []
 		temp = self.switch_state
 		self.m_switch_state = []
@@ -217,6 +223,8 @@ class Wayside:
 			elif line[0:2] == "sw" and proc == 0:
 				self.switch_name.append(line[2:-1])
 				self.switch_state.append("0")
+				self.m_switch_state.append("0")
+				self.sw_order.append("0")
 				self.num_switch = self.num_switch +1
 			#cross
 			elif line[0:2] == "cr" and proc == 0:
@@ -229,6 +237,7 @@ class Wayside:
 				self.block_occ.append("0")
 				self.authority.append("0")
 				self.b_speed.append(0)
+				self.bl_order.append("0")
 				self.num_block = self.num_block +1
 			#stopping distance
 			elif line[0:2] == "st" and proc == 0:

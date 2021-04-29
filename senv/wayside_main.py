@@ -153,9 +153,14 @@ class wayside_qtui_test(QObject):
 			self.data_cross.append(["N/A", "N/A"])
 
 	def maintenance_order(self, order):
+		print(len(order))
+		print(order)
 		if order[0] != "0":
 			if order[0] == "r":
-				temp_order = order[1:-1]
+				temp_order = order[1:len(order)]
+				print("r")
+				print(temp_order)
+				print(len(temp_order))
 				if order[1] == "b":
 					temp = []
 					or1 = temp_order[1:24]
@@ -182,7 +187,8 @@ class wayside_qtui_test(QObject):
 				self.compile_health_red()
 				self.compile_block_occ_red()
 			else:
-				temp_order = order[1:-1]
+				temp_order = order[1:len(order)]
+				print(temp_order)
 				if order[1] == "b":  
 					or1 = temp_order[1:21]
 					or2 = temp_order[21:36]
@@ -349,7 +355,6 @@ class wayside_qtui_test(QObject):
 		self.g4.b_speed = temp_s[74:110]
 		self.g5.b_speed = temp_s[110:147]
 		self.compile_speed_green()
-		print("speed at 88" + str(speed[88]))
 		self.update_tables(self.curr_ws)
 			
 	def compile_health_red(self):
@@ -518,7 +523,6 @@ class wayside_qtui_test(QObject):
 			else:
 				temp.append(self.green_speed[j+1])
 			j=j+1
-		print("speed at 88" + str(temp[88]))
 		signals.way_green_speed.emit(temp)
 		
 	def compile_switch_red(self):
@@ -540,6 +544,7 @@ class wayside_qtui_test(QObject):
 			temp_sw.append(self.r2.switch_state[2])
 			temp_sw.append(self.r2.switch_state[3])
 			temp_sw.append(self.r3.switch_state[0])
+		
 		signals.way_red_switch_state.emit(temp_sw)
 	
 	def compile_switch_green(self):
