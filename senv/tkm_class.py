@@ -45,7 +45,7 @@ class Station:
 			self.occ = 0
 		else:
 			self.occ = self.occ - board
-		
+		signals.tkm_get_pass_count.emit
 		return board
 		
 
@@ -465,6 +465,7 @@ class Track:
 		self.train[i].update_disembark()
 		self.train[i].update_board(self.blocks)
 		self.set_occ(self.get_occ())
+		signals.tkm_get_pass_count.emit(self.train[i].occ,self.train[i].num)
 		
 #_______________________________________________________________________
 	
