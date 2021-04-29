@@ -716,7 +716,7 @@ class Track:
 		#print(str(auth))
 		while r <= int(self.end):
 			self.blocks[q].auth = int(auth[r])
-			if int(auth[r]) == 1:
+			#if int(auth[r]) == 1:
 				#print(self.blocks[q].num)
 			r = r+1
 			q = q+1
