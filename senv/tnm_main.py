@@ -3432,6 +3432,7 @@ class tnm_display(QObject):
 		self.DoorStatus1, self.DoorStatus2, self.DoorStatus3, self.DoorStatus4, self.DoorStatus5, self.DoorStatus6, self.DoorStatus7, self.DoorStatus8, self.DoorStatus9, self.DoorStatus10 = False,False,False,False,False,False,False,False,False,False
 		self.LeftDoor1, self.LeftDoor2, self.LeftDoor3, self.LeftDoor4, self.LeftDoor5, self.LeftDoor6, self.LeftDoor7, self.LeftDoor8, self.LeftDoor9, self.LeftDoor10 = False,False,False,False,False,False,False,False,False,False
 		self.RightDoor1, self.RightDoor2, self.RightDoor3, self.RightDoor4, self.RightDoor5, self.RightDoor6, self.RightDoor7, self.RightDoor8, self.RightDoor9, self.RightDoor10 = False,False,False,False,False,False,False,False,False,False
+		self.DoorFlag1, self.DoorFlag2,self.DoorFlag3, self.DoorFlag4, self.DoorFlag5, self.DoorFlag6, self.DoorFlag7, self.DoorFlag8, self.DoorFlag9, self.DoorFlag10 = 0,0,0,0,0,0,0,0,0,0
 		signals.tnc_left_door.connect(self.setRightDoor)
 		signals.tnc_right_door.connect(self.setLeftDoor)
 	#Beacon ID connected from tkm
@@ -4199,7 +4200,9 @@ class tnm_display(QObject):
 		if(self.TrainNum1 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
-			signals.tkm_get_pass_count.connect(self.SetOccupancy)
+			signals.tnc_left_door.connect(self.setRightDoor)
+			signals.tnc_right_door.connect(self.setLeftDoor)
+			#signals.tkm_get_pass_count.connect(self.SetOccupancy)
 			#Update Train Numbering Header
 			self.ui1.uim.label_23.setText(self.train1)
 			#Update Route Line
@@ -4211,12 +4214,19 @@ class tnm_display(QObject):
 			#Update Doors Status		#Doors will be held open for one minute
 			if(self.LeftDoor1 == True or self.RightDoor1 == True):
 				self.DoorStatus1 = True
+				self.DoorFlag1 = self.DoorFlag1 + 1
+			else:
+				self.DoorStatus1 = False
+				
 			if(self.DoorStatus1 == False):
 				self.ui1.uim.lineEdit_11.setText("Closed")
 				self.Brake1 = False
+				self.DoorFlag1 = 0
 			elif(self.DoorStatus1 == True):
 				self.ui1.uim.lineEdit_11.setText("Open")
-				signals.tnm_train_stop_num.emit(1)
+				if(self.DoorFlag1 == 1):
+					signals.tnm_train_stop_num.emit(1)
+					signals.tkm_get_pass_count.connect(self.SetOccupancy)
 				self.Brake1 = True
 				
 			#Update Beacon ID Status
@@ -4256,13 +4266,19 @@ class tnm_display(QObject):
 			#Update Doors Status		#Doors will be held open for one minute
 			if(self.LeftDoor2 == True or self.RightDoor2 == True):
 				self.DoorStatus2 = True
-				signals.tkm_get_pass_count.connect(self.SetOccupancy)
+				self.DoorFlag2 = DoorFlag2 + 1
+			else:
+				self.DoorStatus2
+				
 			if (self.DoorStatus2 == False):
 				self.ui2.uim.lineEdit_11.setText("Closed")
 				self.Brake2 = False
+				self.DoorFlag2 = 0
 			elif(self.DoorStatus2 == True):
 				self.ui2.uim.lineEdit_11.setText("Open")
-				signals.tnm_train_stop_num.emit(2)
+				if(self.DoorFlag2 == 1):
+					signals.tnm_train_stop_num.emit(2)
+					signals.tkm_get_pass_count.connect(self.SetOccupancy)
 				self.Brake2 = True
 				
 			#Update Beacon ID Status
@@ -4302,13 +4318,19 @@ class tnm_display(QObject):
 			#Update Doors Status		#Doors will be held open for one minute
 			if(self.LeftDoor3 == True or self.RightDoor3 == True):
 				self.DoorStatus3 = True
-				signals.tkm_get_pass_count.connect(self.SetOccupancy)
+				self.DoorFlag3 = self.DoorFlag3 +1
+			else:
+				self.DoorStatus3 = False
+				
 			if (self.DoorStatus3 == False):
 				self.ui3.uim.lineEdit_11.setText("Closed")
 				self.Brake3 = False
+				self.DoorFlag3 = 0
 			elif(self.DoorStatus3 == True):
 				self.ui3.uim.lineEdit_11.setText("Open")
-				signals.tnm_train_stop_num.emit(3)
+				if(self.DoorFlag3 == 1):
+					signals.tnm_train_stop_num.emit(3)
+					signals.tkm_get_pass_count.connect(self.SetOccupancy)
 				self.Brake3 = True
 				
 			#Update Beacon ID Status
@@ -4348,13 +4370,19 @@ class tnm_display(QObject):
 			#Update Doors Status		#Doors will be held open for one minute
 			if(self.LeftDoor4 == True or self.RightDoor4 == True):
 				self.DoorStatus4 = True
-				signals.tkm_get_pass_count.connect(self.SetOccupancy)
+				self.DoorFlag4 = self.DoorFlag4 +1
+			else:
+				self.DoorStatus4 = False
+				
 			if (self.DoorStatus4 == False):
 				self.ui4.uim.lineEdit_11.setText("Closed")
 				self.Brake4 = False
+				self.DoorFlag4 = 0
 			elif(self.DoorStatus4 == True):
 				self.ui4.uim.lineEdit_11.setText("Open")
-				signals.tnm_train_stop_num.emit(4)
+				if(self.DoorFlag4 == 1 ):
+					signals.tnm_train_stop_num.emit(4)
+					signals.tkm_get_pass_count.connect(self.SetOccupancy)
 				self.Brake4 = True
 				
 			#Update Beacon ID Status
@@ -4394,13 +4422,19 @@ class tnm_display(QObject):
 			#Update Doors Status		#Doors will be held open for one minute
 			if(self.LeftDoor5 == True or self.RightDoor5 == True):
 				self.DoorStatus5 = True
-				signals.tkm_get_pass_count.connect(self.SetOccupancy)
+				self.DoorFlag5 = self.DoorFlag5 +1
+			else:
+				self.DoorStatus5 = False
+				
 			if (self.DoorStatus5 == False):
 				self.ui5.uim.lineEdit_11.setText("Closed")
 				self.Brake5 = False
+				self.DoorFlag5 = 0
 			elif(self.DoorStatus5 == True):
 				self.ui5.uim.lineEdit_11.setText("Open")
-				signals.tnm_train_stop_num.emit(5)
+				if(self.DoorFlag5 == 1):
+					signals.tnm_train_stop_num.emit(5)
+					signals.tkm_get_pass_count.connect(self.SetOccupancy)
 				self.Brake5 = True
 				
 			#Update Beacon ID Status
@@ -4440,13 +4474,19 @@ class tnm_display(QObject):
 			#Update Doors Status		#Doors will be held open for one minute
 			if(self.LeftDoor6 == True or self.RightDoor6 == True):
 				self.DoorStatus6 = True
-				signals.tkm_get_pass_count.connect(self.SetOccupancy)
+				self.DoorFlag6 = self.DoorFlag6 +1
+			else:
+				self.DoorStatus6 = False
+				
 			if (self.DoorStatus6 == False):
 				self.ui6.uim.lineEdit_11.setText("Closed")
 				self.Brake6 = False
+				self.DoorFlag6 = 0
 			elif(self.DoorStatus6 == True):
 				self.ui6.uim.lineEdit_11.setText("Open")
-				signals.tnm_train_stop_num.emit(6)
+				if(self.DoorFlag6 == 1):
+					signals.tnm_train_stop_num.emit(6)
+					signals.tkm_get_pass_count.connect(self.SetOccupancy)
 				self.Brake6 = True
 				
 			#Update Beacon ID Status
@@ -4486,13 +4526,19 @@ class tnm_display(QObject):
 			#Update Doors Status		#Doors will be held open for one minute
 			if(self.LeftDoor7 == True or self.RightDoor7 == True):
 				self.DoorStatus7 = True
-				signals.tkm_get_pass_count.connect(self.SetOccupancy)
+				self.DoorFlag7 = self.DoorFlag7 +1
+			else:
+				self.DoorStatus7 = False
+				
 			if (self.DoorStatus7 == False):
 				self.ui7.uim.lineEdit_11.setText("Closed")
 				self.Brake7 = False
+				self.DoorFlag7 = 0
 			elif(self.DoorStatus7 == True):
 				self.ui7.uim.lineEdit_11.setText("Open")
-				signals.tnm_train_stop_num.emit(7)
+				if(self.DoorFlag7 == 1):
+					signals.tnm_train_stop_num.emit(7)
+					signals.tkm_get_pass_count.connect(self.SetOccupancy)
 				self.Brake7 = True
 				
 			#Update Beacon ID Status
@@ -4532,13 +4578,19 @@ class tnm_display(QObject):
 			#Update Doors Status		#Doors will be held open for one minute
 			if(self.LeftDoor8 == True or self.RightDoor8 == True):
 				self.DoorStatus8 = True
-				signals.tkm_get_pass_count.connect(self.SetOccupancy)
+				self.DoorFlag8 = self.DoorFlag8 +1
+			else:
+				self.DoorStatus8 = False
+				
 			if (self.DoorStatus8 == False):
 				self.ui8.uim.lineEdit_11.setText("Closed")
 				self.Brake8 = False
+				self.DoorFlag8 = 0
 			elif(self.DoorStatus8 == True):
 				self.ui8.uim.lineEdit_11.setText("Open")
-				signals.tnm_train_stop_num.emit(8)
+				if(self.DoorFlag8 == 1):
+					signals.tnm_train_stop_num.emit(8)
+					signals.tkm_get_pass_count.connect(self.SetOccupancy)
 				self.Brake8 = True
 				
 			#Update Beacon ID Status
@@ -4578,13 +4630,19 @@ class tnm_display(QObject):
 			#Update Doors Status		#Doors will be held open for one minute
 			if(self.LeftDoor9 == True or self.RightDoor9 == True):
 				self.DoorStatus9 = True
-				signals.tkm_get_pass_count.connect(self.SetOccupancy)
+				self.DoorFlag9 = self.DoorFlag9 +1
+			else:
+				self.DoorStatus9 = False
+				
 			if (self.DoorStatus9 == False):
 				self.ui9.uim.lineEdit_11.setText("Closed")
 				self.Brake9 = False
+				self.DoorFlag9 = 0
 			elif(self.DoorStatus9 == True):
 				self.ui9.uim.lineEdit_11.setText("Open")
-				signals.tnm_train_stop_num.emit(9)
+				if(self.DoorFlag9 == 1):
+					signals.tnm_train_stop_num.emit(9)
+					signals.tkm_get_pass_count.connect(self.SetOccupancy)
 				self.Brake9 = True
 				
 			#Update Beacon ID Status
@@ -4624,13 +4682,19 @@ class tnm_display(QObject):
 			#Update Doors Status		#Doors will be held open for one minute
 			if(self.LeftDoor10 == True or self.RightDoor10 == True):
 				self.DoorStatus10 = True
-				signals.tkm_get_pass_count.connect(self.SetOccupancy)
+				self.DoorFlag10 = self.DoorFlag10 +1
+			else:
+				self.DoorStatus10 = False
+				
 			if (self.DoorStatus10 == False):
 				self.ui10.uim.lineEdit_11.setText("Closed")
 				self.Brake10 = False
+				self.DoorFlag10 = 0
 			elif(self.DoorStatus10 == True):
 				self.ui10.uim.lineEdit_11.setText("Open")
-				signals.tnm_train_stop_num.emit(10)
+				if(self.DoorFlag10 == 1):
+					signals.tnm_train_stop_num.emit(10)
+					signals.tkm_get_pass_count.connect(self.SetOccupancy)
 				self.Brake10 = True
 				
 			#Update Beacon ID Status
@@ -4755,13 +4819,13 @@ class tnm_display(QObject):
 				signals.tnm_ebrake.emit(self.eBrake1,1)
 		#______________________________________
 		if(self.TrainNum2 == 1):
-			if not self.eBrake2:
+			if(self.eBrake2 == False):
 				self.ui2.uim.pushButton.setText("CANCEL")
 				self.ui2.uim.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: white;")
 				self.eBrake2 = True
 				signals.tnm_ebrake.emit(self.eBrake2,2)
 				print("eBrake is " + str(self.eBrake2))
-			else:
+			elif(self.eBrake2 == True):
 				self.ui2.uim.pushButton.setText("Emergency Brake")
 				self.ui2.uim.pushButton.setStyleSheet("background-color: rgb(170, 0, 0); color: black;")
 				self.eBrake2 = False
@@ -5634,7 +5698,7 @@ class tnm_display(QObject):
 	#Function to set Passenger count from track model signal
 	def SetOccupancy(self,tkm_pass_count, tkmTrainNum):
 		if(self.TrainNum1 == 1 and tkmTrainNum == 1):
-			#print(str(tkmTrainNum) + " pass from tkm")
+			print(str(tkmTrainNum) + " pass from tkm")
 			self.pass_count1 = tkm_pass_count
 		elif(self.TrainNum2 == 1 and tkmTrainNum == 2):
 			self.pass_count2 = tkm_pass_count
