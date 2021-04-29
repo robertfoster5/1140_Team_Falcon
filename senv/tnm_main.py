@@ -5336,7 +5336,6 @@ class tnm_display(QObject):
 				self.CurrStation1, self.NextStation1, self.TNMdirectionG1 = GreenBeacon(self.RouteName1, self.TNMdirectionG1, self.TrainDirection1, self.beacon_bin1)
 			elif(self.RouteName1 == "Red Line"):
 				self.CurrStation1, self.NextStation1, self.TNMdirectionR1 = RedBeacon(self.RouteName1, self.TNMdirectionR1, self.TrainDirection1, self.beacon_bin1)
-			print(str(self.beacon_bin1) + "Num for station")
 			signals.tnm_beaconID.emit(self.beacon_bin1,1)
 			signals.tnm_curr_station.emit(self.CurrStation1,1)
 			#______________________________________________________________________
