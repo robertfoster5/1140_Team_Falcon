@@ -415,8 +415,8 @@ class ctc_qtui_test(QObject):
          TrainStation([2,4],[[20,19,18,17,16],[20,21,22,23]]), # Swissville
          # Add Extra Cases where the path goes through the alt tracks
          TrainStation([3,5],[[24,23,22,21],[24,25,26,27,28,29,30,31,32,33]]), # Penn Station
-         TrainStation([4,6],[[34,33,32,31,71,72,73,74,75,26,25],[34,35,36,37,38,39,40,41,42,43]]), # Steel Plaza
-         TrainStation([5,7],[[44,43,42,66,67,68,69,70,37,36,35],[44,45,46]]), # First Ave
+         TrainStation([4,6],[[34,33,32,71,72,73,74,75,26,25],[34,35,36,37,38,39,40,41,42,43]]), # Steel Plaza
+         TrainStation([5,7],[[44,43,66,67,68,69,70,37,36,35],[44,45,46]]), # First Ave
          #
          TrainStation([6,8],[[47,46,45],[47,48,49,50,51,52,53,54,55,56,57,58]]), # Station Square
          TrainStation([7],[[59,60,61,62,63,64,65,51,50,49,48]]), # South Hills Junction
@@ -1192,6 +1192,7 @@ class ctc_qtui_test(QObject):
                                 fin_dest_block = -1
                                 
                             #print("Authority: " + str(valid_train_metrics[0]))
+                            #print("Stopping Block: " + str(fin_dest_block))
                             #print("Suggested Speed: " + str(valid_train_metrics[1]))
                             print("Start Time For " + str(row[0]) + ": " + str(valid_train_metrics[2]))
                             global_dispatch_orders.append([row[0],row[1],self.military_to_seconds(str(arrival_time)),valid_train_metrics[2],valid_train_metrics[0],valid_train_metrics[1],"g",fin_dest_block])
@@ -1286,6 +1287,9 @@ class ctc_qtui_test(QObject):
                             
                             #print("Authority: " + str(valid_train_metrics[0]))
                             #print("Suggested Speed: " + str(valid_train_metrics[1]))
+                            #print("Authority: " + str(valid_train_metrics[0]))
+                            #print("Stopping Block: " + str(fin_dest_block))
+                            print("Start Time For " + str(row[0]) + ": " + str(valid_train_metrics[2]))
                             global_dispatch_orders.append([row[0],row[1],self.military_to_seconds(str(arrival_time)),valid_train_metrics[2],valid_train_metrics[0],valid_train_metrics[1],"r",fin_dest_block])
                             # [Train Name, Destination Station, Arrival Time(seconds),Start Time(seconds), Authority(meters), Suggested Speed(meters/second)]
                             #print("Train Name: " + global_dispatch_orders[len(global_dispatch_orders)-1][0])
@@ -1428,11 +1432,11 @@ class ctc_qtui_test(QObject):
             #        print("Block " + str(i) + " has Authority = 1")
             #        print("Block " + str(i) + " has Suggested Speed = " + str(sendable_sugg_speed_green[i]))
             
-            #print("FOR RED LINE")
-            #for i in range(len(sendable_auth_red)):
-            #    if sendable_auth_red[i] == "1":
-            #        print("Block " + str(i) + " has Authority = 1")
-            #        print("Block " + str(i) + " has Suggested Speed = " + str(sendable_sugg_speed_red[i]))
+            print("FOR RED LINE")
+            for i in range(len(sendable_auth_red)):
+                if sendable_auth_red[i] == "1":
+                    print("Block " + str(i) + " has Authority = 1")
+                    print("Block " + str(i) + " has Suggested Speed = " + str(sendable_sugg_speed_red[i]))
             signals.ctc_authority_green.emit(sendable_auth_green)
             signals.ctc_suggested_speed_green.emit(sendable_sugg_speed_green)
             signals.ctc_authority_red.emit(sendable_auth_red)
@@ -1488,7 +1492,7 @@ class ctc_qtui_test(QObject):
                         #print("Occ for block " + str(order_num[7] + 1) + " is: " + str(int(track_state[order_num[7] + 1])))
                             
                         if len(order_num[4]) == 1:
-                            if int(track_state[order_num[4][0] + 1]) == 0:
+                            if int(track_state[order_num[4][0] + 1]) == 0 and int(track_state[order_num[7] + 1]) == 1:
                                 #print("DELETE THIS DUDE")
                                 #print(order_num[0])
                                 #print("Searching Element " + str(int(order_num[0].rsplit(' ', 1)[1]) - 1) + " in " + str(global_train_blocks))
@@ -1544,7 +1548,7 @@ class ctc_qtui_test(QObject):
                             
                             #print("First Element: " + str(int(track_state[order_num[4][0] + 1])))
                             #print("Second Element: " + str(int(track_state[order_num[4][1] + 1])))
-                            if int(track_state[order_num[4][0] + 1]) == 0:
+                            if int(track_state[order_num[4][0] + 1]) == 0 and int(track_state[order_num[4][1] + 1]) == 1:
                                 order_num[4].pop(0)
                                 order_num[5].pop(0)
                                 if len(global_train_blocks) > int(order_num[0].rsplit(' ', 1)[1]) - 1:
@@ -1560,7 +1564,8 @@ class ctc_qtui_test(QObject):
                     else:
                         if order_num[0] not in train_time_altered:
                             train_time_altered.append(order_num[0])
-                            order_num[3] = self.current_time + 60
+                            if order_num[3] < self.current_time + 65:
+                                order_num[3] = self.current_time + 65
         #print("for loop length" + str(len(global_dispatch_orders) + 1))
         i = 0
         while i < len(global_dispatch_orders):
