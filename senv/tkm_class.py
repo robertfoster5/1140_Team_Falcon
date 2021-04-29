@@ -39,7 +39,7 @@ class Station:
 	#number of passengers boarding given train
 	def get_boarding(self,occ):
 		max_train = 150
-		board = random.randrange(0,max_train-occ)
+		board = random.randrange(0,max_train)
 		if board > self.occ:
 			board = self.occ
 			self.occ = 0
@@ -187,13 +187,19 @@ class Train:
 						self.block = blocks[num-1].switch.bottom
 						self.way = -1
 			else:# way == -1
-				if blocks[num-2].switch.top == 0 and int(blocks[num-1].num) != 72 and int(blocks[num-1].num) != 67 and int(blocks[num-1].num) != 1 or int(blocks[num-1].num) == 9:
+				if '''blocks[num-2].switch.top == 0''' and int(blocks[num-1].num) != 33 and int(blocks[num-1].num) != 44 and int(blocks[num-1].num) != 72 and int(blocks[num-1].num) != 67 and int(blocks[num-1].num) != 1 or int(blocks[num-1].num) == 9:
 					self.block = blocks[num-1].num-1
 				elif int(blocks[num-1].num) == 72:
 					self.block = 33
 					self.way = 1
 				elif int(blocks[num-1].num) == 67:
 					self.block = 44
+					self.way = 1
+				elif int(blocks[num-1].num) == 44:
+					self.block = 67
+					self.way = 1
+				elif int(blocks[num-1].num) == 33:
+					self.block = 72
 					self.way = 1
 				elif int(blocks[num-1].num) == 1:
 					self.block = 16
@@ -205,13 +211,13 @@ class Train:
 		blocks[int(self.past)-1].occ = 0
 		blocks[int(self.block)-1].occ = 1
 		signals.tkm_get_block.emit(self.block,self.num)
-		#print(str(self.block) + " block tkm")
-		#print("/////////////////////////////////////////////////////////////////////////////////////")
-		#print(str(blocks[int(self.block)-1].length)+" this is block length")
+		print(str(self.block) + " block tkm")
+		print("/////////////////////////////////////////////////////////////////////////////////////")
+		print(str(blocks[int(self.block)-1].length)+" this is block length")
 		signals.tkm_get_blength.emit(blocks[int(self.block)-1].length,self.num)
 		signals.tkm_get_train_auth.emit(blocks[int(self.block-1)].auth,self.num)
 		signals.tkm_get_elev.emit(blocks[int(self.block-1)].elev,self.num)
-		#print(str(blocks[int(self.block-1)].auth) + " tkm auth")
+		print(str(blocks[int(self.block-1)].auth) + " tkm auth")
 		
 		if blocks[int(self.block-1)].beacon1 == 0 and blocks[int(self.block-1)].beacon2 == 0:
 			pass
@@ -649,15 +655,15 @@ class Track:
 					if self.blocks[int(self.train[i].block-1)].speed < self.blocks[int(self.train[i].block-1)].s_limit:
 						signals.tkm_get_train_auth.emit(self.blocks[int(self.train[i].block-1)].auth,self.train[i].num)
 						signals.tkm_get_speed.emit(self.blocks[int(self.train[i].block-1)].speed,self.train[i].num)
-						#print(str(self.blocks[int(self.train[i].block-1)].speed)+" spppppppppppppppppppppppppppeeeeeeeeeeeeeeeeeeddddd")
-						#print(str(self.blocks[int(self.train[i].block-1)].auth) + " aaaaaaaaaaaauuuuuuuuuuuuuuttttttttttttttthhhhhhhhh")
-						#print(str(self.train[i].num)+ " train num")
+						print(str(self.blocks[int(self.train[i].block-1)].speed)+" spppppppppppppppppppppppppppeeeeeeeeeeeeeeeeeeddddd")
+						print(str(self.blocks[int(self.train[i].block-1)].auth) + " aaaaaaaaaaaauuuuuuuuuuuuuuttttttttttttttthhhhhhhhh")
+						print(str(self.train[i].num)+ " train num")
 					else:
 						signals.tkm_get_train_auth.emit(self.blocks[int(self.train[i].block-1)].auth,self.train[i].num)
 						signals.tkm_get_speed.emit(self.blocks[int(self.train[i].block-1)].s_limit,self.train[i].num)
-						#print(str(self.blocks[int(self.train[i].block-1)].s_limit)+" spppppppppppppppppppppppppppeeeeeeeeeeeeeeeeeeddddd")
-						#print(str(self.blocks[int(self.train[i].block-1)].auth) + " aaaaaaaaaaaauuuuuuuuuuuuuuttttttttttttttthhhhhhhhh")
-						#print(str(self.train[i].num)+ " train num")
+						print(str(self.blocks[int(self.train[i].block-1)].s_limit)+" spppppppppppppppppppppppppppeeeeeeeeeeeeeeeeeeddddd")
+						print(str(self.blocks[int(self.train[i].block-1)].auth) + " aaaaaaaaaaaauuuuuuuuuuuuuuttttttttttttttthhhhhhhhh")
+						print(str(self.train[i].num)+ " train num")
 				i = i+1
 	
 #_______________________________________________________________________
