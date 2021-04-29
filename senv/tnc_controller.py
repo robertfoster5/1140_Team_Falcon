@@ -139,8 +139,9 @@ class TrainController(QObject):
 
     def set_tunnels(self,beaconID):
         beacon = bin(beaconID)
-        if(len(beacon)>3):
-            tunnel = beacon[3]
+        beacon = beacon[2:]
+        if(len(beacon)>2):
+            tunnel = beacon[1]
             if(self.auto_mode and tunnel == "1"):
                 if(not self.tunnel_light):
                     self.tunnel_light = True;

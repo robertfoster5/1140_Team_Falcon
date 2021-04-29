@@ -12,14 +12,17 @@ class TrainControllerMain(QObject):
         print("train controller running")
         super().__init__()
 
+        #This builds and displays the Main Window for the Train Controller UI
         self.MainWindow = QtWidgets.QMainWindow()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self.MainWindow)
         self.MainWindow.show()
 
+        #initializes 10 different controllers representing each train
         self.curr_train = 1
         self.trains = [TrainController(1),TrainController(2),TrainController(3),TrainController(4),TrainController(5),TrainController(6),TrainController(7),TrainController(8),TrainController(9),TrainController(10)]
 
+        #moves each train controller into a seperate thread
         self.controller_thread1 = QThread()
         self.trains[0].moveToThread(self.controller_thread1)
         self.controller_thread1.start()
@@ -95,8 +98,10 @@ class TrainControllerMain(QObject):
         signals.tnm_TrainDir.connect(self.set_side)
         signals.tnm_sendyard.connect(self.failure)
 
+        #initializes cabin lights to be on
         self.set_in_light()
 
+    #when a train from the drop-down menu is selected, reload the display with the values for the selected train
     def set_curr_train(self):
         self.curr_train = self.ui.train_num.currentIndex() + 1
 
@@ -117,7 +122,7 @@ class TrainControllerMain(QObject):
         self.display_announcement(self.trains[self.curr_train-1].announcement,self.curr_train)
 
 
-
+    #these functions recieve an input from another module and sends it to the specified train (num)
     def set_command_speed(self,input,num):
         self.trains[num-1].set_command_speed(input)
 
@@ -151,16 +156,18 @@ class TrainControllerMain(QObject):
     def set_tunnels(self,input,num):
         self.trains[num-1].set_tunnels(input)
 
+    #this updated the set speed when the speed slider is changed
     def change_set_speed(self):
         self.trains[self.curr_train-1].set_set_speed(self.ui.speed_slider.value())
 
-
+    #this updates the speed values in the UI every second as well as when a new train is viewed
     def update_gui(self):
         self.ui.curr_speed_text.setText(str(int(self.trains[self.curr_train-1].powsys.current_speed)) + " mph")
         self.ui.max_speed_text.setText(str(int(self.trains[self.curr_train-1].powsys.command_speed)) + " mph")
         self.ui.power_text.setText(str(int(self.trains[self.curr_train-1].powsys.power/1000.0)) + " kW")
         self.ui.set_speed_text.setText(str(int(self.trains[self.curr_train-1].powsys.set_speed)) + " mph")
 
+    #this turns on or off the driver initiated emergency brake as well as update the UI
     def emergency_brake(self):
         if not self.trains[self.curr_train-1].driver_emer_brake:
             self.ui.brake_button.setText("CANCEL")
@@ -174,6 +181,7 @@ class TrainControllerMain(QObject):
             if(not self.trains[self.curr_train-1].emergency_brake):
                 signals.tnc_emergency_brake.emit(False,self.curr_train)
 
+    #this turns on or off the driver initiated service brake as well as update the UI
     def service_brake(self):
         if not self.trains[self.curr_train-1].driver_serv_brake:
             self.ui.brake_button_2.setText("cancel")
@@ -183,6 +191,7 @@ class TrainControllerMain(QObject):
             self.ui.brake_button_2.setText("Service Brake")
             self.ui.brake_button_2.setStyleSheet("background-color: gray; color: white;")
             self.trains[self.curr_train-1].driver_serv_brake = False
+
 
     def display_announcement(self,text,num):
         if(num == self.curr_train):
