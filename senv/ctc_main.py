@@ -1437,10 +1437,10 @@ class ctc_qtui_test(QObject):
             #    if sendable_auth_red[i] == "1":
             #        print("Block " + str(i) + " has Authority = 1")
             #        print("Block " + str(i) + " has Suggested Speed = " + str(sendable_sugg_speed_red[i]))
-            signals.ctc_suggested_speed_green.emit(sendable_sugg_speed_green)
             signals.ctc_authority_green.emit(sendable_auth_green)
-            signals.ctc_suggested_speed_red.emit(sendable_sugg_speed_red)
+            signals.ctc_suggested_speed_green.emit(sendable_sugg_speed_green)
             signals.ctc_authority_red.emit(sendable_auth_red)
+            signals.ctc_suggested_speed_red.emit(sendable_sugg_speed_red)
             
             if make_green_train:
                 signals.ctc_make_train_green.emit("g")
@@ -1522,8 +1522,8 @@ class ctc_qtui_test(QObject):
                     else:
                         if order_num[0] not in train_time_altered:
                             train_time_altered.append(order_num[0])
-                            if order_num[3] < self.current_time + 60:
-                                order_num[3] = self.current_time + 60
+                            if order_num[3] < self.current_time + 65:
+                                order_num[3] = self.current_time + 65
                                         
                                         
         if int(track_state[0]) == 0: # Red Line
