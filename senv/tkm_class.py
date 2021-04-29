@@ -285,12 +285,14 @@ class Train:
 	
 	#disembarking
 	def update_disembark(self):
-		self.dis = random.randrange(0,self.occ)
+		if self.occ >1:
+			self.dis = random.randrange(0,self.occ)
 		self.occ = self.occ - self.dis
 		
 		
 	def update_board(self, blocks):
-		self.boar = blocks[int(self.block)-1].station.get_boarding(self.occ)
+		if blocks[int(self.block)-1].station.occ > 0:
+			self.boar = blocks[int(self.block)-1].station.get_boarding(self.occ)
 		self.occ = self.occ + self.boar
 		
 
@@ -453,10 +455,10 @@ class Track:
 	
 #_______________________________________________________________________
 	
-	def update_dis(self,num):
+	def update_dis(self,i):
 		self.train[i].update_disembark()
-		self.train[i].update_board()
-		self.set_occ(self.get_occ)
+		self.train[i].update_board(self.blocks)
+		self.set_occ(self.get_occ())
 		
 #_______________________________________________________________________
 	
