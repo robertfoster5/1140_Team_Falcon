@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
 from tnc_power_system import PowerSystem
+from power_ui import Ui_PowerUi
 from signals import signals
 
 
@@ -12,11 +13,14 @@ class TrainController(QObject):
 
     def __init__(self,num):
         super().__init__()
+
         self.train_num = num
+        self.start = False
         self.auto_mode = True
         self.authority = False
         self.at_station = False
         self.in_tunnel = False
+        self.direction = 0
         self.station_side = 0
         self.emergency_brake = False
         self.service_brake = False
@@ -38,9 +42,16 @@ class TrainController(QObject):
         self.announcement = ""
         self.count = 0
 
+        self.Window = QtWidgets.QWidget()
+        self.powui = Ui_PowerUi()
+        self.powui.setupUi(self.Window)
+        self.powui.label.setText("KP and KI for Train " + str(self.train_num) + ":")
+
         signals.time.connect(self.run)
+        self.powui.pushButton.clicked.connect(self.set_coeff)
 
         self.init_periph()
+
 
     def init_periph(self):
         self.tunnel_light = False;
@@ -54,8 +65,27 @@ class TrainController(QObject):
         self.right_door = False;
         self.left_door = False;
 
-        signals.tnc_left_door.emit(False)
-        signals.tnc_right_door.emit(False)
+        signals.tnc_left_door.emit(False,self.train_num)
+        signals.tnc_right_door.emit(False,self.train_num)
+
+    def set_coeff(self):
+        kp = 5000
+        ki = 0
+        kp_text = self.powui.kp_enter.text()
+        ki_text = self.powui.ki_enter.text()
+
+        if(kp_text.isdigit()):
+            if(int(kp_text) > 0):
+                kp = int(kp_text)
+
+        if(ki_text.isdigit()):
+            if(int(ki_text) > 0):
+                ki = int(ki_text)
+
+        self.powsys.set_coeffs(kp,ki)
+
+        self.Window.hide()
+
 
     def set_command_speed(self,num):
         self.powsys.command_speed = num
@@ -69,6 +99,9 @@ class TrainController(QObject):
 
     def set_authority(self,on):
         self.authority = on
+        if(self.start == False and on == True):
+            self.start = True
+            self.Window.show()
 
     def set_pass_brake(self,on):
         self.pass_brake = on
@@ -88,21 +121,19 @@ class TrainController(QObject):
 
     def set_station(self,name):
         self.station = name
-
-    def set_side(self,direction):
         if(stations.count(self.station) > 0):
             side = doors[stations.index(self.station)]
-            if((not direction) or (side == 2)):
+            if((not self.direction) or (side == 2)):
                 self.station_side = side
             elif(side == 1):
                 self.station_side = 0
             else:
                 self.station_side = 1
 
-        if(not self.at_station):
-            self.at_station = True
-        else:
-            self.at_station = False
+        self.at_station = True
+
+    def set_side(self,direction):
+        self.direction = direction
 
     def set_tunnels(self,beaconID):
         beacon = bin(beaconID)
@@ -147,41 +178,43 @@ class TrainController(QObject):
                 self.count = 0
                 self.station_stop = False
                 self.left_door = False
-                signals.tnc_left_door.emit(False)
+                signals.tnc_left_door.emit(False,self.train_num)
                 self.right_door = False
-                signals.tnc_right_door.emit(False)
+                signals.tnc_right_door.emit(False,self.train_num)
             elif(self.count > 0):
                 self.count+=1
 
             if (self.at_station and (not self.authority) and self.powsys.current_speed == 0 and self.count == 0):
                 self.announcement = "Now Arriving at:\n" + self.station + " Station"
+                print("NOW ARRIVING AT A STATION")
+                self.at_station = False
                 signals.tnc_announcement.emit(self.announcement,self.train_num)
                 self.count+=1
                 self.station_stop = True
                 if(self.station_side == 0):
                     self.left_door = True
-                    signals.tnc_left_door.emit(True)
+                    signals.tnc_left_door.emit(True,self.train_num)
                 elif(self.station_side == 1):
                     self.right_door = True
-                    signals.tnc_right_door.emit(True)
+                    signals.tnc_right_door.emit(True,self.train_num)
                 else:
                     self.left_door = True
-                    signals.tnc_left_door.emit(True)
+                    signals.tnc_left_door.emit(True,self.train_num)
                     self.right_door = True
-                    signals.tnc_right_door.emit(True)
+                    signals.tnc_right_door.emit(True,self.train_num)
             else:
                 if(self.at_station):
                     self.count = 0
                     self.station_stop = False
                     self.left_door = False
-                    signals.tnc_left_door.emit(False)
+                    signals.tnc_left_door.emit(False,self.train_num)
                     self.right_door = False
-                    signals.tnc_right_door.emit(False)
+                    signals.tnc_right_door.emit(False,self.train_num)
 
     def power_calc(self):
         if(not self.authority):
             self.service_brake = True
-            print("no authority brake")
+            print("no authority brake for train " + str(self.train_num))
         #elif(self.powsys.command_speed == 0 and self.authority):
         #    if(self.powsys.current_speed > 5):
         #        self.service_brake = True
@@ -190,10 +223,10 @@ class TrainController(QObject):
         #        self.set_command_speed(5)
         elif(self.station_stop):
             self.service_brake = True
-            print("station stop brake")
+            print("station stop brake for train " + str(self.train_num))
         elif(self.driver_serv_brake):
             self.service_brake = True
-            print("driver brake")
+            print("driver brake for train " + str(self.train_num))
         else:
             self.service_brake = False
 
@@ -209,7 +242,7 @@ class TrainController(QObject):
         self.powsys.update_power()
 
         if(self.powsys.power == 0 and (self.powsys.command_speed != self.powsys.current_speed)):
-            print("no power brake")
+            print("no power brake for train " + str(self.train_num))
             self.service_brake = True
 
         signals.tnc_service_brake.emit(self.service_brake,self.train_num)
@@ -218,7 +251,7 @@ class TrainController(QObject):
 
 
 if __name__ == '__main__':
-    a = TrainController(1)
+    a = TrainController(3)
     a.set_command_speed(10)
     a.set_authority(True)
     a.run()

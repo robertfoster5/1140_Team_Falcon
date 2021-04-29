@@ -435,7 +435,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "TrainController"))
         self.train_num.setItemText(0, _translate("MainWindow", "Train 1"))
         self.train_num.setItemText(1, _translate("MainWindow", "Train 2"))
         self.train_num.setItemText(2, _translate("MainWindow", "Train 3"))
