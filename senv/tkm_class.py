@@ -169,17 +169,17 @@ class Train:
 				if '''blocks[num-1].switch.top == 0''' and int(blocks[num-1].num) != 66 and int(blocks[num-1].num) != 71 and flag != 1:
 					self.block = blocks[num].num
 				elif int(blocks[num-1].num) == 66 :
-					if blocks[53].switch.state == 1:
-						self.block = 52
-						self.way = -1
+					#if blocks[53].switch.state == 1:
+					self.block = 52
+					self.way = -1
 				elif int(blocks[num-1].num) == 71:
-					if blocks[39].switch.state == 1:
-						self.block = 38
-						self.way = -1
+					#if blocks[39].switch.state == 1:
+					self.block = 38
+					self.way = -1
 				elif flag == 1:
-					if blocks[28].switch.state == 1:
-						self.block = 27
-						self.way = -1
+					#if blocks[28].switch.state == 1:
+					self.block = 27
+					self.way = -1
 				else:
 					if blocks[num-1].switch.state == 0:
 						self.block = blocks[num-1].switch.top
