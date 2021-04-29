@@ -1381,8 +1381,6 @@ class ctc_qtui_test(QObject):
                                 sendable_sugg_speed_green[i+1] = order_num[5][order_num[4].index(i)]
                                 #print(str(sendable_sugg_speed[i+1]) + " Curr Speed")
                                 #print("Index w/ Authority: " + str(i))
-                            else:
-                                sendable_auth_green[i+1] = "0"
                                 
                             if i == order_num[7]:
                                 sendable_auth_green[i+1] = "0"
@@ -1399,8 +1397,6 @@ class ctc_qtui_test(QObject):
                                 sendable_sugg_speed_red[i+1] = order_num[5][order_num[4].index(i)]
                                 #print(str(sendable_sugg_speed[i+1]) + " Curr Speed")
                                 #print("Index w/ Authority: " + str(i))
-                            else:
-                                sendable_auth_red[i+1] = "0"
                             
                             
                             if i == order_num[7]:
@@ -1489,8 +1485,10 @@ class ctc_qtui_test(QObject):
                         #print("The authority is: " + str(order_num[4]))
                         #for i in order_num[4]:
                         #    print("Occ for block " + str(i + 1) + " is: " + str(int(track_state[i + 1])))
+                        #print("Occ for block " + str(order_num[7] + 1) + " is: " + str(int(track_state[order_num[7] + 1])))
+                            
                         if len(order_num[4]) == 1:
-                            if int(track_state[order_num[4][0] + 1]) == 0 and int(track_state[order_num[7] + 1]) == 1:
+                            if int(track_state[order_num[4][0] + 1]) == 0:
                                 #print("DELETE THIS DUDE")
                                 #print(order_num[0])
                                 #print("Searching Element " + str(int(order_num[0].rsplit(' ', 1)[1]) - 1) + " in " + str(global_train_blocks))
@@ -1546,7 +1544,7 @@ class ctc_qtui_test(QObject):
                             
                             #print("First Element: " + str(int(track_state[order_num[4][0] + 1])))
                             #print("Second Element: " + str(int(track_state[order_num[4][1] + 1])))
-                            if int(track_state[order_num[4][0] + 1]) == 0 and int(track_state[order_num[4][1] + 1]) == 1:
+                            if int(track_state[order_num[4][0] + 1]) == 0:
                                 order_num[4].pop(0)
                                 order_num[5].pop(0)
                                 if len(global_train_blocks) > int(order_num[0].rsplit(' ', 1)[1]) - 1:
