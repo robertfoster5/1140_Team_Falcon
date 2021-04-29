@@ -112,21 +112,16 @@ class Wayside:
 		for i in range(self.num_switch):
 			if temp[i] == "0" and self.sw_order[i] == "0":
 				self.m_switch_state.append("0")
-				print("first")
 			elif temp[i] == "0" and self.sw_order[i] == "1":
 				self.m_switch_state.append("1")
-				print("second")
 				self.mode = 1
 			elif temp[i] == "1" and self.sw_order[i] == "0":
 				self.m_switch_state.append("1")
-				print("third")
 			elif temp[i] == "1" and self.sw_order[i] == "1":
 				self.mode = 1
 				self.m_switch_state.append("0")
-				print("fourth")
 			else:
 				self.m_switch_state.append(temp[i])
-		print(self.mode)
 		
 		#sets new occupancy for wayside
 	def occ_change(self, occupancy):

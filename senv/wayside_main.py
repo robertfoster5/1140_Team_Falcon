@@ -161,7 +161,6 @@ class wayside_qtui_test(QObject):
 
 		#maintenance order from CTC
 	def maintenance_order(self, order):
-		print(order)
 		if order[0] != "0":
 			#if red line
 			if order[0] == "r":
@@ -554,7 +553,6 @@ class wayside_qtui_test(QObject):
 		temp_sw = []
 		temp_sw.append("0")
 		if self.r1.mode == 1 or self.r2.mode == 1 or self.r3.mode == 1:
-			print("maintenance mode")
 			temp_sw.append(self.r1.m_switch_state[0])
 			temp_sw.append(self.r1.m_switch_state[1])
 			temp_sw.append(self.r2.m_switch_state[0])
@@ -578,7 +576,6 @@ class wayside_qtui_test(QObject):
 		temp_sw = []
 		temp_sw.append("1")
 		if self.g1.mode == 1 or self.g2.mode == 1 or self.g3.mode == 1 or self.g4.mode == 1:
-			print("maintenance mode")
 			temp_sw.append(self.g1.m_switch_state[0])
 			temp_sw.append(self.g2.m_switch_state[0])
 			temp_sw.append(self.g3.m_switch_state[0])
