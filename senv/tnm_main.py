@@ -3468,43 +3468,43 @@ class tnm_display(QObject):
 		
 		#Display running time
 		signals.time.connect(self.GetDatetime)
-		self.ui1.uim.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
+		self.ui1.uim.pushButton.clicked.connect(self.EmergencyBraking1)			#Verify eBrake is pressed
 		self.ui1.uim.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
 
 		signals.time.connect(self.GetDatetime)
-		self.ui2.uim.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
+		self.ui2.uim.pushButton.clicked.connect(self.EmergencyBraking2)			#Verify eBrake is pressed
 		self.ui2.uim.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
 
 		signals.time.connect(self.GetDatetime)
-		self.ui3.uim.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
+		self.ui3.uim.pushButton.clicked.connect(self.EmergencyBraking3)			#Verify eBrake is pressed
 		self.ui3.uim.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
 
 		signals.time.connect(self.GetDatetime)
-		self.ui4.uim.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
+		self.ui4.uim.pushButton.clicked.connect(self.EmergencyBraking4)			#Verify eBrake is pressed
 		self.ui4.uim.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
 
 		signals.time.connect(self.GetDatetime)
-		self.ui5.uim.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
+		self.ui5.uim.pushButton.clicked.connect(self.EmergencyBraking5)			#Verify eBrake is pressed
 		self.ui5.uim.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
 
 		signals.time.connect(self.GetDatetime)
-		self.ui6.uim.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
+		self.ui6.uim.pushButton.clicked.connect(self.EmergencyBraking6)			#Verify eBrake is pressed
 		self.ui6.uim.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
 
 		signals.time.connect(self.GetDatetime)
-		self.ui7.uim.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
+		self.ui7.uim.pushButton.clicked.connect(self.EmergencyBraking7)			#Verify eBrake is pressed
 		self.ui7.uim.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
 
 		signals.time.connect(self.GetDatetime)
-		self.ui8.uim.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
+		self.ui8.uim.pushButton.clicked.connect(self.EmergencyBraking8)			#Verify eBrake is pressed
 		self.ui8.uim.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
 
 		signals.time.connect(self.GetDatetime)
-		self.ui9.uim.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
+		self.ui9.uim.pushButton.clicked.connect(self.EmergencyBraking9)			#Verify eBrake is pressed
 		self.ui9.uim.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
 
 		signals.time.connect(self.GetDatetime)
-		self.ui10.uim.pushButton.clicked.connect(self.EmergencyBraking)			#Verify eBrake is pressed
+		self.ui10.uim.pushButton.clicked.connect(self.EmergencyBraking10)			#Verify eBrake is pressed
 		self.ui10.uim.lineEdit_17.editingFinished.connect(self.Temperature)		#Update Temperature interface
 		
 #_______________________________________________________________________
@@ -4273,9 +4273,9 @@ class tnm_display(QObject):
 			#Update Doors Status		#Doors will be held open for one minute
 			if(self.LeftDoor2 == True or self.RightDoor2 == True):
 				self.DoorStatus2 = True
-				self.DoorFlag2 = DoorFlag2 + 1
+				self.DoorFlag2 = self.DoorFlag2 + 1
 			else:
-				self.DoorStatus2
+				self.DoorStatus2 = False
 				
 			if (self.DoorStatus2 == False):
 				self.ui2.uim.lineEdit_11.setText("Closed")
@@ -4297,17 +4297,17 @@ class tnm_display(QObject):
 			#update Cabin Lights status
 			if (self.lights_Cab2 == False):
 				self.ui2.uim.lineEdit_13.setText("Off")
-			else:
+			elif(self.lights_Cab2 == True):
 				self.ui2.uim.lineEdit_13.setText("On")
 			#update High Beam Lights status
 			if (self.lights_High2 == False):
 				self.ui2.uim.lineEdit_14.setText("Off")
-			else:
+			elif(self.lights_High2 == True):
 				self.ui2.uim.lineEdit_14.setText("On")
 			#update Tunnel Lights status
 			if (self.lights_Tun2 == False):
 				self.ui2.uim.lineEdit_15.setText("Off")
-			else:
+			elif(self.lights_Tun2 == True):
 				self.ui2.uim.lineEdit_15.setText("On")
 			#____________________________________________________________________
 		if(self.TrainNum3 == 1):
@@ -4353,17 +4353,17 @@ class tnm_display(QObject):
 			#update Cabin Lights status
 			if (self.lights_Cab3 == False):
 				self.ui3.uim.lineEdit_13.setText("Off")
-			else:
+			elif(self.lights_Cab3 == True):
 				self.ui3.uim.lineEdit_13.setText("On")
 			#update High Beam Lights status
 			if (self.lights_High3 == False):
 				self.ui3.uim.lineEdit_14.setText("Off")
-			else:
+			elif(self.lights_High3 == True):
 				self.ui3.uim.lineEdit_14.setText("On")
 			#update Tunnel Lights status
 			if (self.lights_Tun3 == False):
 				self.ui3.uim.lineEdit_15.setText("Off")
-			else:
+			elif(self.lights_Tun3 == True):
 				self.ui3.uim.lineEdit_15.setText("On")
 			#____________________________________________________________________
 		if(self.TrainNum4 == 1):
@@ -4409,17 +4409,17 @@ class tnm_display(QObject):
 			#update Cabin Lights status
 			if (self.lights_Cab4 == False):
 				self.ui4.uim.lineEdit_13.setText("Off")
-			else:
+			elif(self.lights_Cab4 == True):
 				self.ui4.uim.lineEdit_13.setText("On")
 			#update High Beam Lights status
 			if (self.lights_High4 == False):
 				self.ui4.uim.lineEdit_14.setText("Off")
-			else:
+			elif(self.lights_High4 == True):
 				self.ui4.uim.lineEdit_14.setText("On")
 			#update Tunnel Lights status
 			if (self.lights_Tun4 == False):
 				self.ui4.uim.lineEdit_15.setText("Off")
-			else:
+			elif(self.lights_Tun4 == True):
 				self.ui4.uim.lineEdit_15.setText("On")
 			#____________________________________________________________________
 		if(self.TrainNum5 == 1):
@@ -4465,17 +4465,17 @@ class tnm_display(QObject):
 			#update Cabin Lights status
 			if (self.lights_Cab5 == False):
 				self.ui5.uim.lineEdit_13.setText("Off")
-			else:
+			elif(self.lights_Cab5 == True):
 				self.ui5.uim.lineEdit_13.setText("On")
 			#update High Beam Lights status
 			if (self.lights_High5 == False):
 				self.ui5.uim.lineEdit_14.setText("Off")
-			else:
+			elif(self.lights_High5 == True):
 				self.ui5.uim.lineEdit_14.setText("On")
 			#update Tunnel Lights status
 			if (self.lights_Tun5 == False):
 				self.ui5.uim.lineEdit_15.setText("Off")
-			else:
+			elif(self.lights_Tun5 == True):
 				self.ui5.uim.lineEdit_15.setText("On")
 			#____________________________________________________________________
 		if(self.TrainNum6 == 1):
@@ -4521,17 +4521,17 @@ class tnm_display(QObject):
 			#update Cabin Lights status
 			if (self.lights_Cab6 == False):
 				self.ui6.uim.lineEdit_13.setText("Off")
-			else:
+			elif(self.lights_Cab6 == True):
 				self.ui6.uim.lineEdit_13.setText("On")
 			#update High Beam Lights status
 			if (self.lights_High6 == False):
 				self.ui6.uim.lineEdit_14.setText("Off")
-			else:
+			elif(self.lights_High6 == True):
 				self.ui6.uim.lineEdit_14.setText("On")
 			#update Tunnel Lights status
 			if (self.lights_Tun6 == False):
 				self.ui6.uim.lineEdit_15.setText("Off")
-			else:
+			elif(self.lights_Tun6 == True):
 				self.ui6.uim.lineEdit_15.setText("On")
 			#____________________________________________________________________
 		if(self.TrainNum7 == 1):
@@ -4577,17 +4577,17 @@ class tnm_display(QObject):
 			#update Cabin Lights status
 			if (self.lights_Cab7 == False):
 				self.ui7.uim.lineEdit_13.setText("Off")
-			else:
+			elif(self.lights_Cab7 == True):
 				self.ui7.uim.lineEdit_13.setText("On")
 			#update High Beam Lights status
 			if (self.lights_High7 == False):
 				self.ui7.uim.lineEdit_14.setText("Off")
-			else:
+			elif(self.lights_High7 == True):
 				self.ui7.uim.lineEdit_14.setText("On")
 			#update Tunnel Lights status
 			if (self.lights_Tun7 == False):
 				self.ui7.uim.lineEdit_15.setText("Off")
-			else:
+			elif(self.lights_Tun7 == True):
 				self.ui7.uim.lineEdit_15.setText("On")
 			#____________________________________________________________________
 		if(self.TrainNum8 == 1):
@@ -4633,17 +4633,17 @@ class tnm_display(QObject):
 			#update Cabin Lights status
 			if (self.lights_Cab8 == False):
 				self.ui8.uim.lineEdit_13.setText("Off")
-			else:
+			elif(self.lights_Cab8 == True):
 				self.ui8.uim.lineEdit_13.setText("On")
 			#update High Beam Lights status
 			if (self.lights_High8 == False):
 				self.ui8.uim.lineEdit_14.setText("Off")
-			else:
+			elif(self.lights_High8 == True):
 				self.ui8.uim.lineEdit_14.setText("On")
 			#update Tunnel Lights status
 			if (self.lights_Tun8 == False):
 				self.ui8.uim.lineEdit_15.setText("Off")
-			else:
+			elif(self.lights_Tun8 == True):
 				self.ui8.uim.lineEdit_15.setText("On")
 			#____________________________________________________________________
 		if(self.TrainNum9 == 1):
@@ -4689,17 +4689,17 @@ class tnm_display(QObject):
 			#update Cabin Lights status
 			if (self.lights_Cab9 == False):
 				self.ui9.uim.lineEdit_13.setText("Off")
-			else:
+			elif(self.lights_Cab9 == True):
 				self.ui9.uim.lineEdit_13.setText("On")
 			#update High Beam Lights status
 			if (self.lights_High9 == False):
 				self.ui9.uim.lineEdit_14.setText("Off")
-			else:
+			elif(self.lights_High9 == True):
 				self.ui9.uim.lineEdit_14.setText("On")
 			#update Tunnel Lights status
 			if (self.lights_Tun9 == False):
 				self.ui9.uim.lineEdit_15.setText("Off")
-			else:
+			elif(self.lights_Tun9 == True):
 				self.ui9.uim.lineEdit_15.setText("On")
 			#____________________________________________________________________
 		if(self.TrainNum10 == 1):
@@ -4745,17 +4745,17 @@ class tnm_display(QObject):
 			#update Cabin Lights status
 			if(self.lights_Cab10 == False):
 				self.ui10.uim.lineEdit_13.setText("Off")
-			else:
+			elif(self.lights_Cab10 == True):
 				self.ui10.uim.lineEdit_13.setText("On")
 			#update High Beam Lights status
 			if(self.lights_High10 == False):
 				self.ui10.uim.lineEdit_14.setText("Off")
-			else:
+			elif(self.lights_High10 == True):
 				self.ui10.uim.lineEdit_14.setText("On")
 			#update Tunnel Lights status
 			if (self.lights_Tun10 == False):
 				self.ui10.uim.lineEdit_15.setText("Off")
-			else:
+			elif(self.lights_Tun10 == True):
 				self.ui10.uim.lineEdit_15.setText("On")
 			#____________________________________________________________________
 		
@@ -4842,7 +4842,7 @@ class tnm_display(QObject):
 			
 #_______________________________________________________________________			
 	#function to delegate variables when Emergency Brake triggered
-	def EmergencyBraking(self):
+	def EmergencyBraking1(self):
 		if(self.TrainNum1 == 1):
 			if not self.eBrake1:
 				self.ui1.uim.pushButton.setText("CANCEL")
@@ -4856,6 +4856,7 @@ class tnm_display(QObject):
 				self.eBrake1 = False
 				signals.tnm_ebrake.emit(self.eBrake1,1)
 		#______________________________________
+	def EmergencyBraking2(self):
 		if(self.TrainNum2 == 1):
 			if(self.eBrake2 == False):
 				self.ui2.uim.pushButton.setText("CANCEL")
@@ -4869,6 +4870,7 @@ class tnm_display(QObject):
 				self.eBrake2 = False
 				signals.tnm_ebrake.emit(self.eBrake2,2)
 		#______________________________________
+	def EmergencyBraking3(self):
 		if(self.TrainNum3 == 1):
 			if not self.eBrake3:
 				self.ui3.uim.pushButton.setText("CANCEL")
@@ -4882,6 +4884,7 @@ class tnm_display(QObject):
 				self.eBrake3 = False
 				signals.tnm_ebrake.emit(self.eBrake3,3)
 		#______________________________________
+	def EmergencyBraking4(self):
 		if(self.TrainNum4 == 1):
 			if not self.eBrake4:
 				self.ui4.uim.pushButton.setText("CANCEL")
@@ -4895,6 +4898,7 @@ class tnm_display(QObject):
 				self.eBrake4 = False
 				signals.tnm_ebrake.emit(self.eBrake4,4)
 		#______________________________________
+	def EmergencyBraking5(self):
 		if(self.TrainNum5 == 1):
 			if not self.eBrake5:
 				self.ui5.uim.pushButton.setText("CANCEL")
@@ -4908,6 +4912,7 @@ class tnm_display(QObject):
 				self.eBrake5 = False
 				signals.tnm_ebrake.emit(self.eBrake5,5)
 		#______________________________________
+	def EmergencyBraking6(self):
 		if(self.TrainNum6 == 1):
 			if not self.eBrake6:
 				self.ui6.uim.pushButton.setText("CANCEL")
@@ -4921,6 +4926,7 @@ class tnm_display(QObject):
 				self.eBrake6 = False
 				signals.tnm_ebrake.emit(self.eBrake6,6)
 		#______________________________________
+	def EmergencyBraking7(self):
 		if(self.TrainNum7 == 1):
 			if not self.eBrake7:
 				self.ui7.uim.pushButton.setText("CANCEL")
@@ -4934,6 +4940,7 @@ class tnm_display(QObject):
 				self.eBrake7 = False
 				signals.tnm_ebrake.emit(self.eBrake7,7)
 		#______________________________________
+	def EmergencyBraking8(self):
 		if(self.TrainNum8 == 1):
 			if not self.eBrake8:
 				self.ui8.uim.pushButton.setText("CANCEL")
@@ -4947,6 +4954,7 @@ class tnm_display(QObject):
 				self.eBrake8 = False
 				signals.tnm_ebrake.emit(self.eBrake8,8)
 		#_____________________________________
+	def EmergencyBraking9(self):
 		if(self.TrainNum9 == 1):
 			if not self.eBrake9:
 				self.ui9.uim.pushButton.setText("CANCEL")
@@ -4960,6 +4968,7 @@ class tnm_display(QObject):
 				self.eBrake9 = False
 				signals.tnm_ebrake.emit(self.eBrake9,9)
 		#_____________________________________
+	def EmergencyBraking10(self):
 		if(self.TrainNum10 == 1):
 			if not self.eBrake10:
 				self.ui10.uim.pushButton.setText("CANCEL")
@@ -5327,6 +5336,7 @@ class tnm_display(QObject):
 				self.CurrStation1, self.NextStation1, self.TNMdirectionG1 = GreenBeacon(self.RouteName1, self.TNMdirectionG1, self.TrainDirection1, self.beacon_bin1)
 			elif(self.RouteName1 == "Red Line"):
 				self.CurrStation1, self.NextStation1, self.TNMdirectionR1 = RedBeacon(self.RouteName1, self.TNMdirectionR1, self.TrainDirection1, self.beacon_bin1)
+			print(str(self.beacon_bin1) + "Num for station")
 			signals.tnm_beaconID.emit(self.beacon_bin1,1)
 			signals.tnm_curr_station.emit(self.CurrStation1,1)
 			#______________________________________________________________________

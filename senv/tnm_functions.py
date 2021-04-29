@@ -304,34 +304,34 @@ def GreenBeacon(RouteName,GreenDirection,TrainDirection,beaconBinary):
 		if(beacon_bin[3:] == "00000"):			#Likely won't reach this unless sent to Yard
 			CurrStation = "Yard"
 			NextStation = " ---- "
-		elif(beacon_bin[3:] == "01011"):
+		elif(beacon_bin[3:] == "01110"):#01011
 			CurrStation = "Mt Lebanon"
 			NextStation = "Dormont"
-		elif(beacon_bin[3:] == "01010"):
+		elif(beacon_bin[3:] == "01010"):#01010
 			CurrStation = "Dormont"
 			NextStation = "Glenbury"
-		elif(beacon_bin[3:] == "01001"):
+		elif(beacon_bin[3:] == "01001"):#01001
 			CurrStation = "Glenbury"
 			NextStation = "Overbrook"
-		elif(beacon_bin[3:] == "01000"):
+		elif(beacon_bin[3:] == "01000"):#01000
 			CurrStation = "Overbrook"
 			NextStation = "Inglewood"
-		elif(beacon_bin[3:] == "00111"):
+		elif(beacon_bin[3:] == "00111"):#00111
 			CurrStation = "Inglewood"
 			NextStation = "Central"
-		elif(beacon_bin[3:] == "00110"):
+		elif(beacon_bin[3:] == "00110"):#00110
 			CurrStation = "Central"
 			NextStation = "Whited"
-		elif(beacon_bin[3:] == "00100"):
+		elif(beacon_bin[3:] == "00100"):#00100
 			CurrStation = "Whited"
 			NextStation = "Falcon"
-		elif(beacon_bin[3:] == "00011"):
+		elif(beacon_bin[3:] == "00011"):#00011
 			CurrStation = "Falcon"
 			NextStation = "Edgebrook"
-		elif(beacon_bin[3:] == "00010"):
+		elif(beacon_bin[3:] == "00010"):#00010
 			CurrStation = "Edgebrook"
 			NextStation = "Pioneer"
-		elif(beacon_bin[3:] == "00001"):
+		elif(beacon_bin[3:] == "00001"):#00001
 			CurrStation = "Pioneer"
 			TNMdirectionG = 1			#change direction going back down on the right line
 			NextStation = "Falcon"
