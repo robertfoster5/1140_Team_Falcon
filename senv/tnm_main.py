@@ -4202,6 +4202,9 @@ class tnm_display(QObject):
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
 			signals.tnc_left_door.connect(self.setRightDoor)
 			signals.tnc_right_door.connect(self.setLeftDoor)
+			signals.tnc_cab_light.connect(self.setCabLight)
+			signals.tnc_tunnel_light.connect(self.setTunLight)
+			signals.tnc_high_beam_light.connect(self.setHighLight)
 			#signals.tkm_get_pass_count.connect(self.SetOccupancy)
 			#Update Train Numbering Header
 			self.ui1.uim.label_23.setText(self.train1)
@@ -4234,27 +4237,31 @@ class tnm_display(QObject):
 				self.ui1.uim.lineEdit_12.setText("Waiting")
 			else:
 				self.ui1.uim.lineEdit_12.setText("Recieved")
-				signals.tnm_beaconID.emit(self.beacon_bin1,1)
 			
 			#update Cabin Lights status
 			if (self.lights_Cab1 == False):
 				self.ui1.uim.lineEdit_13.setText("Off")
-			else:
+			elif(self.lights_Cab1 == True):
 				self.ui1.uim.lineEdit_13.setText("On")
 			#update High Beam Lights status
 			if (self.lights_High1 == False):
 				self.ui1.uim.lineEdit_14.setText("Off")
-			else:
+			elif(self.lights_High1 == True):
 				self.ui1.uim.lineEdit_14.setText("On")
 			#update Tunnel Lights status
 			if (self.lights_Tun1 == False):
 				self.ui1.uim.lineEdit_15.setText("Off")
-			else:
+			elif(self.lights_Tun1 == True):
 				self.ui1.uim.lineEdit_15.setText("On")
 			#____________________________________________________________________
 		if(self.TrainNum2 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
+			signals.tnc_left_door.connect(self.setRightDoor)
+			signals.tnc_right_door.connect(self.setLeftDoor)
+			signals.tnc_cab_light.connect(self.setCabLight)
+			signals.tnc_tunnel_light.connect(self.setTunLight)
+			signals.tnc_high_beam_light.connect(self.setHighLight)
 			#Update Train Numbering Header
 			self.ui2.uim.label_23.setText(self.train2)
 			#Update Route Line
@@ -4286,7 +4293,6 @@ class tnm_display(QObject):
 				self.ui2.uim.lineEdit_12.setText("Waiting")
 			else:
 				self.ui2.uim.lineEdit_12.setText("Recieved")
-				signals.tnm_beaconID.emit(self.beacon_bin2,2)
 			
 			#update Cabin Lights status
 			if (self.lights_Cab2 == False):
@@ -4307,6 +4313,11 @@ class tnm_display(QObject):
 		if(self.TrainNum3 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
+			signals.tnc_left_door.connect(self.setRightDoor)
+			signals.tnc_right_door.connect(self.setLeftDoor)
+			signals.tnc_cab_light.connect(self.setCabLight)
+			signals.tnc_tunnel_light.connect(self.setTunLight)
+			signals.tnc_high_beam_light.connect(self.setHighLight)
 			#Update Train Numbering Header
 			self.ui3.uim.label_23.setText(self.train3)
 			#Update Route Line
@@ -4338,7 +4349,6 @@ class tnm_display(QObject):
 				self.ui3.uim.lineEdit_12.setText("Waiting")
 			else:
 				self.ui3.uim.lineEdit_12.setText("Recieved")
-				signals.tnm_beaconID.emit(self.beacon_bin3,3)
 			
 			#update Cabin Lights status
 			if (self.lights_Cab3 == False):
@@ -4359,6 +4369,11 @@ class tnm_display(QObject):
 		if(self.TrainNum4 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
+			signals.tnc_left_door.connect(self.setRightDoor)
+			signals.tnc_right_door.connect(self.setLeftDoor)
+			signals.tnc_cab_light.connect(self.setCabLight)
+			signals.tnc_tunnel_light.connect(self.setTunLight)
+			signals.tnc_high_beam_light.connect(self.setHighLight)
 			#Update Train Numbering Header
 			self.ui4.uim.label_23.setText(self.train4)
 			#Update Route Line
@@ -4390,7 +4405,6 @@ class tnm_display(QObject):
 				self.ui4.uim.lineEdit_12.setText("Waiting")
 			else:
 				self.ui4.uim.lineEdit_12.setText("Recieved")
-				signals.tnm_beaconID.emit(self.beacon_bin4,4)
 			
 			#update Cabin Lights status
 			if (self.lights_Cab4 == False):
@@ -4411,6 +4425,11 @@ class tnm_display(QObject):
 		if(self.TrainNum5 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
+			signals.tnc_left_door.connect(self.setRightDoor)
+			signals.tnc_right_door.connect(self.setLeftDoor)
+			signals.tnc_cab_light.connect(self.setCabLight)
+			signals.tnc_tunnel_light.connect(self.setTunLight)
+			signals.tnc_high_beam_light.connect(self.setHighLight)
 			#Update Train Numbering Header
 			self.ui5.uim.label_23.setText(self.train5)
 			#Update Route Line
@@ -4442,7 +4461,6 @@ class tnm_display(QObject):
 				self.ui5.uim.lineEdit_12.setText("Waiting")
 			else:
 				self.ui5.uim.lineEdit_12.setText("Recieved")
-				signals.tnm_beaconID.emit(self.beacon_bin5,5)
 			
 			#update Cabin Lights status
 			if (self.lights_Cab5 == False):
@@ -4463,6 +4481,11 @@ class tnm_display(QObject):
 		if(self.TrainNum6 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
+			signals.tnc_left_door.connect(self.setRightDoor)
+			signals.tnc_right_door.connect(self.setLeftDoor)
+			signals.tnc_cab_light.connect(self.setCabLight)
+			signals.tnc_tunnel_light.connect(self.setTunLight)
+			signals.tnc_high_beam_light.connect(self.setHighLight)
 			#Update Train Numbering Header
 			self.ui6.uim.label_23.setText(self.train6)
 			#Update Route Line
@@ -4494,7 +4517,6 @@ class tnm_display(QObject):
 				self.ui6.uim.lineEdit_12.setText("Waiting")
 			else:
 				self.ui6.uim.lineEdit_12.setText("Recieved")
-				signals.tnm_beaconID.emit(self.beacon_bin6,6)
 			
 			#update Cabin Lights status
 			if (self.lights_Cab6 == False):
@@ -4515,6 +4537,11 @@ class tnm_display(QObject):
 		if(self.TrainNum7 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
+			signals.tnc_left_door.connect(self.setRightDoor)
+			signals.tnc_right_door.connect(self.setLeftDoor)
+			signals.tnc_cab_light.connect(self.setCabLight)
+			signals.tnc_tunnel_light.connect(self.setTunLight)
+			signals.tnc_high_beam_light.connect(self.setHighLight)
 			#Update Train Numbering Header
 			self.ui7.uim.label_23.setText(self.train7)
 			#Update Route Line
@@ -4546,7 +4573,6 @@ class tnm_display(QObject):
 				self.ui7.uim.lineEdit_12.setText("Waiting")
 			else:
 				self.ui7.uim.lineEdit_12.setText("Recieved")
-				signals.tnm_beaconID.emit(self.beacon_bin7,7)
 			
 			#update Cabin Lights status
 			if (self.lights_Cab7 == False):
@@ -4567,6 +4593,11 @@ class tnm_display(QObject):
 		if(self.TrainNum8 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
+			signals.tnc_left_door.connect(self.setRightDoor)
+			signals.tnc_right_door.connect(self.setLeftDoor)
+			signals.tnc_cab_light.connect(self.setCabLight)
+			signals.tnc_tunnel_light.connect(self.setTunLight)
+			signals.tnc_high_beam_light.connect(self.setHighLight)
 			#Update Train Numbering Header
 			self.ui8.uim.label_23.setText(self.train8)
 			#Update Route Line
@@ -4598,7 +4629,6 @@ class tnm_display(QObject):
 				self.ui8.uim.lineEdit_12.setText("Waiting")
 			else:
 				self.ui8.uim.lineEdit_12.setText("Recieved")
-				signals.tnm_beaconID.emit(self.beacon_bin8,8)
 			
 			#update Cabin Lights status
 			if (self.lights_Cab8 == False):
@@ -4619,6 +4649,11 @@ class tnm_display(QObject):
 		if(self.TrainNum9 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
+			signals.tnc_left_door.connect(self.setRightDoor)
+			signals.tnc_right_door.connect(self.setLeftDoor)
+			signals.tnc_cab_light.connect(self.setCabLight)
+			signals.tnc_tunnel_light.connect(self.setTunLight)
+			signals.tnc_high_beam_light.connect(self.setHighLight)
 			#Update Train Numbering Header
 			self.ui9.uim.label_23.setText(self.train9)
 			#Update Route Line
@@ -4650,7 +4685,6 @@ class tnm_display(QObject):
 				self.ui9.uim.lineEdit_12.setText("Waiting")
 			else:
 				self.ui9.uim.lineEdit_12.setText("Recieved")
-				signals.tnm_beaconID.emit(self.beacon_bin9,9)
 			
 			#update Cabin Lights status
 			if (self.lights_Cab9 == False):
@@ -4671,6 +4705,11 @@ class tnm_display(QObject):
 		if(self.TrainNum10 == 1):
 			#Check Beacon ID each time
 			signals.tkm_get_beacon.connect(self.SetBeaconID)
+			signals.tnc_left_door.connect(self.setRightDoor)
+			signals.tnc_right_door.connect(self.setLeftDoor)
+			signals.tnc_cab_light.connect(self.setCabLight)
+			signals.tnc_tunnel_light.connect(self.setTunLight)
+			signals.tnc_high_beam_light.connect(self.setHighLight)
 			#Update Train Numbering Header
 			self.ui10.uim.label_23.setText(self.train10)
 			#Update Route Line
@@ -4702,15 +4741,14 @@ class tnm_display(QObject):
 				self.ui10.uim.lineEdit_12.setText("Waiting")
 			else:
 				self.ui10.uim.lineEdit_12.setText("Recieved")
-				signals.tnm_beaconID.emit(self.beacon_bin10,10)
 			
 			#update Cabin Lights status
-			if (self.lights_Cab10 == False):
+			if(self.lights_Cab10 == False):
 				self.ui10.uim.lineEdit_13.setText("Off")
 			else:
 				self.ui10.uim.lineEdit_13.setText("On")
 			#update High Beam Lights status
-			if (self.lights_High10 == False):
+			if(self.lights_High10 == False):
 				self.ui10.uim.lineEdit_14.setText("Off")
 			else:
 				self.ui10.uim.lineEdit_14.setText("On")
@@ -5289,6 +5327,7 @@ class tnm_display(QObject):
 				self.CurrStation1, self.NextStation1, self.TNMdirectionG1 = GreenBeacon(self.RouteName1, self.TNMdirectionG1, self.TrainDirection1, self.beacon_bin1)
 			elif(self.RouteName1 == "Red Line"):
 				self.CurrStation1, self.NextStation1, self.TNMdirectionR1 = RedBeacon(self.RouteName1, self.TNMdirectionR1, self.TrainDirection1, self.beacon_bin1)
+			signals.tnm_beaconID.emit(self.beacon_bin1,1)
 			signals.tnm_curr_station.emit(self.CurrStation1,1)
 			#______________________________________________________________________
 		elif(self.TrainNum2 == 1 and tncTrainNum == 2):
@@ -5323,6 +5362,7 @@ class tnm_display(QObject):
 				self.CurrStation2, self.NextStation2, self.TNMdirectionG2 = GreenBeacon(self.RouteName2, self.TNMdirectionG2, self.TrainDirection2, self.beacon_bin2)
 			elif(self.RouteName2 == "Red Line"):
 				self.CurrStation2, self.NextStation2, self.TNMdirectionR2 = RedBeacon(self.RouteName2, self.TNMdirectionR2, self.TrainDirection2, self.beacon_bin2)		
+			signals.tnm_beaconID.emit(self.beacon_bin2,2)
 			signals.tnm_curr_station.emit(self.CurrStation2,2)
 			#______________________________________________________________________
 		elif(self.TrainNum3 == 1 and tncTrainNum == 3):
@@ -5357,6 +5397,7 @@ class tnm_display(QObject):
 				self.CurrStation3, self.NextStation3, self.TNMdirectionG3 = GreenBeacon(self.RouteName3, self.TNMdirectionG3, self.TrainDirection3, self.beacon_bin3)
 			elif(self.RouteName3 == "Red Line"):
 				self.CurrStation3, self.NextStation3, self.TNMdirectionR3 = GreenBeacon(self.RouteName3, self.TNMdirectionR3, self.TrainDirection3, self.beacon_bin3)
+			signals.tnm_beaconID.emit(self.beacon_bin3,3)
 			signals.tnm_curr_station.emit(self.CurrStation3,3)
 			#______________________________________________________________________
 		elif(self.TrainNum4 == 1 and tncTrainNum == 4):
@@ -5391,6 +5432,7 @@ class tnm_display(QObject):
 				self.CurrStation4, self.NextStation4, self.TNMdirectionG4 = GreenBeacon(self.RouteName4, self.TNMdirectionG4, self.TrainDirection4, self.beacon_bin4)
 			elif(self.RouteName4 == "Red Line"):
 				self.CurrStation4, self.NextStation4, self.TNMdirectionR4 = GreenBeacon(self.RouteName4, self.TNMdirectionR4, self.TrainDirection4, self.beacon_bin4)
+			signals.tnm_beaconID.emit(self.beacon_bin4,4)
 			signals.tnm_curr_station.emit(self.CurrStation4,4)
 			#______________________________________________________________________
 		elif(self.TrainNum5 == 1 and tncTrainNum == 5):
@@ -5425,6 +5467,7 @@ class tnm_display(QObject):
 				self.CurrStation5, self.NextStation5, self.TNMdirectionG5 = GreenBeacon(self.RouteName5, self.TNMdirectionG5, self.TrainDirection5, self.beacon_bin5)
 			elif(self.RouteName5 == "Red Line"):
 				self.CurrStation5, self.NextStation5, self.TNMdirectionR5 = GreenBeacon(self.RouteName5, self.TNMdirectionR5, self.TrainDirection5, self.beacon_bin5)
+			signals.tnm_beaconID.emit(self.beacon_bin5,5)
 			signals.tnm_curr_station.emit(self.CurrStation5,5)
 			#______________________________________________________________________
 		elif(self.TrainNum6 == 1 and tncTrainNum == 6):
@@ -5459,6 +5502,7 @@ class tnm_display(QObject):
 				self.CurrStation6, self.NextStation6, self.TNMdirectionG6 = GreenBeacon(self.RouteName6, self.TNMdirectionG6, self.TrainDirection6, self.beacon_bin6)
 			elif(self.RouteName6 == "Red Line"):
 				self.CurrStation6, self.NextStation6, self.TNMdirectionR6 = GreenBeacon(self.RouteName6, self.TNMdirectionR6, self.TrainDirection6, self.beacon_bin6)
+			signals.tnm_beaconID.emit(self.beacon_bin6,6)
 			signals.tnm_curr_station.emit(self.CurrStation6,6)
 			#______________________________________________________________________
 		elif(self.TrainNum7 == 1 and tncTrainNum == 7):
@@ -5493,6 +5537,7 @@ class tnm_display(QObject):
 				self.CurrStation7, self.NextStation7, self.TNMdirectionG7 = GreenBeacon(self.RouteName7, self.TNMdirectionG7, self.TrainDirection7, self.beacon_bin7)
 			elif(self.RouteName7 == "Red Line"):
 				self.CurrStation7, self.NextStation7, self.TNMdirectionR7 = GreenBeacon(self.RouteName7, self.TNMdirectionR7, self.TrainDirection7, self.beacon_bin7)
+			signals.tnm_beaconID.emit(self.beacon_bin7,7)
 			signals.tnm_curr_station.emit(self.CurrStation7,7)
 			#______________________________________________________________________
 		elif(self.TrainNum8 == 1 and tncTrainNum == 8):
@@ -5527,6 +5572,7 @@ class tnm_display(QObject):
 				self.CurrStation8, self.NextStation8, self.TNMdirectionG8 = GreenBeacon(self.RouteName8, self.TNMdirectionG8, self.TrainDirection8, self.beacon_bin8)
 			elif(self.RouteName8 == "Red Line"):
 				self.CurrStation8, self.NextStation8, self.TNMdirectionR8 = GreenBeacon(self.RouteName8, self.TNMdirectionR8, self.TrainDirection8, self.beacon_bin8)
+			signals.tnm_beaconID.emit(self.beacon_bin8,8)
 			signals.tnm_curr_station.emit(self.CurrStation8,8)
 			#______________________________________________________________________
 		elif(self.TrainNum9 == 1 and tncTrainNum == 9):
@@ -5561,6 +5607,7 @@ class tnm_display(QObject):
 				self.CurrStation9, self.NextStation9, self.TNMdirectionG9 = GreenBeacon(self.RouteName9, self.TNMdirectionG9, self.TrainDirection9, self.beacon_bin9)
 			elif(self.RouteName9 == "Red Line"):
 				self.CurrStation9, self.NextStation9, self.TNMdirectionR9 = GreenBeacon(self.RouteName9, self.TNMdirectionR9, self.TrainDirection9, self.beacon_bin9)
+			signals.tnm_beaconID.emit(self.beacon_bin9,9)
 			signals.tnm_curr_station.emit(self.CurrStation9,9)
 			#______________________________________________________________________
 		elif(self.TrainNum10 == 1 and tncTrainNum == 10):
@@ -5595,6 +5642,7 @@ class tnm_display(QObject):
 				self.CurrStation10, self.NextStation10, self.TNMdirectionG10 = GreenBeacon(self.RouteName10, self.TNMdirectionG10, self.TrainDirection10, self.beacon_bin10)
 			elif(self.RouteName10 == "Red Line"):
 				self.CurrStation10, self.NextStation10, self.TNMdirectionR10 = GreenBeacon(self.RouteName10, self.TNMdirectionR10, self.TrainDirection10, self.beacon_bin10)
+			signals.tnm_beaconID.emit(self.beacon_bin10,10)
 			signals.tnm_curr_station.emit(self.CurrStation10,10)
 			#______________________________________________________________________
 	
@@ -5698,7 +5746,6 @@ class tnm_display(QObject):
 	#Function to set Passenger count from track model signal
 	def SetOccupancy(self,tkm_pass_count, tkmTrainNum):
 		if(self.TrainNum1 == 1 and tkmTrainNum == 1):
-			print(str(tkmTrainNum) + " pass from tkm")
 			self.pass_count1 = tkm_pass_count
 		elif(self.TrainNum2 == 1 and tkmTrainNum == 2):
 			self.pass_count2 = tkm_pass_count
@@ -5837,71 +5884,71 @@ class tnm_display(QObject):
 	#Function to update Cab Light status
 	def setCabLight(self, tncCabLight, tncTrainNum):
 		if(self.TrainNum1 == 1 and tncTrainNum == 1):
-			self.light_Cab1 = tncCabLight
+			self.lights_Cab1 = tncCabLight
 		elif(self.TrainNum2 == 1 and tncTrainNum == 2):
-			self.light_Cab2 = tncCabLight
+			self.lights_Cab2 = tncCabLight
 		elif(self.TrainNum3 == 1 and tncTrainNum == 3):
-			self.light_Cab3 = tncCabLight
+			self.lights_Cab3 = tncCabLight
 		elif(self.TrainNum4 == 1 and tncTrainNum == 4):
-			self.light_Cab4 = tncCabLight
+			self.lights_Cab4 = tncCabLight
 		elif(self.TrainNum5 == 1 and tncTrainNum == 5):
-			self.light_Cab5 = tncCabLight
+			self.lights_Cab5 = tncCabLight
 		elif(self.TrainNum6 == 1 and tncTrainNum == 6):
-			self.light_Cab6 = tncCabLight
+			self.lights_Cab6 = tncCabLight
 		elif(self.TrainNum7 == 1 and tncTrainNum == 7):
-			self.light_Cab7 = tncCabLight
+			self.lights_Cab7 = tncCabLight
 		elif(self.TrainNum8 == 1 and tncTrainNum == 8):
-			self.light_Cab8 = tncCabLight
+			self.lights_Cab8 = tncCabLight
 		elif(self.TrainNum9 == 1 and tncTrainNum == 9):
-			self.light_Cab9 = tncCabLight
+			self.lights_Cab9 = tncCabLight
 		elif(self.TrainNum10 == 1 and tncTrainNum == 10):
-			self.light_Cab10 = tncCabLight
+			self.lights_Cab10 = tncCabLight
 			
 	#Function to update Tun Light status
 	def setTunLight(self, tncTunLight, tncTrainNum):
 		if(self.TrainNum1 == 1 and tncTrainNum == 1):
-			self.light_Tun1 = tncTunLight
+			self.lights_Tun1 = tncTunLight
 		elif(self.TrainNum2 == 1 and tncTrainNum == 2):
-			self.light_Tun2 = tncTunLight
+			self.lights_Tun2 = tncTunLight
 		elif(self.TrainNum3 == 1 and tncTrainNum == 3):
-			self.light_Tun3 = tncTunLight
+			self.lights_Tun3 = tncTunLight
 		elif(self.TrainNum4 == 1 and tncTrainNum == 4):
-			self.light_Tun4 = tncTunLight
+			self.lights_Tun4 = tncTunLight
 		elif(self.TrainNum5 == 1 and tncTrainNum == 5):
-			self.light_Tun5 = tncTunLight
+			self.lights_Tun5 = tncTunLight
 		elif(self.TrainNum6 == 1 and tncTrainNum == 6):
-			self.light_Tun6 = tncTunLight
+			self.lights_Tun6 = tncTunLight
 		elif(self.TrainNum7 == 1 and tncTrainNum == 7):
-			self.light_Tun7 = tncTunLight
+			self.lights_Tun7 = tncTunLight
 		elif(self.TrainNum8 == 1 and tncTrainNum == 8):
-			self.light_Tun8 = tncTunLight
+			self.lights_Tun8 = tncTunLight
 		elif(self.TrainNum9 == 1 and tncTrainNum == 9):
-			self.light_Tun9 = tncTunLight
+			self.lights_Tun9 = tncTunLight
 		elif(self.TrainNum10 == 1 and tncTrainNum == 10):
-			self.light_Tun10 = tncTunLight
+			self.lights_Tun10 = tncTunLight
 			
 	#Function to update High Beam Light status
 	def setHighLight(self, tncHighLight, tncTrainNum):
 		if(self.TrainNum1 == 1 and tncTrainNum == 1):
-			self.light_High1 = tncHighLight
+			self.lights_High1 = tncHighLight
 		elif(self.TrainNum2 == 1 and tncTrainNum == 2):
-			self.light_High2 = tncHighLight
+			self.lights_High2 = tncHighLight
 		elif(self.TrainNum3 == 1 and tncTrainNum == 3):
-			self.light_High3 = tncHighLight
+			self.lights_High3 = tncHighLight
 		elif(self.TrainNum4 == 1 and tncTrainNum == 4):
-			self.light_High4 = tncHighLight
+			self.lights_High4 = tncHighLight
 		elif(self.TrainNum5 == 1 and tncTrainNum == 5):
-			self.light_High5 = tncHighLight
+			self.lights_High5 = tncHighLight
 		elif(self.TrainNum6 == 1 and tncTrainNum == 6):
-			self.light_High6 = tncHighLight
+			self.lights_High6 = tncHighLight
 		elif(self.TrainNum7 == 1 and tncTrainNum == 7):
-			self.light_High7 = tncHighLight
+			self.lights_High7 = tncHighLight
 		elif(self.TrainNum8 == 1 and tncTrainNum == 8):
-			self.light_High8 = tncHighLight
+			self.lights_High8 = tncHighLight
 		elif(self.TrainNum9 == 1 and tncTrainNum == 9):
-			self.light_High9 = tncHighLight
+			self.lights_High9 = tncHighLight
 		elif(self.TrainNum10 == 1 and tncTrainNum == 10):
-			self.light_High10 = tncHighLight
+			self.lights_High10 = tncHighLight
 		
 	#Function to set the train number, and specify the line name
 	def setTrainStart(self, tkmTrainNum, tkmTrainLine):			#int, str
