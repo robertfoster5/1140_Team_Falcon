@@ -319,7 +319,7 @@ class tkm_test(QObject):
 			i = 0
 			while i <len(self.info[j].train):
 				if num == self.info[j].train[i].num:
-					print("Stop at station "+str(self.info[j].train[i].num))
+					#print("Stop at station "+str(self.info[j].train[i].num))
 					self.info[j].update_dis(i)
 					i = len(self.info[j].train)
 					j = len(self.info)

@@ -119,7 +119,7 @@ class Train:
 	#change block location
 	def set_block(self,blocks,num,line,flag):
 		self.past = self.block
-		print(str(self.num)+" train num")
+		#print(str(self.num)+" train num")
 		num = int(num)
 		
 		#green
@@ -133,7 +133,7 @@ class Train:
 				elif flag == 1:
 					self.block = 29
 					self.way = -1
-					print(self.way)
+					#print(self.way)
 				else:
 					if blocks[num-1].switch.state == 0:
 						self.block = blocks[num-1].switch.top
@@ -205,13 +205,13 @@ class Train:
 		blocks[int(self.past)-1].occ = 0
 		blocks[int(self.block)-1].occ = 1
 		signals.tkm_get_block.emit(self.block,self.num)
-		print(str(self.block) + " block tkm")
-		print("/////////////////////////////////////////////////////////////////////////////////////")
+		#print(str(self.block) + " block tkm")
+		#print("/////////////////////////////////////////////////////////////////////////////////////")
 		#print(str(blocks[int(self.block)-1].length)+" this is block length")
 		signals.tkm_get_blength.emit(blocks[int(self.block)-1].length,self.num)
 		signals.tkm_get_train_auth.emit(blocks[int(self.block-1)].auth,self.num)
 		signals.tkm_get_elev.emit(blocks[int(self.block-1)].elev,self.num)
-		print(str(blocks[int(self.block-1)].auth) + " tkm auth")
+		#print(str(blocks[int(self.block-1)].auth) + " tkm auth")
 		
 		if blocks[int(self.block-1)].beacon1 == 0 and blocks[int(self.block-1)].beacon2 == 0:
 			pass
@@ -233,9 +233,9 @@ class Train:
 #_______________________________________________________________________
 	
 	def set_speed_new(self,block):
-		print(block.s_limit)
-		print(block.speed)
-		print(block.num)
+		#print(block.s_limit)
+		#print(block.speed)
+		#print(block.num)
 		if block.s_limit > block.speed:
 			self.speed = block.speed
 		else:
@@ -249,8 +249,8 @@ class Train:
 			
 		else:
 			self.speed = block.s_limit
-			print(block.speed)
-		print(str(round(self.speed,1)) + " mps tkm ")
+			#print(block.speed)
+		#print(str(round(self.speed,1)) + " mps tkm ")
 		#signals.tkm_get_speed.emit(self.speed)
 		return self.speed
 	
@@ -271,7 +271,7 @@ class Train:
 		else:
 			self.speed = block[int(self.block-1)].s_limit
 			#print(block[int(self.block-1)].speed)
-		print(str(round(self.speed,1)) + " mps tkm ")
+		#print(str(round(self.speed,1)) + " mps tkm ")
 		#signals.tkm_get_speed.emit(self.speed)
 		return self.speed
 
@@ -492,14 +492,14 @@ class Track:
 		bull = self.get_occ()
 		signals.tkm_get_occ.emit(bull)
 		s = self.train[len(self.train)-1].set_speed_new(self.blocks[blo-1])
-		print("speeeeeeeeeeeeeeeeed "+str(s))
+		#print("speeeeeeeeeeeeeeeeed "+str(s))
 		#print(str(s) + " tkm")
 		#signals.tkm_get_speed.emit(s)
 		signals.tkm_get_train_auth.emit(bool(self.blocks[blo-1].auth),self.train[-1].num)
-		print("tkm auth " + str(self.blocks[blo-1].auth))
+		#print("tkm auth " + str(self.blocks[blo-1].auth))
 		#print(block.s_limit)
 		
-		print(str(s) + " tkm - add train")
+		#print(str(s) + " tkm - add train")
 		signals.tkm_get_speed.emit(s,self.train[-1].num)
 		#signals.tkm_get_auth.emit(block.auth)
 		
@@ -636,7 +636,7 @@ class Track:
 		while n <= int(self.end):
 			self.blocks[n-1].set_speed(float(speeds[n]))
 			if float(speeds[n]) != 0:
-				print(str(self.blocks[n-1].speed)+" speed   " + str(self.blocks[n-1].num)+ " num")
+				#print(str(self.blocks[n-1].speed)+" speed   " + str(self.blocks[n-1].num)+ " num")
 			#print(str(speeds[n]) + " speed " + str(self.blocks[n-1].speed))
 			n = n+1
 		
@@ -647,15 +647,15 @@ class Track:
 					if self.blocks[int(self.train[i].block-1)].speed < self.blocks[int(self.train[i].block-1)].s_limit:
 						signals.tkm_get_train_auth.emit(self.blocks[int(self.train[i].block-1)].auth,self.train[i].num)
 						signals.tkm_get_speed.emit(self.blocks[int(self.train[i].block-1)].speed,self.train[i].num)
-						print(str(self.blocks[int(self.train[i].block-1)].speed)+" spppppppppppppppppppppppppppeeeeeeeeeeeeeeeeeeddddd")
-						print(str(self.blocks[int(self.train[i].block-1)].auth) + " aaaaaaaaaaaauuuuuuuuuuuuuuttttttttttttttthhhhhhhhh")
-						print(str(self.train[i].num)+ " train num")
+						#print(str(self.blocks[int(self.train[i].block-1)].speed)+" spppppppppppppppppppppppppppeeeeeeeeeeeeeeeeeeddddd")
+						#print(str(self.blocks[int(self.train[i].block-1)].auth) + " aaaaaaaaaaaauuuuuuuuuuuuuuttttttttttttttthhhhhhhhh")
+						#print(str(self.train[i].num)+ " train num")
 					else:
 						signals.tkm_get_train_auth.emit(self.blocks[int(self.train[i].block-1)].auth,self.train[i].num)
 						signals.tkm_get_speed.emit(self.blocks[int(self.train[i].block-1)].s_limit,self.train[i].num)
-						print(str(self.blocks[int(self.train[i].block-1)].s_limit)+" spppppppppppppppppppppppppppeeeeeeeeeeeeeeeeeeddddd")
-						print(str(self.blocks[int(self.train[i].block-1)].auth) + " aaaaaaaaaaaauuuuuuuuuuuuuuttttttttttttttthhhhhhhhh")
-						print(str(self.train[i].num)+ " train num")
+						#print(str(self.blocks[int(self.train[i].block-1)].s_limit)+" spppppppppppppppppppppppppppeeeeeeeeeeeeeeeeeeddddd")
+						#print(str(self.blocks[int(self.train[i].block-1)].auth) + " aaaaaaaaaaaauuuuuuuuuuuuuuttttttttttttttthhhhhhhhh")
+						#print(str(self.train[i].num)+ " train num")
 				i = i+1
 	
 #_______________________________________________________________________
@@ -666,8 +666,8 @@ class Track:
 		
 		i = 0
 		while i < len(self.train):
-			print(self.train[i].num)
-			print(num)
+			#print(self.train[i].num)
+			#print(num)
 			if num == self.train[i].num:
 				break
 			i = i+1
@@ -689,7 +689,7 @@ class Track:
 				q = int(self.train[i].block)
 		
 		
-		print(str(q)+" this is q") 
+		#print(str(q)+" this is q") 
 			
 		a = self.train[i].set_block(self.blocks,q,self.line,f)
 		#pas = a[0]
@@ -702,7 +702,7 @@ class Track:
 		bull = self.get_occ()
 		self.set_occ(bull)
 		#print(str(s) + "tkm")
-		print(str(s)+" track model speed")
+		#print(str(s)+" track model speed")
 		signals.tkm_get_speed.emit(s,self.train[i].num)
 		#signals.tkm_get_auth.emit(a)
 			
@@ -717,7 +717,7 @@ class Track:
 		while r <= int(self.end):
 			self.blocks[q].auth = int(auth[r])
 			if int(auth[r]) == 1:
-				print(self.blocks[q].num)
+				#print(self.blocks[q].num)
 			r = r+1
 			q = q+1
 		
