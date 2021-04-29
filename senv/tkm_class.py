@@ -531,6 +531,8 @@ class Track:
 	def check_swit(self):
 		p = 0
 		while p<self.end:
+			#print(p)
+			#print(str(self.blocks[p].switch.start))
 			if self.blocks[p].switch.start != self.blocks[p].num and self.blocks[p].switch.bottom != -1:
 				self.blocks[self.blocks[p].switch.start-1].switch = Switch(0,self.blocks[p].swit_t[0],self.blocks[p].swit_t[1],self.blocks[p].swit_b[0],self.blocks[p].swit_b[1])
 				self.blocks[p].switch = Switch(self.blocks[p].num,0,0,0,0)
@@ -566,6 +568,8 @@ class Track:
 			b = 0b00000001
 		elif self.line == "Green":
 			b = 0b10000001
+		elif self.line == "Blue":
+			b = 0b00000001
 		
 		a = 0
 		
