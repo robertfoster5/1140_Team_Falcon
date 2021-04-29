@@ -1426,11 +1426,11 @@ class ctc_qtui_test(QObject):
                 
             #print("Authority for Block 63: " + str(sendable_auth_green[63]))
             #print("Suggested_Speed for Block 63: " + str(sendable_sugg_speed_green[63]))
-            print("FOR GREEN LINE")
-            for i in range(len(sendable_auth_green)):
-                if sendable_auth_green[i] == "1":
-                    print("Block " + str(i) + " has Authority = 1")
-                    print("Block " + str(i) + " has Suggested Speed = " + str(sendable_sugg_speed_green[i]))
+            #print("FOR GREEN LINE")
+            #for i in range(len(sendable_auth_green)):
+            #    if sendable_auth_green[i] == "1":
+            #        print("Block " + str(i) + " has Authority = 1")
+            #        print("Block " + str(i) + " has Suggested Speed = " + str(sendable_sugg_speed_green[i]))
             
             #print("FOR RED LINE")
             #for i in range(len(sendable_auth_red)):

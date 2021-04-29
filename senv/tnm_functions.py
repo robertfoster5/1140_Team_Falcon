@@ -386,7 +386,7 @@ def RedBeacon(RouteName, RedDirection, TrainDirection, beaconBinary):
 			CurrStation = " ---- "
 			NextStation = " ---- "
 	#Route names for the Red Line going to stations decrementally	(7 Stations)
-	elif(route_line == "Red Line" and TNMdirectionR == 0 and trainDirection == 1):
+	elif(route_name == "Red Line" and TNMdirectionR == 0 and trainDirection == 1):
 		if(beacon_bin[3:] == "00000"):					#Likely won't reach this unless sent to yard
 			CurrStation = "Yard"
 			NextStation = " ---- "
