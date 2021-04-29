@@ -5,6 +5,7 @@ class Signal(QObject):
     #global
     time = pyqtSignal(int,int,int,int) #sec, min, hour, total time
     time_multiplier = pyqtSignal(int)
+    pause = pyqtSignal()
 
     #ctc signals
     ctc_authority_green = pyqtSignal(list)

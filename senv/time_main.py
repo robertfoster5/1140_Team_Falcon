@@ -25,6 +25,7 @@ class TimeMain(QObject):
 		signals.time.emit(0,0,0,0)
 
 		signals.time.connect(self.update_gui)
+		signals.pause.connect(self.pause)
 		self.ui.lineEdit.editingFinished.connect(self.set_multiplier)
 
 
@@ -47,6 +48,10 @@ class TimeMain(QObject):
 			AlphaFlag = False
 			self.ui.label_5.setText(" " + str(mult))
 			signals.time_multiplier.emit(int(mult))
+
+	def pause(self):
+		self.ui.label_5.setText(" " + str(0))
+		signals.time_multiplier.emit(0)
 
 
 

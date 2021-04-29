@@ -102,6 +102,7 @@ class TrainController(QObject):
         if(self.start == False and on == True):
             self.start = True
             self.Window.show()
+            signals.pause.emit()
 
     def set_pass_brake(self,on):
         self.pass_brake = on
