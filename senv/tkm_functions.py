@@ -24,7 +24,7 @@ def ms_to_mph(num):
 	num = round(num*2.23694,2)	
 	return num
 
-
+#useless ignore
 def up_x(x):
 	x = x+62
 	return x
@@ -128,7 +128,7 @@ def make_data(blocks,j):
 	]
 	return data
 	
-	
+#generate section of track data to display
 def make_data_sect(blocks,sect):
 	i = 0
 	start = 0
@@ -187,6 +187,7 @@ def make_data_sect(blocks,sect):
 		
 	return data
 
+#loading in a new track
 def load_track(fileN):
 	File = xlrd.open_workbook(fileN)
 	j = 1
@@ -198,14 +199,14 @@ def load_track(fileN):
 	while t_file.cell(j,2).value != 0:
 		if t_file.cell(j,6).value == xlrd.empty_cell.value:
 			track.append(Block(t_file.cell(j,0).value,t_file.cell(j,1).value,t_file.cell(j,2).value,t_file.cell(j,3).value,t_file.cell(j,4).value,t_file.cell(j,5).value,0,[0,0],[0,0],0,t_file.cell(j,7).value,t_file.cell(j,8).value,t_file.cell(j,9).value,t_file.cell(j,10).value))
-				
+		#if station		
 		else:	
 			name = str(t_file.cell(j,6).value)
 			if name[0:8] == "Station;" or name[0:8] == "STATION;":
 				n = name[9:]
 				
 				track.append(Block(t_file.cell(j,0).value,t_file.cell(j,1).value,t_file.cell(j,2).value,t_file.cell(j,3).value,t_file.cell(j,4).value,t_file.cell(j,5).value,n,[0,0],[0,0],0,t_file.cell(j,7).value,t_file.cell(j,8).value,t_file.cell(j,9).value,t_file.cell(j,10).value))
-			
+			#if there is a yard switch
 			elif name[7:11] == "FROM":
 				swit_t = [int(name[23:25]),"YARD"]
 				swit_b = [0,0]
@@ -220,7 +221,7 @@ def load_track(fileN):
 				swit_t = [0,0]
 				
 				track.append(Block(t_file.cell(j,0).value,t_file.cell(j,1).value,t_file.cell(j,2).value,t_file.cell(j,3).value,t_file.cell(j,4).value,t_file.cell(j,5).value,0,swit_t,swit_b,0,t_file.cell(j,7).value,t_file.cell(j,8).value,t_file.cell(j,9).value,t_file.cell(j,10).value))
-			
+			#if there is a switch
 			elif name[0:6] == "Switch" or name[0:6] == "SWITCH":
 				swit_t = [0,0]
 				swit_b = [0,0]
@@ -255,7 +256,7 @@ def load_track(fileN):
 				
 					
 				track.append(Block(t_file.cell(j,0).value,t_file.cell(j,1).value,t_file.cell(j,2).value,t_file.cell(j,3).value,t_file.cell(j,4).value,t_file.cell(j,5).value,0,swit_t,swit_b,0,t_file.cell(j,7).value,t_file.cell(j,8).value,t_file.cell(j,9).value,t_file.cell(j,10).value))
-			
+			#if there is a crossing
 			elif name == "RAILWAY CROSSING" or name == "Railway Crossing" or name == "Railway crossing" or name == "railway crossing":
 				track.append(Block(t_file.cell(j,0).value,t_file.cell(j,1).value,t_file.cell(j,2).value,t_file.cell(j,3).value,t_file.cell(j,4).value,t_file.cell(j,5).value,0,[0,0],[0,0],1,t_file.cell(j,7).value,t_file.cell(j,8).value,t_file.cell(j,9).value,t_file.cell(j,10).value))
 			

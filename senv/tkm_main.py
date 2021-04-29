@@ -71,12 +71,14 @@ class tkm_test(QObject):
 		self.ui.setupUi(self.MainWindow)     
 		self.MainWindow.show()
 		
+		#loading red and green lines
 		track = load_track("tkm_load_g.xls")
 		t = Track(track)
 		
 		track = load_track("tkm_load_r.xls")
 		q = Track(track)
 		
+		#setting up temp and track heater obj
 		self.ui.heat_stat.setText("Off")
 		self.ui.spinBox.setValue(40)
 		self.temp = Envi_Temp(self.ui.spinBox.value())
@@ -120,6 +122,7 @@ class tkm_test(QObject):
 		#default section info
 		self.data_sect = make_data_sect(self.info[self.version].blocks,"A")
 		
+		#all station info
 		self.data_sall = make_data_sall(self.info[self.version].blocks)
 		
         #final set up of data tables
@@ -147,6 +150,7 @@ class tkm_test(QObject):
 		self.ui.refresh.clicked.connect(lambda: self.ref())
 		self.ui.enterSect.clicked.connect(lambda: self.display_sect())
 		
+		#signals from other modules
 		signals.way_green_speed.connect(self.info[0].set_speed)
 		signals.way_red_speed.connect(self.info[1].set_speed)
 		
@@ -215,7 +219,7 @@ class tkm_test(QObject):
 				self.data_s = make_data_s(self.info[self.version].blocks[i])
 				self.ui.model_s = TableModel(self.data_s, self.header_s)
 				self.ui.tableView_S.setModel(self.ui.model_s)
-	
+	#displaying sections of a line
 	def display_sect(self):
 		if self.ui.select_sect.text() != "":
 			sect = self.ui.select_sect.text()
@@ -223,13 +227,13 @@ class tkm_test(QObject):
 			self.data_sect = make_data_sect(self.info[self.version].blocks,sect)
 			self.ui.model_sect = TableModel(self.data_sect, self.header_sect)
 			self.ui.tableView_Sect.setModel(self.ui.model_sect)
-			
+	#loading a new track file	
 	def load_f(self):
 		if self.ui.lineEdit_f.text() != "":
 			new = load_track(str(self.ui.lineEdit_f.text())+".xls")
 			new = Track(new)
 			self.info.append(new)
-			
+	#switching which track line info is being shown 
 	def display_v(self):
 		if self.ui.lineEdit_v.text() != "":
 			i = 0
@@ -243,13 +247,13 @@ class tkm_test(QObject):
 			self.version = i
 			self.ui.curLin.setText(self.info[self.version].line)
 			self.ref()
-			
+	#changing environmental temperature
 	def display_temp(self):
 		self.temp.set_temp(self.ui.spinBox.value())
 		if self.temp.th.state == 1 and self.ui.heat_stat.text() != "On":
 			self.ui.heat_stat.setText("On")
 		signals.tkm_get_envi_temp.emit(self.temp.temp)
-				
+	#track heat toggle	
 	def track_heat(self):
 		if self.ui.heat_stat.text() == "Off":
 			self.temp.th.toggle(1)
@@ -257,7 +261,7 @@ class tkm_test(QObject):
 		elif self.temp.temp > 4.44:
 			self.temp.th.toggle(0)
 			self.ui.heat_stat.setText("Off")
-			
+	#generate ticket sales every minute
 	def sales(self,sec,mini,hr,tot):
 		if self.mins < mini or (self.mins == 59 and mini == 0):
 			self.mins = mini
@@ -273,7 +277,7 @@ class tkm_test(QObject):
 				q = q+1
 				
 			signals.tkm_get_sales.emit(tots)
-				
+	#selecting block errors			
 	def error_select(self):
 		if self.ui.checkBox.isChecked() == 1 or self.ui.checkBox_2.isChecked() == 1 or self.ui.checkBox_3.isChecked() == 1:
 			#self.info[self.version].blocks[int(self.ui.selectE.text())-1].health = 1
@@ -283,7 +287,7 @@ class tkm_test(QObject):
 			self.ui.checkBox_3.setChecked(False)
 			self.ui.selectE.clear()
 			signals.tkm_get_occ.emit(self.info[self.version].get_occ())
-			
+	#refresh data	
 	def ref(self):
 		if self.ui.lineEdit.text() != "":
 			self.display_b()
@@ -298,7 +302,7 @@ class tkm_test(QObject):
 		self.data_sall = make_data_sall(self.info[self.version].blocks)
 		self.ui.model_Sall = TableModel(self.data_sall, self.header_sall)
 		self.ui.tableView_Sall.setModel(self.ui.model_Sall)
-				
+	#destroy train when told by CTC		
 	def t_dest(self,num):
 		j = 0
 		while j < len(self.info):
@@ -312,7 +316,7 @@ class tkm_test(QObject):
 					j = len(self.info)-1
 				i = i+1
 			j = j+1				
-			
+	#find which train to update disembark and boarding
 	def t_find(self,num):
 		j = 0
 		while j < len(self.info):

@@ -84,6 +84,7 @@ class Switch:
 			self.top = sta1-1
 			self.bottom = -1
 			self.state = 0
+		#normal switch
 		else:
 			if sta1 == sta2:
 				self.start = sta1
@@ -111,6 +112,7 @@ class Train:
 		self.speed = 0
 		self.past = 0
 		
+		#disembark and boarding
 		self.dis = 0
 		self.boar = 0
 	
@@ -121,7 +123,7 @@ class Train:
 		self.past = self.block
 		#print(str(self.num)+" train num")
 		num = int(num)
-		
+		#determine what next block is
 		#green
 		if line == "Green":
 			if self.way == 1:
@@ -207,18 +209,19 @@ class Train:
 				
 		
 		
-		
+		#change block occupancy and send next block info to TNM
 		blocks[int(self.past)-1].occ = 0
 		blocks[int(self.block)-1].occ = 1
 		signals.tkm_get_block.emit(self.block,self.num)
-		print(str(self.block) + " block tkm")
-		print("/////////////////////////////////////////////////////////////////////////////////////")
-		print(str(blocks[int(self.block)-1].length)+" this is block length")
+		#print(str(self.block) + " block tkm")
+		#print("/////////////////////////////////////////////////////////////////////////////////////")
+		#print(str(blocks[int(self.block)-1].length)+" this is block length")
 		signals.tkm_get_blength.emit(blocks[int(self.block)-1].length,self.num)
 		signals.tkm_get_train_auth.emit(blocks[int(self.block-1)].auth,self.num)
 		signals.tkm_get_elev.emit(blocks[int(self.block-1)].elev,self.num)
-		print(str(blocks[int(self.block-1)].auth) + " tkm auth")
+		#print(str(blocks[int(self.block-1)].auth) + " tkm auth")
 		
+		#check for beacons to send
 		if blocks[int(self.block-1)].beacon1 == 0 and blocks[int(self.block-1)].beacon2 == 0:
 			pass
 		elif blocks[int(self.block-1)].beacon1 == 0 and blocks[int(self.block-1)].beacon2 != 0:
@@ -237,7 +240,8 @@ class Train:
 			
 		return blocks[int(self.block - 1)].auth
 #_______________________________________________________________________
-	
+	#sending a new commanded speed to TNM
+	#if limit is smaller send limit, if commanded is smaller send commanded
 	def set_speed_new(self,block):
 		#print(block.s_limit)
 		#print(block.speed)
@@ -261,7 +265,7 @@ class Train:
 		return self.speed
 	
 #_______________________________________________________________________
-	
+	#for if the train is starting form rest
 	def set_speed(self,block):
 		#print(block[int(self.block-1)].s_limit)
 		#print(block[int(self.block-1)].speed)
@@ -289,13 +293,13 @@ class Train:
 	
 #_______________________________________________________________________
 	
-	#disembarking
+	#update disembarking
 	def update_disembark(self):
 		if self.occ >1:
 			self.dis = random.randrange(0,self.occ)
 		self.occ = self.occ - self.dis
 		
-		
+	#update boarding
 	def update_board(self, blocks):
 		if blocks[int(self.block)-1].station.occ > 0:
 			self.boar = blocks[int(self.block)-1].station.get_boarding(self.occ)
@@ -312,6 +316,7 @@ class Train:
 			self.way = 1			
 		#signals.tkm_get_auth.emit(block[yard-1].auth)
 		
+	#destroy train
 	def destroy(self):
 		val = self.block
 		self.way = 0
@@ -379,12 +384,13 @@ class Block:
 		#occupancy
 		self.occ = 0
 		
+		#beacon
 		self.beacon1 = 0
 		self.beacon2 = 0
 		
+		#authority
 		self.auth = 0
 		
-		#self.speed = 0
 	
 #_______________________________________________________________________
 	
@@ -438,12 +444,13 @@ class Track:
 		self.line = blocks[0].line
 		self.train = []
 		
+		#chieck if red or green line
 		if self.line == "red":
 			q = 1
 		else:
 			q = 0
 		
-		
+		#generate yard block numbers
 		yards = []
 		r = 0
 		
@@ -455,12 +462,14 @@ class Track:
 		
 		self.yards = yards
 		
+		#setting beacons and switches after loading all blocks
 		self.check_swit()
 		self.check_stat()
 		self.check_und()
 	
 #_______________________________________________________________________
 	
+	#update train boarding and disembarking
 	def update_dis(self,i):
 		self.train[i].update_disembark()
 		self.train[i].update_board(self.blocks)
@@ -469,7 +478,7 @@ class Track:
 		
 #_______________________________________________________________________
 	
-	
+	#add a train to track
 	def add_train(self,letter):#n,way,block):
 		global train_num
 		'''
@@ -660,15 +669,15 @@ class Track:
 					if self.blocks[int(self.train[i].block-1)].speed < self.blocks[int(self.train[i].block-1)].s_limit:
 						signals.tkm_get_train_auth.emit(self.blocks[int(self.train[i].block-1)].auth,self.train[i].num)
 						signals.tkm_get_speed.emit(self.blocks[int(self.train[i].block-1)].speed,self.train[i].num)
-						print(str(self.blocks[int(self.train[i].block-1)].speed)+" spppppppppppppppppppppppppppeeeeeeeeeeeeeeeeeeddddd")
-						print(str(self.blocks[int(self.train[i].block-1)].auth) + " aaaaaaaaaaaauuuuuuuuuuuuuuttttttttttttttthhhhhhhhh")
-						print(str(self.train[i].num)+ " train num")
+						#print(str(self.blocks[int(self.train[i].block-1)].speed)+" spppppppppppppppppppppppppppeeeeeeeeeeeeeeeeeeddddd")
+						#print(str(self.blocks[int(self.train[i].block-1)].auth) + " aaaaaaaaaaaauuuuuuuuuuuuuuttttttttttttttthhhhhhhhh")
+						#print(str(self.train[i].num)+ " train num")
 					else:
 						signals.tkm_get_train_auth.emit(self.blocks[int(self.train[i].block-1)].auth,self.train[i].num)
 						signals.tkm_get_speed.emit(self.blocks[int(self.train[i].block-1)].s_limit,self.train[i].num)
-						print(str(self.blocks[int(self.train[i].block-1)].s_limit)+" spppppppppppppppppppppppppppeeeeeeeeeeeeeeeeeeddddd")
-						print(str(self.blocks[int(self.train[i].block-1)].auth) + " aaaaaaaaaaaauuuuuuuuuuuuuuttttttttttttttthhhhhhhhh")
-						print(str(self.train[i].num)+ " train num")
+						#print(str(self.blocks[int(self.train[i].block-1)].s_limit)+" spppppppppppppppppppppppppppeeeeeeeeeeeeeeeeeeddddd")
+						#print(str(self.blocks[int(self.train[i].block-1)].auth) + " aaaaaaaaaaaauuuuuuuuuuuuuuttttttttttttttthhhhhhhhh")
+						#print(str(self.train[i].num)+ " train num")
 				i = i+1
 	
 #_______________________________________________________________________
@@ -759,7 +768,7 @@ class Track:
 				if self.blocks[self.yards[0]-1].auth == 1:
 					self.add_train(len(self.train)+1,-1,self.blocks[self.yards[0]-1])
 		'''
-		
+	#set health of blocks
 	def set_health(self,health):
 		i = 1
 		d = 0
@@ -775,7 +784,7 @@ class Track_Heater:
 	def __init__(self):
 		#state of heater 1 = on
 		self.state = 0
-		
+	#toggle heater	
 	def toggle(self,num):
 		self.state = num
 		
@@ -785,7 +794,7 @@ class Envi_Temp:
 		self.th = Track_Heater()
 		if self.temp <= 4.44:
 			self.th.toggle(1)
-			
+	#set temp if below 40 turn on track heater		
 	def set_temp(self,temp):
 		self.temp = f_to_c(temp)
 		if self.temp <= 4.44:
