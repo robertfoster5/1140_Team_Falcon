@@ -142,16 +142,22 @@ class Wayside:
 				index1 = self.block_name.index(sw1)
 				index2 = self.block_name.index(sw2)
 				index3 = self.block_name.index(sw3)
+				
 				if sw4 != "yard":
 					index4 = self.block_name.index(sw4)
-					
-				if self.block_occ[int(index2)] == "1":
-					self.switch_state.append("0")
-					fork = 0
-				elif sw4 != "yard":
-					if self.block_occ[int(index4)] == "1":
-						self.switch_state.append("1")
+				if sw4 != "yard" and (self.block_occ[int(index2)] == "1" or self.block_occ[int(index4)] =="1"):
+					if self.block_occ[int(index2)] == "1":
+						self.switch_state.append("0")
 						fork = 0
+					elif self.block_occ[int(index4)] == "1":
+							self.switch_state.append("1")
+							fork = 0
+				elif sw4 == "yard" and self.block_occ[int(index2)] == "1":
+					self.switch_state.append("0")
+				elif sw4 == "yard" and self.block_occ[int(index2)] == "0" and self.authority[int(index1)] == "1" and self.authority[int(index2)] == "1":
+					self.switch_state.append("0")
+				elif sw4 == "yard" and self.block_occ[int(index2)] == "0" and self.authority[int(index1)] == "1" and self.authority[int(index2)] == "0":
+					self.switch_state.append("1")
 				else:
 					fork = 1
 					

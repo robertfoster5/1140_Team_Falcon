@@ -349,6 +349,7 @@ class wayside_qtui_test(QObject):
 		self.g4.b_speed = temp_s[74:110]
 		self.g5.b_speed = temp_s[110:147]
 		self.compile_speed_green()
+		print("speed at 88" + str(speed[88]))
 		self.update_tables(self.curr_ws)
 			
 	def compile_health_red(self):
@@ -517,6 +518,7 @@ class wayside_qtui_test(QObject):
 			else:
 				temp.append(self.green_speed[j+1])
 			j=j+1
+		print("speed at 88" + str(temp[88]))
 		signals.way_green_speed.emit(temp)
 		
 	def compile_switch_red(self):

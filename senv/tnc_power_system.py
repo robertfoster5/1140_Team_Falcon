@@ -14,7 +14,7 @@ class PowerSystem():
         self.set_speed = 0
         self.command_speed = 0
         self.current_speed = 0
-        self.kp = 5000
+        self.kp = 0
         self.ki = 0
 
     def update_power(self):
