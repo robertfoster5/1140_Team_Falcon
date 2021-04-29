@@ -1,3 +1,0 @@
-wayside_trk_control is the Track Controller Class
-something I found out in using this is that the CTC will generate the track controller which then makes all the individual waysides therefore theres not a real need to create a separate thread for the Wayside Controller
-This also means that CTC sends occupancy from track model throught the track controller rather than I receive it separately. It's confusing I'll explain it further later on
