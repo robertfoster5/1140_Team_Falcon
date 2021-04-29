@@ -633,9 +633,9 @@ class ctc_qtui_test(QObject):
                 request_str.append("1")
             else:
                 request_str.append("0")
-        #print("Sending To Wayside Controller:")
-        #print(request_str)
-        #print("")
+        print("Sending To Wayside Controller:")
+        print(request_str)
+        print("")
         signals.ctc_maintenance.emit(request_str)
         
 
