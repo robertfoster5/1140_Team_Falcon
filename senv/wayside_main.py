@@ -46,6 +46,7 @@ class wayside_qtui_test(QObject):
 	
 		#self.MainWindow.show()
 		
+		#Create wayside objects
 		self.g1 = Wayside("g1.txt", "Green")
 		self.g2 = Wayside("g2.txt", "Green")
 		self.g3 = Wayside("g3.txt", "Green")
@@ -60,6 +61,7 @@ class wayside_qtui_test(QObject):
         self.g1.moveToThread(self.g1_thread)
         self.g1_thread.start()"""
         
+        #Sets initial table settings for blocks, crossings, and switches
 		self.header_blocks = ['Block', 'Status', 'Line']
 		
 		self.data_blocks = [[0,0,0]]
@@ -73,8 +75,6 @@ class wayside_qtui_test(QObject):
 		self.data_switch = [[0,0]]	
 		
 		self.ui.model = TableModel(self.data_blocks,self.header_blocks)
-		
-		
 	
 		self.ui.tableView.setModel(self.ui.model)
 		
@@ -86,8 +86,10 @@ class wayside_qtui_test(QObject):
 		
 		self.ui.tableView_3.setModel(self.ui.model)
 		
+		#sets initial table shown on UI
 		self.update_tables(self.g1)
 		
+		#Changes visible wayside information based on button presses
 		self.ui.pushButton.clicked.connect(lambda: self.update_tables(self.r1))
 		self.ui.pushButton_2.clicked.connect(lambda: self.update_tables(self.r2))
 		self.ui.pushButton_3.clicked.connect(lambda: self.update_tables(self.r3))
@@ -98,6 +100,7 @@ class wayside_qtui_test(QObject):
 		self.ui.pushButton_5.clicked.connect(lambda: self.update_tables(self.g4))
 		self.ui.pushButton_8.clicked.connect(lambda: self.update_tables(self.g5))
 		
+		#connects signals from other modules to functions
 		signals.ctc_suggested_speed_red.connect(self.update_speed_red)
 		signals.ctc_suggested_speed_green.connect(self.update_speed_green)
 		signals.ctc_authority_red.connect(self.new_authority_red)
@@ -105,7 +108,7 @@ class wayside_qtui_test(QObject):
 		signals.ctc_maintenance.connect(self.maintenance_order)
 		signals.tkm_get_occ.connect(self.update_occupancy)
 		
-			
+		#update all tables together with current wayside	
 	def update_tables(self, ws):
 		self.curr_ws = ws
 		self.update_block(ws)
@@ -113,6 +116,7 @@ class wayside_qtui_test(QObject):
 		self.update_cross(ws)
 		self.show_tables()
 	
+		#shows tables with updated information
 	def show_tables(self):
 		self.ui.model = TableModel(self.data_blocks,self.header_blocks)
 		
@@ -125,7 +129,8 @@ class wayside_qtui_test(QObject):
 		self.ui.model = TableModel(self.data_cross,self.header_cross)
 		
 		self.ui.tableView_2.setModel(self.ui.model)
-			
+		
+		#updates block table with health and occupancy	
 	def update_block(self, ws):	
 		self.data_blocks = []
 		for i in range(len(ws.block_occ)):
@@ -136,6 +141,7 @@ class wayside_qtui_test(QObject):
 			elif ws.block_occ[i] == "0":
 				self.data_blocks.append(["Block " + ws.block_name[i], "Empty", ws.line])
 		
+		#updates switch table with current switch states
 	def update_switch(self, ws):
 		self.data_switch = []
 		if ws.num_switch > 0:
@@ -143,7 +149,8 @@ class wayside_qtui_test(QObject):
 				self.data_switch.append(["Switch " + ws.switch_name[i], ws.switch_state[i]])
 		else:
 			self.data_switch.append(["N/A", "N/A"])
-
+		
+		#updates crossing table if crossing is working
 	def update_cross(self, ws):
 		self.data_cross = []
 		if ws.num_cross > 0:
@@ -152,15 +159,14 @@ class wayside_qtui_test(QObject):
 		else:
 			self.data_cross.append(["N/A", "N/A"])
 
+		#maintenance order from CTC
 	def maintenance_order(self, order):
-		print(len(order))
 		print(order)
 		if order[0] != "0":
+			#if red line
 			if order[0] == "r":
 				temp_order = order[1:len(order)]
-				print("r")
-				print(temp_order)
-				print(len(temp_order))
+				#if order on block
 				if order[1] == "b":
 					temp = []
 					or1 = temp_order[1:24]
@@ -179,6 +185,7 @@ class wayside_qtui_test(QObject):
 					self.r1.m_order_block(or1)
 					self.r2.m_order_block(or2)
 					self.r3.m_order_block(or3)
+				#if order on switch
 				elif order[1] == "s":
 					self.r1.m_order_switch(temp_order[1:3])
 					self.r2.m_order_switch(temp_order[3:7])
@@ -186,9 +193,10 @@ class wayside_qtui_test(QObject):
 				self.compile_switch_red()
 				self.compile_health_red()
 				self.compile_block_occ_red()
+			#if order on green line
 			else:
 				temp_order = order[1:len(order)]
-				print(temp_order)
+				#if order on block
 				if order[1] == "b":  
 					or1 = temp_order[1:21]
 					or2 = temp_order[21:36]
@@ -199,21 +207,23 @@ class wayside_qtui_test(QObject):
 					or3 = temp_order[36:74]
 					or4 = temp_order[74:110]
 					or5 = temp_order[110:147]
-					self.g1.m_order(or1)
-					self.g2.m_order(or2)
-					self.g3.m_order(or3)
-					self.g4.m_order(or4)
-					self.g5.m_order(or5)
+					self.g1.m_order_block(or1)
+					self.g2.m_order_block(or2)
+					self.g3.m_order_block(or3)
+					self.g4.m_order_block(or4)
+					self.g5.m_order_block(or5)
+				#if order on switch
 				elif order[1] == "s":
 					self.g1.m_order_switch(temp_order[1])
 					self.g2.m_order_switch(temp_order[2])
 					self.g3.m_order_switch(temp_order[3:5])
-					self.g4.m_order_switch(temp_order[5:-1])
+					self.g4.m_order_switch(temp_order[5:len(order)])
 				self.compile_switch_green()
 				self.compile_health_green()
 				self.compile_block_occ_green()
 		self.update_tables(self.curr_ws)
-			
+		
+		#sets new authority and sends it through system	
 	def new_authority_red(self, authority):
 		temp = []
 		self.red_authority = authority
@@ -234,6 +244,7 @@ class wayside_qtui_test(QObject):
 		self.compile_auth_red()
 		self.update_tables(self.curr_ws)
 		
+		#sets new authority and sends it through system
 	def new_authority_green(self,authority):
 		temp = []
 		self.green_authority = authority
@@ -249,7 +260,8 @@ class wayside_qtui_test(QObject):
 		self.g5.authority = authority[110:147]
 		self.compile_auth_green()
 		self.update_tables(self.curr_ws)
-				
+		
+		#sets new occupancy and sends it through system		
 	def update_occupancy(self, occupancy):
 		temp = []
 		temp1 = []
@@ -305,6 +317,8 @@ class wayside_qtui_test(QObject):
 			self.compile_speed_green()
 		self.update_tables(self.curr_ws)
 		
+		#sets new speed and sends it through system
+		#Creates binary from speed so that waysides can adjust for safety
 	def update_speed_red(self, speed):
 		temp_s = []
 		for i in range(len(speed)):
@@ -332,7 +346,9 @@ class wayside_qtui_test(QObject):
 		self.r3.b_speed = temp_s[46:67]
 		self.compile_speed_red()
 		self.update_tables(self.curr_ws)
-			
+		
+		#sets new speed and sends it through system
+		#Creates binary from speed so that waysides can adjust for safety	
 	def update_speed_green(self, speed):
 		temp_s = []
 		for i in range(len(speed)):
@@ -356,7 +372,8 @@ class wayside_qtui_test(QObject):
 		self.g5.b_speed = temp_s[110:147]
 		self.compile_speed_green()
 		self.update_tables(self.curr_ws)
-			
+		
+		#compiles variable to emit through system	
 	def compile_health_red(self):
 		temp_h = []
 		temp_h.append("0")
@@ -369,7 +386,8 @@ class wayside_qtui_test(QObject):
 		for i in range(22,32):
 			temp_h.append(self.r2.block_health[i])
 		signals.way_red_health.emit(temp_h)
-					
+		
+		#compiles variable to emit through system			
 	def compile_health_green(self):
 		temp = []
 		temp.append("1")
@@ -389,6 +407,7 @@ class wayside_qtui_test(QObject):
 		temp.append(self.g2.block_health[18])
 		signals.way_green_health.emit(temp)
 		
+		#compiles variable to emit through system
 	def compile_block_occ_red(self):
 		temp = []
 		temp.append("0")
@@ -402,6 +421,7 @@ class wayside_qtui_test(QObject):
 			temp.append(self.r2.block_occ[i])
 		signals.way_red_occupancy.emit(temp)
 		
+		#compiles variable to emit through system
 	def compile_block_occ_red_ctc(self):
 		temp = []
 		temp.append("0")
@@ -415,6 +435,7 @@ class wayside_qtui_test(QObject):
 			temp.append(self.r2.block_occ[i])
 		signals.way_red_occupancy_ctc.emit(temp)
 		
+		#compiles variable to emit through system
 	def compile_block_occ_green(self):
 		temp_occ = []
 		temp_occ.append("1")
@@ -434,6 +455,7 @@ class wayside_qtui_test(QObject):
 		temp_occ.append(self.g2.block_occ[18])
 		signals.way_green_occupancy.emit(temp_occ)
 	
+		#compiles variable to emit through system
 	def compile_block_occ_green_ctc(self):
 		temp_occ = []
 		temp_occ.append("1")
@@ -453,6 +475,7 @@ class wayside_qtui_test(QObject):
 		temp_occ.append(self.g2.block_occ[18])
 		signals.way_green_occupancy_ctc.emit(temp_occ)
 		
+		#compiles variable to emit through system
 	def compile_speed_red(self):
 		temp = []
 		temp.append("0")
@@ -483,6 +506,7 @@ class wayside_qtui_test(QObject):
 			j=j+1
 		signals.way_red_speed.emit(temp)
 		
+		#compiles variable to emit through system
 	def compile_speed_green(self):
 		temp = []
 		temp.append("g")
@@ -525,10 +549,12 @@ class wayside_qtui_test(QObject):
 			j=j+1
 		signals.way_green_speed.emit(temp)
 		
+		#compiles variable to emit through system
 	def compile_switch_red(self):
 		temp_sw = []
 		temp_sw.append("0")
 		if self.r1.mode == 1 or self.r2.mode == 1 or self.r3.mode == 1:
+			print("maintenance mode")
 			temp_sw.append(self.r1.m_switch_state[0])
 			temp_sw.append(self.r1.m_switch_state[1])
 			temp_sw.append(self.r2.m_switch_state[0])
@@ -547,10 +573,12 @@ class wayside_qtui_test(QObject):
 		
 		signals.way_red_switch_state.emit(temp_sw)
 	
+		#compiles variable to emit through system
 	def compile_switch_green(self):
 		temp_sw = []
 		temp_sw.append("1")
 		if self.g1.mode == 1 or self.g2.mode == 1 or self.g3.mode == 1 or self.g4.mode == 1:
+			print("maintenance mode")
 			temp_sw.append(self.g1.m_switch_state[0])
 			temp_sw.append(self.g2.m_switch_state[0])
 			temp_sw.append(self.g3.m_switch_state[0])
@@ -566,18 +594,21 @@ class wayside_qtui_test(QObject):
 			temp_sw.append(self.g4.switch_state[1])
 		signals.way_green_switch_state.emit(temp_sw)
 		
+		#compiles variable to emit through system
 	def compile_cross_red(self):
 		temp_cr = []
 		temp_cr.append("0")
 		temp_cr.append(self.r3.cross_state[0])
 		signals.way_red_cross_state.emit(temp_cr)
 		
+		#compiles variable to emit through system
 	def compile_cross_green(self):
 		temp_cr = []
 		temp_cr.append("1")
 		temp_cr.append(self.g1.cross_state[0])
 		signals.way_green_cross_state.emit(temp_cr)
 		
+		#compiles variable to emit through system
 	def compile_auth_red(self):
 		temp = []
 		temp.append("0")
@@ -608,6 +639,7 @@ class wayside_qtui_test(QObject):
 			j=j+1
 		signals.way_red_authority.emit(temp)
 		
+		#compiles variable to emit through system
 	def compile_auth_green(self):
 		temp = []
 		temp.append("1")

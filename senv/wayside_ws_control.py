@@ -1,4 +1,5 @@
 class Wayside:
+	#Creates initial wayside with empty variables to be filled by PLC settings
 	def __init__(self, plcfile, line):
 		self.plcfile = plcfile
 		self.line = line
@@ -21,14 +22,17 @@ class Wayside:
 		self.num_switch = 0
 		self.num_cross = 0
 		self.num_block = 0
+		#Function to load all variables from plc file
 		self.load_plc()
 	
+		#updates all components of wayside
 	def update_ws(self):
 		#self.switch_safety()
 		#self.safety_change()
 		self.cross_change()
 		self.switch_state_change()
 	
+		#Failed safety function to analyze connections around switches if they were safe
 	"""def switch_safety():
 		for i in range(num_switch):
 			swname = self.switch_name[i]
@@ -59,12 +63,14 @@ class Wayside:
 				elif swname == "6":
 					
 				elif swname == "7":
-			
+		
+		#function to adjust authority and speed to stop trains from hitting each other	
 	def safety_change(self):
 		for i in range(self.num_block):
 			if self.block_occ[i] == "1":
 				if i < 3 """
-						
+		
+		#change maintenance of a block				
 	def m_order_block(self, order):
 		temp_block = []
 		temp_occ = []
@@ -83,7 +89,7 @@ class Wayside:
 				temp_block.append("0")
 		self.block_health = []
 		self.block_health = temp_block
-		for i in range(len(order)):
+		"""for i in range(len(order)):
 			if order[i] == "0" and self.block_occ[i] == "0":
 				temp_occ.append("0")
 			if order[i] == "0" and self.block_occ[i] == "1":
@@ -95,36 +101,42 @@ class Wayside:
 				self.mode = 1
 				temp_occ.append("1")
 		self.block_occ = []
-		self.block_occ = temp_occ
-					
+		self.block_occ = temp_occ"""
+		
+		#manually change switches			
 	def m_order_switch(self, order):
 		self.sw_order = []
 		self.sw_order = order
-		temp_switch = []
 		temp = self.switch_state
 		self.m_switch_state = []
-		for i in range(len(order)):
-			if temp[i] == "0" and temp_switch[i] == "0":
+		for i in range(self.num_switch):
+			if temp[i] == "0" and self.sw_order[i] == "0":
 				self.m_switch_state.append("0")
-			if temp[i] == "0" and temp_switch[i] == "1":
+				print("first")
+			elif temp[i] == "0" and self.sw_order[i] == "1":
 				self.m_switch_state.append("1")
-			if temp[i] == "1" and temp_switch[i] == "0":
+				print("second")
 				self.mode = 1
+			elif temp[i] == "1" and self.sw_order[i] == "0":
 				self.m_switch_state.append("1")
-			if temp[i] == "1" and temp_switch[i] == "1":
+				print("third")
+			elif temp[i] == "1" and self.sw_order[i] == "1":
 				self.mode = 1
 				self.m_switch_state.append("0")
-	
+				print("fourth")
+			else:
+				self.m_switch_state.append(temp[i])
+		print(self.mode)
+		
+		#sets new occupancy for wayside
 	def occ_change(self, occupancy):
 		temp = []
 		for i in range(self.num_block):
-			if self.block_health[i] == "1":
-				temp.append("1")
-			else:
-				temp.append(occupancy[i])
+			temp.append(occupancy[i])
 		self.block_occ = []
 		self.block_occ = temp
-						
+		
+		#changes crossing settings if occupancy is nearby crossing				
 	def cross_change(self):
 		if self.num_cross != 0:
 			cr1 = self.cr_connect[0]
@@ -134,11 +146,14 @@ class Wayside:
 			else:
 				self.cross_state[0] = "0"
 	
+		#changes switch setting based on authority, occupancy, and defaults
 	def switch_state_change(self):
 		temp_count = 0
 		self.switch_state = []
+		#goes through all switches
 		if self.num_switch > 0:
 			for i in range(self.num_switch):
+				#creates variables for indexing
 				fork = 0
 				swname = self.switch_name[i]
 				sw1 = self.sw_connect[temp_count][0]
@@ -151,6 +166,7 @@ class Wayside:
 				
 				if sw4 != "yard":
 					index4 = self.block_name.index(sw4)
+				#Changes switch state if there is an occupancy not before a fork
 				if sw4 != "yard" and (self.block_occ[int(index2)] == "1" or self.block_occ[int(index4)] =="1"):
 					if self.block_occ[int(index2)] == "1":
 						self.switch_state.append("0")
@@ -166,7 +182,7 @@ class Wayside:
 					self.switch_state.append("1")
 				else:
 					fork = 1
-					
+				#Changes switch states based on line and switch defaults	
 				if self.line == "Green" and fork == 1:
 					if swname == "1" or swname == "2" or swname == "6":
 						self.switch_state.append("0")
@@ -204,7 +220,8 @@ class Wayside:
 				else:
 					self.switch_state.append("0")
 				temp_count = temp_count +2
-				
+		
+		#parses through PLC file		
 	def load_plc(self):
 		f = open(self.plcfile)
 		swcount = 0
@@ -231,6 +248,7 @@ class Wayside:
 				self.cross_name.append(line[2:-1])
 				self.cross_state.append("0")
 				self.num_cross = self.num_cross +1
+			#blocks
 			elif line[0:2] == "bl" and proc == 0:
 				self.block_name.append(line[2:-1])
 				self.block_health.append("0")
@@ -248,6 +266,7 @@ class Wayside:
 				break
 			linecount = linecount +1;
 		for line in plc[linecount+1:]:
+			#creates switch connections
 			if line[0:2] == "sw":
 				d1 = plc[linecount+2]
 				d2 = plc[linecount+3]
@@ -255,6 +274,7 @@ class Wayside:
 				d4 = plc[linecount+5]
 				self.sw_connect.append([d1[0:-1], d2[0:-1]])
 				self.sw_connect.append([d3[0:-1], d4[0:-1]])
+			#creates crossing connections
 			if line[0:2] == "cr":
 				d1 = plc[linecount+2]
 				self.cr_connect.append(d1[0:-1])
