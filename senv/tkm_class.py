@@ -635,13 +635,15 @@ class Track:
 		
 		while n <= int(self.end):
 			self.blocks[n-1].set_speed(float(speeds[n]))
+			if float(speeds[n]) != 0:
+				print(str(self.blocks[n-1].speed)+" speed   " + str(self.blocks[n-1].num)+ " num")
 			#print(str(speeds[n]) + " speed " + str(self.blocks[n-1].speed))
 			n = n+1
-			
+		
 		if len(self.train) > 0:
 			i = 0
 			while i < len(self.train):
-				if self.blocks[int(self.train[i].block-1)].speed > 0 and self.train[i].speed == 0 and self.blocks[int(self.train[i].block-1)].auth == 1:
+				if self.blocks[int(self.train[i].block-1)].speed > 0 and '''self.train[i].speed == 0''' and self.blocks[int(self.train[i].block-1)].auth == 1:
 					if self.blocks[int(self.train[i].block-1)].speed < self.blocks[int(self.train[i].block-1)].s_limit:
 						signals.tkm_get_train_auth.emit(self.blocks[int(self.train[i].block-1)].auth,self.train[i].num)
 						signals.tkm_get_speed.emit(self.blocks[int(self.train[i].block-1)].speed,self.train[i].num)
@@ -711,8 +713,11 @@ class Track:
 		r = 1
 		q = 0
 		check = 0
+		#print(str(auth))
 		while r <= int(self.end):
 			self.blocks[q].auth = int(auth[r])
+			if int(auth[r]) == 1:
+				print(self.blocks[q].num)
 			r = r+1
 			q = q+1
 		
