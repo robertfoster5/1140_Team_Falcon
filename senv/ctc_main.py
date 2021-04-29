@@ -633,9 +633,9 @@ class ctc_qtui_test(QObject):
                 request_str.append("1")
             else:
                 request_str.append("0")
-        print("Sending To Wayside Controller:")
-        print(request_str)
-        print("")
+        #print("Sending To Wayside Controller:")
+        #print(request_str)
+        #print("")
         signals.ctc_maintenance.emit(request_str)
         
 
@@ -647,9 +647,9 @@ class ctc_qtui_test(QObject):
                 request_str.append("1")
             else:
                 request_str.append("0")
-        print("Sending To Wayside Controller:")
-        print(request_str)
-        print("")  
+        #print("Sending To Wayside Controller:")
+        #print(request_str)
+        #print("")  
         signals.ctc_maintenance.emit(request_str)
             
           
@@ -661,9 +661,9 @@ class ctc_qtui_test(QObject):
                 request_str.append("1")
             else:
                 request_str.append("0")
-        print("Sending To Wayside Controller:")
-        print(request_str)
-        print("")
+        #print("Sending To Wayside Controller:")
+        #print(request_str)
+        #print("")
         signals.ctc_maintenance.emit(request_str)
         
 
@@ -675,9 +675,9 @@ class ctc_qtui_test(QObject):
                 request_str.append("1")
             else:
                 request_str.append("0")
-        print("Sending To Wayside Controller:")
-        print(request_str)
-        print("")
+        #print("Sending To Wayside Controller:")
+        #print(request_str)
+        #print("")
         signals.ctc_maintenance.emit(request_str)
         
 
@@ -795,7 +795,7 @@ class ctc_qtui_test(QObject):
                 fin_dest_block = -1
             
             #print(valid_train_name + " = " + str(valid_train_metrics[0]))
-            print("Start Time: " + str(valid_train_metrics[2]))
+            #print("Start Time: " + str(valid_train_metrics[2]))
             global_dispatch_orders.append([valid_train_name,fin_destination_station,self.military_to_seconds(str(arrival_time)),valid_train_metrics[2],valid_train_metrics[0],valid_train_metrics[1],lin_spec,fin_dest_block])
             
             
@@ -1174,7 +1174,7 @@ class ctc_qtui_test(QObject):
                                 global_expected_train_location[int(train_name)] = global_expected_train_location_hold
                             # for i in global_expected_train_location:
                                     # print(i)
-                            print([row[0],row[1],row[2]])
+                            #print([row[0],row[1],row[2]])
                             global_schedule_display.append([row[0],row[1],row[2]])
                             header = ['Train', 'Destination Station', 'Arrival Time (2400)']
                             ui.model = TableModel(global_schedule_display, header)
@@ -1191,10 +1191,10 @@ class ctc_qtui_test(QObject):
                             else:
                                 fin_dest_block = -1
                                 
-                            print("Start Time For " + str(row[0]) + ": " + str(valid_train_metrics[2]))
-                            print("Authority: " + str(valid_train_metrics[0]))
-                            print("Stopping Block: " + str(fin_dest_block))
-                            print("")
+                            #print("Start Time For " + str(row[0]) + ": " + str(valid_train_metrics[2]))
+                            #print("Authority: " + str(valid_train_metrics[0]))
+                            #print("Stopping Block: " + str(fin_dest_block))
+                            #print("")
                             #print("Suggested Speed: " + str(valid_train_metrics[1]))
                             global_dispatch_orders.append([row[0],row[1],self.military_to_seconds(str(arrival_time)),valid_train_metrics[2],valid_train_metrics[0],valid_train_metrics[1],"g",fin_dest_block])
                             # [Train Name, Destination Station, Arrival Time(seconds),Start Time(seconds), Authority(meters), Suggested Speed(meters/second)]
@@ -1290,7 +1290,7 @@ class ctc_qtui_test(QObject):
                             #print("Suggested Speed: " + str(valid_train_metrics[1]))
                             #print("Authority: " + str(valid_train_metrics[0]))
                             #print("Stopping Block: " + str(fin_dest_block))
-                            print("Start Time For " + str(row[0]) + ": " + str(valid_train_metrics[2]))
+                            #print("Start Time For " + str(row[0]) + ": " + str(valid_train_metrics[2]))
                             global_dispatch_orders.append([row[0],row[1],self.military_to_seconds(str(arrival_time)),valid_train_metrics[2],valid_train_metrics[0],valid_train_metrics[1],"r",fin_dest_block])
                             # [Train Name, Destination Station, Arrival Time(seconds),Start Time(seconds), Authority(meters), Suggested Speed(meters/second)]
                             #print("Train Name: " + global_dispatch_orders[len(global_dispatch_orders)-1][0])
@@ -1372,7 +1372,7 @@ class ctc_qtui_test(QObject):
                     #if self.current_time >= 0:
                     if order_num[6] == "g":
                         if self.current_time == order_num[3] and int(order_num[0].rsplit(' ', 1)[1]) > len(global_train_blocks):
-                            print("SENDING GREEN TRAIN")
+                            #print("SENDING GREEN TRAIN")
                             make_green_train = True
                             global_train_blocks.append(order_num[4][0])
                             global_train_line.append("g")
@@ -1391,7 +1391,7 @@ class ctc_qtui_test(QObject):
                                 sendable_auth_green[i+1] = "0"
                     else:
                         if self.current_time == order_num[3] and int(order_num[0].rsplit(' ', 1)[1]) > len(global_train_blocks):
-                            print("SENDING RED TRAIN")
+                            #print("SENDING RED TRAIN")
                             make_red_train = True
                             global_train_blocks.append(order_num[4][0])
                             global_train_line.append("r")
