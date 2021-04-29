@@ -635,7 +635,7 @@ class Track:
 		
 		while n <= int(self.end):
 			self.blocks[n-1].set_speed(float(speeds[n]))
-			if float(speeds[n]) != 0:
+			#if float(speeds[n]) != 0:
 				#print(str(self.blocks[n-1].speed)+" speed   " + str(self.blocks[n-1].num)+ " num")
 			#print(str(speeds[n]) + " speed " + str(self.blocks[n-1].speed))
 			n = n+1
