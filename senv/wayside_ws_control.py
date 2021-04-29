@@ -136,7 +136,7 @@ class Wayside:
 		if self.num_cross != 0:
 			cr1 = self.cr_connect[0]
 			index1 = self.block_name.index(cr1)
-			if self.block_occ[int(index1) - 2] == "1" or self.block_occ[int(index1)-1] == "1" or self.block_occ[int(index1)] == "1":
+			if self.block_occ[int(index1) - 1] == "1" or self.block_occ[int(index1)] == "1" or self.block_occ[int(index1)+1] == "1":
 				self.cross_state[0] = "1"
 			else:
 				self.cross_state[0] = "0"
