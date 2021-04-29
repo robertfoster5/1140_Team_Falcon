@@ -203,14 +203,6 @@ class TrainController(QObject):
                     signals.tnc_left_door.emit(True,self.train_num)
                     self.right_door = True
                     signals.tnc_right_door.emit(True,self.train_num)
-            else:
-                if(self.at_station):
-                    self.count = 0
-                    self.station_stop = False
-                    self.left_door = False
-                    signals.tnc_left_door.emit(False,self.train_num)
-                    self.right_door = False
-                    signals.tnc_right_door.emit(False,self.train_num)
 
     def power_calc(self):
         if(not self.authority):
