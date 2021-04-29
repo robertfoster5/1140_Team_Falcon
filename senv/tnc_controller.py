@@ -41,6 +41,7 @@ class TrainController(QObject):
         self.station_stop = False
         self.announcement = ""
         self.count = 0
+        self.fail_state = False
 
         self.Window = QtWidgets.QWidget()
         self.powui = Ui_PowerUi()
@@ -153,6 +154,7 @@ class TrainController(QObject):
                     signals.tnc_tunnel_light.emit(False,self.train_num)
 
     def failure(self,fail):
+        self.fail_state = fail
         if(fail):
             self.emergency_brake = True
             signals.tnc_emergency_brake.emit(True,self.train_num)
@@ -185,9 +187,8 @@ class TrainController(QObject):
             elif(self.count > 0):
                 self.count+=1
 
-            if (self.at_station and (not self.authority) and self.powsys.current_speed == 0 and self.count == 0):
+            if (self.at_station and (not self.authority) and self.powsys.current_speed == 0.0 and self.count == 0):
                 self.announcement = "Now Arriving at:\n" + self.station + " Station"
-                print("NOW ARRIVING AT A STATION")
                 self.at_station = False
                 signals.tnc_announcement.emit(self.announcement,self.train_num)
                 self.count+=1
@@ -223,7 +224,7 @@ class TrainController(QObject):
         else:
             self.service_brake = False
 
-        if(self.emergency_brake or self.service_brake or self.pass_brake or self.station_stop):
+        if(self.emergency_brake or self.service_brake or self.pass_brake or self.station_stop or self.driver_emer_brake):
             self.powsys.braking = True
         else:
             self.powsys.braking = False
