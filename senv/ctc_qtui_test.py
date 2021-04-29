@@ -311,6 +311,11 @@ class Ui_CTC_Office(object):
         self.btnToggleDispatchType_2 = QtWidgets.QPushButton(self.tab_dispatch_red)
         self.btnToggleDispatchType_2.setGeometry(QtCore.QRect(280, 299, 361, 41))
         self.btnToggleDispatchType_2.setObjectName("btnToggleDispatchType_2")
+        self.labelManError_2 = QtWidgets.QLabel(self.tab_dispatch_red)
+        self.labelManError_2.setGeometry(QtCore.QRect(20, 240, 421, 31))
+        self.labelManError_2.setAutoFillBackground(False)
+        self.labelManError_2.setText("")
+        self.labelManError_2.setObjectName("labelManError_2")
         self.tabWidget_2.addTab(self.tab_dispatch_red, "")
         self.tab_maintenance = QtWidgets.QWidget()
         self.tab_maintenance.setObjectName("tab_maintenance")
@@ -688,7 +693,7 @@ class Ui_CTC_Office(object):
 
         self.retranslateUi(CTC_Office)
         self.tabWidget.setCurrentIndex(0)
-        self.tabWidget_2.setCurrentIndex(1)
+        self.tabWidget_2.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(CTC_Office)
 
     def retranslateUi(self, CTC_Office):
