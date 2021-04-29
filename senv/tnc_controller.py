@@ -65,8 +65,8 @@ class TrainController(QObject):
         self.right_door = False;
         self.left_door = False;
 
-        signals.tnc_left_door.emit(False,self.train_num)
-        signals.tnc_right_door.emit(False,self.train_num)
+        signals.tnc_left_door.emit(False)
+        signals.tnc_right_door.emit(False)
 
     def set_coeff(self):
         kp = 5000
@@ -178,9 +178,9 @@ class TrainController(QObject):
                 self.count = 0
                 self.station_stop = False
                 self.left_door = False
-                signals.tnc_left_door.emit(False,self.train_num)
+                signals.tnc_left_door.emit(False)
                 self.right_door = False
-                signals.tnc_right_door.emit(False,self.train_num)
+                signals.tnc_right_door.emit(False)
             elif(self.count > 0):
                 self.count+=1
 
@@ -193,23 +193,23 @@ class TrainController(QObject):
                 self.station_stop = True
                 if(self.station_side == 0):
                     self.left_door = True
-                    signals.tnc_left_door.emit(True,self.train_num)
+                    signals.tnc_left_door.emit(True)
                 elif(self.station_side == 1):
                     self.right_door = True
-                    signals.tnc_right_door.emit(True,self.train_num)
+                    signals.tnc_right_door.emit(True)
                 else:
                     self.left_door = True
-                    signals.tnc_left_door.emit(True,self.train_num)
+                    signals.tnc_left_door.emit(True)
                     self.right_door = True
-                    signals.tnc_right_door.emit(True,self.train_num)
+                    signals.tnc_right_door.emit(True)
             else:
                 if(self.at_station):
                     self.count = 0
                     self.station_stop = False
                     self.left_door = False
-                    signals.tnc_left_door.emit(False,self.train_num)
+                    signals.tnc_left_door.emit(False)
                     self.right_door = False
-                    signals.tnc_right_door.emit(False,self.train_num)
+                    signals.tnc_right_door.emit(False)
 
     def power_calc(self):
         if(not self.authority):
